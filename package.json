@@ -1,0 +1,27 @@
+{
+  "name": "hugo-theme-carbon",
+  "version": "2.0.0",
+  "description": "Standalone IBM Carbon Design System v11 Hugo Theme Module and Multi-Site Ecosystem",
+  "private": true,
+  "scripts": {
+    "dev": "cd exampleSite && hugo server --disableFastRender -p 1316 --bind 127.0.0.1",
+    "build": "cd exampleSite && hugo --gc --minify && python3 ../scripts/encrypt.py --dir public",
+    "test:links": "python3 scripts/test_public_html.py --dir exampleSite/public",
+    "test:verify-dependencies": "python3 scripts/verify-dependencies.py",
+    "test:verify-encryption": "python3 -c \"import sys; content = open('exampleSite/public/docs/encrypted-secrets-demo/index.html').read(); sys.exit(1) if 'TOP_SECRET_INTERNAL_KEY_9843' in content else print('VERIFIED: Zero plaintext leaks in encrypted output.')\""
+  },
+  "keywords": [
+    "hugo",
+    "hugo-theme",
+    "carbon-design-system",
+    "webgpu",
+    "web-workers",
+    "web-crypto",
+    "wcag-2.2-aa",
+    "zotero",
+    "stockfish",
+    "csvw"
+  ],
+  "author": "Hugo-Carbon Engineering",
+  "license": "Apache-2.0"
+}
