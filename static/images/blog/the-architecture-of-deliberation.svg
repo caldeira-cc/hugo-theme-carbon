@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <rect width="800" height="450" fill="#161616"/>
+  <defs>
+    <pattern id="grid7" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#262626" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="url(#grid7)"/>
+  
+  <rect x="30" y="30" width="740" height="390" fill="none" stroke="#393939" stroke-width="1"/>
+  <line x1="30" y1="70" x2="770" y2="70" stroke="#393939" stroke-width="1"/>
+  <line x1="30" y1="380" x2="770" y2="380" stroke="#393939" stroke-width="1"/>
+  
+  <text x="45" y="55" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#8d8d8d" letter-spacing="1.5">FIG 07.1 // CIVIC AMPHITHEATRE &amp; ASYNCHRONOUS DELIBERATION</text>
+  <text x="755" y="55" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#f4f4f4" text-anchor="end">CIVIC.PNYX-508BC</text>
+  
+  <!-- Stepped Amphitheatre / Agora Isometric Wireframe -->
+  <g transform="translate(400, 240)">
+    <!-- Concentric Stepped Semicircles -->
+    <path d="M -180,40 C -180,-100 180,-100 180,40" fill="none" stroke="#ffffff" stroke-width="2"/>
+    <path d="M -140,40 C -140,-70 140,-70 140,40" fill="none" stroke="#8d8d8d" stroke-width="1.5"/>
+    <path d="M -100,40 C -100,-40 100,-40 100,40" fill="none" stroke="#525252" stroke-width="1.5"/>
+    <path d="M -60,40 C -60,-10 60,-10 60,40" fill="none" stroke="#393939" stroke-width="1"/>
+    
+    <!-- Central Bema / Platform -->
+    <polygon points="-30,40 30,40 20,60 -20,60" fill="#ffffff"/>
+    
+    <!-- Acoustic Vectors Radiating -->
+    <line x1="0" y1="40" x2="-140" y2="-70" stroke="#525252" stroke-width="1" stroke-dasharray="2 4"/>
+    <line x1="0" y1="40" x2="0" y2="-100" stroke="#8d8d8d" stroke-width="1" stroke-dasharray="2 4"/>
+    <line x1="0" y1="40" x2="140" y2="-70" stroke="#525252" stroke-width="1" stroke-dasharray="2 4"/>
+    
+    <text x="0" y="85" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#f4f4f4" text-anchor="middle">BEMA // ORATOR'S STONE</text>
+  </g>
+  
+  <text x="45" y="405" font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6f6f6f">TOPOLOGY: PNYX_HEMICYCLE // CITIZEN CAPACITY: 6,000</text>
+  <text x="755" y="405" font-family="'IBM Plex Mono', monospace" font-size="11" fill="#8d8d8d" text-anchor="end">ACOUSTICS: NATURAL</text>
+</svg>

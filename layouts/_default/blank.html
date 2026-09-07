@@ -1,0 +1,20 @@
+{{ define "main" }}
+<div class="carbon-blank-canvas" style="width: 100%; padding: 1.5rem 0 3rem; flex: 1 0 auto; display: flex; flex-direction: column;">
+  {{ if not .Params.hideBreadcrumbs }}
+    {{ partial "components/breadcrumbs.html" . }}
+  {{ end }}
+
+  {{ if not .Params.hideHeader }}
+    <header class="carbon-collection-header" style="margin-bottom: 2rem;">
+      <h1 class="cds--type-display-01">{{ .Title }}</h1>
+      {{ with .Description }}
+        <p class="cds--type-body-long-02" style="color: var(--cds-text-secondary); max-width: 800px; margin-bottom: 0;">{{ . }}</p>
+      {{ end }}
+    </header>
+  {{ end }}
+
+  <div class="carbon-app-body" style="width: 100%; flex: 1 0 auto;">
+    {{ .Content }}
+  </div>
+</div>
+{{ end }}

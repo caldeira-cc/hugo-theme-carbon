@@ -1,0 +1,21 @@
+{{/* Ad Shortcode — IBM Carbon v11 Design System */}}
+{{/* Usage: */}}
+{{/* 1. In-Content Ad: {{< ad >}} or {{< ad position="inline" >}} */}}
+{{/* 2. Modal Trigger Button: {{< ad position="modal-trigger" label="View Sponsor Announcement" >}} */}}
+
+{{ $position := .Get "position" | default "inline" }}
+{{ $label := .Get "label" | default "View Sponsor Announcement" }}
+
+{{ if eq $position "modal-trigger" }}
+  <div class="carbon-ad-trigger-block" style="margin: 1.5rem 0;">
+    <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm" data-ad-trigger="modal" style="border: 1px dashed var(--cds-border-subtle-01);">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" style="margin-right: 0.5rem;">
+        <path d="M28 2H4a2 2 0 0 0-2 2v24a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM4 28V4h24v24Z"/>
+        <path d="M18 9h-4v6H8v4h6v6h4v-6h6v-4h-6V9z"/>
+      </svg>
+      <span>{{ $label }}</span>
+    </button>
+  </div>
+{{ else }}
+  {{ partial "components/ad-slot.html" (dict "position" $position "context" .Page) }}
+{{ end }}

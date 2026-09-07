@@ -1,0 +1,315 @@
+<div class="carbon-collection-page carbon-magazine-page" style="padding-top: 1.5rem; padding-bottom: 4rem; flex: 1 0 auto; display: flex; flex-direction: column;">
+  {{ partial "components/breadcrumbs.html" . }}
+
+  {{/* 1. Magazine Masthead */}}
+  <header class="carbon-magazine-masthead" style="margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--cds-border-subtle-00);">
+      {{ with .Params.edition_tag }}
+        <span class="cds--tag cds--tag--outline" style="font-family: var(--cds-font-mono, monospace); letter-spacing: 0.05em; text-transform: uppercase; border-color: var(--cds-border-subtle-01); color: var(--cds-text-primary);">
+          {{ . }}
+        </span>
+      {{ end }}
+      <div style="font-family: var(--cds-font-mono, monospace); font-size: 0.8125rem; color: var(--cds-text-secondary); display: flex; gap: 1rem; align-items: center;">
+        <a href="{{ "index.xml" | relLangURL }}" class="cds--link" title="RSS Feed" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2a12 12 0 0 1 12 12h-2A10 10 0 0 0 2 4V2zm0 4a8 8 0 0 1 8 8H8a6 6 0 0 0-6-6V6zm0 4a4 4 0 0 1 4 4H2v-4z"/><circle cx="3" cy="13" r="1"/></svg>
+          RSS
+        </a>
+      </div>
+    </div>
+
+    <h1 class="cds--type-display-01" style="margin-bottom: 0.75rem; line-height: 1.12; font-weight: 300;">{{ .Title }}</h1>
+    
+    {{ with .Description }}
+      <p class="cds--type-body-long-02" style="color: var(--cds-text-secondary); font-size: 1.15rem; max-width: 860px; margin-bottom: 1.5rem; line-height: 1.6;">
+        {{ . }}
+      </p>
+    {{ end }}
+
+    {{/* Category Quick Bar */}}
+    {{ with site.Taxonomies.categories }}
+      {{ with .ByCount }}
+        <div style="display: flex; gap: 0.375rem; flex-wrap: wrap; align-items: center; padding-top: 0.75rem;">
+          <span style="font-size: 0.75rem; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary); margin-right: 0.5rem; text-transform: uppercase;">Index:</span>
+          {{ range first 8 . }}
+            <a href="{{ .Page.RelPermalink }}" class="cds--tag cds--tag--outline cds--tag--clickable" style="margin: 0; font-size: 0.75rem; border-color: var(--cds-border-subtle-00); color: var(--cds-text-secondary);">
+              {{ .Page.Title }} <span style="opacity: 0.65; margin-left: 0.25rem;">({{ .Count }})</span>
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ end }}
+  </header>
+
+  {{/* 2. Top 5 Highlighted Articles (1 Lead Cover Story + 4 Secondary Featured Quartet) */}}
+  {{ $allPosts := .Site.RegularPages.ByDate.Reverse }}
+  {{ $highlighted := where $allPosts "Params.featured" true }}
+  {{ if lt (len $highlighted) 5 }}
+    {{ $highlighted = first 5 $allPosts }}
+  {{ else }}
+    {{ $highlighted = first 5 $highlighted }}
+  {{ end }}
+
+  {{ if gt (len $highlighted) 0 }}
+    <section class="carbon-magazine-highlights" style="margin-bottom: 3.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--cds-border-subtle-01); padding-bottom: 0.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-family: var(--cds-font-mono, monospace); font-weight: 700; color: var(--cds-text-primary);">/// 01</span>
+          <h2 class="cds--type-heading-04" style="margin: 0; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.05rem;">Featured Inquiries & Cover Stories</h2>
+        </div>
+        <span class="cds--tag cds--tag--warm-gray" style="margin: 0; font-family: var(--cds-font-mono, monospace);">5 ESSAYS</span>
+      </div>
+
+      {{/* Main Lead Cover Story (2-Column Showcase with Featured Picture) */}}
+      {{ $lead := index $highlighted 0 }}
+      {{ with $lead }}
+        {{ $leadPage := . }}
+        <div class="cds--tile carbon-magazine-lead" style="padding: 0; margin-bottom: 2rem; background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); overflow: hidden;">
+          <div class="cds--row" style="margin: 0;">
+            {{/* Lead Cover Image */}}
+            <div class="cds--col-sm-4 cds--col-md-8 cds--col-lg-9 cds--col-xlg-9" style="padding: 0;">
+              {{ with .Params.image }}
+                <a href="{{ $leadPage.RelPermalink }}" style="display: block; width: 100%; height: 100%;" aria-label="{{ $leadPage.Title }}">
+                  <img src="{{ . }}" alt="{{ $leadPage.Title }}" style="width: 100%; height: 100%; min-height: 320px; object-fit: cover; display: block;" loading="eager">
+                </a>
+              {{ end }}
+            </div>
+
+            {{/* Lead Content */}}
+            <div class="cds--col-sm-4 cds--col-md-8 cds--col-lg-7 cds--col-xlg-7" style="padding: 2.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem;">
+                  <span class="cds--tag cds--tag--outline" style="margin: 0; font-family: var(--cds-font-mono, monospace); font-weight: 700; background-color: var(--cds-layer-02); border-color: var(--cds-border-subtle-01); color: var(--cds-text-primary);">★ COVER STORY</span>
+                  {{ with .Params.categories }}
+                    {{ range . }}
+                      <a href="{{ partial "components/category-url.html" . }}" class="cds--tag cds--tag--outline cds--tag--clickable" style="margin: 0; border-color: var(--cds-border-subtle-00); color: var(--cds-text-secondary);">{{ . }}</a>
+                    {{ end }}
+                  {{ end }}
+                </div>
+
+                <h3 class="cds--type-heading-05" style="margin-top: 0; margin-bottom: 1rem; font-size: 1.65rem; line-height: 1.3;">
+                  <a href="{{ .RelPermalink }}" style="color: var(--cds-text-primary); text-decoration: none;" class="cds--link">
+                    {{ .Title }}
+                  </a>
+                </h3>
+
+                <p class="cds--type-body-long-02" style="color: var(--cds-text-secondary); font-size: 1.05rem; line-height: 1.65; margin-bottom: 1.5rem;">
+                  {{ .Description | default .Summary }}
+                </p>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--cds-border-subtle-00);">
+                  <div style="display: flex; gap: 1.25rem; align-items: center; font-family: var(--cds-font-mono, monospace); font-size: 0.8125rem; color: var(--cds-text-secondary); flex-wrap: wrap;">
+                    {{ $authors := partial "components/get-authors.html" . }}
+                    {{ if gt (len $authors) 0 }}
+                      <div>
+                        <strong>{{ if eq (len $authors) 1 }}Author:{{ else }}Authors:{{ end }}</strong>
+                        {{ range $idx, $auth := $authors }}
+                          {{ if gt $idx 0 }}, {{ end }}
+                          <a href="{{ partial "components/author-url.html" $auth }}" class="cds--link">{{ $auth }}</a>
+                        {{ end }}
+                      </div>
+                    {{ end }}
+                    {{ if not .Date.IsZero }}
+                      <div><strong>Date:</strong> {{ .Date.Format "Jan 02, 2006" }}</div>
+                    {{ end }}
+                    {{ with .ReadingTime }}
+                      <div><strong>Read:</strong> {{ . }} min</div>
+                    {{ end }}
+                  </div>
+
+                  <a href="{{ .RelPermalink }}" class="cds--btn cds--btn--primary cds--btn--sm" style="font-family: var(--cds-font-sans); background-color: var(--cds-text-primary); color: var(--cds-background); border: none;">
+                    Read Analysis
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="margin-left: 0.5rem;"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{ end }}
+
+      {{/* Secondary Highlighted Quartet (4 Articles in 2x2 Grid with Picture Showcase) */}}
+      {{ $sub := after 1 $highlighted }}
+      {{ if gt (len $sub) 0 }}
+        <div class="cds--row" style="row-gap: 1.5rem;">
+          {{ range $idx, $item := $sub }}
+            {{ $itemPage := $item }}
+            <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8">
+              <div class="cds--tile" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 0; background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); overflow: hidden;">
+                {{/* Article Image Thumbnail */}}
+                {{ with .Params.image }}
+                  <div style="width: 100%; height: 180px; overflow: hidden; background-color: var(--cds-layer-02); border-bottom: 1px solid var(--cds-border-subtle-00);">
+                    <a href="{{ $itemPage.RelPermalink }}" aria-label="{{ $itemPage.Title }}" style="display: block; width: 100%; height: 100%;">
+                      <img src="{{ . }}" alt="{{ $itemPage.Title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+                    </a>
+                  </div>
+                {{ end }}
+
+                <div style="padding: 1.25rem 1.25rem 0 1.25rem; display: flex; flex-direction: column; flex: 1 0 auto; justify-content: space-between;">
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                      <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+                        {{ with .Params.categories }}
+                          {{ range first 2 . }}
+                            <a href="{{ partial "components/category-url.html" . }}" class="cds--tag cds--tag--outline cds--tag--clickable" style="margin: 0; font-size: 0.7rem; border-color: var(--cds-border-subtle-00); color: var(--cds-text-secondary);">{{ . }}</a>
+                          {{ end }}
+                        {{ end }}
+                      </div>
+                      <span style="font-family: var(--cds-font-mono, monospace); font-size: 0.75rem; font-weight: 700; color: var(--cds-text-secondary);">0{{ add $idx 2 }}</span>
+                    </div>
+
+                    <h4 class="cds--type-heading-03" style="margin: 0 0 0.5rem; font-size: 1.15rem; line-height: 1.35;">
+                      <a href="{{ .RelPermalink }}" class="cds--link" style="color: var(--cds-text-primary); text-decoration: none;">
+                        {{ .Title }}
+                      </a>
+                    </h4>
+
+                    <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0 0 1rem; line-height: 1.5; font-size: 0.875rem;">
+                      {{ .Description | default .Summary | truncate 125 }}
+                    </p>
+                  </div>
+
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.875rem 0; border-top: 1px solid var(--cds-border-subtle-00); font-family: var(--cds-font-mono, monospace); font-size: 0.75rem; color: var(--cds-text-secondary); margin-top: 1rem;">
+                    {{ $itemAuthors := partial "components/get-authors.html" . }}
+                    <span>{{ delimit $itemAuthors ", " }}</span>
+                    <span>{{ .Date.Format "Jan 02, 2006" }} · {{ .ReadingTime }}m</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {{ end }}
+        </div>
+      {{ end }}
+    </section>
+  {{ end }}
+
+  {{/* 3. Highlighted Category Spotlight Section with Picture Showcase */}}
+  {{ with .Params.highlighted_category }}
+    {{ $highlightedCategory := . }}
+    {{ $categoryArticles := where $allPosts "Params.categories" "intersect" (slice $highlightedCategory) }}
+    {{ if gt (len $categoryArticles) 0 }}
+      <section class="carbon-magazine-category-spotlight" style="margin-bottom: 3.5rem; padding: 2rem; background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); border-top: 3px solid var(--cds-text-primary);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span class="cds--tag cds--tag--outline" style="margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace); border-color: var(--cds-border-subtle-01); color: var(--cds-text-primary);">/// Category_Focus</span>
+            <h2 class="cds--type-heading-05" style="margin: 0; font-size: 1.35rem;">Focus Area: {{ $highlightedCategory }}</h2>
+            {{ with $.Params.highlighted_category_desc }}
+              <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0.35rem 0 0;">
+                {{ . }}
+              </p>
+            {{ end }}
+          </div>
+          <a href="{{ partial "components/category-url.html" $highlightedCategory }}" class="cds--link" style="font-family: var(--cds-font-mono, monospace); font-size: 0.85rem;">
+            View all in {{ $highlightedCategory }} ({{ len $categoryArticles }}) →
+          </a>
+        </div>
+
+        <div class="cds--row" style="row-gap: 1.25rem;">
+          {{ range first 3 $categoryArticles }}
+            {{ $catArtPage := . }}
+            <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-5 cds--col-xlg-5">
+              <div class="cds--tile" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 0; background-color: var(--cds-layer-02); border: 1px solid var(--cds-border-subtle-01); overflow: hidden;">
+                {{ with .Params.image }}
+                  <div style="width: 100%; height: 130px; overflow: hidden; background-color: var(--cds-background); border-bottom: 1px solid var(--cds-border-subtle-01);">
+                    <a href="{{ $catArtPage.RelPermalink }}" aria-label="{{ $catArtPage.Title }}" style="display: block; width: 100%; height: 100%;">
+                      <img src="{{ . }}" alt="{{ $catArtPage.Title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+                    </a>
+                  </div>
+                {{ end }}
+                <div style="padding: 1rem 1rem 0 1rem; display: flex; flex-direction: column; flex: 1 0 auto; justify-content: space-between;">
+                  <div>
+                    <div style="display: flex; gap: 0.35rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                      {{ with .Params.tags }}
+                        {{ range first 2 . }}
+                          <span class="cds--tag cds--tag--outline" style="margin: 0; font-size: 0.65rem; font-family: var(--cds-font-mono, monospace); border-color: var(--cds-border-subtle-00); color: var(--cds-text-secondary);">#{{ . }}</span>
+                        {{ end }}
+                      {{ end }}
+                    </div>
+                    <h4 class="cds--type-heading-03" style="margin: 0 0 0.5rem; font-size: 1.05rem; line-height: 1.35;">
+                      <a href="{{ .RelPermalink }}" class="cds--link" style="color: var(--cds-text-primary); text-decoration: none;">
+                        {{ .Title }}
+                      </a>
+                    </h4>
+                    <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; font-size: 0.8125rem; line-height: 1.45;">
+                      {{ .Description | default .Summary | truncate 100 }}
+                    </p>
+                  </div>
+                  <div style="margin-top: 1rem; padding: 0.65rem 0; border-top: 1px solid var(--cds-border-subtle-00); font-family: var(--cds-font-mono, monospace); font-size: 0.75rem; color: var(--cds-text-secondary);">
+                    {{ .Date.Format "Jan 02, 2006" }} · {{ .ReadingTime }} min read
+                  </div>
+                </div>
+              </div>
+            </div>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  {{ end }}
+
+  {{/* 4. Most Recent Articles Stream */}}
+  <section class="carbon-magazine-recent" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--cds-border-subtle-01); padding-bottom: 0.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-family: var(--cds-font-mono, monospace); font-weight: 700; color: var(--cds-text-primary);">/// 02</span>
+        <h2 class="cds--type-heading-04" style="margin: 0; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.05rem;">Chronological Dispatches</h2>
+      </div>
+      <span class="cds--tag cds--tag--warm-gray" style="margin: 0; font-family: var(--cds-font-mono, monospace);">ALL ESSAYS</span>
+    </div>
+
+    <div class="cds--row carbon-card-grid" style="row-gap: 1.5rem;">
+      {{ range after 1 $allPosts }}
+        {{ partial "components/page-card.html" . }}
+      {{ end }}
+    </div>
+  </section>
+
+  {{/* 5. Highlighted Categories Directory */}}
+  <section class="carbon-magazine-categories" style="margin-bottom: 3.5rem; padding-top: 1rem; border-top: 1px solid var(--cds-border-subtle-00);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-family: var(--cds-font-mono, monospace); font-weight: 700; color: var(--cds-text-primary);">/// 03</span>
+        <h2 class="cds--type-heading-04" style="margin: 0; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.05rem;">Thematic Taxonomy</h2>
+      </div>
+      <span class="cds--tag cds--tag--warm-gray" style="margin: 0; font-family: var(--cds-font-mono, monospace);">TOPICS</span>
+    </div>
+
+    <div class="cds--row" style="row-gap: 1.25rem;">
+      {{ with site.Taxonomies.categories }}
+        {{ with .ByCount }}
+          {{ range . }}
+            <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-4 cds--col-xlg-4">
+              <a href="{{ .Page.RelPermalink }}" class="cds--tile cds--tile--clickable" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem; background-color: var(--cds-layer-01); text-decoration: none; color: inherit; border: 1px solid var(--cds-border-subtle-00);">
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <span class="cds--tag cds--tag--outline" style="margin: 0; font-size: 0.7rem; font-family: var(--cds-font-mono, monospace); border-color: var(--cds-border-subtle-00); color: var(--cds-text-secondary);">{{ .Count }} {{ if eq .Count 1 }}Essay{{ else }}Essays{{ end }}</span>
+                    <span style="color: var(--cds-text-primary); font-size: 0.875rem;">→</span>
+                  </div>
+                  <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; font-size: 1.1rem;">{{ .Page.Title }}</h3>
+                </div>
+                <span style="font-family: var(--cds-font-mono, monospace); font-size: 0.75rem; color: var(--cds-text-secondary); margin-top: 1rem;">
+                  {{ .Page.RelPermalink }}
+                </span>
+              </a>
+            </div>
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    </div>
+  </section>
+
+  {{/* 6. Editorial Inquiry Action Bar */}}
+  {{ $contactEmail := or .Site.Params.author.email (or .Params.contact_email .Site.Params.email) }}
+  {{ with $contactEmail }}
+    <div class="cds--tile" style="padding: 1.75rem; background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="cds--type-label-01" style="color: var(--cds-text-secondary); font-family: var(--cds-font-mono, monospace); display: block; margin-bottom: 0.25rem; font-weight: 600;">/// CORRESPONDENCE</span>
+        <span class="cds--type-heading-03">For Inquiries &amp; Correspondence</span>
+      </div>
+      <a href="mailto:{{ . }}" class="cds--btn cds--btn--primary" style="font-family: var(--cds-font-sans); background-color: var(--cds-text-primary); color: var(--cds-background); border: none;">
+        {{ . }}
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left: 0.5rem;"><path d="M14 2H2C0.9 2 0 2.9 0 4V14C0 15.1 0.9 16 2 16H14C15.1 16 16 15.1 16 14V4C16 2.9 15.1 2 14 2ZM14 14H2V6H14V14Z"/></svg>
+      </a>
+    </div>
+  {{ end }}
+
+</div>

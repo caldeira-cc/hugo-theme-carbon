@@ -1,0 +1,47 @@
+{{/* Native Responsive WebP Image Render Hook */}}
+{{/* Generates WCAG 2.2 AA compliant, responsive <picture> element with WebP srcset pairs and layout dimensions to eliminate Cumulative Layout Shift (CLS) */}}
+
+{{ $url := .Destination }}
+{{ $alt := .Text }}
+{{ $title := .Title }}
+{{ $isRemote := (urls.Parse $url).Scheme }}
+
+{{ if not $isRemote }}
+  {{ $img := resources.Get (strings.TrimPrefix "/" $url) }}
+  {{ if not $img }}
+    {{ $img = .Page.Resources.GetMatch $url }}
+  {{ end }}
+
+  {{ if $img }}
+    {{ $webpSmall := $img.Resize "640x webp" }}
+    {{ $webpMedium := $img.Resize "1024x webp" }}
+    {{ $webpLarge := $img.Resize "1440x webp" }}
+    {{ $fallback := $img.Resize (printf "%dx%d" $img.Width $img.Height) }}
+
+    <picture class="carbon-picture">
+      <source type="image/webp" srcset="{{ $webpSmall.RelPermalink }} 640w, {{ $webpMedium.RelPermalink }} 1024w, {{ $webpLarge.RelPermalink }} 1440w" sizes="(max-width: 672px) 100vw, (max-width: 1056px) 80vw, 1440px">
+      <img src="{{ $fallback.RelPermalink }}"
+           alt="{{ $alt }}"
+           {{ with $title }}title="{{ . }}"{{ end }}
+           width="{{ $img.Width }}"
+           height="{{ $img.Height }}"
+           loading="lazy"
+           decoding="async"
+           class="carbon-responsive-img">
+    </picture>
+  {{ else }}
+    <img src="{{ $url | relURL }}"
+         alt="{{ $alt }}"
+         {{ with $title }}title="{{ . }}"{{ end }}
+         loading="lazy"
+         decoding="async"
+         class="carbon-responsive-img">
+  {{ end }}
+{{ else }}
+  <img src="{{ $url }}"
+       alt="{{ $alt }}"
+       {{ with $title }}title="{{ . }}"{{ end }}
+       loading="lazy"
+       decoding="async"
+       class="carbon-responsive-img">
+{{ end }}

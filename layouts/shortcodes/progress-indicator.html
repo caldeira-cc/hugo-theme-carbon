@@ -1,0 +1,26 @@
+{{ $steps := split (.Get "steps" | default "Step 1,Step 2,Step 3") "," }}
+{{ $current := .Get "current" | default 1 | int }}
+{{ $vertical := .Get "vertical" | default false }}
+
+{{ $class := "cds--progress" }}
+{{ if or (eq $vertical "true") (eq $vertical true) }}
+  {{ $class = "cds--progress cds--progress--vertical" }}
+{{ end }}
+
+<ul class="{{ $class }}">
+  {{ range $index, $step := $steps }}
+    {{ $stepNum := add $index 1 }}
+    {{ $stepClass := "cds--progress-step" }}
+    {{ if lt $stepNum $current }}
+      {{ $stepClass = "cds--progress-step cds--progress-step--complete" }}
+    {{ else if eq $stepNum $current }}
+      {{ $stepClass = "cds--progress-step cds--progress-step--current" }}
+    {{ else }}
+      {{ $stepClass = "cds--progress-step cds--progress-step--incomplete" }}
+    {{ end }}
+    <li class="{{ $stepClass }}">
+      <div class="cds--progress-step__title">{{ trim $step " " }}</div>
+      <div class="cds--progress-step__description">Step {{ $stepNum }}</div>
+    </li>
+  {{ end }}
+</ul>

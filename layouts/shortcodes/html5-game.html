@@ -1,0 +1,41 @@
+{{/* Multithreaded 60Hz Canvas Physics Simulation Shortcode */}}
+{{/* Usage: {{< html5-game particles="400" >}} */}}
+
+{{ $particles := .Get "particles" | default "300" }}
+{{ $title := .Get "title" }}
+{{ $desc := .Get "description" }}
+
+{{ $workerJS := resources.Get "js/workers/physics.js" | js.Build (dict "target" "es2020" "minify" hugo.IsProduction) }}
+
+<div class="carbon-physics-container cds--tile" data-worker-url="{{ $workerJS.RelPermalink }}">
+  <div class="carbon-physics-container__toolbar">
+    <div>
+      {{ with $title }}
+        <h3 class="cds--type-heading-03" style="margin:0;">{{ . }}</h3>
+      {{ end }}
+      {{ with $desc }}
+        <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0.25rem 0 0 0;">
+          {{ . }}
+        </p>
+      {{ end }}
+    </div>
+    <div class="carbon-physics-container__stats">
+      <span class="carbon-physics-container__fps cds--tag cds--tag--green">60 FPS</span>
+      <span class="carbon-physics-container__count cds--tag cds--tag--blue">{{ $particles }} Particles</span>
+    </div>
+  </div>
+
+  <canvas class="carbon-physics-container__canvas" width="800" height="400" aria-label="Interactive particle physics simulation"></canvas>
+
+  <div class="carbon-physics-container__controls">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <label for="particles-slider-{{ .Ordinal }}" class="cds--type-label">Particle Density:</label>
+      <input type="range" id="particles-slider-{{ .Ordinal }}" class="carbon-physics-container__particles-slider" min="100" max="1000" step="50" value="{{ $particles }}">
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <input type="checkbox" id="gravity-toggle-{{ .Ordinal }}" class="carbon-physics-container__gravity-toggle" checked>
+      <label for="gravity-toggle-{{ .Ordinal }}" class="cds--type-label">Enable Gravity (0.25G)</label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+{{/*
+  IBM Carbon Design System v11 — Link Shortcode
+  Compliant with Carbon React Link Component Specifications.
+
+  Usage:
+  {{< link href="https://react.carbondesignsystem.com/" icon="true" >}}IBM Carbon Storybook{{< /link >}}
+*/}}
+
+{{ $href := .Get "href" | default "#" }}
+{{ $icon := .Get "icon" | default "false" }}
+{{ $inline := .Get "inline" | default "false" }}
+{{ $disabled := .Get "disabled" | default "false" }}
+{{ $target := .Get "target" | default "" }}
+{{ $class := .Get "class" | default "" }}
+
+<a href="{{ if eq $disabled "true" }}javascript:void(0){{ else }}{{ $href }}{{ end }}" 
+   class="cds--link {{ if eq $inline "true" }}cds--link--inline{{ end }} {{ if eq $disabled "true" }}cds--link--disabled{{ end }} {{ with $class }}{{ . }}{{ end }}"
+   {{ with $target }}target="{{ . }}" rel="noopener noreferrer"{{ end }}
+   {{ if eq $disabled "true" }}aria-disabled="true" tabindex="-1"{{ end }}
+   style="display: inline-flex; align-items: center; gap: 0.25rem;">
+  <span>{{ .Inner | markdownify }}</span>
+  {{ if or (eq $icon "true") (eq $icon "launch") }}
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M13 13H3V3h5V1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V8h-2v5zM9 1v2h3.6L5.3 10.3l1.4 1.4L14 4.4V8h2V1H9z"/>
+    </svg>
+  {{ else if eq $icon "arrow-right" }}
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M9.3 3.7L8.6 4.4 11.7 7.5H2v1h9.7l-3.1 3.1.7.7 4.3-4.3z"/>
+    </svg>
+  {{ end }}
+</a>

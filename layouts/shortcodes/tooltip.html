@@ -1,0 +1,7 @@
+{{ $text := .Get "text" }}
+{{ $definition := .Get "definition" | default false }}
+
+<span class="cds--tooltip {{ if or (eq $definition "true") (eq $definition true) }}cds--tooltip--definition{{ end }}" tabindex="0">
+  {{ .Inner | markdownify }}
+  <span class="cds--tooltip__content" role="tooltip">{{ $text }}</span>
+</span>

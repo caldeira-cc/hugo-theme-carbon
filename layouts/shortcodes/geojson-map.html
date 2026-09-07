@@ -1,0 +1,133 @@
+{{/* GeoJSON MapLibre GL Vector Map Shortcode — IBM Carbon v11 Design System */}}
+{{/* Supports: */}}
+{{/* 1. External file: {{< geojson-map src="/data/sample.geojson" title="..." theme="auto|dark|light" roads="true" buildings="true" labels="true" >}} */}}
+{{/* 2. Inline GeoJSON: {{< geojson-map title="..." >}} { ...json... } {{< /geojson-map >}} */}}
+
+{{ $title := .Get "title" | default "Geographic Data Map" }}
+{{ $caption := .Get "caption" | default "" }}
+{{ $theme := .Get "theme" | default (.Get "type" | default "auto") }}
+{{ $projection := .Get "projection" | default "mercator" }}
+{{ $roads := .Get "roads" | default "true" }}
+{{ $buildings := .Get "buildings" | default "true" }}
+{{ $labels := .Get "labels" | default "true" }}
+{{ $boundaries := .Get "boundaries" | default "true" }}
+{{ $src := .Get "src" | default "" }}
+{{ $data := .Get "data" | default "" }}
+{{ $height := .Get "height" | default "440px" }}
+{{ $id := printf "carbon-map-%d" (now.UnixNano) }}
+
+<figure class="carbon-map-card" role="group" aria-label="{{ $title }}">
+  {{/* Map Card Header */}}
+  <div class="carbon-map-card__header">
+    <div class="carbon-map-card__title-group">
+      <div class="carbon-map-card__badge-row">
+        <span class="cds--tag cds--tag--purple cds--tag--sm" style="font-family: var(--cds-font-mono, monospace);">VECTOR TILES</span>
+        <span class="cds--tag cds--tag--outline cds--tag--sm">IBM Carbon Style</span>
+      </div>
+      <h4 class="carbon-map-card__title">{{ $title }}</h4>
+    </div>
+
+    <div class="carbon-map-card__actions">
+      {{ with $src }}
+        <a href="{{ . }}" download class="cds--btn cds--btn--ghost cds--btn--sm" title="Download GeoJSON data file">
+          <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M26 24v4H6v-4H4v4a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2v-4zM6 12l1.4 1.4L15 18.2V2h2v16.2l7.6-7.6L26 12 16 22 6 12z"/>
+          </svg>
+          <span>GeoJSON</span>
+        </a>
+      {{ end }}
+
+      {{/* Open in Full Modal Button */}}
+      <button type="button" 
+              class="cds--btn cds--btn--ghost cds--btn--sm carbon-map-card__modal-btn" 
+              data-map-modal-trigger
+              data-map-title="{{ $title }}"
+              data-map-caption="{{ $caption }}"
+              data-map-theme="{{ $theme }}"
+              data-map-projection="{{ $projection }}"
+              data-map-roads="{{ $roads }}"
+              data-map-buildings="{{ $buildings }}"
+              data-map-labels="{{ $labels }}"
+              data-map-boundaries="{{ $boundaries }}"
+              {{ with $src }}data-map-src="{{ . }}"{{ end }}
+              title="Expand into Interactive Modal">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M26 4H6a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2ZM6 6h20v4H6Zm0 6h20v14H6Z"/>
+          <path d="M12 18h8v2h-8zm0 4h5v2h-5z"/>
+        </svg>
+        <span>Open in Modal</span>
+      </button>
+    </div>
+  </div>
+
+  {{/* Inline Interactive MapLibre GL Vector Map Container */}}
+  <div class="carbon-map-card__body" style="height: {{ $height }};">
+    <div id="{{ $id }}" 
+         class="carbon-map-card__canvas"
+         data-geojson-map
+         data-map-theme="{{ $theme }}"
+         data-map-projection="{{ $projection }}"
+         data-map-lat="{{ .Get "lat" | default "25.0" }}"
+         data-map-lng="{{ .Get "lng" | default "10.0" }}"
+         data-map-zoom="{{ .Get "zoom" | default "1.8" }}"
+         data-map-roads="{{ $roads }}"
+         data-map-buildings="{{ $buildings }}"
+         data-map-labels="{{ $labels }}"
+         data-map-boundaries="{{ $boundaries }}"
+         {{ with $src }}data-map-src="{{ . }}"{{ end }}>
+    </div>
+
+    {{ if $data }}
+      <script type="application/json" class="carbon-map-inline-data">{{ $data | safeJS }}</script>
+    {{ end }}
+  </div>
+
+  {{/* Controls Row: Roads, Buildings, Labels Toggles + View Projections & Theme Tabs */}}
+  <div class="carbon-map-card__toolbar">
+    <div class="carbon-map-card__toggles">
+      <label class="carbon-map-toggle carbon-map-toggle--compact">
+        <input type="checkbox" class="carbon-map-toggle__input" data-map-toggle="roads" {{ if eq $roads "true" }}checked{{ end }}>
+        <span class="carbon-map-toggle__switch"></span>
+        <span class="carbon-map-toggle__label">Roads</span>
+      </label>
+      <label class="carbon-map-toggle carbon-map-toggle--compact">
+        <input type="checkbox" class="carbon-map-toggle__input" data-map-toggle="buildings" {{ if eq $buildings "true" }}checked{{ end }}>
+        <span class="carbon-map-toggle__switch"></span>
+        <span class="carbon-map-toggle__label">Buildings</span>
+      </label>
+      <label class="carbon-map-toggle carbon-map-toggle--compact">
+        <input type="checkbox" class="carbon-map-toggle__input" data-map-toggle="labels" {{ if eq $labels "true" }}checked{{ end }}>
+        <span class="carbon-map-toggle__switch"></span>
+        <span class="carbon-map-toggle__label">Labels</span>
+      </label>
+    </div>
+
+    <div class="carbon-map-card__view-controls">
+      {{/* Projection Switcher: 2D Flat vs 3D Globe */}}
+      <div class="carbon-map-card__projection-tabs" role="group" aria-label="Map Projection View">
+        <button type="button" class="carbon-map-tab {{ if ne $projection "globe" }}is-active{{ end }}" data-map-set-projection="mercator" title="Flat 2D Mercator View">2D Flat</button>
+        <button type="button" class="carbon-map-tab {{ if eq $projection "globe" }}is-active{{ end }}" data-map-set-projection="globe" title="Spherical 3D Globe View">3D Globe</button>
+      </div>
+
+      {{/* Theme Styles */}}
+      <div class="carbon-map-card__layer-tabs">
+        <button type="button" class="carbon-map-tab is-active" data-map-set-type="auto">Auto Style</button>
+        <button type="button" class="carbon-map-tab" data-map-set-type="dark">Dark Vector</button>
+        <button type="button" class="carbon-map-tab" data-map-set-type="light">Light Vector</button>
+      </div>
+    </div>
+  </div>
+
+  {{/* Caption / Legend */}}
+  {{ with $caption }}
+    <figcaption class="carbon-map-card__caption">
+      <div class="carbon-map-card__caption-icon">
+        <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2Zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12Z"/>
+          <path d="M15 8h2v2h-2zm0 6h2v10h-2z"/>
+        </svg>
+      </div>
+      <p class="carbon-map-card__caption-text">{{ . }}</p>
+    </figcaption>
+  {{ end }}
+</figure>

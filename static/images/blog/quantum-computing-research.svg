@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <rect width="800" height="450" fill="#161616"/>
+  <defs>
+    <pattern id="grid8" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#262626" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="url(#grid8)"/>
+  
+  <rect x="30" y="30" width="740" height="390" fill="none" stroke="#393939" stroke-width="1"/>
+  <line x1="30" y1="70" x2="770" y2="70" stroke="#393939" stroke-width="1"/>
+  <line x1="30" y1="380" x2="770" y2="380" stroke="#393939" stroke-width="1"/>
+  
+  <text x="45" y="55" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#8d8d8d" letter-spacing="1.5">FIG 08.4 // TOPOLOGICAL ANYON BRAIDING &amp; QUANTUM ERROR CODE</text>
+  <text x="755" y="55" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#f4f4f4" text-anchor="end">QC.ANYON-BRAID</text>
+  
+  <!-- Non-Abelian Braiding Worldlines -->
+  <g transform="translate(400, 225)">
+    <!-- Worldline 1 -->
+    <path d="M -160,-80 C -80,-80 -80,0 0,0 C 80,0 80,80 160,80" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+    <circle cx="-160" cy="-80" r="5" fill="#ffffff"/>
+    <circle cx="160" cy="80" r="5" fill="#ffffff"/>
+    
+    <!-- Worldline 2 -->
+    <path d="M -160,0 C -80,0 -80,-80 0,-80 C 80,-80 80,0 160,0" fill="none" stroke="#8d8d8d" stroke-width="2.5"/>
+    <circle cx="-160" cy="0" r="5" fill="#8d8d8d"/>
+    <circle cx="160" cy="0" r="5" fill="#8d8d8d"/>
+    
+    <!-- Worldline 3 -->
+    <path d="M -160,80 C -80,80 -80,80 0,80 C 80,80 80,-80 160,-80" fill="none" stroke="#525252" stroke-width="2.5"/>
+    <circle cx="-160" cy="80" r="5" fill="#525252"/>
+    <circle cx="160" cy="-80" r="5" fill="#525252"/>
+    
+    <!-- Braiding Matrix Frame -->
+    <rect x="-60" y="-100" width="120" height="200" fill="none" stroke="#ffffff" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="0" y="115" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#f4f4f4" text-anchor="middle">BRAID OPERATOR σ₁σ₂</text>
+  </g>
+  
+  <text x="45" y="405" font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6f6f6f">TOPOLOGY: SURFACE_CODE_LATTICE // FAULT_TOLERANCE: 99.999%</text>
+  <text x="755" y="405" font-family="'IBM Plex Mono', monospace" font-size="11" fill="#8d8d8d" text-anchor="end">COHERENCE: ∞ (PROTECTED)</text>
+</svg>

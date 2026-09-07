@@ -1,0 +1,691 @@
+// IBM Carbon Design System v11 — Leaflet GeoJSON & Map Modal Styles
+// Supports Topographic, Regular, and Satellite Layering with Roads & Labels Toggles
+
+// ==========================================
+// Carbon Map Switch Toggle (Carbon v11 Style)
+// ==========================================
+.carbon-map-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+
+  &__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked + .carbon-map-toggle__switch {
+      background-color: var(--cds-interactive-01);
+
+      &::after {
+        transform: translateX(14px);
+        background-color: #ffffff;
+      }
+    }
+
+    &:focus-visible + .carbon-map-toggle__switch {
+      outline: 2px solid var(--cds-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  &__switch {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 18px;
+    background-color: var(--cds-toggle-off, #8d8d8d);
+    border-radius: 9px;
+    transition: background-color 0.15s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      transition: transform 0.15s ease;
+    }
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 500;
+    color: var(--cds-text-primary);
+  }
+
+  &--compact {
+    font-size: 0.6875rem;
+
+    .carbon-map-toggle__switch {
+      width: 28px;
+      height: 16px;
+      border-radius: 8px;
+
+      &::after {
+        width: 12px;
+        height: 12px;
+      }
+    }
+
+    .carbon-map-toggle__input:checked + .carbon-map-toggle__switch::after {
+      transform: translateX(12px);
+    }
+  }
+}
+
+// ==========================================
+// Inline Map Card Component (Full-Width Responsive)
+// ==========================================
+.carbon-map-card {
+  margin: 1.5rem 0;
+  width: 100% !important;
+  max-width: 100% !important;
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  font-family: var(--cds-font-sans, 'IBM Plex Sans', sans-serif);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: var(--cds-layer-02);
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__body {
+    position: relative;
+    width: 100% !important;
+    max-width: 100% !important;
+    background-color: var(--cds-layer-01);
+  }
+
+  &__canvas {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100%;
+    z-index: 1;
+  }
+
+  &__title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  &__badge-row {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--cds-text-primary);
+    margin: 0;
+  }
+
+  &__body {
+    position: relative;
+    width: 100%;
+    min-height: 380px;
+    background-color: var(--cds-layer-02, #262626);
+    overflow: hidden;
+  }
+
+  &__canvas {
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 1.25rem;
+    background-color: var(--cds-layer-02, var(--cds-layer-01));
+    border-top: 1px solid var(--cds-border-subtle-00);
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  &__toggles {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__view-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  &__projection-tabs,
+  &__layer-tabs {
+    display: inline-flex;
+    background-color: var(--cds-layer-01);
+    border: 1px solid var(--cds-border-subtle-00);
+    padding: 2px;
+    gap: 2px;
+  }
+
+  &__caption {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.875rem 1.25rem;
+    background-color: var(--cds-layer-01);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--cds-text-secondary);
+
+    &-icon {
+      flex-shrink: 0;
+      color: var(--cds-interactive-01);
+      margin-top: 0.125rem;
+    }
+
+    &-text {
+      margin: 0;
+      color: inherit;
+    }
+  }
+}
+
+// Layer Tab Button inside Card
+.carbon-map-tab {
+  padding: 0.25rem 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  color: var(--cds-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: var(--cds-text-primary);
+  }
+
+  &.is-active {
+    background-color: var(--cds-interactive-01);
+    color: #ffffff;
+    font-weight: 600;
+  }
+}
+
+// ==========================================
+// GeoJSON Map Modal Dialog
+// ==========================================
+.carbon-geojson-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.24s cubic-bezier(0, 0, 0.38, 0.9), visibility 0.24s;
+
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    .carbon-geojson-modal__container {
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    cursor: pointer;
+  }
+
+  &__container {
+    position: relative;
+    width: 95vw;
+    max-width: 1320px;
+    height: 90vh;
+    max-height: 920px;
+    background-color: var(--cds-layer-01);
+    border: 1px solid var(--cds-border-subtle-00);
+    border-top: 4px solid var(--cds-interactive-01);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.36);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(16px) scale(0.98);
+    transition: transform 0.24s cubic-bezier(0, 0, 0.38, 0.9);
+    overflow: hidden;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+    background-color: var(--cds-layer-01);
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    &-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    &-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+  }
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--cds-text-primary);
+    margin: 0;
+  }
+
+  &__layer-select {
+    display: inline-flex;
+    background-color: var(--cds-layer-02, var(--cds-layer-01));
+    border: 1px solid var(--cds-border-subtle-00);
+    padding: 2px;
+  }
+
+  &__close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    color: var(--cds-text-primary);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--cds-hover-ui, rgba(141, 141, 141, 0.15));
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cds-focus);
+      outline-offset: -2px;
+    }
+  }
+
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1.25rem;
+    background-color: var(--cds-layer-02, var(--cds-layer-01));
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  &__toggles {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  &__tools {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  &__feature-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--cds-text-secondary);
+    background-color: var(--cds-layer-01);
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--cds-border-subtle-00);
+  }
+
+  &__body {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    background-color: #1a1a1a;
+    overflow: hidden;
+  }
+
+  &__map {
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+
+  &__loader {
+    position: absolute;
+    inset: 0;
+    z-index: 500;
+    background-color: rgba(22, 22, 22, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: #ffffff;
+    font-size: 0.8125rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--cds-border-subtle-00);
+    background-color: var(--cds-layer-01);
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    &-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+  }
+
+  &__caption-block {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  &__caption {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--cds-text-secondary);
+    margin: 0;
+  }
+
+  &__coords {
+    font-family: var(--cds-font-mono, monospace);
+    font-size: 0.75rem;
+    color: var(--cds-text-placeholder);
+    background-color: var(--cds-field-01, var(--cds-layer-02));
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--cds-border-subtle-00);
+  }
+}
+
+// Modal Layer Select Button
+.carbon-map-layer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  color: var(--cds-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: var(--cds-text-primary);
+  }
+
+  &.is-active {
+    background-color: var(--cds-interactive-01);
+    color: #ffffff;
+    font-weight: 600;
+  }
+}
+
+// Toolbar Action Button
+.carbon-map-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  color: var(--cds-text-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--cds-hover-ui, rgba(141, 141, 141, 0.15));
+  }
+}
+
+// Map Loading Spinner
+.carbon-map-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--cds-interactive-01, #0f62fe);
+  border-radius: 50%;
+  animation: carbon-map-spin 0.8s linear infinite;
+}
+
+@keyframes carbon-map-spin {
+  to { transform: rotate(360deg); }
+}
+
+// ==========================================
+// Custom Carbon Point Marker on Leaflet
+// ==========================================
+.carbon-map-marker {
+  position: relative;
+  width: 20px;
+  height: 20px;
+
+  &__dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-color: var(--cds-interactive-01, #0f62fe);
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(15, 98, 254, 0.6);
+  }
+
+  &__ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--cds-interactive-01, #0f62fe);
+    border-radius: 50%;
+    animation: carbon-marker-pulse 2s infinite ease-out;
+    opacity: 0.6;
+  }
+
+  &--active &__dot {
+    background-color: #24a148; // green
+    box-shadow: 0 0 8px rgba(36, 161, 72, 0.6);
+  }
+
+  &--active &__ring {
+    border-color: #24a148;
+  }
+}
+
+@keyframes carbon-marker-pulse {
+  0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+}
+
+// ==========================================
+// MapLibre GL Carbon Popup & Control Overrides
+// ==========================================
+.carbon-maplibre-popup-wrapper,
+.maplibregl-popup {
+  font-family: var(--cds-font-sans, 'IBM Plex Sans', sans-serif) !important;
+
+  .maplibregl-popup-content {
+    background-color: var(--cds-layer-01) !important;
+    color: var(--cds-text-primary) !important;
+    border-radius: 0 !important;
+    border: 1px solid var(--cds-border-subtle-00) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+    padding: 0 !important;
+  }
+
+  .maplibregl-popup-tip {
+    border-top-color: var(--cds-layer-01) !important;
+    border-bottom-color: var(--cds-layer-01) !important;
+  }
+
+  .maplibregl-popup-close-button {
+    color: var(--cds-text-primary) !important;
+    padding: 6px 8px !important;
+    font-size: 1.125rem !important;
+
+    &:hover {
+      background-color: var(--cds-layer-02) !important;
+    }
+  }
+}
+
+// MapLibre Navigation & Attribution Controls
+.maplibregl-ctrl-group {
+  background-color: var(--cds-layer-01) !important;
+  border: 1px solid var(--cds-border-subtle-00) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+
+  button {
+    border-bottom: 1px solid var(--cds-border-subtle-00) !important;
+    background-color: transparent !important;
+
+    &:last-child {
+      border-bottom: none !important;
+    }
+
+    &:hover {
+      background-color: var(--cds-layer-02) !important;
+    }
+
+    .maplibregl-ctrl-icon {
+      filter: invert(0.8);
+    }
+  }
+}
+
+html[data-carbon-theme="white"] .maplibregl-ctrl-group button .maplibregl-ctrl-icon,
+html[data-carbon-theme="g10"] .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  filter: none !important;
+}
+
+.maplibregl-ctrl-attrib {
+  background: rgba(0, 0, 0, 0.6) !important;
+  color: #c6c6c6 !important;
+  font-family: var(--cds-font-sans, 'IBM Plex Sans', sans-serif) !important;
+  font-size: 0.625rem !important;
+
+  a {
+    color: #78a9ff !important;
+  }
+}
+
+.carbon-map-popup {
+  padding: 1rem;
+  font-family: var(--cds-font-sans, 'IBM Plex Sans', sans-serif);
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: 0.625rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+  }
+
+  &__title {
+    width: 100%;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--cds-text-primary);
+    margin: 0.25rem 0 0 0;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+
+    tr {
+      border-bottom: 1px solid var(--cds-border-subtle-00);
+      &:last-child { border-bottom: none; }
+    }
+
+    th {
+      padding: 0.25rem 0.5rem 0.25rem 0;
+      text-align: left;
+      font-weight: 500;
+      color: var(--cds-text-secondary);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 0.25rem 0;
+      text-align: right;
+      font-weight: 600;
+      color: var(--cds-text-primary);
+    }
+  }
+}
+
+@media (max-width: 672px) {
+  .carbon-geojson-modal__container {
+    height: 94vh;
+    max-height: 94vh;
+  }
+
+  .carbon-geojson-modal__header,
+  .carbon-geojson-modal__toolbar,
+  .carbon-geojson-modal__footer {
+    padding: 0.5rem 0.75rem;
+  }
+}
+

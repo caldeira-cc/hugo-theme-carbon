@@ -1,0 +1,21 @@
+{{/* Shortcode: {{< social "linkedin" >}} or {{< social network="bluesky" url="https://..." >}} */}}
+{{ $networkInput := or (.Get "network") (.Get "name") (.Get 0) "link" }}
+{{ $networkLower := lower $networkInput }}
+{{ $socialList := .Site.Params.social }}
+
+{{ $match := dict }}
+{{ range $socialList }}
+  {{ if or (eq (lower .name) $networkLower) (eq (lower .id) $networkLower) (eq (lower .icon) $networkLower) }}
+    {{ $match = . }}
+  {{ end }}
+{{ end }}
+
+{{ $name := or (.Get "name") $match.name (title $networkInput) }}
+{{ $url := or (.Get "url") $match.url "#" }}
+{{ $handle := or (.Get "handle") $match.handle "" }}
+{{ $icon := or (.Get "icon") $match.icon $networkLower }}
+
+<a href="{{ $url }}" target="_blank" rel="noopener noreferrer" class="cds--tag cds--tag--outline carbon-social-badge" style="display: inline-flex; align-items: center; gap: 0.375rem; text-decoration: none; font-size: 0.75rem; margin: 0 0.25rem; vertical-align: middle; padding: 0.25rem 0.5rem; transition: background-color 150ms ease, color 150ms ease;">
+  {{ partial "components/social-icon.html" (dict "name" $icon "size" "14") }}
+  <span>{{ $name }}{{ with $handle }} ({{ . }}){{ end }}</span>
+</a>

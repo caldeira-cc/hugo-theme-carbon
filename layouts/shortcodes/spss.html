@@ -1,0 +1,26 @@
+{{/* SPSS Statistical Analysis Engine — Trigger Shortcode */}}
+{{/* Usage: {{< spss csv="/data/server-telemetry.csv" metadata="/data/server-telemetry.csv-metadata.json" title="..." >}} */}}
+
+{{ $csv := .Get "csv" }}
+{{ $meta := .Get "metadata" }}
+{{ $title := or (.Get "title") (.Get "name") }}
+{{ $syntax := .Get "syntax" }}
+{{ $desc := .Get "description" }}
+
+<button type="button" class="spss-trigger-card"
+        data-spss-trigger
+        {{ with $csv }}data-spss-csv="{{ . }}"{{ end }}
+        {{ with $meta }}data-spss-meta="{{ . }}"{{ end }}
+        {{ with $title }}data-spss-dataset-title="{{ . }}"{{ end }}
+        {{ with $syntax }}data-spss-syntax-url="{{ . }}"{{ end }}
+        title="{{ with $title }}Launch Statistical Analysis: {{ . }}{{ else }}Launch Statistical Analysis{{ end }}">
+  <div class="spss-trigger-card__icon">🔬</div>
+  <div class="spss-trigger-card__content">
+    {{ with $title }}<p class="spss-trigger-card__title">{{ . }}</p>{{ end }}
+    {{ with $desc }}<p class="spss-trigger-card__desc">{{ . }}</p>{{ end }}
+  </div>
+  <div class="spss-trigger-card__action">
+    Launch Analysis
+    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M18 6l-1.4 1.4L24.2 15H4v2h20.2l-7.6 7.6L18 26l10-10L18 6z"/></svg>
+  </div>
+</button>

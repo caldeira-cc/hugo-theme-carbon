@@ -1,0 +1,106 @@
+<!-- Overlay Backdrop -->
+<div class="carbon-drawer-overlay" id="carbon-drawer-overlay" aria-hidden="true"></div>
+
+<!-- Mobile Left Navigation Drawer -->
+<div class="carbon-mobile-drawer carbon-mobile-drawer--left" id="carbon-drawer-left" role="dialog" aria-modal="true" aria-label="Mobile Navigation" aria-hidden="true">
+  <div class="carbon-mobile-drawer__header">
+    <span class="carbon-mobile-drawer__title">Navigation</span>
+    <button class="carbon-mobile-drawer__close js-close-drawer" aria-label="Close navigation drawer">&times;</button>
+  </div>
+  <div class="carbon-mobile-drawer__body">
+    <div class="carbon-sidebar-left__heading">Main Menu</div>
+    <ul class="carbon-sidebar-left__nav" style="margin-bottom: 1.5rem;">
+      {{ range .Site.Params.navigation.navbar }}
+        <li class="carbon-sidebar-left__item">
+          <a href="{{ .url }}">{{ .title }}</a>
+        </li>
+      {{ end }}
+    </ul>
+
+    {{/* Custom Sidebar or Current Section */}}
+    {{ $sidebarKey := or .Params.sidebar .Params.sidebar_file .Params.sidebars.left.data "" }}
+    {{ $sidebarData := dict }}
+    {{ if $sidebarKey }}
+      {{ if isset site.Data.sidebars $sidebarKey }}
+        {{ $sidebarData = index site.Data.sidebars $sidebarKey }}
+      {{ else if isset site.Data $sidebarKey }}
+        {{ $sidebarData = index site.Data $sidebarKey }}
+      {{ end }}
+    {{ else if and .Section (isset site.Data.sidebars .Section) }}
+      {{ $sidebarData = index site.Data.sidebars .Section }}
+    {{ end }}
+
+    {{ if and $sidebarData $sidebarData.items }}
+      {{ with $sidebarData.title }}<div class="carbon-sidebar-left__heading">{{ . }}</div>{{ end }}
+      {{ range $lvl1 := $sidebarData.items }}
+        <div style="margin-bottom: 1rem;">
+          <div class="carbon-sidebar-left__group-title">{{ $lvl1.title }}</div>
+          {{ if $lvl1.children }}
+            <ul class="carbon-sidebar-left__nav carbon-sidebar-left__subnav">
+              {{ range $lvl2 := $lvl1.children }}
+                <li class="carbon-sidebar-left__item">
+                  <a href="{{ $lvl2.url }}" class="{{ if or (eq $.RelPermalink $lvl2.url) (eq $.Permalink $lvl2.url) }}is-active{{ end }}">{{ $lvl2.title }}</a>
+                  {{ if $lvl2.children }}
+                    <ul class="carbon-sidebar-left__subnav carbon-sidebar-left__subnav--lvl3">
+                      {{ range $lvl3 := $lvl2.children }}
+                        <li class="carbon-sidebar-left__item carbon-sidebar-left__item--lvl3">
+                          <a href="{{ $lvl3.url }}" class="{{ if or (eq $.RelPermalink $lvl3.url) (eq $.Permalink $lvl3.url) }}is-active{{ end }}">{{ $lvl3.title }}</a>
+                        </li>
+                      {{ end }}
+                    </ul>
+                  {{ end }}
+                </li>
+              {{ end }}
+            </ul>
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ else if .CurrentSection }}
+      <div class="carbon-sidebar-left__heading">{{ .CurrentSection.Title }}</div>
+      <ul class="carbon-sidebar-left__nav">
+        {{ range .CurrentSection.Pages }}
+          <li class="carbon-sidebar-left__item">
+            <a href="{{ .RelPermalink }}" class="{{ if eq $.RelPermalink .RelPermalink }}is-active{{ end }}">
+              {{ .Title }}
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    {{ end }}
+  </div>
+</div>
+
+<!-- Mobile Right Table of Contents Drawer -->
+{{ $hasToc := false }}
+{{ if and .TableOfContents (strings.Contains .TableOfContents "<li") }}
+  {{ $hasToc = true }}
+{{ else if eq .RelPermalink "/style/" }}
+  {{ $hasToc = true }}
+{{ end }}
+
+{{ if $hasToc }}
+<div class="carbon-mobile-drawer carbon-mobile-drawer--right" id="carbon-drawer-right" role="dialog" aria-modal="true" aria-label="Table of Contents" aria-hidden="true">
+  <div class="carbon-mobile-drawer__header">
+    <span class="carbon-mobile-drawer__title">On This Page</span>
+    <button class="carbon-mobile-drawer__close js-close-drawer" aria-label="Close table of contents drawer">&times;</button>
+  </div>
+  <div class="carbon-mobile-drawer__body">
+    <div class="carbon-sidebar-right__toc">
+      {{ if and .TableOfContents (strings.Contains .TableOfContents "<li") }}
+        {{ .TableOfContents }}
+{{ else if eq .RelPermalink "/style/" }}
+        <nav id="TableOfContents">
+          <ul>
+            <li><a href="#overview">Visual Overview</a></li>
+            <li><a href="#color-system">Tripartite Palette</a></li>
+            <li><a href="#typography">IBM Plex Scale</a></li>
+            <li><a href="#ibm-principles">Design Principles</a></li>
+            <li><a href="#components">Component Catalog</a></li>
+            <li><a href="#code-guidelines">Token Implementation</a></li>
+          </ul>
+        </nav>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

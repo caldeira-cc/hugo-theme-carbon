@@ -1,0 +1,17 @@
+{
+  "@context": "http://www.w3.org/ns/csvw",
+  "title": "Global Edge Server Telemetry",
+  "description": "Real-time computational cluster telemetry and operational health metrics across geographic availability zones.",
+  "tableSchema": {
+    "columns": [
+      { "name": "server_id", "titles": "Server Identifier", "datatype": "string" },
+      { "name": "cluster_name", "titles": "Cluster Name", "datatype": "string" },
+      { "name": "region", "titles": "Region", "datatype": "string" },
+      { "name": "cpu_utilization", "titles": "CPU Load", "datatype": "string" },
+      { "name": "memory_usage", "titles": "RAM Usage", "datatype": "string" },
+      { "name": "uptime_days", "titles": "Uptime (Days)", "datatype": "integer" },
+      { "name": "status", "titles": "Health Status", "datatype": "string" }
+    ],
+    "primaryKey": "server_id"
+  }
+}

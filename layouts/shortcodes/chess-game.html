@@ -1,0 +1,72 @@
+{{/* Multithreaded Stockfish UCI Chess Engine Shortcode (IBM Carbon Standards Compliant) */}}
+{{/* Usage: {{< chess-game depth="4" analysis="true" pgn="/data/immortal-game.pgn" >}} */}}
+
+{{ $depth := .Get "depth" | default "4" }}
+{{ $analysis := .Get "analysis" | default (.Get "showAnalysis" | default "true") }}
+{{ $pgn := .Get "pgn" | default "" }}
+{{ $title := .Get "title" | default "Stockfish UCI Multithreaded Chess Arena" }}
+
+{{ $workerJS := resources.Get "js/workers/stockfish-worker.js" | js.Build (dict "target" "es2020" "minify" hugo.IsProduction) }}
+
+<div class="carbon-chess-container cds--tile"
+     data-worker-url="{{ $workerJS.RelPermalink }}"
+     data-depth="{{ $depth }}"
+     data-analysis="{{ $analysis }}"
+     {{ with $pgn }}data-pgn-url="{{ . }}"{{ end }}>
+  
+  <div style="margin-bottom: 1.25rem;">
+    <h3 class="cds--type-heading-03" style="margin: 0;">{{ $title }}</h3>
+    <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0.25rem 0 0 0;">
+      Rigid aspect-ratio 1:1 chessboard with valid move target highlighting, theme-adaptive styling, and background Web Worker UCI analysis.
+    </p>
+  </div>
+
+  <div class="carbon-chess-container__grid {{ if eq $analysis "true" }}carbon-chess-container__grid--with-analysis{{ else }}carbon-chess-container__grid--no-analysis{{ end }}">
+    <div class="carbon-chess-container__board-wrapper">
+      {{/* PGN Metadata Card */}}
+      <div class="carbon-chess-container__pgn-card" style="display: none; width: 100%;"></div>
+
+      {{/* Rigid Square Chessboard */}}
+      <div class="carbon-chess-container__board" role="application" aria-label="Interactive chess board"></div>
+      
+      {{ if eq $analysis "true" }}
+        <div class="carbon-chess-container__eval-bar" title="Position Evaluation Advantage">
+          <div class="carbon-chess-container__eval-fill"></div>
+        </div>
+      {{ end }}
+      
+      <div class="carbon-chess-status cds--tag cds--tag--blue">Your turn (White)</div>
+    </div>
+
+    {{ if eq $analysis "true" }}
+      <div class="carbon-chess-container__sidebar">
+        <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" class="cds--btn cds--btn--secondary cds--btn--sm carbon-chess-new-game-btn">
+            New Game
+          </button>
+
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <label for="chess-depth-{{ .Ordinal }}" class="cds--type-label">Depth:</label>
+            <select id="chess-depth-{{ .Ordinal }}" class="cds--select-input carbon-chess-depth-select" style="height: 2rem; font-size: 0.75rem; padding: 0 0.5rem; width: auto;">
+              <option value="2" {{ if eq $depth "2" }}selected{{ end }}>Depth 2 (Beginner)</option>
+              <option value="4" {{ if eq $depth "4" }}selected{{ end }}>Depth 4 (Intermediate)</option>
+              <option value="6" {{ if eq $depth "6" }}selected{{ end }}>Depth 6 (Advanced)</option>
+              <option value="8" {{ if eq $depth "8" }}selected{{ end }}>Depth 8 (Grandmaster)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <div class="cds--type-label" style="margin-bottom: 0.375rem;">Engine UCI Telemetry Stream:</div>
+          <div class="carbon-chess-container__terminal" aria-live="polite"></div>
+        </div>
+      </div>
+    {{ else }}
+      <div style="margin-top: 1rem; display: flex; gap: 0.75rem;">
+        <button type="button" class="cds--btn cds--btn--secondary cds--btn--sm carbon-chess-new-game-btn">
+          New Game
+        </button>
+      </div>
+    {{ end }}
+  </div>
+</div>

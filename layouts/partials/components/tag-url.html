@@ -1,0 +1,19 @@
+{{/* layouts/partials/components/tag-url.html */}}
+{{- $tag := . | strings.TrimPrefix "#" -}}
+{{- $term := site.Taxonomies.tags.Get $tag -}}
+{{- if not $term -}}
+  {{- $term = site.Taxonomies.tags.Get ($tag | urlize) -}}
+{{- end -}}
+{{- if not $term -}}
+  {{- $term = site.Taxonomies.tags.Get ($tag | lower) -}}
+{{- end -}}
+{{- if $term -}}
+  {{- $term.Page.RelPermalink -}}
+{{- else -}}
+  {{- $tagPage := site.GetPage (printf "tags/%s" ($tag | urlize)) -}}
+  {{- if $tagPage -}}
+    {{- $tagPage.RelPermalink -}}
+  {{- else -}}
+    {{- printf "/tags/%s/" ($tag | urlize) | relLangURL -}}
+  {{- end -}}
+{{- end -}}

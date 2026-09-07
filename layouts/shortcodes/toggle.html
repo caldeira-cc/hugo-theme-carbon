@@ -1,0 +1,10 @@
+{{ $id := .Get "id" | default (printf "toggle-%d" now.UnixNano) }}
+{{ $label := .Get "label" | default "Toggle" }}
+{{ $checked := .Get "checked" | default false }}
+{{ $size := .Get "size" | default "md" }}
+
+<label class="cds--toggle {{ if eq $size "sm" }}cds--toggle--sm{{ end }}" for="{{ $id }}">
+  <input type="checkbox" id="{{ $id }}" {{ if or (eq $checked "true") (eq $checked true) }}checked{{ end }}>
+  <span class="cds--toggle__switch"></span>
+  <span class="cds--toggle__label-text">{{ $label }}</span>
+</label>

@@ -1,0 +1,76 @@
+{{/* layouts/partials/sitemap/tree-node.html - Recursive Folder Tree Node */}}
+{{ $node := .node }}
+{{ $level := .level | default 1 }}
+
+{{ if $node.IsSection }}
+  <li class="carbon-tree-item carbon-tree-item--folder" data-level="{{ $level }}">
+    <div class="carbon-tree-row carbon-tree-row--folder">
+      <button type="button" class="carbon-tree-toggle js-tree-toggle" aria-expanded="true" aria-label="Toggle folder">
+        <svg class="carbon-tree-chevron" width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M6 3l5 5-5 5-1.4-1.4L8.2 8 4.6 4.4z"/>
+        </svg>
+      </button>
+
+      <div class="carbon-tree-icon carbon-tree-icon--folder">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M14 4h-4.8L7.6 2.4C7.3 2.1 6.8 2 6.4 2H2C.9 2 0 2.9 0 4v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM2 3.5h4.4l1.6 1.6.3.3.4.1H14c.3 0 .5.2.5.5V7H1.5V4c0-.3.2-.5.5-.5zM14 12.5H2c-.3 0-.5-.2-.5-.5V8.5h13V12c0 .3-.2.5-.5.5z"/>
+        </svg>
+      </div>
+
+      <a href="{{ $node.RelPermalink }}" class="carbon-tree-title carbon-tree-title--folder">
+        {{ $node.Title }}
+      </a>
+
+      <code class="carbon-tree-path">{{ $node.RelPermalink }}</code>
+
+      <span class="cds--tag cds--tag--outline carbon-tree-badge">
+        {{ len $node.RegularPagesRecursive }} {{ if eq (len $node.RegularPagesRecursive) 1 }}page{{ else }}pages{{ end }}
+      </span>
+    </div>
+
+    <ul class="carbon-tree-children">
+      {{/* Render Subsections */}}
+      {{ range $node.Sections }}
+        {{ partial "sitemap/tree-node.html" (dict "node" . "level" (add $level 1)) }}
+      {{ end }}
+
+      {{/* Render Pages in this Section */}}
+      {{ range $node.RegularPages }}
+        {{ partial "sitemap/tree-node.html" (dict "node" . "level" (add $level 1)) }}
+      {{ end }}
+    </ul>
+  </li>
+{{ else }}
+  <li class="carbon-tree-item carbon-tree-item--file" data-level="{{ $level }}">
+    <div class="carbon-tree-row carbon-tree-row--file">
+      <div class="carbon-tree-spacer"></div>
+      
+      <div class="carbon-tree-icon carbon-tree-icon--file">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M13 5h-3V2H3v12h10V5zm1-1v10.5c0 .3-.2.5-.5.5h-11c-.3 0-.5-.2-.5-.5V1.5C2 1.2 2.2 1 2.5 1H10l4 4z"/>
+        </svg>
+      </div>
+
+      <a href="{{ $node.RelPermalink }}" class="carbon-tree-title carbon-tree-title--file">
+        {{ $node.Title }}
+      </a>
+
+      <code class="carbon-tree-path">{{ $node.RelPermalink }}</code>
+
+      <div class="carbon-tree-meta">
+        {{ with $node.Params.categories }}
+          {{ $cat := index . 0 }}
+          <span class="cds--tag cds--tag--blue" style="margin: 0; font-size: 0.6875rem;">{{ $cat }}</span>
+        {{ end }}
+        
+        {{ if not $node.Date.IsZero }}
+          <span class="carbon-tree-date">{{ $node.Date.Format "Jan 02, 2006" }}</span>
+        {{ end }}
+
+        {{ if $node.ReadingTime }}
+          <span class="carbon-tree-readtime">{{ $node.ReadingTime }} min</span>
+        {{ end }}
+      </div>
+    </div>
+  </li>
+{{ end }}

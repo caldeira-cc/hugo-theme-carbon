@@ -1,0 +1,36 @@
+{{/*
+  IBM Carbon Design System v11 — W3C CSVW Interactive Data Table Shortcode
+  Usage:
+  {{< csvw-table csv="/data/server-telemetry.csv" metadata="/data/server-telemetry.csv-metadata.json" title="Global Edge Telemetry" features="stats,variableView,spss,export,search,filter" />}}
+*/}}
+
+{{ $csv := .Get "csv" }}
+{{ $meta := .Get "metadata" }}
+{{ $title := .Get "title" }}
+{{ $description := .Get "description" }}
+{{ $features := .Get "features" | default "stats,variableView,spss,export,search,filter,pagination" }}
+{{ $pageSize := .Get "pageSize" | default (.Get "page_size" | default "10") }}
+{{ $id := .Get "id" | default (printf "csvw-table-%d" .Ordinal) }}
+{{ $class := .Get "class" | default "" }}
+
+<div class="carbon-csvw-container carbon-csvw-table {{ with $class }}{{ . }}{{ end }}" 
+     id="{{ $id }}"
+     {{ with $csv }}data-csv="{{ . }}"{{ end }} 
+     {{ with $meta }}data-metadata="{{ . }}"{{ end }}
+     {{ with $title }}data-title="{{ . }}"{{ end }}
+     {{ with $description }}data-description="{{ . }}"{{ end }}
+     data-features="{{ $features }}"
+     data-page-size="{{ $pageSize }}">
+  
+  {{/* If inline inner content is provided as CSV */}}
+  {{ if .Inner }}
+    <div class="raw-csv-data" style="display: none;">{{ .Inner }}</div>
+  {{ end }}
+
+  <noscript>
+    <div class="cds--inline-notification cds--inline-notification--warning">
+      <div class="cds--inline-notification__title">JavaScript Required</div>
+      <div class="cds--inline-notification__subtitle">Please enable JavaScript to view and interact with this W3C CSVW data table.</div>
+    </div>
+  </noscript>
+</div>

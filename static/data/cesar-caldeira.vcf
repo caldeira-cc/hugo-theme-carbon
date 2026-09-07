@@ -1,0 +1,17 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Caldeira;César;Manuel;de Sousa;
+FN:César Manuel Caldeira
+ORG:Local Government of Lisbon;Catholic University of Portugal
+TITLE:Political Analyst & Strategic Advisor
+ROLE:Policy Analysis & Digital Governance
+EMAIL;TYPE=INTERNET,WORK;PREF:contact@caldeira.cc
+TEL;TYPE=WORK,VOICE:+351912345678
+URL;TYPE=WORK:https://cesar.caldeira.cc
+ADR;TYPE=WORK:;;Lisbon City Hall\, Praça do Município;Lisbon;;1100-038;Portugal
+NOTE:Polyvalent political analyst and strategic advisor based in Lisbon. Specialising in digital governance, institutional design, and quantitative political analysis.
+X-SOCIAL-LINKEDIN:https://in.caldeira.cc
+X-SOCIAL-TWITTER:https://tweet.caldeira.cc
+X-ORCID:https://orcid.caldeira.cc
+REV:2026-08-29T22:45:00Z
+END:VCARD

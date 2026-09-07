@@ -1,0 +1,19 @@
+{{/* layouts/partials/components/category-url.html */}}
+{{- $cat := . -}}
+{{- $term := site.Taxonomies.categories.Get $cat -}}
+{{- if not $term -}}
+  {{- $term = site.Taxonomies.categories.Get ($cat | urlize) -}}
+{{- end -}}
+{{- if not $term -}}
+  {{- $term = site.Taxonomies.categories.Get ($cat | lower) -}}
+{{- end -}}
+{{- if $term -}}
+  {{- $term.Page.RelPermalink -}}
+{{- else -}}
+  {{- $catPage := site.GetPage (printf "categories/%s" ($cat | urlize)) -}}
+  {{- if $catPage -}}
+    {{- $catPage.RelPermalink -}}
+  {{- else -}}
+    {{- printf "/categories/%s/" ($cat | urlize) | relLangURL -}}
+  {{- end -}}
+{{- end -}}

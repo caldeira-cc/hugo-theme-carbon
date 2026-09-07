@@ -1,0 +1,106 @@
+{{/* Cookie Consent Banner & Preferences Modal — GDPR Compliant */}}
+
+{{/* Bottom-Fixed Cookie Banner */}}
+<div id="carbon-cookie-banner" class="carbon-cookie-banner" role="dialog" aria-label="Cookie consent" aria-hidden="true">
+  <div class="carbon-cookie-banner__container carbon-content-frame">
+    <div class="carbon-cookie-banner__content">
+      <div class="carbon-cookie-banner__icon">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M16 2A14 14 0 1 0 30 16 14 14 0 0 0 16 2Zm0 26A12 12 0 1 1 28 16 12 12 0 0 1 16 28Z"/>
+          <circle cx="11" cy="12" r="2"/>
+          <circle cx="21" cy="14" r="2"/>
+          <circle cx="16" cy="20" r="2"/>
+          <circle cx="11" cy="22" r="1.5"/>
+          <circle cx="22" cy="22" r="1.5"/>
+        </svg>
+      </div>
+      <div class="carbon-cookie-banner__text">
+        <p class="carbon-cookie-banner__title">This website uses cookies</p>
+        <p class="carbon-cookie-banner__description">
+          We use cookies to enhance your browsing experience, serve personalised content, and analyse our traffic. 
+          You can choose which categories of cookies you allow. Essential cookies are always active as they are necessary for the website to function.
+          Read our <a href="{{ or .Site.Params.privacyPolicyURL "https://cesar.caldeira.cc/privacy-policy/" }}" class="cds--link">Privacy Policy</a> for more details.
+        </p>
+      </div>
+    </div>
+    <div class="carbon-cookie-banner__actions">
+      <button class="cds--btn cds--btn--primary" data-cookie-action="accept-all" type="button">Accept All</button>
+      <button class="cds--btn cds--btn--secondary" data-cookie-action="reject-all" type="button">Reject All</button>
+      <button class="cds--btn cds--btn--ghost" data-cookie-action="manage-preferences" type="button">Manage Preferences</button>
+    </div>
+  </div>
+</div>
+
+{{/* Cookie Preferences Modal */}}
+<div id="carbon-cookie-modal" class="carbon-cookie-modal" role="dialog" aria-label="Cookie preferences" aria-hidden="true" aria-modal="true">
+  <div class="carbon-cookie-modal__overlay"></div>
+  <div class="carbon-cookie-modal__dialog">
+    <div class="carbon-cookie-modal__header">
+      <h2 class="cds--type-heading-04">Cookie Preferences</h2>
+      <button class="carbon-cookie-modal__close" data-cookie-action="close-modal" type="button" aria-label="Close cookie preferences">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="carbon-cookie-modal__body">
+      <p class="cds--type-body-long-01" style="color: var(--cds-text-secondary); margin-bottom: 1.5rem;">
+        Manage your cookie preferences below. Essential cookies cannot be disabled as they are required for core website functionality. 
+        For more information, please read our <a href="{{ or .Site.Params.privacyPolicyURL "https://cesar.caldeira.cc/privacy-policy/" }}" class="cds--link">Privacy Policy</a>.
+      </p>
+
+      {{/* Essential Cookies — Always On */}}
+      <div class="carbon-cookie-modal__category">
+        <div class="carbon-cookie-modal__category-header">
+          <div class="carbon-cookie-modal__category-info">
+            <h3 class="cds--type-heading-02">Essential Cookies</h3>
+            <span class="cds--tag cds--tag--green" style="margin-left: 0.5rem;">Always Active</span>
+          </div>
+        </div>
+        <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary);">
+          Required for core site functionality including theme preferences, navigation, and session integrity. These cookies do not collect personal data and cannot be disabled.
+        </p>
+      </div>
+
+      {{/* Analytics Cookies */}}
+      <div class="carbon-cookie-modal__category">
+        <div class="carbon-cookie-modal__category-header">
+          <div class="carbon-cookie-modal__category-info">
+            <h3 class="cds--type-heading-02">Analytics Cookies</h3>
+          </div>
+          <label class="carbon-cookie-toggle" for="cookie-toggle-analytics">
+            <input type="checkbox" id="cookie-toggle-analytics" class="carbon-cookie-toggle__input">
+            <span class="carbon-cookie-toggle__switch"></span>
+            <span class="carbon-cookie-toggle__label">Enable</span>
+          </label>
+        </div>
+        <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary);">
+          Help us understand how visitors interact with this website by collecting and reporting usage information anonymously. This data improves site performance and content relevance.
+        </p>
+      </div>
+
+      {{/* Advertising Cookies */}}
+      <div class="carbon-cookie-modal__category">
+        <div class="carbon-cookie-modal__category-header">
+          <div class="carbon-cookie-modal__category-info">
+            <h3 class="cds--type-heading-02">Advertising Cookies</h3>
+          </div>
+          <label class="carbon-cookie-toggle" for="cookie-toggle-advertising">
+            <input type="checkbox" id="cookie-toggle-advertising" class="carbon-cookie-toggle__input">
+            <span class="carbon-cookie-toggle__switch"></span>
+            <span class="carbon-cookie-toggle__label">Enable</span>
+          </label>
+        </div>
+        <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary);">
+          Used to deliver relevant advertisements and measure the effectiveness of advertising campaigns. These cookies may be set by third-party advertising partners such as Google Ads.
+        </p>
+      </div>
+    </div>
+
+    <div class="carbon-cookie-modal__footer">
+      <button class="cds--btn cds--btn--secondary" data-cookie-action="reject-all" type="button">Reject All</button>
+      <button class="cds--btn cds--btn--primary" data-cookie-action="save-preferences" type="button">Save Preferences</button>
+    </div>
+  </div>
+</div>

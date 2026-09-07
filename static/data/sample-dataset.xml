@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset name="European Renewable Energy &amp; Carbon Telemetry" version="1.0" generated="2026-08-25">
+  <metadata>
+    <source>EuroGrid Clean Power Network</source>
+    <frequency>Hourly Telemetry</frequency>
+    <compliance>W3C XML Schema &amp; Carbon Data Spec</compliance>
+  </metadata>
+  <records>
+    <record id="grid-lis-01">
+      <node>Lisbon Solar &amp; Ocean Terminal</node>
+      <country>Portugal</country>
+      <region>Europe South</region>
+      <capacity_mw>480.5</capacity_mw>
+      <output_mw>412.3</output_mw>
+      <efficiency_pct>85.8</efficiency_pct>
+      <carbon_intensity>14.2</carbon_intensity>
+      <status>Optimal</status>
+    </record>
+    <record id="grid-mad-02">
+      <node>Madrid Solar Highlands</node>
+      <country>Spain</country>
+      <region>Europe South</region>
+      <capacity_mw>620.0</capacity_mw>
+      <output_mw>545.6</output_mw>
+      <efficiency_pct>88.0</efficiency_pct>
+      <carbon_intensity>18.6</carbon_intensity>
+      <status>Optimal</status>
+    </record>
+    <record id="grid-par-03">
+      <node>Paris Seine Hydro-Kinetic</node>
+      <country>France</country>
+      <region>Europe Central</region>
+      <capacity_mw>310.0</capacity_mw>
+      <output_mw>285.4</output_mw>
+      <efficiency_pct>92.1</efficiency_pct>
+      <carbon_intensity>9.5</carbon_intensity>
+      <status>Optimal</status>
+    </record>
+    <record id="grid-lon-04">
+      <node>London Thames Tidal Array</node>
+      <country>United Kingdom</country>
+      <region>Europe West</region>
+      <capacity_mw>250.0</capacity_mw>
+      <output_mw>198.7</output_mw>
+      <efficiency_pct>79.5</efficiency_pct>
+      <carbon_intensity>22.4</carbon_intensity>
+      <status>Operational</status>
+    </record>
+    <record id="grid-ber-05">
+      <node>Berlin Wind Park Brandenburg</node>
+      <country>Germany</country>
+      <region>Europe Central</region>
+      <capacity_mw>750.0</capacity_mw>
+      <output_mw>680.2</output_mw>
+      <efficiency_pct>90.7</efficiency_pct>
+      <carbon_intensity>16.8</carbon_intensity>
+      <status>Optimal</status>
+    </record>
+    <record id="grid-ams-06">
+      <node>Amsterdam Offshore Wind Hub</node>
+      <country>Netherlands</country>
+      <region>Europe West</region>
+      <capacity_mw>820.0</capacity_mw>
+      <output_mw>760.5</output_mw>
+      <efficiency_pct>92.7</efficiency_pct>
+      <carbon_intensity>11.3</carbon_intensity>
+      <status>Optimal</status>
+    </record>
+    <record id="grid-bru-07">
+      <node>Brussels Distributed Bio-Grid</node>
+      <country>Belgium</country>
+      <region>Europe West</region>
+      <capacity_mw>180.0</capacity_mw>
+      <output_mw>145.0</output_mw>
+      <efficiency_pct>80.6</efficiency_pct>
+      <carbon_intensity>28.1</carbon_intensity>
+      <status>Operational</status>
+    </record>
+    <record id="grid-cph-08">
+      <node>Copenhagen Øresund Wind Cluster</node>
+      <country>Denmark</country>
+      <region>Europe North</region>
+      <capacity_mw>540.0</capacity_mw>
+      <output_mw>510.8</output_mw>
+      <efficiency_pct>94.6</efficiency_pct>
+      <carbon_intensity>7.9</carbon_intensity>
+      <status>Optimal</status>
+    </record>
+    <record id="grid-sto-09">
+      <node>Stockholm Hydro Dynamic Station</node>
+      <country>Sweden</country>
+      <region>Europe North</region>
+      <capacity_mw>910.0</capacity_mw>
+      <output_mw>885.0</output_mw>
+      <efficiency_pct>97.3</efficiency_pct>
+      <carbon_intensity>4.2</carbon_intensity>
+      <status>Optimal</status>
+    </record>
+    <record id="grid-zrh-10">
+      <node>Zurich Alpine Pumped Storage</node>
+      <country>Switzerland</country>
+      <region>Europe Central</region>
+      <capacity_mw>680.0</capacity_mw>
+      <output_mw>635.0</output_mw>
+      <efficiency_pct>93.4</efficiency_pct>
+      <carbon_intensity>6.1</carbon_intensity>
+      <status>Optimal</status>
+    </record>
+  </records>
+</dataset>

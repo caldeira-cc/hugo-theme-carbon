@@ -1,0 +1,153 @@
+{{ define "main" }}
+{{ if or (eq .Layout "magazine") (eq .Params.layout "magazine") }}
+  {{ partial "magazine.html" . }}
+{{ else if or (eq .Layout "apps") (eq .Params.layout "apps") }}
+  <div class="carbon-homepage carbon-apps-home" style="padding-bottom: 4rem;">
+    {{ .Content }}
+  </div>
+{{ else if or .Params.hero_tag .Params.hero_heading_1 .Params.features .Params.sections .Params.hero_actions .Params.portrait_image .Params.hero_image }}
+  <div class="carbon-homepage" style="padding-bottom: 4rem;">
+    {{/* Carbon Hero Section */}}
+    {{ $hasMedia := or .Params.portrait_image .Params.hero_image }}
+    <section class="carbon-hero {{ if $hasMedia }}carbon-hero--split{{ end }}" id="concept">
+      <div class="carbon-hero__content" {{ if not $hasMedia }}style="max-width: 860px;"{{ end }}>
+        {{ with .Params.hero_tag }}
+          <span class="cds--tag cds--tag--blue" style="margin-bottom: 1rem; font-family: var(--cds-font-mono, monospace); letter-spacing: 0.05em; text-transform: uppercase; align-self: flex-start;">
+            {{ . }}
+          </span>
+        {{ end }}
+
+        <h1 class="cds--type-display-01" style="margin-bottom: 1.5rem; line-height: 1.1; font-weight: 300;">
+          {{ if .Params.hero_heading_1 }}
+            {{ .Params.hero_heading_1 }}<br>
+            {{ with .Params.hero_heading_2 }}{{ . }}<br>{{ end }}
+            {{ with .Params.hero_heading_highlight }}<span style="font-weight: 600; color: var(--cds-interactive-01);">{{ . }}</span>{{ end }}
+          {{ else }}
+            {{ .Title }}
+          {{ end }}
+        </h1>
+
+        {{ $lead := or .Params.hero_lead .Description }}
+        {{ with $lead }}
+          <p class="cds--type-body-long-02" style="font-size: 1.15rem; color: var(--cds-text-secondary); max-width: 680px; margin-bottom: 2rem; line-height: 1.6;">
+            {{ . }}
+          </p>
+        {{ end }}
+
+        {{ with .Params.hero_actions }}
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            {{ range . }}
+              <a href="{{ .url }}" {{ if .external }}target="_blank" rel="noopener noreferrer"{{ end }} class="cds--btn cds--btn--{{ .type | default "primary" }}">
+                {{ .label }}
+                {{ if eq .icon "arrow-right" }}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
+                {{ end }}
+              </a>
+            {{ end }}
+          </div>
+        {{ end }}
+      </div>
+
+      {{/* Media Column: Image + Caption */}}
+      {{ with $hasMedia }}
+        <div class="carbon-hero__media-column">
+          <div class="carbon-hero__media-frame">
+            <div class="carbon-hero__image-wrapper">
+              <img src="{{ . | relURL }}" alt="{{ $.Params.portrait_alt | default $.Params.hero_image_alt | default $.Title }}" class="carbon-hero__image">
+            </div>
+            {{ if and $.Params.portrait_caption (ne $.Params.portrait_caption false) }}
+              <div class="carbon-hero__caption">
+                <span class="carbon-hero__caption__text">{{ $.Params.portrait_caption }}</span>
+                {{ with $.Params.portrait_tag }}
+                  <span class="cds--tag cds--tag--outline carbon-hero__caption__tag" style="margin: 0; font-size: 0.7rem;">{{ . }}</span>
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+        </div>
+      {{ end }}
+    </section>
+
+    {{/* Features Grid */}}
+    {{ with .Params.features }}
+      <section class="carbon-features-section">
+        <div class="cds--row carbon-features-section__header">
+          <div class="cds--col-sm-4 cds--col-md-8 cds--col-lg-16">
+            <span class="cds--tag cds--tag--teal carbon-features-section__tag">/// Features & Capabilities</span>
+            <h2 class="cds--type-heading-05 carbon-features-section__title">Architectural Modules & Components</h2>
+          </div>
+        </div>
+
+        <div class="cds--row carbon-features-section__grid">
+          {{ range . }}
+            <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8">
+              <a href="{{ .url }}" class="cds--tile cds--tile--clickable carbon-features-card">
+                <div>
+                  <div class="carbon-features-card__top">
+                    {{ with .category }}<span class="carbon-features-card__category">{{ . }}</span>{{ end }}
+                    {{ with .id }}<span class="cds--tag cds--tag--outline carbon-features-card__id">{{ . }}</span>{{ end }}
+                  </div>
+                  <h3 class="cds--type-heading-04 carbon-features-card__heading">{{ .title }}</h3>
+                  {{ with .description }}
+                    <p class="cds--type-body-long-01 carbon-features-card__description">
+                      {{ . }}
+                    </p>
+                  {{ end }}
+                </div>
+                <div class="carbon-features-card__cta">
+                  Explore Module →
+                </div>
+              </a>
+            </div>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+
+    {{/* Dynamic Sections Grid */}}
+    {{ with .Params.sections }}
+      <section class="carbon-ecosystem-section">
+        <div class="cds--row carbon-ecosystem-section__header">
+          <div class="cds--col-sm-4 cds--col-md-8 cds--col-lg-16">
+            <span class="cds--tag cds--tag--warm-gray carbon-ecosystem-section__tag">/// Ecosystem</span>
+            <h2 class="cds--type-heading-05 carbon-ecosystem-section__title">Connected Modules & Sections</h2>
+          </div>
+        </div>
+        <div class="cds--row carbon-ecosystem-section__grid">
+          {{ range . }}
+            <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-4">
+              <a href="{{ .url }}" class="cds--tile cds--tile--clickable carbon-ecosystem-card">
+                <div>
+                  <h3 class="cds--type-heading-04 carbon-ecosystem-card__heading">{{ .title }}</h3>
+                  {{ with .desc }}<p class="cds--type-body-short-01 carbon-ecosystem-card__description">{{ . }}</p>{{ end }}
+                </div>
+                <span class="carbon-ecosystem-card__cta">Explore →</span>
+              </a>
+            </div>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+
+    {{/* Optional Markdown Prose Content */}}
+    {{ with .Content }}
+      <div class="carbon-prose" style="padding-top: 2rem; max-width: 860px;">
+        {{ . }}
+      </div>
+    {{ end }}
+  </div>
+{{ else }}
+  {{/* Default Standard Page Container */}}
+  <div class="carbon-page-container" style="padding-top: 1.5rem; padding-bottom: 4rem;">
+    {{ with .Title }}
+      <h1 class="cds--type-display-01" style="margin-bottom: 1rem;">{{ . }}</h1>
+    {{ end }}
+    {{ with .Description }}
+      <p class="cds--type-body-long-02" style="color: var(--cds-text-secondary); margin-bottom: 2rem;">{{ . }}</p>
+    {{ end }}
+    <div class="carbon-prose">
+      {{ .Content }}
+    </div>
+  </div>
+{{ end }}
+{{ end }}

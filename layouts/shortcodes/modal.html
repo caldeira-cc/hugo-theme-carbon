@@ -1,0 +1,58 @@
+{{/*
+  IBM Carbon Design System v11 — Modal / ComposedModal Shortcode
+  Compliant with Carbon React Modal Component Specifications.
+
+  Usage:
+  {{< modal id="demo-modal" title="Confirm Deployment" label="Deployment Manager" primaryButton="Deploy Now" secondaryButton="Cancel" >}}
+    Are you sure you want to trigger the multi-subdomain static compilation workflow?
+  {{< /modal >}}
+*/}}
+
+{{ $id := .Get "id" | default (printf "cds-modal-%d" .Ordinal) }}
+{{ $title := or (.Get "title") (.Get "heading") }}
+{{ $label := .Get "label" }}
+{{ $primaryButton := .Get "primaryButton" }}
+{{ $secondaryButton := .Get "secondaryButton" }}
+{{ $danger := .Get "danger" | default "false" }}
+{{ $class := .Get "class" | default "" }}
+
+<div class="cds--modal-wrapper">
+  <button type="button" class="cds--btn cds--btn--secondary cds--btn--sm" data-modal-target="#{{ $id }}">
+    Open Modal{{ with $title }}: {{ . }}{{ end }}
+  </button>
+
+  <div class="cds--modal {{ with $class }}{{ . }}{{ end }}" id="{{ $id }}" role="dialog" aria-modal="true" aria-labelledby="{{ $id }}-heading" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 9500; align-items: center; justify-content: center;">
+    <div class="cds--modal-container" style="background: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); width: 100%; max-width: 560px; box-shadow: 0 12px 24px rgba(0,0,0,0.3); display: flex; flex-direction: column;">
+      <div class="cds--modal-header" style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--cds-border-subtle-01); position: relative;">
+        {{ with $label }}
+          <span class="cds--type-label" style="display: block; margin-bottom: 0.25rem;">{{ . }}</span>
+        {{ end }}
+        {{ with $title }}
+          <h3 class="cds--modal-header__heading" id="{{ $id }}-heading" style="margin: 0; font-size: 1.25rem;">{{ . }}</h3>
+        {{ end }}
+        <button type="button" class="cds--modal-close" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; cursor: pointer; color: var(--cds-text-secondary);" data-modal-close aria-label="Close modal">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M12 4.7L11.3 4 8 7.3 4.7 4 4 4.7 7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"/></svg>
+        </button>
+      </div>
+
+      <div class="cds--modal-content" style="padding: 1.5rem; font-size: 0.875rem; line-height: 1.5; color: var(--cds-text-secondary);">
+        {{ .Inner | markdownify }}
+      </div>
+
+      {{ if or $primaryButton $secondaryButton }}
+        <div class="cds--modal-footer" style="display: flex; justify-content: flex-end; background: var(--cds-layer-02); border-top: 1px solid var(--cds-border-subtle-01);">
+          {{ with $secondaryButton }}
+            <button type="button" class="cds--btn cds--btn--secondary" data-modal-close style="flex: 1 1 50%; justify-content: center;">
+              {{ . }}
+            </button>
+          {{ end }}
+          {{ with $primaryButton }}
+            <button type="button" class="cds--btn {{ if eq $danger "true" }}cds--btn--danger{{ else }}cds--btn--primary{{ end }}" data-modal-confirm style="flex: 1 1 50%; justify-content: center;">
+              {{ . }}
+            </button>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</div>

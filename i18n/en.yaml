@@ -1,0 +1,86 @@
+# English (UK) UI Translations
+nav:
+  home: "Home"
+  docs: "Documentation"
+  blog: "Blog"
+  apps: "Apps"
+  portfolio: "Portfolio"
+  data: "Data Explorer"
+  sitemap: "Sitemap"
+  privacy: "Privacy Policy"
+  licenses: "Open Source Licenses"
+
+search:
+  placeholder: "Search documentation, articles, datasets..."
+  label: "Search"
+  no_results: "No matching results found"
+  key_hint: "/"
+
+mainBar:
+  theme: "Theme"
+  language: "Language"
+  available: "AVAILABLE"
+
+theme:
+  system: "Browser Default"
+  light: "Light"
+  dark: "Dark"
+
+readAloud:
+  title: "Listen to this article"
+  play: "Play"
+  pause: "Pause"
+  resume: "Resume"
+  stop: "Stop"
+  speed: "Speed"
+  voice: "Voice"
+  status_playing: "Playing"
+  status_paused: "Paused"
+  status_stopped: "Ready"
+
+ai:
+  title: "Carbon AI Assistant"
+  subtitle: "On-Device WebLLM • RAG Enabled"
+  model_ready: "WebGPU Ready"
+  init_btn: "Initialise Model"
+  input_placeholder: "Type your question... (Enter to send, Shift+Enter for new line)"
+  send: "Send"
+  clear_history: "Clear history"
+  minimize: "Minimise"
+  close: "Close"
+  rag_active: "⚡ RAG Active"
+  listen: "Listen"
+  customise_avatar: "Customise Avatar"
+
+cookie:
+  title: "This website uses cookies"
+  description: "We use cookies to enhance your browsing experience, serve personalised content, and analyse our traffic."
+  accept_all: "Accept All"
+  reject_all: "Reject All"
+  manage: "Manage Preferences"
+  save: "Save Preferences"
+  essential: "Essential Cookies"
+  analytics: "Analytics Cookies"
+  advertising: "Advertising Cookies"
+  always_active: "Always Active"
+
+social:
+  follow: "Follow"
+  networks: "Social Networks"
+  connect: "Connect & Follow"
+
+error404:
+  tag: "/// 404 HTTP Error"
+  title: "404: Page Not Found"
+  subtitle: "The requested route or resource does not exist, has been relocated, or is temporarily unavailable within this static node."
+  home_btn: "Return to Hub"
+  search_btn: "Search Knowledge Base"
+  explore: "Explore Key Sections"
+
+footer:
+  brand_desc: "Enterprise-grade static site architecture uniting Hugo static generation with the IBM Carbon Design System v11."
+  architecture: "Architecture"
+  collections: "Collections"
+  resources: "Resources"
+  legal: "Legal"
+  rights: "All rights reserved. Built with IBM Carbon v11 Design Language."

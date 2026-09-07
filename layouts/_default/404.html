@@ -1,0 +1,32 @@
+{{ define "main" }}
+<div class="carbon-404-container" style="min-height: 55vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 4rem 1.5rem;">
+  <div style="max-width: 580px; margin: 0 auto;">
+    <span class="cds--tag cds--tag--red" style="margin-bottom: 1.25rem; font-family: var(--cds-font-mono, monospace); letter-spacing: 0.05em;">
+      {{ i18n "error404.tag" | default "/// 404 HTTP Error" }}
+    </span>
+    
+    <div class="cds--type-display-02" style="font-size: 5rem; font-weight: 300; line-height: 1; letter-spacing: -1px; margin-bottom: 0.75rem; color: var(--cds-text-primary); font-family: var(--cds-font-mono, monospace);">
+      404
+    </div>
+
+    <h1 class="cds--type-heading-05" style="margin-bottom: 1rem; font-weight: 600; color: var(--cds-text-primary);">
+      {{ i18n "error404.title" | default "Page Not Found" }}
+    </h1>
+
+    <p class="cds--type-body-long-01" style="color: var(--cds-text-secondary); margin-bottom: 2.25rem; line-height: 1.5;">
+      {{ i18n "error404.subtitle" | default "The requested route or resource does not exist, has been relocated, or is temporarily unavailable." }}
+    </p>
+
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="{{ "/" | relURL }}" class="cds--btn cds--btn--primary">
+        {{ i18n "error404.home_btn" | default "Return to Hub" }}
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left: 0.5rem;"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
+      </a>
+      <button type="button" class="cds--btn cds--btn--secondary js-open-search">
+        {{ i18n "error404.search_btn" | default "Search Knowledge Base" }}
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left: 0.5rem;"><path d="M15 13.9L11.4 10.3C12.4 9.1 13 7.6 13 6c0-3.9-3.1-7-7-7S-1 2.1-1 6s3.1 7 7 7c1.6 0 3.1-.6 4.3-1.6l3.6 3.6 1.1-1.1zM1 6c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5-5-2.2-5-5z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+{{ end }}

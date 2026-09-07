@@ -1,0 +1,19 @@
+{{ $type := .Get "type" | default "info" }}
+{{ $caption := .Get "caption" }}
+
+<div class="cds--toast-notification cds--toast-notification--{{ $type }}" role="status" aria-live="polite">
+  <div class="cds--toast-notification__content">
+    {{ with .Get "title" }}
+      <div class="cds--toast-notification__title">{{ . }}</div>
+    {{ end }}
+    <div class="cds--toast-notification__subtitle">{{ .Inner | markdownify }}</div>
+    {{ with $caption }}
+      <div class="cds--toast-notification__caption">{{ . }}</div>
+    {{ end }}
+  </div>
+  <button type="button" class="cds--toast-notification__close-button" aria-label="Close notification">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M12 4.7L11.3 4 8 7.3 4.7 4 4 4.7 7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"/>
+    </svg>
+  </button>
+</div>

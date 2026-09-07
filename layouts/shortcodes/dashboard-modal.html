@@ -1,0 +1,42 @@
+{{/* 
+  IBM Carbon Design System v11 — Dashboard Modal Launcher Shortcode
+  Usage:
+  {{< dashboard-modal title="Edge Node Intelligence" subtitle="Live Cluster Telemetry" buttonText="Launch Interactive Dashboard Modal" >}}
+    {{< dashboard-kpi-grid >}} ... {{< /dashboard-kpi-grid >}}
+    {{< csvw-table ... />}}
+  {{< /dashboard-modal >}}
+*/}}
+
+{{ $title := .Get "title" | default "Operational Intelligence Dashboard" }}
+{{ $subtitle := .Get "subtitle" | default "Multithreaded telemetry and statistical distribution model." }}
+{{ $buttonText := .Get "button_text" | default (.Get "buttonText" | default "Launch Dashboard Modal") }}
+{{ $id := .Get "id" | default (printf "modal-dash-%d" .Ordinal) }}
+{{ $badge := .Get "badge" | default "MODAL TELEMETRY" }}
+{{ $class := .Get "class" | default "" }}
+
+<div class="carbon-dashboard-modal-launcher {{ with $class }}{{ . }}{{ end }}" id="{{ $id }}-launcher">
+  <div class="cds--tile cds--tile--clickable carbon-dashboard-modal-tile" data-action="launch-modal-dashboard" data-target="{{ $id }}">
+    <div class="carbon-dashboard-modal-tile__header">
+      <div class="carbon-dashboard__live-badge">
+        <span class="carbon-dashboard__pulse-dot"></span>
+        <span>{{ $badge }}</span>
+      </div>
+      <span class="cds--tag cds--tag--purple cds--tag--sm" style="font-family: var(--cds-font-mono, monospace);">FULLSCREEN MODAL</span>
+    </div>
+    
+    <h4 class="cds--type-heading-03" style="margin: 0.5rem 0 0.25rem;">{{ $title }}</h4>
+    <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin-bottom: 1rem;">{{ $subtitle }}</p>
+    
+    <button type="button" class="cds--btn cds--btn--primary cds--btn--sm" data-action="launch-modal-dashboard" data-target="{{ $id }}">
+      <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor" style="margin-right: 0.5rem;"><path d="M28 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 16H10V6h18Z"/><path d="M18 26H4V16h2v-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h-2Z"/></svg>
+      <span>{{ $buttonText }}</span>
+    </button>
+  </div>
+
+  {{/* Hidden Template Content for Modal Injection */}}
+  <template id="{{ $id }}-content">
+    <div class="carbon-dashboard-modal-injected-content">
+      {{ .Inner }}
+    </div>
+  </template>
+</div>

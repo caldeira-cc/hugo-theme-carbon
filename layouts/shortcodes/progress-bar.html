@@ -1,0 +1,27 @@
+{{ $value := .Get "value" | default "50" }}
+{{ $label := .Get "label" | default "Progress" }}
+{{ $helper := .Get "helper" }}
+{{ $status := .Get "status" | default "active" }}
+
+{{ $class := "cds--progress-bar" }}
+{{ if eq $status "indeterminate" }}
+  {{ $class = "cds--progress-bar cds--progress-bar--indeterminate" }}
+{{ else if eq $status "success" }}
+  {{ $class = "cds--progress-bar cds--progress-bar--success" }}
+{{ else if eq $status "error" }}
+  {{ $class = "cds--progress-bar cds--progress-bar--error" }}
+{{ end }}
+
+<div class="{{ $class }}" role="progressbar" aria-valuenow="{{ $value }}" aria-valuemin="0" aria-valuemax="100">
+  <div class="cds--progress-bar__header">
+    <span class="cds--progress-bar__label">{{ $label }}</span>
+    {{ with $helper }}
+      <span class="cds--progress-bar__helper-text">{{ . }}</span>
+    {{ else }}
+      <span class="cds--progress-bar__helper-text">{{ $value }}%</span>
+    {{ end }}
+  </div>
+  <div class="cds--progress-bar__track">
+    <div class="cds--progress-bar__bar" style="width: {{ $value }}%;"></div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+{{/*
+  IBM Carbon Design System v11 — Pagination Shortcode
+  Compliant with Carbon React Pagination Component Specifications.
+
+  Usage:
+  {{< pagination total="100" page="1" pageSize="10" pageSizes="5,10,25,50" />}}
+*/}}
+
+{{ $total := .Get "total" | default "50" | int }}
+{{ $page := .Get "page" | default "1" | int }}
+{{ $pageSize := .Get "pageSize" | default "10" | int }}
+{{ $pageSizes := split (.Get "pageSizes" | default "5,10,25,50") "," }}
+{{ $id := .Get "id" | default (printf "cds-pagination-%d" .Ordinal) }}
+{{ $totalPages := math.Ceil (div (float $total) (float $pageSize)) | int }}
+{{ $start := mul (sub $page 1) $pageSize | add 1 }}
+{{ $end := math.Min (mul $page $pageSize) $total }}
+
+<div class="cds--pagination" id="{{ $id }}" role="navigation" aria-label="Pagination">
+  <div class="cds--pagination__left">
+    <label class="cds--pagination__text" for="page-size-{{ $id }}">Items per page:</label>
+    <div class="cds--select cds--select--inline">
+      <select id="page-size-{{ $id }}" class="cds--select-input" aria-label="Items per page">
+        {{ range $pageSizes }}
+          <option value="{{ . }}" {{ if eq (int .) $pageSize }}selected{{ end }}>{{ . }}</option>
+        {{ end }}
+      </select>
+    </div>
+    <span class="cds--pagination__text">{{ $start }}–{{ $end }} of {{ $total }} items</span>
+  </div>
+
+  <div class="cds--pagination__right">
+    <span class="cds--pagination__text">Page {{ $page }} of {{ $totalPages }}</span>
+    <div class="cds--pagination__control-buttons">
+      <button class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only cds--pagination__button cds--pagination__button--backward" {{ if le $page 1 }}disabled{{ end }} aria-label="Previous page">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10 13L4 8l6-5 1.4 1.4L6.8 8l4.6 3.6z"/></svg>
+      </button>
+      <button class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only cds--pagination__button cds--pagination__button--forward" {{ if ge $page $totalPages }}disabled{{ end }} aria-label="Next page">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l6 5-6 5-1.4-1.4L9.2 8 4.6 4.4z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>

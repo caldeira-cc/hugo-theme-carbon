@@ -1,0 +1,89 @@
+{{ $assetBase := .Site.Params.assetsURL | default "" }}
+{{ if hugo.IsServer }}
+  {{ $assetBase = "" }}
+{{ end }}
+{{ $sassOptions := dict "targetPath" "css/carbon.css" }}
+{{ $styles := resources.Get "scss/main.scss" | toCSS $sassOptions | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $assetBase }}{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
+
+{{/* Dynamic Theme & Palette Overrides from data/themes.yaml or hugo.yaml */}}
+{{ $customThemes := .Site.Data.themes }}
+<style id="carbon-dynamic-theme-styles">
+  {{/* Global Palette Extensions */}}
+  {{ with $customThemes.palette }}
+    {{ range $k, $v := . }}
+      {{ (printf ":root { --cds-palette-%s: %s; }" $k $v) | safeCSS }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Custom Themes & Token Overrides defined in data/themes.yaml */}}
+  {{ with $customThemes.themes }}
+    {{ range $themeId, $themeData := . }}
+      {{ if $themeData.tokens }}
+        {{ $themeCSS := printf "html[data-carbon-theme=\"%s\"], body[data-carbon-theme=\"%s\"] {\n" $themeId $themeId }}
+        {{ with $themeData.scheme }}
+          {{ $themeCSS = printf "%s  color-scheme: %s;\n" $themeCSS . }}
+        {{ end }}
+        {{ range $tokenKey, $tokenVal := $themeData.tokens }}
+          {{ $themeCSS = printf "%s  %s: %s;\n" $themeCSS $tokenKey $tokenVal }}
+        {{ end }}
+        {{ $themeCSS = printf "%s}\n" $themeCSS }}
+        {{ $themeCSS | safeCSS }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Fallback / Complementary Cascading Style Overrides from Page Cascade or hugo.yaml */}}
+  {{ $styleOverrides := .Params.styleOverrides | default .Site.Params.styleOverrides }}
+  {{ with $styleOverrides }}
+    {{ if .enableCustomColors }}
+      :root {
+        {{ range $colorKey, $colorVal := .colors }}
+          {{ if eq $colorKey "brandPrimary" }}
+            {{ (printf "--cds-interactive-01: %s; --cds-focus: %s;" $colorVal $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "brandSecondary" }}
+            {{ (printf "--cds-interactive-02: %s;" $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "background" }}
+            {{ (printf "--cds-background: %s;" $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "layer01" }}
+            {{ (printf "--cds-layer-01: %s;" $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "layer02" }}
+            {{ (printf "--cds-layer-02: %s;" $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "layer03" }}
+            {{ (printf "--cds-layer-03: %s;" $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "textPrimary" }}
+            {{ (printf "--cds-text-primary: %s;" $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "textSecondary" }}
+            {{ (printf "--cds-text-secondary: %s;" $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "link" }}
+            {{ (printf "--cds-link-primary: %s; --cds-link-primary-hover: %s;" $colorVal $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "focus" }}
+            {{ (printf "--cds-focus: %s;" $colorVal) | safeCSS }}
+          {{ else if eq $colorKey "field01" }}
+            {{ (printf "--cds-field-01: %s;" $colorVal) | safeCSS }}
+          {{ else }}
+            {{ (printf "--cds-%s: %s;" $colorKey $colorVal) | safeCSS }}
+          {{ end }}
+        {{ end }}
+      }
+    {{ end }}
+  {{ end }}
+
+  {{/* Dynamic Typography Font Resolver (Content, Headings, Navbar) */}}
+  {{ $siteTypo := .Site.Params.typography | default (dict "content" "sans" "headings" "sans" "navbar" "sans") }}
+  {{ $pageTypo := .Params.typography | default dict }}
+  {{ $contentFontChoice := $pageTypo.content | default $siteTypo.content | default "sans" }}
+  {{ $headingsFontChoice := $pageTypo.headings | default $siteTypo.headings | default "sans" }}
+  {{ $navbarFontChoice := $pageTypo.navbar | default $siteTypo.navbar | default "sans" }}
+
+  {{ $fontMap := dict "sans" "var(--cds-font-sans)" "serif" "var(--cds-font-serif)" "mono" "var(--cds-font-mono)" }}
+  {{ $contentFont := index $fontMap $contentFontChoice | default $contentFontChoice }}
+  {{ $headingsFont := index $fontMap $headingsFontChoice | default $headingsFontChoice }}
+  {{ $navbarFont := index $fontMap $navbarFontChoice | default $navbarFontChoice }}
+
+  :root {
+    --cds-font-content: {{ $contentFont | safeCSS }};
+    --cds-font-headings: {{ $headingsFont | safeCSS }};
+    --cds-font-navbar: {{ $navbarFont | safeCSS }};
+  }
+</style>

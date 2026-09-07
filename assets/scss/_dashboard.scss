@@ -1,0 +1,644 @@
+// IBM Carbon Design System v11 — Dashboard Layout SCSS Module
+
+.carbon-dashboard {
+  padding-top: 1.5rem;
+  padding-bottom: 4rem;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  // Dashboard Header & Command Toolbar
+  &__header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+  }
+
+  &__header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__badges {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  &__live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--cds-layer-02);
+    color: var(--cds-text-primary);
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.32px;
+    border: 1px solid var(--cds-border-subtle-00);
+  }
+
+  &__pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--cds-support-success, #24a148);
+    box-shadow: 0 0 0 0 rgba(36, 161, 72, 0.7);
+    animation: carbonPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+
+    &--warning {
+      background-color: var(--cds-support-warning, #f1c21b);
+      box-shadow: 0 0 0 0 rgba(241, 194, 27, 0.7);
+    }
+
+    &--error {
+      background-color: var(--cds-support-error, #da1e28);
+      box-shadow: 0 0 0 0 rgba(218, 30, 40, 0.7);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  &__last-updated {
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary);
+    font-family: 'IBM Plex Mono', monospace;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  &__refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    svg {
+      transition: transform 0.4s cubic-bezier(0.2, 0, 0.38, 0.9);
+    }
+
+    &.is-spinning svg {
+      transform: rotate(360deg);
+    }
+  }
+
+  &__title {
+    margin: 0.5rem 0 0.5rem 0;
+  }
+
+  &__description {
+    color: var(--cds-text-secondary);
+    max-width: 850px;
+    margin-bottom: 0;
+  }
+}
+
+@keyframes carbonPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(36, 161, 72, 0.8);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(36, 161, 72, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(36, 161, 72, 0);
+  }
+}
+
+// KPI Stat Tiles & Cards
+.carbon-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.carbon-kpi-card {
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  padding: 1.25rem 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  min-height: 125px;
+
+  &:hover {
+    border-color: var(--cds-border-strong-01, var(--cds-interactive-01));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  &__label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--cds-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.32px;
+    line-height: 1.2;
+  }
+
+  &__icon {
+    color: var(--cds-interactive-01);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.375rem;
+  }
+
+  &__value {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--cds-text-primary);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__unit {
+    font-size: 0.875rem;
+    color: var(--cds-text-secondary);
+    font-weight: 400;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--cds-border-subtle-00);
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary);
+  }
+
+  &__trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+
+    &--up-positive {
+      color: var(--cds-support-success, #24a148);
+    }
+
+    &--down-negative {
+      color: var(--cds-support-error, #da1e28);
+    }
+
+    &--neutral {
+      color: var(--cds-text-secondary);
+    }
+  }
+
+  &__subtext {
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary);
+  }
+}
+
+// Modular Dashboard Grid & Panels
+.carbon-dashboard-grid {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.carbon-dashboard-card {
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  height: calc(100% - 1.5rem);
+  box-sizing: border-box;
+
+  &__header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    background-color: var(--cds-layer-01);
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--cds-text-primary);
+  }
+
+  &__subtitle {
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary);
+    margin-top: 0.15rem;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__body {
+    padding: 1.25rem;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+
+    &--no-pad {
+      padding: 0;
+    }
+  }
+
+  &__footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--cds-border-subtle-00);
+    background-color: var(--cds-layer-02);
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+// In-card CSVW and GeoJSON container resets for tight dashboard embedding
+.carbon-dashboard-card {
+  .carbon-csvw-container {
+    width: 100%;
+    margin: 0;
+  }
+
+  .carbon-map-card {
+    border: none;
+    background: transparent;
+    margin: 0;
+    box-shadow: none;
+
+    .carbon-map-card__header {
+      display: none; // Handled by dashboard card header
+    }
+
+    .carbon-map-card__caption {
+      padding: 0.75rem 1rem;
+    }
+  }
+}
+
+// Telemetry & Utilization Metric Bars
+.carbon-metric-bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+  width: 100%;
+}
+
+.carbon-metric-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  width: 100%;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.8125rem;
+  }
+
+  &__label {
+    font-weight: 500;
+    color: var(--cds-text-primary);
+  }
+
+  &__value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    color: var(--cds-text-primary);
+  }
+
+  &__track {
+    height: 8px;
+    width: 100%;
+    background-color: var(--cds-layer-02);
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__fill {
+    height: 100%;
+    transition: width 0.6s cubic-bezier(0.2, 0, 0.38, 0.9);
+    background-color: var(--cds-interactive-01);
+
+    &--green {
+      background-color: var(--cds-support-success, #24a148);
+    }
+    &--blue {
+      background-color: var(--cds-interactive-01, #0f62fe);
+    }
+    &--purple {
+      background-color: #8a3ffc;
+    }
+    &--magenta {
+      background-color: #ee5396;
+    }
+    &--teal {
+      background-color: #009d9a;
+    }
+    &--warning {
+      background-color: var(--cds-support-warning, #f1c21b);
+    }
+    &--danger {
+      background-color: var(--cds-support-error, #da1e28);
+    }
+  }
+}
+
+// Status Node Matrix
+.carbon-status-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+
+  &__item {
+    background-color: var(--cds-layer-02);
+    border: 1px solid var(--cds-border-subtle-00);
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  &__item-title {
+    font-weight: 600;
+    color: var(--cds-text-primary);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  &__item-status {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--cds-text-secondary);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Dashboard Modal Shell & Launcher Tiles
+// ---------------------------------------------------------------------------
+
+.carbon-dashboard-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  flex-direction: column;
+
+  &.is-active {
+    display: flex;
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  &__container {
+    position: relative;
+    width: 96vw;
+    max-width: 1540px;
+    height: 94vh;
+    margin: auto;
+    background-color: var(--cds-layer-01);
+    border: 1px solid var(--cds-border-subtle-00);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    overflow: hidden;
+    animation: carbonModalSlideIn 0.2s cubic-bezier(0, 0, 0.2, 1) both;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem 1.5rem;
+    background-color: var(--cds-layer-02);
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+    flex-shrink: 0;
+    gap: 1rem;
+  }
+
+  &__title {
+    margin: 0.25rem 0 0.15rem 0;
+    font-size: 1.25rem;
+    color: var(--cds-text-primary);
+  }
+
+  &__subtitle {
+    font-size: 0.8125rem;
+    color: var(--cds-text-secondary);
+    margin: 0;
+  }
+
+  &__header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  &__close-btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--cds-icon-secondary, var(--cds-text-secondary));
+    padding: 0.25rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.11s ease;
+
+    &:hover {
+      color: var(--cds-text-primary);
+    }
+  }
+
+  &__body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: var(--cds-background);
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--cds-layer-02);
+    border-top: 1px solid var(--cds-border-subtle-00);
+    flex-shrink: 0;
+  }
+}
+
+// Modal Launcher Card
+.carbon-dashboard-modal-launcher {
+  margin: 1.5rem 0;
+}
+
+.carbon-dashboard-modal-tile {
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  border-left: 4px solid var(--cds-interactive-01);
+  padding: 1.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+}
+
+// CSVW Statistical Suite Component Styling
+.carbon-csvw-suite {
+  margin: 1.5rem 0;
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+
+  .cds--data-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .carbon-csvw-view-switcher {
+    display: inline-flex;
+    border: 1px solid var(--cds-border-subtle-00);
+    background-color: var(--cds-layer-02);
+  }
+
+  .carbon-csvw-tab-btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--cds-text-secondary);
+    padding: 0.375rem 0.875rem;
+    font-size: 0.75rem;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.11s ease, color 0.11s ease;
+
+    &:hover {
+      background-color: var(--cds-layer-hover-01, rgba(255, 255, 255, 0.05));
+      color: var(--cds-text-primary);
+    }
+
+    &.is-active {
+      background-color: var(--cds-interactive-01);
+      color: #ffffff;
+      font-weight: 600;
+    }
+  }
+
+  .carbon-csvw-th-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .carbon-csvw-row {
+    cursor: pointer;
+    transition: background-color 0.11s ease;
+
+    &:hover {
+      background-color: var(--cds-layer-hover-01) !important;
+    }
+
+    &.is-selected {
+      background-color: rgba(15, 98, 254, 0.15) !important;
+      outline: 1px solid var(--cds-interactive-01);
+    }
+  }
+}
+
+// Responsive adjustments for dashboard
+@media (max-width: 672px) {
+  .carbon-dashboard__header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .carbon-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .carbon-dashboard-card {
+    height: auto;
+  }
+}
+

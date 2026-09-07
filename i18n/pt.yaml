@@ -1,0 +1,86 @@
+# Portuguese UI Translations
+nav:
+  home: "Início"
+  docs: "Documentação"
+  blog: "Artigos"
+  apps: "Aplicações"
+  portfolio: "Portfólio"
+  data: "Explorador de Dados"
+  sitemap: "Mapa do Site"
+  privacy: "Política de Privacidade"
+  licenses: "Licenças de Código Aberto"
+
+search:
+  placeholder: "Pesquisar documentação, artigos, dados..."
+  label: "Pesquisar"
+  no_results: "Nenhum resultado encontrado"
+  key_hint: "/"
+
+mainBar:
+  theme: "Tema"
+  language: "Idioma"
+  available: "DISPONÍVEL"
+
+theme:
+  system: "Predefinição do Navegador"
+  light: "Claro"
+  dark: "Escuro"
+
+readAloud:
+  title: "Ouvir este artigo"
+  play: "Reproduzir"
+  pause: "Pausar"
+  resume: "Retomar"
+  stop: "Parar"
+  speed: "Velocidade"
+  voice: "Voz"
+  status_playing: "A reproduzir"
+  status_paused: "Pausado"
+  status_stopped: "Pronto"
+
+ai:
+  title: "Assistente de IA Carbon"
+  subtitle: "WebLLM Local • RAG Ativo"
+  model_ready: "WebGPU Ativo"
+  init_btn: "Inicializar Modelo"
+  input_placeholder: "Escreva a sua pergunta... (Enter para enviar, Shift+Enter para nova linha)"
+  send: "Enviar"
+  clear_history: "Limpar histórico"
+  minimize: "Minimizar"
+  close: "Fechar"
+  rag_active: "⚡ RAG Ativo"
+  listen: "Ouvir"
+  customize_avatar: "Personalizar Avatar"
+
+cookie:
+  title: "Este website utiliza cookies"
+  description: "Utilizamos cookies para melhorar a sua experiência de navegação, apresentar conteúdos personalizados e analisar o nosso tráfego."
+  accept_all: "Aceitar Todos"
+  reject_all: "Rejeitar Todos"
+  manage: "Gerir Preferências"
+  save: "Guardar Preferências"
+  essential: "Cookies Essenciais"
+  analytics: "Cookies Analíticos"
+  advertising: "Cookies Publicitários"
+  always_active: "Sempre Ativo"
+
+social:
+  follow: "Seguir"
+  networks: "Redes Sociais"
+  connect: "Ligar & Seguir"
+
+error404:
+  tag: "/// Erro HTTP 404"
+  title: "404: Página Não Encontrada"
+  subtitle: "O endereço ou recurso solicitado não existe, foi relocalizado ou encontra-se temporariamente indisponível neste nó estático."
+  home_btn: "Voltar ao Início"
+  search_btn: "Pesquisar no Site"
+  explore: "Explorar Principais Secções"
+
+footer:
+  brand_desc: "Arquitetura estática de nível empresarial combinando Hugo com o IBM Carbon Design System v11."
+  architecture: "Arquitetura"
+  collections: "Coleções"
+  resources: "Recursos"
+  legal: "Legal"
+  rights: "Todos os direitos reservados. Construído com a Linguagem de Design IBM Carbon v11."

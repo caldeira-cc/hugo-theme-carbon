@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "generated": "2026-08-20T17:47:00Z",
+  "documents": [
+    {
+      "id": "doc-1",
+      "title": "System Architecture & Philosophy",
+      "url": "/docs/architecture/",
+      "text": "The Hugo-Carbon platform is built upon zero-dependency resilience, progressive enhancement, and non-blocking background Web Workers. It incorporates Web Crypto AES-256-GCM, WebGPU on-device WebLLM, and IBM Carbon v11 Design System tokens.",
+      "keywords": ["architecture", "philosophy", "workers", "resilience", "carbon", "design", "webgpu", "crypto"]
+    },
+    {
+      "id": "doc-2",
+      "title": "Build-Time Encryption & Access Control",
+      "url": "/docs/encrypted-secrets-demo/",
+      "text": "Pages declaring password in front matter are encrypted during the post-build pipeline using PBKDF2 with 100,000 SHA-256 iterations and AES-256-GCM. Plaintext is purged from static HTML and decrypted in-browser via Web Crypto crypto.subtle.",
+      "keywords": ["encryption", "aes-256-gcm", "pbkdf2", "password", "security", "crypto", "subtle"]
+    },
+    {
+      "id": "doc-3",
+      "title": "Multithreaded Background Workers",
+      "url": "/apps/physics-simulator/",
+      "text": "CPU-intensive processes run in isolated Web Workers. The 60Hz physics engine uses zero-copy Float32Array ArrayBuffer transferables, Stockfish UCI chess calculates moves with alpha-beta search, and the SPSS worker performs tabular analytics.",
+      "keywords": ["workers", "physics", "chess", "stockfish", "spss", "typedarray", "transferable", "multithreading"]
+    },
+    {
+      "id": "doc-4",
+      "title": "W3C CSVW Interactive Data Table System",
+      "url": "/data/server-telemetry/",
+      "text": "The CSVW engine parses raw CSV datasets with W3C JSON metadata schemas. It renders IBM Carbon DataTables with live search, column sorting, pagination, and status tag formatting.",
+      "keywords": ["csvw", "tables", "w3c", "csv", "metadata", "datatable", "telemetry"]
+    },
+    {
+      "id": "doc-5",
+      "title": "WCAG 2.2 AA Accessibility & Web Speech",
+      "url": "/blog/",
+      "text": "The platform strictly complies with WCAG 2.2 Level AA guidelines, featuring skip-to-content links, focus-visible contrast rings, prefers-reduced-motion media query adaptations, and a native window.speechSynthesis read-aloud engine.",
+      "keywords": ["accessibility", "wcag", "a11y", "speech", "read-aloud", "audio", "focus"]
+    }
+  ]
+}

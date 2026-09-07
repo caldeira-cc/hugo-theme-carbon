@@ -1,0 +1,319 @@
+{{/*
+  IBM Carbon Design System v11 — VCard & Business Card Shortcode
+  Compliant with Carbon React Card, Form, and Action Component Specifications.
+
+  Supports:
+  1. File Mode: Reads & parses an existing .vcf (vCard) file from static/ or data/.
+  2. Variable Mode: Reads parameters directly and dynamically generates a downloadable .vcf file.
+
+  Usage (File Mode):
+  {{< vcard file="/data/cesar-caldeira.vcf" />}}
+
+  Usage (Variable Mode):
+  {{< vcard
+      name="Jane Doe"
+      title="Systems Architect"
+      org="Open Source Initiative"
+      email="jane@example.com"
+      phone="+1 555 123 4567"
+      website="https://example.com"
+      location="San Francisco, CA, USA"
+      photo="/assets/images/portrait.jpg"
+      badge="Verified Member"
+      linkedin="https://linkedin.com/in/example"
+      github="https://github.com/example" >}}
+    Systems architect and open-source contributor.
+  {{< /vcard >}}
+*/}}
+
+{{ $filePath := .Get "file" | default (.Get "src" | default (.Get "vcf" | default "")) }}
+{{ $name := .Get "name" | default "" }}
+{{ $title := .Get "title" | default "" }}
+{{ $org := .Get "org" | default "" }}
+{{ $email := .Get "email" | default "" }}
+{{ $phone := .Get "phone" | default "" }}
+{{ $website := .Get "website" | default (.Get "url" | default "") }}
+{{ $location := .Get "location" | default (.Get "address" | default "") }}
+{{ $photo := .Get "photo" | default (.Get "avatar" | default (.Get "image" | default "")) }}
+{{ $badge := .Get "badge" | default "" }}
+{{ $badgeColor := .Get "badgeColor" | default "green" }}
+{{ $note := .Get "bio" | default (.Get "note" | default "") }}
+{{ $linkedin := .Get "linkedin" | default "" }}
+{{ $twitter := .Get "twitter" | default "" }}
+{{ $github := .Get "github" | default "" }}
+{{ $orcid := .Get "orcid" | default "" }}
+{{ $id := .Get "id" | default (printf "cds-vcard-%d" .Ordinal) }}
+{{ $class := .Get "class" | default "" }}
+{{ $downloadName := .Get "downloadName" | default "" }}
+
+{{ $vcfContent := "" }}
+{{ $isFromFile := false }}
+{{ $fileDownloadUrl := "" }}
+
+{{/* MODE 1: Parse from .vcf File if specified */}}
+{{ if $filePath }}
+  {{ $isFromFile = true }}
+  {{ $fileDownloadUrl = $filePath }}
+  {{ $cleanedPath := strings.TrimPrefix "/" $filePath }}
+  
+  {{/* Look in static/ directory or direct path */}}
+  {{ $diskPath := "" }}
+  {{ if fileExists (printf "static/%s" $cleanedPath) }}
+    {{ $diskPath = printf "static/%s" $cleanedPath }}
+  {{ else if fileExists $cleanedPath }}
+    {{ $diskPath = $cleanedPath }}
+  {{ end }}
+
+  {{ if $diskPath }}
+    {{ $vcfContent = readFile $diskPath }}
+    {{ $lines := split $vcfContent "\n" }}
+    {{ range $lines }}
+      {{ $line := trim . "\r" }}
+      {{ if findRE `^FN:(.*)$` $line }}
+        {{ if not $name }}{{ $name = replaceRE `^FN:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^TITLE:(.*)$` $line }}
+        {{ if not $title }}{{ $title = replaceRE `^TITLE:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^ORG:(.*)$` $line }}
+        {{ if not $org }}
+          {{ $rawOrg := replaceRE `^ORG:(.*)$` "$1" $line }}
+          {{ $org = replaceRE `\\,|;` ", " $rawOrg }}
+        {{ end }}
+      {{ else if findRE `^EMAIL[^:]*:(.*)$` $line }}
+        {{ if not $email }}{{ $email = replaceRE `^EMAIL[^:]*:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^TEL[^:]*:(.*)$` $line }}
+        {{ if not $phone }}{{ $phone = replaceRE `^TEL[^:]*:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^URL[^:]*:(.*)$` $line }}
+        {{ if not $website }}{{ $website = replaceRE `^URL[^:]*:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^ADR[^:]*:(.*)$` $line }}
+        {{ if not $location }}
+          {{ $rawAdr := replaceRE `^ADR[^:]*:(.*)$` "$1" $line }}
+          {{ $parts := split $rawAdr ";" }}
+          {{ $cleanParts := slice }}
+          {{ range $parts }}
+            {{ $p := trim . " " }}
+            {{ if $p }}{{ $cleanParts = $cleanParts | append (replace $p `\,` ",") }}{{ end }}
+          {{ end }}
+          {{ $location = delimit $cleanParts ", " }}
+        {{ end }}
+      {{ else if findRE `^NOTE:(.*)$` $line }}
+        {{ if not $note }}{{ $note = replaceRE `^NOTE:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^X-SOCIAL-LINKEDIN:(.*)$` $line }}
+        {{ if not $linkedin }}{{ $linkedin = replaceRE `^X-SOCIAL-LINKEDIN:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^X-SOCIAL-TWITTER:(.*)$` $line }}
+        {{ if not $twitter }}{{ $twitter = replaceRE `^X-SOCIAL-TWITTER:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^X-SOCIAL-GITHUB:(.*)$` $line }}
+        {{ if not $github }}{{ $github = replaceRE `^X-SOCIAL-GITHUB:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^X-ORCID:(.*)$` $line }}
+        {{ if not $orcid }}{{ $orcid = replaceRE `^X-ORCID:(.*)$` "$1" $line }}{{ end }}
+      {{ else if findRE `^PHOTO[^:]*:(.*)$` $line }}
+        {{ if not $photo }}{{ $photo = replaceRE `^PHOTO[^:]*:(.*)$` "$1" $line }}{{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* Allow .Inner markdown to serve as bio/note if provided */}}
+{{ $innerContent := "" }}
+{{ with .Inner }}
+  {{ $innerContent = . }}
+{{ end }}
+{{ if $innerContent }}
+  {{ $note = $innerContent | markdownify }}
+{{ end }}
+
+{{/* Set fallback name and download filename */}}
+{{ $displayName := $name | default "Contact Card" }}
+{{ if not $downloadName }}
+  {{ $downloadName = printf "%s.vcf" ($displayName | urlize) }}
+{{ end }}
+
+{{/* MODE 2: Build RFC 6350 vCard 3.0 String if not loaded from file */}}
+{{ if not $vcfContent }}
+  {{ $vcfLines := slice "BEGIN:VCARD" "VERSION:3.0" }}
+  {{ $vcfLines = $vcfLines | append (printf "FN:%s" $displayName) }}
+  {{ with $title }}{{ $vcfLines = $vcfLines | append (printf "TITLE:%s" .) }}{{ end }}
+  {{ with $org }}{{ $vcfLines = $vcfLines | append (printf "ORG:%s" .) }}{{ end }}
+  {{ with $email }}{{ $vcfLines = $vcfLines | append (printf "EMAIL;TYPE=INTERNET,WORK;PREF:%s" .) }}{{ end }}
+  {{ with $phone }}{{ $vcfLines = $vcfLines | append (printf "TEL;TYPE=WORK,VOICE:%s" .) }}{{ end }}
+  {{ with $website }}{{ $vcfLines = $vcfLines | append (printf "URL;TYPE=WORK:%s" .) }}{{ end }}
+  {{ with $location }}{{ $vcfLines = $vcfLines | append (printf "ADR;TYPE=WORK:;;%s;;;;" .) }}{{ end }}
+  {{ with $note }}{{ $vcfLines = $vcfLines | append (printf "NOTE:%s" (plainify .)) }}{{ end }}
+  {{ with $linkedin }}{{ $vcfLines = $vcfLines | append (printf "X-SOCIAL-LINKEDIN:%s" .) }}{{ end }}
+  {{ with $twitter }}{{ $vcfLines = $vcfLines | append (printf "X-SOCIAL-TWITTER:%s" .) }}{{ end }}
+  {{ with $github }}{{ $vcfLines = $vcfLines | append (printf "X-SOCIAL-GITHUB:%s" .) }}{{ end }}
+  {{ with $orcid }}{{ $vcfLines = $vcfLines | append (printf "X-ORCID:%s" .) }}{{ end }}
+  {{ $vcfLines = $vcfLines | append "END:VCARD" }}
+  {{ $vcfContent = delimit $vcfLines "\n" }}
+{{ end }}
+
+{{/* Compute Initials for Avatar Fallback */}}
+{{ $initials := "ID" }}
+{{ if $displayName }}
+  {{ $words := split $displayName " " }}
+  {{ if ge (len $words) 2 }}
+    {{ $initials = printf "%s%s" (substr (index $words 0) 0 1) (substr (index $words (sub (len $words) 1)) 0 1) }}
+  {{ else if ge (len $words) 1 }}
+    {{ $initials = substr (index $words 0) 0 2 }}
+  {{ end }}
+{{ end }}
+
+<div class="cds--vcard cds--vcard--interactive {{ with $class }}{{ . }}{{ end }}" 
+     id="{{ $id }}"
+     data-vcf-filename="{{ $downloadName }}"
+     data-vcf-content="{{ $vcfContent | urlquery }}"
+     {{ with $fileDownloadUrl }}data-vcf-url="{{ . }}"{{ end }}>
+
+  <!-- VCard Header -->
+  <div class="cds--vcard__header">
+    <div class="cds--vcard__avatar">
+      {{ if $photo }}
+        <img src="{{ $photo }}" alt="{{ $displayName }}" loading="lazy">
+      {{ else }}
+        <div class="cds--vcard__initials">{{ $initials }}</div>
+      {{ end }}
+    </div>
+
+    <div class="cds--vcard__identity">
+      <div class="cds--vcard__top-row">
+        <h3 class="cds--vcard__name">{{ $displayName }}</h3>
+        {{ with $badge }}
+          <span class="cds--tag cds--tag--{{ $badgeColor }} cds--tag--sm" style="margin: 0;">{{ . }}</span>
+        {{ end }}
+      </div>
+      {{ with $title }}
+        <div class="cds--vcard__title">{{ . }}</div>
+      {{ end }}
+      {{ with $org }}
+        <div class="cds--vcard__org">{{ . }}</div>
+      {{ end }}
+    </div>
+  </div>
+
+  <!-- VCard Body -->
+  <div class="cds--vcard__body">
+    {{ with $note }}
+      <div class="cds--vcard__note">
+        {{ . | markdownify }}
+      </div>
+    {{ end }}
+
+    <div class="cds--vcard__grid">
+      {{ with $email }}
+        <div class="cds--vcard__field">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M14 3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm-.5 1.5L8 8.8 2.5 4.5h11zM2 11.5v-6l6 4.7 6-4.7v6H2z"/>
+          </svg>
+          <div class="cds--vcard__field-content">
+            <span class="cds--vcard__field-label">Email</span>
+            <span class="cds--vcard__field-value">
+              <a href="mailto:{{ . }}" class="cds--link">{{ . }}</a>
+            </span>
+          </div>
+        </div>
+      {{ end }}
+
+      {{ with $phone }}
+        <div class="cds--vcard__field">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M13.5 10.8l-2.4-.7a1 1 0 0 0-1 .3l-1 1.2a9.7 9.7 0 0 1-4.4-4.4l1.2-1a1 1 0 0 0 .3-1l-.7-2.4A1 1 0 0 0 4.5 2H2.8A1 1 0 0 0 1.8 3 13.2 13.2 0 0 0 13 14.2a1 1 0 0 0 1-1v-1.7a1 1 0 0 0-.5-.7z"/>
+          </svg>
+          <div class="cds--vcard__field-content">
+            <span class="cds--vcard__field-label">Phone</span>
+            <span class="cds--vcard__field-value">
+              <a href="tel:{{ replace . " " "" }}" class="cds--link">{{ . }}</a>
+            </span>
+          </div>
+        </div>
+      {{ end }}
+
+      {{ with $website }}
+        <div class="cds--vcard__field">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 1a7 7 0 1 0 7 7 7 7 0 0 0-7-7zm5.9 6.5h-2.5a10.9 10.9 0 0 0-1-4.2A6 6 0 0 1 13.9 7.5zM8 2.1c.7 1.1 1.3 3.1 1.5 5.4H6.5c.2-2.3.8-4.3 1.5-5.4zM2.1 7.5a6 6 0 0 1 3.5-4.2 10.9 10.9 0 0 0-1 4.2H2.1zm0 1h2.5a10.9 10.9 0 0 0 1 4.2 6 6 0 0 1-3.5-4.2zm5.9 5.4c-.7-1.1-1.3-3.1-1.5-5.4h3c-.2 2.3-.8 4.3-1.5 5.4zm2.4-1.2a10.9 10.9 0 0 0 1-4.2h2.5a6 6 0 0 1-3.5 4.2z"/>
+          </svg>
+          <div class="cds--vcard__field-content">
+            <span class="cds--vcard__field-label">Website</span>
+            <span class="cds--vcard__field-value">
+              <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="cds--link">{{ replaceRE `^https?://` "" . }}</a>
+            </span>
+          </div>
+        </div>
+      {{ end }}
+
+      {{ with $location }}
+        <div class="cds--vcard__field">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 1a5 5 0 0 0-5 5c0 3.8 5 9 5 9s5-5.2 5-9a5 5 0 0 0-5-5zm0 6.8A1.8 1.8 0 1 1 9.8 6 1.8 1.8 0 0 1 8 7.8z"/>
+          </svg>
+          <div class="cds--vcard__field-content">
+            <span class="cds--vcard__field-label">Location</span>
+            <span class="cds--vcard__field-value">{{ . }}</span>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+
+    {{ if or $linkedin $twitter $github $orcid }}
+      <div class="cds--vcard__socials">
+        {{ with $linkedin }}
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="cds--tag cds--tag--blue cds--tag--clickable cds--tag--sm" title="LinkedIn Profile">LinkedIn ↗</a>
+        {{ end }}
+        {{ with $twitter }}
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="cds--tag cds--tag--teal cds--tag--clickable cds--tag--sm" title="Twitter / X Profile">Twitter/X ↗</a>
+        {{ end }}
+        {{ with $github }}
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="cds--tag cds--tag--gray cds--tag--clickable cds--tag--sm" title="GitHub Profile">GitHub ↗</a>
+        {{ end }}
+        {{ with $orcid }}
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="cds--tag cds--tag--green cds--tag--clickable cds--tag--sm" title="ORCID Record">ORCID ↗</a>
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+
+  <!-- VCard Action Bar & Downloads -->
+  <div class="cds--vcard__footer">
+    <div class="cds--vcard__actions">
+      {{ if $fileDownloadUrl }}
+        <a href="{{ $fileDownloadUrl }}" download="{{ $downloadName }}" class="cds--btn cds--btn--primary cds--btn--sm cds--vcard__btn--download">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M13 7l-1.4-1.4L9 8.2V1H7v7.2L4.4 5.6 3 7l5 5 5-5zM1 13v2h14v-2H1z"/>
+          </svg>
+          <span>Download VCard (.vcf)</span>
+        </a>
+      {{ else }}
+        <button type="button" class="cds--btn cds--btn--primary cds--btn--sm cds--vcard__btn--download">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M13 7l-1.4-1.4L9 8.2V1H7v7.2L4.4 5.6 3 7l5 5 5-5zM1 13v2h14v-2H1z"/>
+          </svg>
+          <span>Download VCard (.vcf)</span>
+        </button>
+      {{ end }}
+
+      <button type="button" class="cds--btn cds--btn--secondary cds--btn--sm cds--vcard__btn--copy" aria-label="Copy contact details">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M14 5v9H5V5h9m0-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
+          <path d="M2 9H1V2a1 1 0 0 1 1-1h7v1H2v7z"/>
+        </svg>
+        <span>Copy Info</span>
+      </button>
+
+      <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm cds--vcard__btn--qr" aria-expanded="false" aria-label="Toggle QR Code">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M1 1h6v6H1V1zm1 1v4h4V2H2zm6-1h7v6H8V1zm1 1v4h5V2H9zM1 8h6v7H1V8zm1 1v5h4V9H2zm10 0h3v2h-3V9zm-3 0h2v3H9V9zm2 3h1v3h-1v-3zm2 0h1v3h-1v-3zm-4 2h2v1H9v-1z"/>
+        </svg>
+        <span>QR Code</span>
+      </button>
+    </div>
+
+    <span class="cds--type-caption" style="font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary); font-size: 0.6875rem;">
+      RFC 6350 vCard 3.0
+    </span>
+  </div>
+
+  <!-- QR Code Flyout Panel -->
+  <div class="cds--vcard__qr-container">
+    <div class="cds--vcard__qr-code"></div>
+    <p>Scan with camera on iOS or Android to import contact directly</p>
+  </div>
+</div>

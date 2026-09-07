@@ -1,0 +1,26 @@
+{{/*
+  IBM Carbon Design System v11 — Slider Shortcode
+  Compliant with Carbon React Slider Component Specifications.
+
+  Usage:
+  {{< slider label="Confidence Threshold" min="0" max="100" value="75" step="5" unit="%" />}}
+*/}}
+
+{{ $label := .Get "label" | default "Slider" }}
+{{ $min := .Get "min" | default "0" }}
+{{ $max := .Get "max" | default "100" }}
+{{ $value := .Get "value" | default "50" }}
+{{ $step := .Get "step" | default "1" }}
+{{ $unit := .Get "unit" | default "" }}
+{{ $id := .Get "id" | default (printf "cds-slider-%d" .Ordinal) }}
+{{ $class := .Get "class" | default "" }}
+
+<div class="cds--form-item {{ with $class }}{{ . }}{{ end }}" style="margin: 1rem 0;">
+  <label for="{{ $id }}" class="cds--label" style="font-size: 0.75rem; font-weight: 600; color: var(--cds-text-secondary); margin-bottom: 0.5rem; display: block;">{{ $label }}</label>
+  <div class="cds--slider-container" style="display: flex; align-items: center; gap: 1rem;">
+    <span class="cds--slider__range-label" style="font-size: 0.75rem; color: var(--cds-text-secondary); font-family: var(--cds-font-mono, monospace);">{{ $min }}{{ $unit }}</span>
+    <input type="range" class="cds--slider" id="{{ $id }}" min="{{ $min }}" max="{{ $max }}" value="{{ $value }}" step="{{ $step }}" style="flex: 1 1 auto; cursor: pointer;" oninput="document.getElementById('{{ $id }}-val').value = this.value;">
+    <span class="cds--slider__range-label" style="font-size: 0.75rem; color: var(--cds-text-secondary); font-family: var(--cds-font-mono, monospace);">{{ $max }}{{ $unit }}</span>
+    <input type="number" class="cds--text-input cds--slider-text-input" id="{{ $id }}-val" value="{{ $value }}" min="{{ $min }}" max="{{ $max }}" step="{{ $step }}" style="width: 64px; height: 32px; padding: 0 0.5rem; font-family: var(--cds-font-mono, monospace); font-size: 0.8125rem; background: var(--cds-field-01); color: var(--cds-text-primary); border: 1px solid var(--cds-border-subtle-01);" oninput="document.getElementById('{{ $id }}').value = this.value;">
+  </div>
+</div>

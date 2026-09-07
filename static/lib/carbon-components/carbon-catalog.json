@@ -1,0 +1,23 @@
+{
+  "title": "IBM Carbon Design System v11 Component Catalog",
+  "source": "https://react.carbondesignsystem.com / https://github.com/carbon-design-system/carbon",
+  "license": "Apache-2.0",
+  "packages": {
+    "@carbon/react": {
+      "version": "1.115.0",
+      "description": "React components for the Carbon Design System",
+      "license": "Apache-2.0",
+      "main": "lib/index.js",
+      "module": "es/index.js",
+      "types": "lib/index.d.ts"
+    },
+    "@carbon/styles": {
+      "version": "1.114.0",
+      "description": "Styles for the Carbon Design System",
+      "license": "Apache-2.0",
+      "main": null,
+      "module": null,
+      "types": null
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{{/*
+  IBM Carbon Design System v11 — On-Device WebLLM AI Persona Shortcode
+  Usage: {{< persona-ai model="SmolLM2-360M" title="Architecture Digital Twin" >}}
+*/}}
+
+{{ $model := .Get "model" | default "SmolLM2-360M-Instruct" }}
+{{ $title := .Get "title" | default "Hugo-Carbon Digital Twin & Companion" }}
+{{ $height := .Get "height" | default "520px" }}
+{{ $id := .Get "id" | default (printf "cds-persona-%d" .Ordinal) }}
+
+<div class="cds--chat-container carbon-ai-persona" id="{{ $id }}" data-model="{{ $model }}" style="height: {{ $height }};" role="region" aria-label="{{ $title }}">
+  <header class="cds--chat-header">
+    <div class="cds--chat-header__title-group">
+      <div class="cds--chat-message__avatar" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12z"/>
+          <circle cx="11" cy="14" r="1.5"/>
+          <circle cx="21" cy="14" r="1.5"/>
+          <path d="M16 22a6 6 0 0 0 5-2.69l-1.63-.94A4 4 0 0 1 16 20a4 4 0 0 1-3.37-1.63L11 19.31A6 6 0 0 0 16 22z"/>
+        </svg>
+      </div>
+      <div>
+        <h4 class="cds--chat-header__title">{{ $title }}</h4>
+        <p class="cds--chat-header__subtitle">WebGPU / WebAssembly On-Device LLM & Static Vector RAG</p>
+      </div>
+    </div>
+
+    <div class="cds--chat-header__actions">
+      <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only js-clear-ai-history" aria-label="Clear chat history" title="Clear history">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M12 12h2v12h-2zm6 0h2v12h-2z"/>
+          <path d="M4 6v2h2v20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8h2V6zm4 22V8h16v20zM10 2h12v2H10z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="cds--chat-status-bar">
+    <div class="carbon-ai-persona__status-pill">
+      <span class="cds--tag cds--tag--outline" style="margin: 0;">{{ $model }}</span>
+    </div>
+    <button type="button" class="cds--btn cds--btn--primary cds--btn--sm carbon-ai-persona__init-btn" style="height: 1.75rem; min-height: 1.75rem; padding: 0 0.75rem; font-size: 0.75rem;">
+      Initialize Model
+    </button>
+  </div>
+
+  <div class="cds--chat-messages carbon-ai-persona__chat-stream" role="log" aria-live="polite">
+    <div class="cds--chat-message cds--chat-message--system">
+      <div class="cds--chat-bubble">
+        Welcome to the On-Device AI companion. Click <strong>"Initialize Model"</strong> to load weights into client browser memory.
+      </div>
+    </div>
+  </div>
+
+  <div class="cds--chat-composer">
+    <div class="cds--chat-composer__input-row">
+      <textarea class="cds--chat-composer__textarea carbon-ai-persona__input" rows="1" placeholder="Ask a question about the platform architecture or documentation..." aria-label="Query for AI companion"></textarea>
+      <button type="button" class="cds--btn cds--btn--primary cds--btn--sm cds--btn--icon-only cds--chat-composer__send-btn carbon-ai-persona__send-btn" aria-label="Send message" title="Send message">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M27.45 15.11L3.5 2.15a1 1 0 0 0-1.44 1.13L4.8 14H18v4H4.8L2.06 28.72a1 1 0 0 0 1.44 1.13l23.95-12.96a1 1 0 0 0 0-1.78z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="cds--chat-composer__controls">
+      <span class="cds--tag cds--tag--blue cds--tag--sm" style="margin: 0;">⚡ Local RAG</span>
+      <span class="cds--type-caption" style="color: var(--cds-text-helper);">100% On-Device WebGPU</span>
+    </div>
+  </div>
+</div>

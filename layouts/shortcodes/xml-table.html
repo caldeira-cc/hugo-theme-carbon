@@ -1,0 +1,187 @@
+{{/*
+  Carbon Design System v11 — XML Data Explorer Shortcode
+  Build-time XML parsing with zero runtime dependencies and optional client-side dynamic search/sort/filter.
+  Usage:
+  {{< xml-table src="/data/sample-dataset.xml" title="European Clean Power Grid" pageSize="5" >}}
+*/}}
+
+{{ $src := .Get "src" | default "" }}
+{{ $title := .Get "title" | default "XML Data Explorer" }}
+{{ $description := .Get "description" | default "Structured XML Dataset Explorer" }}
+{{ $pageSize := .Get "pageSize" | default (.Get "page_size" | default "10") }}
+{{ $id := .Get "id" | default (printf "xml-table-%d" .Ordinal) }}
+
+{{ $records := slice }}
+{{ $meta := dict }}
+{{ $totalRecords := 0 }}
+{{ $totalCapacity := 0.0 }}
+{{ $totalOutput := 0.0 }}
+{{ $avgEfficiency := 0.0 }}
+{{ $sumEfficiency := 0.0 }}
+{{ $validEfficiencyCount := 0 }}
+
+{{ if $src }}
+  {{ $staticPath := printf "static%s" $src }}
+  {{ if fileExists $staticPath }}
+    {{ $rawContent := readFile $staticPath }}
+    {{ $parsed := $rawContent | transform.Unmarshal }}
+    {{ with $parsed }}
+      {{ with .metadata }}
+        {{ $meta = . }}
+      {{ end }}
+      {{ with .records }}
+        {{ with .record }}
+          {{ if reflect.IsSlice . }}
+            {{ $records = . }}
+          {{ else }}
+            {{ $records = slice . }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* Build-time statistical computations */}}
+{{ $totalRecords = len $records }}
+{{ range $records }}
+  {{ with .capacity_mw }}
+    {{ $totalCapacity = add $totalCapacity (float .) }}
+  {{ end }}
+  {{ with .output_mw }}
+    {{ $totalOutput = add $totalOutput (float .) }}
+  {{ end }}
+  {{ with .efficiency_pct }}
+    {{ $sumEfficiency = add $sumEfficiency (float .) }}
+    {{ $validEfficiencyCount = add $validEfficiencyCount 1 }}
+  {{ end }}
+{{ end }}
+
+{{ if gt $validEfficiencyCount 0 }}
+  {{ $avgEfficiency = div $sumEfficiency $validEfficiencyCount }}
+{{ end }}
+
+<div class="carbon-xml-container cds--data-table-container" id="{{ $id }}" data-xml-table data-src="{{ $src }}" data-page-size="{{ $pageSize }}">
+  {{/* Header & Metadata */}}
+  <div class="cds--data-table-header">
+    <div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+        <span class="cds--tag cds--tag--purple" style="font-family: var(--cds-font-mono, monospace);">XML DATASET</span>
+        <span class="cds--tag cds--tag--warm-gray">{{ $totalRecords }} Records</span>
+      </div>
+      <h3 class="cds--data-table-header__title">{{ $title }}</h3>
+      {{ with $description }}
+        <p class="cds--data-table-header__description">{{ . }}</p>
+      {{ end }}
+    </div>
+
+    {{/* Export & Actions */}}
+    <div class="cds--table-toolbar-actions">
+      <a href="{{ $src }}" download class="cds--btn cds--btn--ghost cds--btn--sm">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13 7l-1.4-1.4L9 8.2V1H7v7.2L4.4 5.6 3 7l5 5 5-5zM1 13v2h14v-2H1z"/></svg>
+        Download XML
+      </a>
+    </div>
+  </div>
+
+  {{/* Build-Time KPI Summary Ribbon */}}
+  {{ if gt $totalRecords 0 }}
+    <div class="carbon-kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+      <div class="carbon-kpi-card" style="background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); border-top: 3px solid #69a280; padding: 1rem 1.25rem;">
+        <div class="carbon-kpi-card__label" style="font-size: 0.75rem; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary); text-transform: uppercase;">Active Nodes</div>
+        <div class="carbon-kpi-card__value" style="font-size: 1.75rem; font-weight: 300; color: var(--cds-text-primary); line-height: 1.2; margin: 0.375rem 0;">{{ $totalRecords }}</div>
+        <div class="carbon-kpi-card__sub" style="font-size: 0.75rem; color: #69a280;">100% Operational</div>
+      </div>
+
+      <div class="carbon-kpi-card" style="background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); border-top: 3px solid #0f62fe; padding: 1rem 1.25rem;">
+        <div class="carbon-kpi-card__label" style="font-size: 0.75rem; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary); text-transform: uppercase;">Total Capacity</div>
+        <div class="carbon-kpi-card__value" style="font-size: 1.75rem; font-weight: 300; color: var(--cds-text-primary); line-height: 1.2; margin: 0.375rem 0;">{{ printf "%.1f" $totalCapacity }} <span style="font-size: 0.9rem; color: var(--cds-text-secondary);">MW</span></div>
+        <div class="carbon-kpi-card__sub" style="font-size: 0.75rem; color: var(--cds-text-secondary);">Installed Clean Output</div>
+      </div>
+
+      <div class="carbon-kpi-card" style="background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); border-top: 3px solid #8a3ffc; padding: 1rem 1.25rem;">
+        <div class="carbon-kpi-card__label" style="font-size: 0.75rem; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary); text-transform: uppercase;">Actual Generation</div>
+        <div class="carbon-kpi-card__value" style="font-size: 1.75rem; font-weight: 300; color: var(--cds-text-primary); line-height: 1.2; margin: 0.375rem 0;">{{ printf "%.1f" $totalOutput }} <span style="font-size: 0.9rem; color: var(--cds-text-secondary);">MW</span></div>
+        <div class="carbon-kpi-card__sub" style="font-size: 0.75rem; color: var(--cds-text-secondary);">Real-time Telemetry</div>
+      </div>
+
+      <div class="carbon-kpi-card" style="background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); border-top: 3px solid #f1c21b; padding: 1rem 1.25rem;">
+        <div class="carbon-kpi-card__label" style="font-size: 0.75rem; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary); text-transform: uppercase;">Mean Efficiency</div>
+        <div class="carbon-kpi-card__value" style="font-size: 1.75rem; font-weight: 300; color: var(--cds-text-primary); line-height: 1.2; margin: 0.375rem 0;">{{ printf "%.1f%%" $avgEfficiency }}</div>
+        <div class="carbon-kpi-card__sub" style="font-size: 0.75rem; color: #69a280;">High Yield Band</div>
+      </div>
+    </div>
+  {{ end }}
+
+  {{/* Table Toolbar */}}
+  <div class="cds--table-toolbar">
+    <div class="cds--table-toolbar-content">
+      <div class="cds--table-toolbar-search cds--search cds--search--sm">
+        <label id="search-label-{{ $id }}" class="cds--label" for="search-input-{{ $id }}">Search</label>
+        <input type="text" class="cds--search-input carbon-xml-search" id="search-input-{{ $id }}" placeholder="Search XML records..." aria-label="Search records">
+        <svg class="cds--search-magnifier" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M15 13.9L11.4 10.3C12.4 9.1 13 7.6 13 6c0-3.9-3.1-7-7-7S-1 2.1-1 6s3.1 7 7 7c1.6 0 3.1-.6 4.3-1.6l3.6 3.6 1.1-1.1zM1 6c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5-5-2.2-5-5z"/>
+        </svg>
+      </div>
+      <div class="carbon-xml-counter cds--type-caption" style="color: var(--cds-text-secondary); font-family: var(--cds-font-mono, monospace);">
+        Showing {{ len $records }} records
+      </div>
+    </div>
+  </div>
+
+  {{/* Data Table */}}
+  <div class="cds--table-wrapper">
+    <table class="cds--data-table cds--data-table--zebra cds--data-table--compact carbon-xml-datatable" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="background-color: var(--cds-layer-01); border-bottom: 1px solid var(--cds-border-subtle-01);">
+          <th style="padding: 0.625rem 1rem; text-align: left; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cds-text-primary);">Node Name</th>
+          <th style="padding: 0.625rem 1rem; text-align: left; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cds-text-primary);">Country / Region</th>
+          <th style="padding: 0.625rem 1rem; text-align: right; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cds-text-primary);">Capacity</th>
+          <th style="padding: 0.625rem 1rem; text-align: right; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cds-text-primary);">Output</th>
+          <th style="padding: 0.625rem 1rem; text-align: right; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cds-text-primary);">Efficiency</th>
+          <th style="padding: 0.625rem 1rem; text-align: right; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cds-text-primary);">Carbon (g/kWh)</th>
+          <th style="padding: 0.625rem 1rem; text-align: center; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cds-text-primary);">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range $records }}
+          <tr style="border-bottom: 1px solid var(--cds-border-subtle-00);">
+            <td style="padding: 0.625rem 1rem; font-weight: 600; color: var(--cds-text-primary);">
+              {{ .node | default "-" }}
+              <div style="font-size: 0.75rem; font-weight: normal; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary);">{{ .id }}</div>
+            </td>
+            <td style="padding: 0.625rem 1rem; color: var(--cds-text-primary);">
+              {{ .country | default "-" }}
+              <div style="font-size: 0.75rem; color: var(--cds-text-secondary);">{{ .region }}</div>
+            </td>
+            <td style="padding: 0.625rem 1rem; text-align: right; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-primary);">
+              {{ with .capacity_mw }}{{ printf "%.1f MW" (float .) }}{{ else }}-{{ end }}
+            </td>
+            <td style="padding: 0.625rem 1rem; text-align: right; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-primary);">
+              {{ with .output_mw }}{{ printf "%.1f MW" (float .) }}{{ else }}-{{ end }}
+            </td>
+            <td style="padding: 0.625rem 1rem; text-align: right; font-family: var(--cds-font-mono, monospace); color: #69a280; font-weight: 600;">
+              {{ with .efficiency_pct }}{{ printf "%.1f%%" (float .) }}{{ else }}-{{ end }}
+            </td>
+            <td style="padding: 0.625rem 1rem; text-align: right; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary);">
+              {{ with .carbon_intensity }}{{ printf "%.1f" (float .) }}{{ else }}-{{ end }}
+            </td>
+            <td style="padding: 0.625rem 1rem; text-align: center;">
+              {{ if eq .status "Optimal" }}
+                <span class="cds--tag cds--tag--green" style="margin: 0;">Optimal</span>
+              {{ else }}
+                <span class="cds--tag cds--tag--blue" style="margin: 0;">{{ .status | default "Active" }}</span>
+              {{ end }}
+            </td>
+          </tr>
+        {{ else }}
+          <tr>
+            <td colspan="7" style="padding: 2rem; text-align: center; color: var(--cds-text-secondary);">
+              No records parsed from XML dataset.
+            </td>
+          </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </div>
+</div>

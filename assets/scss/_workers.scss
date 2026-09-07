@@ -1,0 +1,678 @@
+// Multithreaded Workers, Canvas Physics, Chess Arena, AI Persona, and Read-Aloud Styles
+
+// Read-Aloud Player Tile
+.carbon-read-aloud {
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-01);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--cds-text-primary);
+  }
+
+  &__icon {
+    color: var(--cds-link-primary);
+  }
+
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  &__stop-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  &__rate-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary);
+  }
+
+  &__rate-input {
+    width: 80px;
+    accent-color: var(--cds-interactive-01);
+    cursor: pointer;
+  }
+
+  &__voice-group {
+    flex: 1 1 180px;
+    min-width: 150px;
+  }
+
+  &__voice-select {
+    width: 100%;
+    height: 2rem;
+    font-size: 0.75rem;
+    background-color: var(--cds-field-01);
+    color: var(--cds-text-primary);
+    border: 1px solid var(--cds-border-subtle-01);
+    padding: 0 0.5rem;
+  }
+}
+
+// 60Hz Physics Canvas Simulation
+.carbon-physics-container {
+  background: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-01);
+  margin: 2rem 0;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+  }
+
+  &__stats {
+    display: flex;
+    gap: 1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8125rem;
+    color: var(--cds-text-secondary);
+  }
+
+  &__canvas {
+    width: 100%;
+    height: 400px;
+    background: #000000;
+    border: 1px solid var(--cds-border-subtle-02);
+    display: block;
+    cursor: crosshair;
+  }
+
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
+// Stockfish Chess Arena (IBM Carbon Design System Compliant)
+.carbon-chess-container {
+  background: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-01);
+  margin: 2rem 0;
+  padding: 1.5rem;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+
+    &--with-analysis {
+      @media (min-width: 54rem) {
+        grid-template-columns: 440px 1fr;
+      }
+    }
+
+    &--no-analysis {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  &__board-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 440px;
+    gap: 1rem;
+  }
+
+  // Rigid, Mathematically Exact Square Board (No Dimension Shifting)
+  &__board {
+    width: 100%;
+    max-width: 440px;
+    aspect-ratio: 1 / 1;
+    min-width: 280px;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    border: 2px solid var(--cds-border-strong-01, #393939);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+    background-color: var(--cds-layer-02, #e0e0e0);
+    user-select: none;
+    box-sizing: border-box;
+  }
+
+  &__square {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    transition: background-color 0.12s ease, outline 0.12s ease;
+
+    &--light {
+      background-color: var(--cds-background, #ffffff);
+      color: var(--cds-text-primary, #161616);
+    }
+
+    &--dark {
+      background-color: var(--cds-layer-02, #e0e0e0);
+      color: var(--cds-text-primary, #161616);
+    }
+
+    &--selected {
+      background-color: var(--cds-layer-accent-01, rgba(15, 98, 254, 0.25)) !important;
+      outline: 2px solid var(--cds-focus, #0f62fe) !important;
+      outline-offset: -2px;
+    }
+
+    &--valid-move {
+      &::after {
+        content: '';
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: var(--cds-interactive-01, #0f62fe);
+        opacity: 0.75;
+        position: absolute;
+        pointer-events: none;
+        z-index: 2;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    &--valid-capture {
+      &::after {
+        content: '';
+        width: 80%;
+        height: 80%;
+        border-radius: 50%;
+        border: 3px solid var(--cds-support-error, #da1e28);
+        opacity: 0.85;
+        position: absolute;
+        pointer-events: none;
+        z-index: 2;
+        box-sizing: border-box;
+      }
+    }
+
+    &--last-move {
+      background-color: rgba(15, 98, 254, 0.15) !important;
+    }
+  }
+
+  &__piece {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    z-index: 1;
+
+    &--white {
+      color: #ffffff;
+      text-shadow: 0 0 2px #000000, 0 1px 3px rgba(0, 0, 0, 0.9);
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+    }
+
+    &--black {
+      color: #161616;
+      text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 1px 2px rgba(255, 255, 255, 0.4);
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+    }
+  }
+
+  &__eval-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--cds-layer-03, #525252);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.25rem;
+    border: 1px solid var(--cds-border-subtle-00, transparent);
+  }
+
+  &__eval-fill {
+    height: 100%;
+    background: var(--cds-interactive-01, #0f62fe);
+    width: 50%;
+    transition: width 0.3s cubic-bezier(0, 0, 0.38, 0.9);
+  }
+
+  &__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__pgn-card {
+    background: var(--cds-layer-02, #f4f4f4);
+    border: 1px solid var(--cds-border-subtle-01);
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  &__terminal {
+    background: #161616;
+    color: #39db74;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.75rem;
+    height: 160px;
+    overflow-y: auto;
+    border: 1px solid var(--cds-border-subtle-02);
+  }
+}
+
+// =============================================================================
+// IBM CARBON CHAT ASSISTANT & FLOATING DRAWER (IBM Design Language v11)
+// =============================================================================
+
+// Floating Bottom-Right Trigger Button (FAB)
+.carbon-ai-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9000;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: var(--cds-interactive-01, #0f62fe);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.32);
+  transition: transform 0.2s cubic-bezier(0, 0, 0.38, 0.9), background-color 0.15s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    background-color: var(--cds-link-primary-hover, #0043ce);
+    transform: scale(1.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cds-focus, #ffffff) !important;
+    outline-offset: 3px;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 14px;
+    height: 14px;
+    background-color: #24a148;
+    border: 2px solid var(--cds-background, #ffffff);
+    border-radius: 50%;
+  }
+}
+
+// Slide-Over AI Drawer (Occupies Right Sidebar Area)
+.carbon-ai-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 440px;
+  max-width: 96vw;
+  height: 100vh;
+  z-index: 9500;
+  background-color: var(--cds-layer-01, #f4f4f4);
+  border-left: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  box-shadow: -6px 0 28px rgba(0, 0, 0, 0.28);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0, 0, 0.38, 0.9);
+
+  &--open {
+    transform: translateX(0);
+  }
+
+  &--minimized {
+    transform: translateY(calc(100% - 58px)) !important;
+  }
+
+  &__header {
+    padding: 0.875rem 1.25rem;
+    background-color: var(--cds-layer-02, #e0e0e0);
+    border-bottom: 1px solid var(--cds-border-subtle-01);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--cds-text-primary);
+    line-height: 1.2;
+  }
+
+  &__subtitle {
+    font-size: 0.6875rem;
+    color: var(--cds-text-secondary);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  &__btn-action {
+    background: transparent;
+    border: none;
+    color: var(--cds-text-secondary);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    transition: background-color 0.12s ease, color 0.12s ease;
+
+    &:hover {
+      background-color: var(--cds-layer-03, #c6c6c6);
+      color: var(--cds-text-primary);
+    }
+  }
+
+  &__status-bar {
+    padding: 0.5rem 1.25rem;
+    background-color: var(--cds-layer-02, #e0e0e0);
+    border-bottom: 1px solid var(--cds-border-subtle-01);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__chat-stream {
+    flex: 1;
+    padding: 1.25rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  // Conversation Starter Tiles (IBM Carbon Pattern)
+  .carbon-ai-starters-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .carbon-ai-starters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .carbon-ai-starter-tile {
+    background-color: var(--cds-background, #ffffff);
+    border: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    cursor: pointer;
+    text-align: left;
+    color: var(--cds-text-primary);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    transition: background-color 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+
+    &:hover {
+      background-color: var(--cds-layer-02, #e0e0e0);
+      border-color: var(--cds-interactive-01, #0f62fe);
+      transform: translateX(3px);
+      color: var(--cds-link-primary, #0f62fe);
+    }
+
+    &__text {
+      flex: 1;
+    }
+  }
+
+  // Message Row & Avatar
+  .carbon-ai-msg-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    width: 100%;
+
+    &--user {
+      justify-content: flex-end;
+    }
+
+    &--assistant {
+      justify-content: flex-start;
+    }
+  }
+
+  .carbon-ai-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &--assistant {
+      background-color: var(--cds-interactive-01, #0f62fe);
+      color: #ffffff;
+    }
+
+    &--user {
+      background-color: var(--cds-layer-03, #525252);
+      color: #ffffff;
+    }
+  }
+
+  // Carbon Chat Message Bubbles
+  &__bubble,
+  .carbon-ai-persona__bubble {
+    max-width: 85%;
+    padding: 0.875rem 1.125rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    box-sizing: border-box;
+
+    &--user {
+      align-self: flex-end;
+      background-color: var(--cds-interactive-01, #0f62fe);
+      color: #ffffff;
+      border-bottom-right-radius: 0;
+    }
+
+    &--assistant {
+      align-self: flex-start;
+      background-color: var(--cds-background, #ffffff);
+      border: 1px solid var(--cds-border-subtle-01);
+      color: var(--cds-text-primary);
+      border-bottom-left-radius: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    &--system {
+      align-self: center;
+      background-color: var(--cds-field-01);
+      font-size: 0.75rem;
+      color: var(--cds-text-secondary);
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  // Code Block Container with Copy Action inside Chat
+  .carbon-ai-code-box {
+    background-color: #161616;
+    color: #f4f4f4;
+    border: 1px solid var(--cds-border-subtle-02);
+    border-radius: 2px;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    position: relative;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8125rem;
+    overflow-x: auto;
+
+    pre {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+    }
+
+    .carbon-ai-code-copy-btn {
+      position: absolute;
+      top: 0.375rem;
+      right: 0.375rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      font-size: 0.6875rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+      cursor: pointer;
+
+      &:hover {
+        background: var(--cds-interactive-01, #0f62fe);
+      }
+    }
+  }
+
+  // Citation Chips
+  .carbon-ai-citations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: 0.375rem;
+    padding-top: 0.375rem;
+    border-top: 1px dashed var(--cds-border-subtle-01);
+  }
+
+  // Typing Indicator (3 pulsing dots)
+  .carbon-ai-typing {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+
+    span {
+      width: 6px;
+      height: 6px;
+      background-color: var(--cds-interactive-01, #0f62fe);
+      border-radius: 50%;
+      animation: cds-typing-pulse 1.2s infinite ease-in-out;
+
+      &:nth-child(2) { animation-delay: 0.2s; }
+      &:nth-child(3) { animation-delay: 0.4s; }
+    }
+  }
+
+  // Input Tray
+  &__input-tray {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--cds-border-subtle-01);
+    background-color: var(--cds-layer-02, #e0e0e0);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__input-wrapper {
+    width: 100%;
+  }
+
+  &__textarea {
+    width: 100%;
+    min-height: 2.75rem;
+    max-height: 120px;
+    background-color: var(--cds-field-01, #ffffff);
+    border: 1px solid var(--cds-border-subtle-01);
+    color: var(--cds-text-primary);
+    padding: 0.625rem 0.75rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    resize: none;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: 2px solid var(--cds-focus, #0f62fe);
+      outline-offset: -2px;
+    }
+  }
+
+  &__input-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@keyframes cds-typing-pulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1.1); opacity: 1; }
+}

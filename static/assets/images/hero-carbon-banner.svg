@@ -1,0 +1,143 @@
+<svg width="1200" height="420" viewBox="0 0 1200 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#161616"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </linearGradient>
+    
+    <linearGradient id="blueGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f62fe" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#8a3ffc" stop-opacity="0.8"/>
+    </linearGradient>
+
+    <linearGradient id="tileGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#262626"/>
+      <stop offset="100%" stop-color="#1c1c1c"/>
+    </linearGradient>
+
+    <!-- Grid Pattern -->
+    <pattern id="carbon2xGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#393939" stroke-width="0.75" stroke-opacity="0.4"/>
+      <circle cx="0" cy="0" r="1.5" fill="#0f62fe" fill-opacity="0.6"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="420" fill="url(#bgGrad)"/>
+  
+  <!-- 2x Grid Matrix Overlay -->
+  <rect width="1200" height="420" fill="url(#carbon2xGrid)"/>
+
+  <!-- Glowing Accent Line -->
+  <line x1="0" y1="4" x2="1200" y2="4" stroke="url(#blueGlow)" stroke-width="4"/>
+
+  <!-- Left Architectural Blueprint Elements -->
+  <g transform="translate(60, 60)">
+    <!-- Main Architectural Card -->
+    <rect x="0" y="0" width="380" height="240" fill="url(#tileGrad)" stroke="#393939" stroke-width="1" rx="2"/>
+    <rect x="0" y="0" width="380" height="36" fill="#161616" stroke="#393939" stroke-width="1"/>
+    <circle cx="20" cy="18" r="4" fill="#da1e28"/>
+    <circle cx="36" cy="18" r="4" fill="#f1c21b"/>
+    <circle cx="52" cy="18" r="4" fill="#24a148"/>
+    <text x="75" y="22" fill="#a8a8a8" font-family="'IBM Plex Mono', monospace" font-size="11">carbon-v11-engine.config.yaml</text>
+
+    <!-- Code Blueprint Lines -->
+    <rect x="24" y="56" width="140" height="12" fill="#0f62fe" rx="1" fill-opacity="0.85"/>
+    <rect x="24" y="80" width="280" height="8" fill="#525252" rx="1"/>
+    <rect x="24" y="98" width="220" height="8" fill="#525252" rx="1"/>
+    <rect x="24" y="116" width="320" height="8" fill="#393939" rx="1"/>
+    <rect x="24" y="144" width="100" height="28" fill="#0f62fe" rx="2"/>
+    <text x="36" y="162" fill="#ffffff" font-family="'IBM Plex Sans', sans-serif" font-size="11" font-weight="600">Deploy Static</text>
+    <rect x="136" y="144" width="100" height="28" fill="#393939" rx="2"/>
+    <text x="148" y="162" fill="#f4f4f4" font-family="'IBM Plex Sans', sans-serif" font-size="11" font-weight="500">CSVW Ingestion</text>
+
+    <!-- Micro Metrics -->
+    <rect x="24" y="192" width="100" height="24" fill="#161616" stroke="#393939" stroke-width="1"/>
+    <text x="32" y="208" fill="#24a148" font-family="'IBM Plex Mono', monospace" font-size="10">⚡ 44ms Build</text>
+    
+    <rect x="134" y="192" width="100" height="24" fill="#161616" stroke="#393939" stroke-width="1"/>
+    <text x="142" y="208" fill="#78a9ff" font-family="'IBM Plex Mono', monospace" font-size="10">◆ 16-Col Grid</text>
+
+    <rect x="244" y="192" width="100" height="24" fill="#161616" stroke="#393939" stroke-width="1"/>
+    <text x="252" y="208" fill="#be95ff" font-family="'IBM Plex Mono', monospace" font-size="10">● 4 Themes</text>
+  </g>
+
+  <!-- Center-Right 16-Column 2x Grid Wireframe -->
+  <g transform="translate(480, 60)">
+    <!-- Layered Carbon UI Shell Mockup -->
+    <rect x="0" y="0" width="660" height="300" fill="#161616" stroke="#0f62fe" stroke-width="1" stroke-dasharray="4 4" rx="2" fill-opacity="0.7"/>
+    
+    <!-- Top Nav Simulation -->
+    <rect x="0" y="0" width="660" height="36" fill="#000000" stroke="#393939" stroke-width="1"/>
+    <text x="20" y="23" fill="#ffffff" font-family="'IBM Plex Sans', sans-serif" font-size="13" font-weight="700">IBM <tspan font-weight="400">Carbon Modular Engine</tspan></text>
+    <rect x="240" y="10" width="60" height="16" fill="#262626" rx="2"/>
+    <rect x="310" y="10" width="60" height="16" fill="#262626" rx="2"/>
+    <rect x="380" y="10" width="60" height="16" fill="#262626" rx="2"/>
+    <rect x="580" y="8" width="60" height="20" fill="#0f62fe" rx="1"/>
+    <text x="592" y="22" fill="#ffffff" font-family="'IBM Plex Sans', sans-serif" font-size="10" font-weight="600">Search /</text>
+
+    <!-- Dual Sidebar Layout Scaffolding Visualizer -->
+    <!-- Left Sidebar -->
+    <rect x="0" y="36" width="140" height="264" fill="#1c1c1c" stroke="#393939" stroke-width="1"/>
+    <rect x="16" y="52" width="90" height="8" fill="#525252" rx="1"/>
+    <rect x="16" y="70" width="108" height="18" fill="#262626" stroke-left="3" stroke="#0f62fe"/>
+    <rect x="16" y="96" width="90" height="14" fill="#262626" rx="1"/>
+    <rect x="16" y="118" width="90" height="14" fill="#262626" rx="1"/>
+    <rect x="16" y="140" width="90" height="14" fill="#262626" rx="1"/>
+
+    <!-- Main Content Area -->
+    <rect x="140" y="36" width="380" height="264" fill="#262626"/>
+    <rect x="160" y="56" width="180" height="22" fill="#ffffff" rx="1" fill-opacity="0.9"/>
+    <rect x="160" y="88" width="340" height="8" fill="#8d8d8d" rx="1"/>
+    <rect x="160" y="104" width="300" height="8" fill="#8d8d8d" rx="1"/>
+
+    <!-- 2x Card Grid Mockup -->
+    <rect x="160" y="128" width="160" height="96" fill="#393939" stroke="#525252" stroke-width="1" rx="2"/>
+    <rect x="172" y="140" width="50" height="14" fill="#002d9c" rx="2"/>
+    <rect x="172" y="162" width="130" height="10" fill="#f4f4f4" rx="1"/>
+    <rect x="172" y="180" width="110" height="6" fill="#8d8d8d" rx="1"/>
+
+    <rect x="330" y="128" width="160" height="96" fill="#393939" stroke="#525252" stroke-width="1" rx="2"/>
+    <rect x="342" y="140" width="50" height="14" fill="#044317" rx="2"/>
+    <rect x="342" y="162" width="130" height="10" fill="#f4f4f4" rx="1"/>
+    <rect x="342" y="180" width="110" height="6" fill="#8d8d8d" rx="1"/>
+
+    <!-- DataTable Preview Mockup -->
+    <rect x="160" y="234" width="330" height="50" fill="#1c1c1c" stroke="#393939" stroke-width="1"/>
+    <line x1="160" y1="250" x2="490" y2="250" stroke="#393939" stroke-width="1"/>
+    <rect x="170" y="240" width="50" height="6" fill="#78a9ff" rx="1"/>
+    <rect x="250" y="240" width="50" height="6" fill="#78a9ff" rx="1"/>
+    <rect x="340" y="240" width="50" height="6" fill="#78a9ff" rx="1"/>
+    <rect x="420" y="240" width="50" height="6" fill="#78a9ff" rx="1"/>
+
+    <!-- Right Sidebar (ToC) -->
+    <rect x="520" y="36" width="140" height="264" fill="#1c1c1c" stroke="#393939" stroke-width="1"/>
+    <rect x="536" y="52" width="80" height="8" fill="#525252" rx="1"/>
+    <rect x="536" y="70" width="100" height="6" fill="#0f62fe" rx="1"/>
+    <rect x="536" y="84" width="90" height="6" fill="#6f6f6f" rx="1"/>
+    <rect x="536" y="98" width="85" height="6" fill="#6f6f6f" rx="1"/>
+    <rect x="536" y="112" width="95" height="6" fill="#6f6f6f" rx="1"/>
+  </g>
+
+  <!-- Bottom Token Strip -->
+  <g transform="translate(60, 375)">
+    <circle cx="10" cy="10" r="10" fill="#0f62fe"/>
+    <text x="28" y="15" fill="#c6c6c6" font-family="'IBM Plex Mono', monospace" font-size="11">interactive-01</text>
+
+    <circle cx="170" cy="10" r="10" fill="#8a3ffc"/>
+    <text x="188" y="15" fill="#c6c6c6" font-family="'IBM Plex Mono', monospace" font-size="11">link-visited</text>
+
+    <circle cx="310" cy="10" r="10" fill="#007d79"/>
+    <text x="328" y="15" fill="#c6c6c6" font-family="'IBM Plex Mono', monospace" font-size="11">support-info</text>
+
+    <circle cx="450" cy="10" r="10" fill="#24a148"/>
+    <text x="468" y="15" fill="#c6c6c6" font-family="'IBM Plex Mono', monospace" font-size="11">support-success</text>
+
+    <circle cx="610" cy="10" r="10" fill="#da1e28"/>
+    <text x="628" y="15" fill="#c6c6c6" font-family="'IBM Plex Mono', monospace" font-size="11">support-error</text>
+
+    <text x="1000" y="15" fill="#78a9ff" font-family="'IBM Plex Mono', monospace" font-size="11">WCAG 2.1 AA Compliant</text>
+  </g>
+</svg>

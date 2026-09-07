@@ -1,0 +1,26 @@
+{{ $name := "" }}
+{{ if .IsNamedParams }}
+  {{ $name = .Get "name" }}
+{{ else if gt (len .Params) 0 }}
+  {{ $name = .Get 0 }}
+{{ end }}
+{{ $name = $name | default "tag" | strings.TrimPrefix "#" | strings.TrimSpace }}
+
+{{ $type := .Get "type" | default "outline" }}
+{{ $href := .Get "href" }}
+{{ $clickable := .Get "clickable" | default true }}
+{{ $showHash := .Get "hash" | default true }}
+
+{{ if $href }}
+  <a href="{{ $href }}" class="cds--tag cds--tag--{{ $type }} cds--tag--clickable" title="Tag: {{ $name }}">
+    {{ if $showHash }}#{{ end }}{{ $name }}
+  </a>
+{{ else if $clickable }}
+  <a href="{{ partial "components/tag-url.html" $name }}" class="cds--tag cds--tag--{{ $type }} cds--tag--clickable" title="View all pages tagged with #{{ $name }}">
+    {{ if $showHash }}#{{ end }}{{ $name }}
+  </a>
+{{ else }}
+  <span class="cds--tag cds--tag--{{ $type }}">
+    {{ if $showHash }}#{{ end }}{{ $name }}
+  </span>
+{{ end }}

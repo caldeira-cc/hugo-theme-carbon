@@ -1,0 +1,18 @@
+{{ $title := .Get "title" }}
+{{ $open := .Get "open" | default false }}
+{{ $itemClass := "cds--accordion__item" }}
+{{ if or (eq $open "true") (eq $open true) }}
+  {{ $itemClass = "cds--accordion__item cds--accordion__item--active" }}
+{{ end }}
+
+<li class="{{ $itemClass }}">
+  <button type="button" class="cds--accordion__heading" aria-expanded="{{ if or (eq $open "true") (eq $open true) }}true{{ else }}false{{ end }}">
+    <svg class="cds--accordion__arrow" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+      <path d="M6 4l4 4-4 4-1-1 3-3-3-3z"/>
+    </svg>
+    {{ with $title }}<div class="cds--accordion__title">{{ . }}</div>{{ end }}
+  </button>
+  <div class="cds--accordion__content">
+    {{ .Inner | markdownify }}
+  </div>
+</li>

@@ -1,0 +1,17 @@
+participant_id,age,gender,education_level,cognitive_score,reaction_time_ms,stress_index,treatment_group
+P-101,24,Female,Master,88.5,312,4.2,Experimental
+P-102,29,Male,Bachelor,76.0,345,6.8,Control
+P-103,35,Female,PhD,94.2,289,3.1,Experimental
+P-104,41,Male,Bachelor,68.4,402,7.9,Control
+P-105,22,Non-Binary,Bachelor,82.1,328,5.4,Experimental
+P-106,31,Female,Master,91.0,295,3.8,Experimental
+P-107,48,Male,HighSchool,62.3,440,8.4,Control
+P-108,27,Female,Bachelor,79.8,336,5.9,Control
+P-109,38,Male,Master,85.2,319,4.6,Experimental
+P-110,44,Female,PhD,96.0,278,2.8,Experimental
+P-111,26,Male,Bachelor,73.5,360,6.2,Control
+P-112,33,Female,Master,89.4,304,4.0,Experimental
+P-113,52,Male,Bachelor,64.1,425,8.1,Control
+P-114,28,Female,Bachelor,81.0,330,5.1,Experimental
+P-115,36,Male,PhD,92.7,292,3.5,Experimental
+P-116,40,Female,Master,86.3,315,4.9,Control

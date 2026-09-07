@@ -1,0 +1,16 @@
+{
+  "@context": "http://www.w3.org/ns/csvw",
+  "title": "High-Frequency Financial Engine Benchmarks",
+  "description": "Deterministic latency benchmarks and SLAs for financial transaction gateways.",
+  "tableSchema": {
+    "columns": [
+      { "name": "metric_id", "titles": "Metric ID", "datatype": "string" },
+      { "name": "benchmark_name", "titles": "Benchmark Pipeline", "datatype": "string" },
+      { "name": "target_latency_ms", "titles": "Target SLA (ms)", "datatype": "number" },
+      { "name": "actual_latency_ms", "titles": "Mean Latency (ms)", "datatype": "number" },
+      { "name": "p99_ms", "titles": "P99 Latency (ms)", "datatype": "number" },
+      { "name": "status", "titles": "SLA Result", "datatype": "string" }
+    ],
+    "primaryKey": "metric_id"
+  }
+}

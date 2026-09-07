@@ -1,0 +1,101 @@
+<!-- layouts/partials/components/page-card.html -->
+{{ $page := . }}
+{{ $showAuthor := true }}
+{{ $showDate := true }}
+{{ $showTags := true }}
+{{ $showCategories := true }}
+{{ $showReadingTime := true }}
+
+{{ if reflect.IsMap . }}
+  {{ if isset . "context" }}{{ $page = .context }}{{ end }}
+  {{ if isset . "showAuthor" }}{{ $showAuthor = .showAuthor }}{{ end }}
+  {{ if isset . "showDate" }}{{ $showDate = .showDate }}{{ end }}
+  {{ if isset . "showTags" }}{{ $showTags = .showTags }}{{ end }}
+  {{ if isset . "showCategories" }}{{ $showCategories = .showCategories }}{{ end }}
+  {{ if isset . "showReadingTime" }}{{ $showReadingTime = .showReadingTime }}{{ end }}
+{{ end }}
+
+<div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8 cds--col-xlg-8 carbon-card-col">
+  <div class="cds--card cds--card--clickable cds--tile carbon-page-card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; overflow: hidden; padding: 0; background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00);">
+    {{ with $page.Params.image }}
+      <div style="width: 100%; height: 180px; overflow: hidden; background-color: var(--cds-layer-02); border-bottom: 1px solid var(--cds-border-subtle-00);">
+        <a href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true" style="display: block; width: 100%; height: 100%;">
+          <img src="{{ . }}" alt="{{ $page.Title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+        </a>
+      </div>
+    {{ end }}
+    <div style="padding: 1.25rem; display: flex; flex-direction: column; flex: 1 0 auto; justify-content: space-between;">
+      <div>
+        <div class="carbon-page-card__top" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+          {{ if and $showCategories $page.Params.categories }}
+            {{ $cat := index $page.Params.categories 0 }}
+            <a href="{{ partial "components/category-url.html" $cat }}" class="cds--tag cds--tag--blue cds--tag--clickable carbon-page-card__badge" title="View category: {{ $cat }}">
+              {{ $cat }}
+            </a>
+          {{ end }}
+          {{ with $page.Params.status }}
+            <span class="cds--tag {{ if or (eq . "Completed") (eq . "Active") (eq . "Optimal") }}cds--tag--green{{ else }}cds--tag--purple{{ end }} carbon-page-card__badge">
+              {{ . }}
+            </span>
+          {{ end }}
+        </div>
+
+        <h3 class="carbon-page-card__title" style="margin: 0 0 0.5rem 0; font-size: 1.15rem; line-height: 1.35;">
+          <a href="{{ $page.RelPermalink }}" class="cds--link" style="color: var(--cds-text-primary); text-decoration: none;">
+            {{ $page.Title }}
+          </a>
+        </h3>
+        <p class="carbon-page-card__summary" style="color: var(--cds-text-secondary); font-size: 0.875rem; line-height: 1.5; margin: 0 0 1rem 0;">
+          {{ $page.Summary | default $page.Description | truncate 130 }}
+        </p>
+      </div>
+
+      <!-- Front-Matter Metadata Grid -->
+      <div>
+        <div class="carbon-page-card__meta-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5rem; padding-top: 0.75rem; border-top: 1px solid var(--cds-border-subtle-00); font-size: 0.75rem;">
+          {{ if $showAuthor }}
+            {{ $authors := partial "components/get-authors.html" $page }}
+            {{ if gt (len $authors) 0 }}
+              <div class="carbon-page-card__meta-cell">
+                <span class="carbon-page-card__meta-key" style="display: block; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary); text-transform: uppercase;">{{ if eq (len $authors) 1 }}Author{{ else }}Authors{{ end }}</span>
+                <span class="carbon-page-card__meta-val" style="color: var(--cds-text-primary); font-weight: 500;">
+                  {{ range $idx, $auth := $authors }}
+                    {{ if gt $idx 0 }}, {{ end }}
+                    <a href="{{ partial "components/author-url.html" $auth }}" class="cds--link" title="View profile of {{ $auth }}">
+                      {{ $auth }}
+                    </a>
+                  {{ end }}
+                </span>
+              </div>
+            {{ end }}
+          {{ end }}
+
+          {{ if and $showDate (not $page.Date.IsZero) }}
+            <div class="carbon-page-card__meta-cell">
+              <span class="carbon-page-card__meta-key" style="display: block; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary); text-transform: uppercase;">Date</span>
+              <span class="carbon-page-card__meta-val" style="color: var(--cds-text-primary); font-weight: 500;">{{ $page.Date.Format "Jan 02, 2006" }}</span>
+            </div>
+          {{ end }}
+
+          {{ if and $showReadingTime $page.ReadingTime }}
+            <div class="carbon-page-card__meta-cell">
+              <span class="carbon-page-card__meta-key" style="display: block; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-secondary); text-transform: uppercase;">Read Time</span>
+              <span class="carbon-page-card__meta-val" style="color: var(--cds-text-primary); font-weight: 500;">{{ $page.ReadingTime }} min</span>
+            </div>
+          {{ end }}
+        </div>
+
+        {{/* Visible Tags List on Card as mandated by NOTEPAD.md */}}
+        {{ if and $showTags $page.Params.tags }}
+          <div class="carbon-page-card__tags" style="display: flex; gap: 0.25rem; flex-wrap: wrap; margin-top: 0.75rem;">
+            {{ range first 4 $page.Params.tags }}
+              <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}/" class="cds--tag cds--tag--outline cds--tag--sm cds--tag--clickable" style="margin: 0; font-size: 0.6875rem; border-color: var(--cds-border-subtle-00); color: var(--cds-text-secondary);">
+                #{{ . }}
+              </a>
+            {{ end }}
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</div>

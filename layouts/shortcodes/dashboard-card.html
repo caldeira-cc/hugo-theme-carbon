@@ -1,0 +1,58 @@
+{{/* Shortcode: dashboard-card.html */}}
+{{- $span := .Get "span" | default "8" -}}
+{{- $title := .Get "title" | default "" -}}
+{{- $subtitle := .Get "subtitle" | default "" -}}
+{{- $badge := .Get "badge" | default "" -}}
+{{- $badgeColor := .Get "badge_color" | default "blue" -}}
+{{- $height := .Get "height" | default "" -}}
+{{- $pad := .Get "pad" | default "true" -}}
+{{- $actionText := .Get "action_text" | default "" -}}
+{{- $actionUrl := .Get "action_url" | default "" -}}
+{{- $footerText := .Get "footer_text" | default "" -}}
+{{- $class := .Get "class" | default "" -}}
+
+{{- $colLg := printf "cds--col-lg-%s" $span -}}
+{{- $colXlg := printf "cds--col-xlg-%s" $span -}}
+{{- $colMd := "cds--col-md-8" -}}
+{{- if or (eq $span "4") (eq $span "3") -}}
+  {{- $colMd = "cds--col-md-4" -}}
+{{- end -}}
+{{- $colSm := "cds--col-sm-4" -}}
+
+<div class="{{ $colSm }} {{ $colMd }} {{ $colLg }} {{ $colXlg }}{{ with $class }} {{ . }}{{ end }}">
+<div class="carbon-dashboard-card" {{- with $height }} style="min-height: {{ . }};"{{- end -}}>
+{{- if or $title $badge $actionText -}}
+<div class="carbon-dashboard-card__header">
+<div class="carbon-dashboard-card__title-group">
+{{- with $badge -}}
+<span class="cds--tag cds--tag--{{ $badgeColor }} cds--tag--sm">{{ . }}</span>
+{{- end -}}
+<div>
+{{- with $title -}}
+<h3 class="carbon-dashboard-card__title">{{ . }}</h3>
+{{- end -}}
+{{- with $subtitle -}}
+<div class="carbon-dashboard-card__subtitle">{{ . }}</div>
+{{- end -}}
+</div>
+</div>
+{{- if and $actionText $actionUrl -}}
+<div class="carbon-dashboard-card__actions">
+<a href="{{ $actionUrl }}" class="cds--btn cds--btn--ghost cds--btn--sm">
+<span>{{ $actionText }}</span>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
+</a>
+</div>
+{{- end -}}
+</div>
+{{- end -}}
+<div class="carbon-dashboard-card__body{{ if eq $pad "false" }} carbon-dashboard-card__body--no-pad{{ end }}">
+{{ .Inner }}
+</div>
+{{- with $footerText -}}
+<div class="carbon-dashboard-card__footer">
+<span>{{ . }}</span>
+</div>
+{{- end -}}
+</div>
+</div>

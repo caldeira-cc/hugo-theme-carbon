@@ -1,0 +1,53 @@
+{{ $type := .Get "type" | default "text" }}
+{{ $width := .Get "width" | default "100%" }}
+{{ $count := .Get "count" | default 1 | int }}
+
+<div class="carbon-skeleton-wrapper" aria-hidden="true" aria-busy="true">
+  {{ if eq $type "text" }}
+    {{ range seq $count }}
+      <div class="cds--skeleton__text" style="width: {{ $width }};"></div>
+    {{ end }}
+  {{ else if eq $type "heading" }}
+    <div class="cds--skeleton__text cds--skeleton__text--heading" style="width: {{ $width }};"></div>
+  {{ else if eq $type "paragraph" }}
+    <div class="cds--skeleton__text cds--skeleton__text--heading" style="width: 60%;"></div>
+    <div class="cds--skeleton__text" style="width: 100%;"></div>
+    <div class="cds--skeleton__text" style="width: 90%;"></div>
+    <div class="cds--skeleton__text" style="width: 75%;"></div>
+  {{ else if eq $type "button" }}
+    <div class="cds--btn--skeleton" style="width: {{ $width }};"></div>
+  {{ else if eq $type "card" }}
+    <div class="cds--tile" style="background-color: var(--cds-layer-01); padding: 1.5rem; border: 1px solid var(--cds-border-subtle-00);">
+      <div class="cds--skeleton__text cds--skeleton__text--heading" style="width: 50%;"></div>
+      <div class="cds--skeleton__placeholder" style="margin: 1rem 0; height: 140px;"></div>
+      <div class="cds--skeleton__text" style="width: 100%;"></div>
+      <div class="cds--skeleton__text" style="width: 80%;"></div>
+      <div class="cds--btn--skeleton" style="margin-top: 1rem; width: 120px; height: 40px;"></div>
+    </div>
+  {{ else if eq $type "placeholder" }}
+    <div class="cds--skeleton__placeholder" style="width: {{ $width }}; height: {{ .Get "height" | default "120px" }};"></div>
+  {{ else if eq $type "icon" }}
+    <div class="cds--skeleton__icon"></div>
+  {{ else if eq $type "table" }}
+    <table class="cds--data-table--skeleton">
+      <thead>
+        <tr>
+          <th><div class="cds--skeleton__text" style="width: 80px;"></div></th>
+          <th><div class="cds--skeleton__text" style="width: 120px;"></div></th>
+          <th><div class="cds--skeleton__text" style="width: 100px;"></div></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range seq 3 }}
+        <tr>
+          <td><div class="cds--skeleton__text" style="width: 70%;"></div></td>
+          <td><div class="cds--skeleton__text" style="width: 85%;"></div></td>
+          <td><div class="cds--skeleton__text" style="width: 60%;"></div></td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  {{ else }}
+    <div class="cds--skeleton__text" style="width: {{ $width }};"></div>
+  {{ end }}
+</div>

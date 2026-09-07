@@ -1,0 +1,86 @@
+# ==============================================================================
+# IBM Carbon Modular Engine - Visual Palette & Standard Theme Definitions
+# File: data/themes.yaml
+# ==============================================================================
+
+# Global Color Palette Definitions
+palette:
+  brandPrimary: "rgb(105, 162, 128)"
+  sageGreen: "rgb(105, 162, 128)"
+  sageDark: "#2e5840"
+  sageLight: "#e5f0ea"
+  fadedJeans: "#7a9eb3"
+  fadedJeansDark: "#35596e"
+  fadedJeansLight: "#a5c8dc"
+  khakiSand: "#b8a88a"
+  khakiDark: "#665739"
+  khakiLight: "#f6f3eb"
+  ibmBlue60: "#0f62fe"
+  ibmBlue70: "#0043ce"
+  ibmPurple60: "#8a3ffc"
+  ibmTeal50: "#009d9a"
+  ibmTeal60: "#007d79"
+  ibmTeal70: "#005d5d"
+  ibmMagenta60: "#d12771"
+  ibmRed60: "#da1e28"
+  ibmRed70: "#ba1b23"
+
+# Standard IBM Carbon Themes
+themes:
+  # ==========================================
+  # 1. Standard IBM Carbon White (Light)
+  # ==========================================
+  white:
+    name: "White (Light)"
+    scheme: "light"
+    tokens:
+      --cds-interactive-01: "#0f62fe"
+      --cds-interactive-02: "#393939"
+      --cds-focus: "#0f62fe"
+      --cds-link-primary: "#0f62fe"
+
+  # ==========================================
+  # 2. Standard IBM Carbon Gray 10 (Soft Light)
+  # ==========================================
+  g10:
+    name: "Gray 10 (Soft Light)"
+    scheme: "light"
+    tokens:
+      --cds-background: "#f4f4f4"
+      --cds-layer-01: "#ffffff"
+      --cds-layer-02: "#e0e0e0"
+      --cds-layer-03: "#c6c6c6"
+      --cds-interactive-01: "#0f62fe"
+      --cds-focus: "#0f62fe"
+
+  # ==========================================
+  # 3. Standard IBM Carbon Gray 90 (Dark)
+  # ==========================================
+  g90:
+    name: "Gray 90 (Dark)"
+    scheme: "dark"
+    tokens:
+      --cds-background: "#262626"
+      --cds-layer-01: "#393939"
+      --cds-layer-02: "#525252"
+      --cds-layer-03: "#6f6f6f"
+      --cds-text-primary: "#f4f4f4"
+      --cds-text-secondary: "#c6c6c6"
+      --cds-interactive-01: "#0f62fe"
+      --cds-focus: "#ffffff"
+
+  # ==========================================
+  # 4. Standard IBM Carbon Gray 100 (Deep Dark)
+  # ==========================================
+  g100:
+    name: "Gray 100 (Deep Dark)"
+    scheme: "dark"
+    tokens:
+      --cds-background: "#161616"
+      --cds-layer-01: "#262626"
+      --cds-layer-02: "#393939"
+      --cds-layer-03: "#525252"
+      --cds-text-primary: "#f4f4f4"
+      --cds-text-secondary: "#c6c6c6"
+      --cds-interactive-01: "#0f62fe"
+      --cds-focus: "#ffffff"

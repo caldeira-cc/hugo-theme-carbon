@@ -1,0 +1,12 @@
+{{ $href := .Get "href" }}
+{{ $class := .Get "class" }}
+
+{{ if $href }}
+  <a href="{{ $href }}" class="cds--tile cds--tile--clickable {{ $class }}">
+    {{ .Inner | markdownify }}
+  </a>
+{{ else }}
+  <div class="cds--tile {{ $class }}">
+    {{ .Inner | markdownify }}
+  </div>
+{{ end }}

@@ -1,0 +1,122 @@
+{{/*
+  IBM Carbon Design System v11 — AI Chat Component Shortcode
+  Compliant with IBM Carbon for AI / Carbon AI Chat React Component Specifications.
+
+  Usage:
+  {{< ai-chat title="Carbon AI Assistant" model="SmolLM2-360M-Instruct" height="550px" >}}
+*/}}
+
+{{ $title := .Get "title" | default "Carbon AI Research Assistant" }}
+{{ $subtitle := .Get "subtitle" | default "On-Device WebLLM • Static Vector RAG" }}
+{{ $model := .Get "model" | default "SmolLM2-360M-Instruct" }}
+{{ $height := .Get "height" | default "550px" }}
+{{ $id := .Get "id" | default (printf "cds-chat-%d" .Ordinal) }}
+{{ $starter1 := .Get "starter1" | default "How does the zero-CDN local architecture work?" }}
+{{ $starter2 := .Get "starter2" | default "Explain client-side AES-256-GCM encryption." }}
+{{ $starter3 := .Get "starter3" | default "How do I embed W3C CSVW data tables?" }}
+
+<div class="cds--chat-container carbon-ai-persona" id="{{ $id }}" data-model="{{ $model }}" style="height: {{ $height }};" role="region" aria-label="{{ $title }}">
+  {{/* 1. Carbon Chat Header */}}
+  <header class="cds--chat-header">
+    <div class="cds--chat-header__title-group">
+      <div class="cds--chat-message__avatar" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12z"/>
+          <circle cx="11" cy="14" r="1.5"/>
+          <circle cx="21" cy="14" r="1.5"/>
+          <path d="M16 22a6 6 0 0 0 5-2.69l-1.63-.94A4 4 0 0 1 16 20a4 4 0 0 1-3.37-1.63L11 19.31A6 6 0 0 0 16 22z"/>
+        </svg>
+      </div>
+      <div>
+        <h4 class="cds--chat-header__title">{{ $title }}</h4>
+        <p class="cds--chat-header__subtitle">{{ $subtitle }}</p>
+      </div>
+    </div>
+
+    <div class="cds--chat-header__actions">
+      <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only js-toggle-ai-settings" aria-label="Settings" title="AI Settings & Avatar">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M26.79 14.23l-2.14-.54a9.92 9.92 0 0 0-.67-1.62l1.24-1.83a1 1 0 0 0-.13-1.28l-2.48-2.48a1 1 0 0 0-1.28-.13l-1.83 1.24a9.92 9.92 0 0 0-1.62-.67l-.54-2.14A1 1 0 0 0 16.34 4h-3.51a1 1 0 0 0-.98.78l-.54 2.14a9.92 9.92 0 0 0-1.62.67L7.86 6.35a1 1 0 0 0-1.28.13L4.1 8.96a1 1 0 0 0-.13 1.28l1.24 1.83a9.92 9.92 0 0 0-.67 1.62l-2.14.54A1 1 0 0 0 2 15.21v3.51a1 1 0 0 0 .78.98l2.14.54a9.92 9.92 0 0 0 .67 1.62l-1.24 1.83a1 1 0 0 0 .13 1.28l2.48 2.48a1 1 0 0 0 1.28.13l1.83-1.24a9.92 9.92 0 0 0 1.62.67l.54 2.14a1 1 0 0 0 .98.78h3.51a1 1 0 0 0 .98-.78l.54-2.14a9.92 9.92 0 0 0 1.62-.67l1.83 1.24a1 1 0 0 0 1.28-.13l2.48-2.48a1 1 0 0 0 .13-1.28l-1.24-1.83a9.92 9.92 0 0 0 .67-1.62l2.14-.54a1 1 0 0 0 .78-.98v-3.51a1 1 0 0 0-.78-.98zM16 22a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/>
+        </svg>
+      </button>
+      <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only js-clear-ai-history" aria-label="Clear chat history" title="Clear history">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M12 12h2v12h-2zm6 0h2v12h-2z"/>
+          <path d="M4 6v2h2v20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8h2V6zm4 22V8h16v20zM10 2h12v2H10z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  {{/* 2. Chat Settings Panel */}}
+  <div class="cds--chat-settings" id="carbon-ai-settings-panel" style="display: none;">
+    <div class="cds--chat-settings__title">AI Companion Preferences</div>
+    <div class="cds--chat-settings__row">
+      <label for="carbon-ai-avatar-select" class="cds--type-label">Speaker Persona Avatar:</label>
+      <select id="carbon-ai-avatar-select" class="cds--select-input" style="width: 100%; height: 2rem; font-size: 0.75rem; background: var(--cds-field-01); color: var(--cds-text-primary); border: 1px solid var(--cds-border-subtle-01); padding: 0 0.5rem;">
+        <option value="watson" selected>IBM Watson Avatar</option>
+        <option value="scientist">Data Scientist</option>
+        <option value="classic">IBM Classic Icon</option>
+        <option value="robot">Cyber Robot</option>
+        <option value="custom">Custom Image URL...</option>
+      </select>
+      <input type="text" id="carbon-ai-custom-avatar-url" placeholder="https://example.com/avatar.png" class="cds--text-input" style="display: none; width: 100%; height: 2rem; margin-top: 0.25rem; font-size: 0.75rem; background: var(--cds-field-01); color: var(--cds-text-primary); border: 1px solid var(--cds-border-subtle-01); padding: 0 0.5rem;">
+    </div>
+    <div class="cds--chat-settings__row">
+      <label for="carbon-ai-voice-select" class="cds--type-label">Local TTS Voice (SpeechSynthesis):</label>
+      <select id="carbon-ai-voice-select" class="cds--select-input" style="width: 100%; height: 2rem; font-size: 0.75rem; background: var(--cds-field-01); color: var(--cds-text-primary); border: 1px solid var(--cds-border-subtle-01); padding: 0 0.5rem;">
+        <option value="default">Default Local OS Voice</option>
+      </select>
+    </div>
+  </div>
+
+  {{/* 3. Model Initialization & Telemetry Status */}}
+  <div class="cds--chat-status-bar">
+    <div class="carbon-ai-persona__status-pill">
+      <span class="cds--tag cds--tag--outline" style="margin: 0;">{{ $model }}</span>
+    </div>
+    <button type="button" class="cds--btn cds--btn--primary cds--btn--sm carbon-ai-persona__init-btn" style="height: 1.75rem; min-height: 1.75rem; padding: 0 0.75rem; font-size: 0.75rem;">
+      Initialize Model
+    </button>
+  </div>
+
+  {{/* 4. Chat Messages Feed */}}
+  <div class="cds--chat-messages carbon-ai-persona__chat-stream" role="log" aria-live="polite">
+    <div class="cds--chat-prompt-starters carbon-ai-starters-wrapper" id="carbon-ai-starters">
+      <div class="cds--chat-prompt-starters__intro">
+        <p class="cds--type-body-short-01" style="font-weight: 600; margin-bottom: 0.25rem;">How can I assist your research today?</p>
+        <p class="cds--type-caption" style="color: var(--cds-text-secondary); margin: 0 0 0.75rem 0;">Select a starter prompt or ask any question:</p>
+      </div>
+      <div class="cds--chat-prompt-starters__grid">
+        <button type="button" class="cds--chat-prompt-starters__tile carbon-ai-starter-tile" data-prompt="{{ $starter1 }}">
+          <span>{{ $starter1 }}</span>
+          <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor"><path d="M18 6l-1.4 1.4L24.2 15H4v2h20.2l-7.6 7.6L18 26l10-10L18 6z"/></svg>
+        </button>
+        <button type="button" class="cds--chat-prompt-starters__tile carbon-ai-starter-tile" data-prompt="{{ $starter2 }}">
+          <span>{{ $starter2 }}</span>
+          <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor"><path d="M18 6l-1.4 1.4L24.2 15H4v2h20.2l-7.6 7.6L18 26l10-10L18 6z"/></svg>
+        </button>
+        <button type="button" class="cds--chat-prompt-starters__tile carbon-ai-starter-tile" data-prompt="{{ $starter3 }}">
+          <span>{{ $starter3 }}</span>
+          <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor"><path d="M18 6l-1.4 1.4L24.2 15H4v2h20.2l-7.6 7.6L18 26l10-10L18 6z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {{/* 5. Carbon Chat Composer */}}
+  <div class="cds--chat-composer">
+    <div class="cds--chat-composer__input-row">
+      <textarea class="cds--chat-composer__textarea carbon-ai-persona__input" rows="1" placeholder="Ask about platform architecture, datasets, or tokens... (Enter to send, Shift+Enter for new line)" aria-label="Query for AI companion"></textarea>
+      <button type="button" class="cds--btn cds--btn--primary cds--btn--sm cds--btn--icon-only cds--chat-composer__send-btn carbon-ai-persona__send-btn" aria-label="Send message" title="Send message">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M27.45 15.11L3.5 2.15a1 1 0 0 0-1.44 1.13L4.8 14H18v4H4.8L2.06 28.72a1 1 0 0 0 1.44 1.13l23.95-12.96a1 1 0 0 0 0-1.78z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="cds--chat-composer__controls">
+      <span class="cds--tag cds--tag--blue cds--tag--sm" style="margin: 0;">⚡ Local RAG Active</span>
+      <span class="cds--type-caption" style="color: var(--cds-text-helper);">AI generated. 100% Client-Side Privacy.</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+{{ $title := .Get "title" }}
+{{ $description := .Get "description" }}
+{{ $href := .Get "href" }}
+
+{{ if $href }}
+  <li class="cds--contained-list__row cds--contained-list__row--clickable">
+    <a href="{{ $href }}" style="display: flex; justify-content: space-between; align-items: center; width: 100%; text-decoration: none; color: inherit;">
+      <div class="cds--contained-list__row-content">
+        <span class="cds--contained-list__row-title">{{ $title }}</span>
+        {{ with $description }}<span class="cds--contained-list__row-description">{{ . }}</span>{{ end }}
+      </div>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 4l4 4-4 4-1-1 3-3-3-3z"/></svg>
+    </a>
+  </li>
+{{ else }}
+  <li class="cds--contained-list__row">
+    <div class="cds--contained-list__row-content">
+      <span class="cds--contained-list__row-title">{{ $title }}</span>
+      {{ with $description }}<span class="cds--contained-list__row-description">{{ . }}</span>{{ end }}
+    </div>
+  </li>
+{{ end }}

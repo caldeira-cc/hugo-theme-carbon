@@ -1,0 +1,119 @@
+{{ $ctx := . }}
+{{ $pages := slice }}
+{{ if reflect.IsMap . }}
+  {{ with .context }}{{ $ctx = . }}{{ end }}
+  {{ if isset . "pages" }}{{ $pages = .pages }}{{ else }}{{ $pages = $ctx.Pages }}{{ end }}
+{{ else }}
+  {{ $pages = .Pages }}
+{{ end }}
+
+{{ $showAuthor := true }}
+{{ $showDate := true }}
+{{ $showTags := true }}
+{{ $showCategories := true }}
+{{ $showReadingTime := true }}
+{{ $showFilterBar := true }}
+
+{{/* Allow caller or front-matter override */}}
+{{ if reflect.IsMap . }}
+  {{ if isset . "showAuthor" }}{{ $showAuthor = .showAuthor }}{{ end }}
+  {{ if isset . "showDate" }}{{ $showDate = .showDate }}{{ end }}
+  {{ if isset . "showTags" }}{{ $showTags = .showTags }}{{ end }}
+  {{ if isset . "showCategories" }}{{ $showCategories = .showCategories }}{{ end }}
+  {{ if isset . "showReadingTime" }}{{ $showReadingTime = .showReadingTime }}{{ end }}
+  {{ if isset . "showFilterBar" }}{{ $showFilterBar = .showFilterBar }}{{ end }}
+{{ else if isset $ctx.Params "cardSchema" }}
+  {{ with $ctx.Params.cardSchema.showAuthor }}{{ $showAuthor = . }}{{ end }}
+  {{ with $ctx.Params.cardSchema.showDate }}{{ $showDate = . }}{{ end }}
+  {{ with $ctx.Params.cardSchema.showTags }}{{ $showTags = . }}{{ end }}
+  {{ with $ctx.Params.cardSchema.showCategories }}{{ $showCategories = . }}{{ end }}
+  {{ with $ctx.Params.cardSchema.showReadingTime }}{{ $showReadingTime = . }}{{ end }}
+{{ end }}
+
+<div class="carbon-collection-page">
+  {{ partial "components/breadcrumbs.html" $ctx }}
+
+  <header class="carbon-collection-header">
+    <div class="carbon-collection-header__badges">
+      {{ with $ctx.Section }}
+        <span class="cds--tag cds--tag--outline" style="font-family: var(--cds-font-mono, monospace); text-transform: uppercase;">
+          {{ . }}
+        </span>
+      {{ end }}
+      <span class="cds--tag cds--tag--warm-gray" style="font-family: var(--cds-font-mono, monospace);">
+        {{ len $pages }} ITEMS
+      </span>
+    </div>
+    <h1 class="cds--type-display-01 carbon-collection-header__title">{{ $ctx.Title }}</h1>
+    {{ with $ctx.Description }}
+      <p class="cds--type-body-long-02 carbon-collection-header__description">{{ . }}</p>
+    {{ end }}
+  </header>
+
+  {{/* Optional Interactive Taxonomy Filter Bar */}}
+  {{ if and $showFilterBar (or site.Taxonomies.categories site.Taxonomies.tags) }}
+    <div class="carbon-filter-bar">
+      {{ with site.Taxonomies.categories }}
+        <div class="carbon-filter-bar__group">
+          <span class="carbon-filter-bar__label">Categories:</span>
+          {{ range .ByCount }}
+            <a href="{{ .Page.RelPermalink }}" class="cds--tag cds--tag--blue cds--tag--clickable">
+              {{ .Page.Title }} ({{ .Count }})
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+
+      {{ with site.Taxonomies.tags }}
+        <div class="carbon-filter-bar__group">
+          <span class="carbon-filter-bar__label">Tags:</span>
+          {{ range first 12 .ByCount }}
+            <a href="{{ .Page.RelPermalink }}" class="cds--tag cds--tag--outline cds--tag--clickable">
+              #{{ .Page.Title }} ({{ .Count }})
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+  {{ end }}
+
+  {{/* Body Content if page has prose */}}
+  {{ with $ctx.Content }}
+    <div class="carbon-prose" style="margin-bottom: 2rem;">
+      {{ . }}
+    </div>
+  {{ end }}
+
+  {{/* Paginated Item Grid */}}
+  <div class="cds--row carbon-card-grid">
+    {{ $paginator := $ctx.Paginate $pages 9 }}
+    {{ range $paginator.Pages }}
+      {{ partial "components/page-card.html" (dict "context" . "showAuthor" $showAuthor "showDate" $showDate "showTags" $showTags "showCategories" $showCategories "showReadingTime" $showReadingTime) }}
+    {{ else }}
+      <div class="cds--col-lg-16">
+        <p class="cds--type-body-long-01" style="color: var(--cds-text-secondary);">No documents available in this section yet.</p>
+      </div>
+    {{ end }}
+  </div>
+
+  {{/* Pagination */}}
+  {{ if gt $paginator.TotalPages 1 }}
+    <div class="cds--row" style="margin-top: 3rem;">
+      <div class="cds--col-lg-16">
+        <div class="cds--pagination" style="display: flex; justify-content: space-between; align-items: center; background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); padding: 0.75rem 1.25rem;">
+          <div class="cds--pagination__left" style="font-family: var(--cds-font-mono, monospace); font-size: 0.8125rem; color: var(--cds-text-secondary);">
+            Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}
+          </div>
+          <div class="cds--pagination__right" style="display: flex; gap: 0.5rem;">
+            {{ if $paginator.HasPrev }}
+              <a href="{{ $paginator.Prev.URL }}" class="cds--btn cds--btn--ghost cds--btn--sm">Previous</a>
+            {{ end }}
+            {{ if $paginator.HasNext }}
+              <a href="{{ $paginator.Next.URL }}" class="cds--btn cds--btn--ghost cds--btn--sm">Next</a>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {{ end }}
+</div>

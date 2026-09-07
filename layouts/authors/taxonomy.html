@@ -1,0 +1,59 @@
+{{ define "main" }}
+<div style="padding-top: 1.5rem; padding-bottom: 4rem; flex: 1 0 auto; display: flex; flex-direction: column;">
+  {{ partial "components/breadcrumbs.html" . }}
+
+  <header class="carbon-collection-header" style="margin-bottom: 2.5rem;">
+    <h1 class="cds--type-display-01">{{ .Title | default "Authors & Contributors" }}</h1>
+    <p class="cds--type-body-long-02" style="color: var(--cds-text-secondary); max-width: 800px; margin-bottom: 0;">
+      {{ .Description | default "Meet the engineers, architects, and designers authoring the IBM Carbon Modular Engine publications and technical specifications." }}
+    </p>
+  </header>
+
+  {{/* Authors Directory Grid */}}
+  <div class="cds--row carbon-card-grid">
+    {{ range .Data.Terms.Alphabetical }}
+      {{ $authorPage := .Page }}
+      {{ $authorName := .Page.Title | default .Term }}
+      <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8 cds--col-xlg-8 carbon-card-col">
+        <div class="cds--tile carbon-page-card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+              {{ with $authorPage.Params.avatar }}
+                <img src="{{ . }}" alt="{{ $authorName }}" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--cds-interactive-01);">
+              {{ else }}
+                <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--cds-layer-02); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--cds-interactive-01); font-size: 1.25rem; border: 2px solid var(--cds-border-subtle-01);">
+                  {{ substr $authorName 0 1 }}
+                </div>
+              {{ end }}
+
+              <div>
+                <h3 class="cds--type-heading-03" style="margin: 0 0 0.25rem 0;">
+                  <a href="{{ .Page.RelPermalink }}" class="cds--link" style="color: inherit; text-decoration: none;">
+                    {{ $authorName }}
+                  </a>
+                </h3>
+                {{ with $authorPage.Params.role }}
+                  <span class="cds--tag cds--tag--blue" style="margin: 0;">{{ . }}</span>
+                {{ end }}
+              </div>
+            </div>
+
+            <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin-bottom: 1.25rem;">
+              {{ $authorPage.Params.bio | default $authorPage.Summary | default "Contributor to IBM Carbon architecture and publications." | truncate 140 }}
+            </p>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--cds-border-subtle-01);">
+            <span class="cds--type-caption" style="color: var(--cds-text-secondary);">
+              <strong>{{ .Count }}</strong> {{ if eq .Count 1 }}publication{{ else }}publications{{ end }}
+            </span>
+            <a href="{{ .Page.RelPermalink }}" class="cds--link" style="font-size: 0.8125rem; font-weight: 600;">
+              View Profile →
+            </a>
+          </div>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

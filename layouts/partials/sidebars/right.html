@@ -1,0 +1,85 @@
+<aside class="carbon-sidebar-right" aria-label="Page Table of Contents and Metadata">
+  {{ $hasToc := false }}
+  {{ if and .TableOfContents (strings.Contains .TableOfContents "<li") }}
+    {{ $hasToc = true }}
+  {{ else if eq .RelPermalink "/style/" }}
+    {{ $hasToc = true }}
+  {{ end }}
+
+  {{ if $hasToc }}
+    <div class="carbon-sidebar-right__heading">On This Page</div>
+    <div class="carbon-sidebar-right__toc">
+      {{ if and .TableOfContents (strings.Contains .TableOfContents "<li") }}
+        {{ .TableOfContents }}
+{{ else if eq .RelPermalink "/style/" }}
+        <nav id="TableOfContents">
+          <ul>
+            <li><a href="#overview">Visual Overview</a></li>
+            <li><a href="#color-system">Tripartite Palette</a></li>
+            <li><a href="#typography">IBM Plex Scale</a></li>
+            <li><a href="#ibm-principles">Design Principles</a></li>
+            <li><a href="#components">Component Catalog</a></li>
+            <li><a href="#code-guidelines">Token Implementation</a></li>
+          </ul>
+        </nav>
+      {{ end }}
+    </div>
+  {{ end }}
+
+  {{/* Article Metadata Box */}}
+  {{ $authors := partial "components/get-authors.html" . }}
+  {{ if and (not .IsHome) (or (gt (len $authors) 0) .Date .ReadingTime .Params.categories .Params.tags) }}
+    <div class="carbon-sidebar-right__meta-box">
+      <h4>Document Details</h4>
+      <div class="cds--type-caption" style="display: flex; flex-direction: column; gap: 0.5rem;">
+        {{ if gt (len $authors) 0 }}
+          <div>
+            <strong>{{ if eq (len $authors) 1 }}Author:{{ else }}Authors:{{ end }}</strong> 
+            {{ range $idx, $auth := $authors }}
+              {{ if gt $idx 0 }}, {{ end }}
+              <a href="{{ partial "components/author-url.html" $auth }}" class="cds--link">{{ $auth }}</a>
+            {{ end }}
+          </div>
+        {{ end }}
+        {{ with .Params.categories }}
+          <div>
+            <strong>Category:</strong>
+            {{ range . }}
+              <a href="{{ partial "components/category-url.html" . }}" class="cds--link">{{ . }}</a>
+            {{ end }}
+          </div>
+        {{ end }}
+        {{ if not .Date.IsZero }}
+          <div><strong>Published:</strong> {{ .Date.Format "Jan 02, 2006" }}</div>
+        {{ end }}
+        {{ with .ReadingTime }}
+          <div><strong>Reading Time:</strong> {{ . }} min</div>
+        {{ end }}
+        {{ with .Params.version }}
+          <div><strong>Version:</strong> {{ . }}</div>
+        {{ end }}
+      </div>
+    </div>
+  {{ end }}
+
+  {{/* Recommended Posts for blog if configured */}}
+  {{ if eq .Params.sidebars.right.type "recommended-posts" }}
+    <div class="carbon-sidebar-right__meta-box" style="margin-top: 1rem;">
+      <h4>Related Reading</h4>
+      <ul style="list-style: none; padding-left: 0; margin: 0; font-size: 0.8125rem;">
+        {{ range first 3 (where .Site.RegularPages "Section" "blog") }}
+          {{ if ne .RelPermalink $.RelPermalink }}
+            <li style="margin-bottom: 0.5rem;">
+              <a href="{{ .RelPermalink }}" class="cds--link">{{ .Title }}</a>
+            </li>
+          {{ end }}
+        {{ end }}
+      </ul>
+    </div>
+  {{ end }}
+
+  {{/* Sidebar Ad Slot */}}
+  {{ if and .Site.Params.googleAds.enable (default true .Site.Params.googleAds.slots.sidebar.enable) }}
+    {{ partial "components/ad-slot.html" (dict "position" "sidebar" "context" .) }}
+  {{ end }}
+</aside>

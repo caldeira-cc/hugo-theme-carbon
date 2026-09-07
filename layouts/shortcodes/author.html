@@ -1,0 +1,18 @@
+{{ $name := "" }}
+{{ if .IsNamedParams }}
+  {{ $name = .Get "name" }}
+{{ else if gt (len .Params) 0 }}
+  {{ $name = .Get 0 }}
+{{ end }}
+{{ $name = $name | default "Author" | strings.TrimSpace }}
+
+{{ $role := .Get "role" }}
+{{ $href := .Get "href" | default (partial "components/author-url.html" $name) }}
+
+<a href="{{ $href }}" class="carbon-author-mention" title="View profile of {{ $name }}">
+  <span class="carbon-author-mention__avatar">{{ substr $name 0 1 }}</span>
+  <strong>{{ $name }}</strong>
+  {{ with $role }}
+    <span style="font-size: 0.6875rem; opacity: 0.75; font-weight: 400;">({{ . }})</span>
+  {{ end }}
+</a>

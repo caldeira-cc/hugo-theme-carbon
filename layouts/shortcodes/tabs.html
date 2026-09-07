@@ -1,0 +1,23 @@
+{{ $type := .Get "type" | default "default" }}
+{{ $tabList := .Get "tabs" }}
+{{ $tabsClass := "cds--tabs" }}
+{{ if eq $type "contained" }}
+  {{ $tabsClass = "cds--tabs cds--tabs--contained" }}
+{{ end }}
+
+<div class="{{ $tabsClass }}">
+  {{ if $tabList }}
+    {{ $items := split $tabList "," }}
+    <div class="cds--tabs__nav" role="tablist">
+      {{ range $index, $item := $items }}
+        {{ $trimmed := trim $item " " }}
+        <button type="button" class="cds--tabs__tab {{ if eq $index 0 }}cds--tabs__tab--selected is-active{{ end }}" role="tab" aria-selected="{{ if eq $index 0 }}true{{ else }}false{{ end }}">
+          {{ $trimmed }}
+        </button>
+      {{ end }}
+    </div>
+  {{ end }}
+  <div class="cds--tabs__panels">
+    {{ .Inner }}
+  </div>
+</div>

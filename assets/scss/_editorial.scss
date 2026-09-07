@@ -1,0 +1,293 @@
+// IBM Carbon Editorial & Monochrome Blog Styling
+// Implements strict IBM Monochrome (White, Gray 10/20/30/60/80/90/100, Black)
+
+[data-section="blog"],
+.carbon-magazine-page,
+.carbon-article {
+  // Light Mode Monochrome Overrides
+  --cds-interactive-01: #161616;
+  --cds-interactive-02: #393939;
+  --cds-link-primary: #161616;
+  --cds-link-primary-hover: #525252;
+  --cds-focus: #161616;
+  --cds-ui-shell-background: #161616;
+  --cds-ui-shell-border: #393939;
+  --cds-ui-shell-text: #f4f4f4;
+  --cds-ui-shell-hover: #262626;
+  --cds-brand-block-background: #161616;
+  --cds-brand-block-border: #393939;
+  --cds-brand-block-text: #ffffff;
+  --cds-brand-block-hover: #262626;
+  --cds-search-action-background: #161616;
+  --cds-search-action-border: #393939;
+  --cds-search-action-hover: #262626;
+  --cds-search-action-text: #ffffff;
+
+  // Dark Mode Overrides
+  [data-carbon-theme="dark"] &,
+  [data-carbon-theme="g100"] &,
+  [data-carbon-theme="g90"] &,
+  &[data-carbon-theme="dark"],
+  &[data-carbon-theme="g100"],
+  &[data-carbon-theme="g90"] {
+    --cds-background: #161616;
+    --cds-layer-01: #262626;
+    --cds-layer-02: #393939;
+    --cds-layer-03: #525252;
+    --cds-border-subtle-00: #393939;
+    --cds-border-subtle-01: #525252;
+    --cds-text-primary: #f4f4f4;
+    --cds-text-secondary: #c6c6c6;
+    --cds-interactive-01: #ffffff;
+    --cds-interactive-02: #525252;
+    --cds-link-primary: #f4f4f4;
+    --cds-link-primary-hover: #ffffff;
+    --cds-focus: #ffffff;
+  }
+
+  // Black Editorial UI Shell Navbar
+  .cds--header {
+    background-color: #161616 !important;
+    border-bottom: 1px solid #393939 !important;
+    color: #f4f4f4 !important;
+
+    &__name {
+      background-color: #161616 !important;
+      color: #ffffff !important;
+      border-right: 1px solid #393939 !important;
+
+      &:hover {
+        background-color: #262626 !important;
+      }
+
+      .brand-title, .brand-description {
+        color: #ffffff !important;
+      }
+    }
+
+    &__nav {
+      a, button {
+        color: #c6c6c6 !important;
+
+        &:hover, &.is-active {
+          color: #ffffff !important;
+          background-color: #262626 !important;
+        }
+      }
+    }
+
+    &__submenu {
+      background-color: #161616 !important;
+      border: 1px solid #393939 !important;
+
+      a {
+        color: #f4f4f4 !important;
+
+        &:hover {
+          background-color: #262626 !important;
+          color: #ffffff !important;
+        }
+      }
+    }
+
+    &__action {
+      background-color: #161616 !important;
+      border-left: 1px solid #393939 !important;
+      color: #f4f4f4 !important;
+
+      &:hover {
+        background-color: #262626 !important;
+        color: #ffffff !important;
+      }
+    }
+
+    &__menu-toggle {
+      color: #f4f4f4 !important;
+
+      &:hover {
+        background-color: #262626 !important;
+      }
+    }
+  }
+
+  // Pure Monochrome Tags & Badges (Neutral Grayscale Palette)
+  .cds--tag {
+    background-color: var(--cds-layer-01) !important;
+    color: var(--cds-text-secondary) !important;
+    border: 1px solid var(--cds-border-subtle-01) !important;
+    border-radius: 0;
+
+    &--blue,
+    &--green,
+    &--purple,
+    &--magenta,
+    &--teal,
+    &--warm-gray,
+    &--cool-gray,
+    &--red {
+      background-color: var(--cds-layer-01) !important;
+      color: var(--cds-text-secondary) !important;
+      border: 1px solid var(--cds-border-subtle-01) !important;
+    }
+
+    &--clickable {
+      cursor: pointer;
+      transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+
+      &:hover {
+        background-color: var(--cds-text-primary) !important;
+        color: var(--cds-background) !important;
+        border-color: var(--cds-text-primary) !important;
+      }
+    }
+  }
+
+  // Monochrome Action Buttons
+  .cds--btn--primary {
+    background-color: var(--cds-text-primary) !important;
+    color: var(--cds-background) !important;
+    border: 1px solid var(--cds-text-primary) !important;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background-color: var(--cds-text-secondary) !important;
+      color: var(--cds-background) !important;
+      border-color: var(--cds-text-secondary) !important;
+    }
+  }
+
+  .cds--btn--secondary {
+    background-color: transparent !important;
+    color: var(--cds-text-primary) !important;
+    border: 1px solid var(--cds-text-primary) !important;
+
+    &:hover {
+      background-color: var(--cds-layer-02) !important;
+    }
+  }
+
+  // Editorial Hero Figure & Images
+  figure {
+    border-color: var(--cds-border-subtle-00);
+    img {
+      transition: opacity 0.2s ease;
+    }
+  }
+
+  // Editorial Callouts in Prose
+  .carbon-prose {
+    blockquote {
+      border-left: 3px solid var(--cds-text-primary);
+      background-color: var(--cds-layer-01);
+      color: var(--cds-text-secondary);
+    }
+
+    .cds--callout {
+      border-left: 3px solid var(--cds-text-primary) !important;
+      background-color: var(--cds-layer-01) !important;
+      color: var(--cds-text-primary) !important;
+    }
+  }
+
+  // Editorial Tiles
+  .cds--tile {
+    border-color: var(--cds-border-subtle-00);
+    background-color: var(--cds-layer-01);
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+
+    &:hover {
+      border-color: var(--cds-border-subtle-01);
+    }
+  }
+}
+
+// Semantic Article Layout Classes
+.carbon-article {
+  padding-top: 1.5rem;
+  padding-bottom: 4rem;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+  }
+
+  &__tags-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__title {
+    margin-bottom: 0.75rem;
+  }
+
+  &__description {
+    color: var(--cds-text-secondary);
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  &__meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.8125rem;
+    color: var(--cds-text-secondary);
+    align-items: center;
+  }
+
+  &__featured-image {
+    margin: 0 0 2.5rem 0;
+    padding: 0;
+    border: 1px solid var(--cds-border-subtle-00);
+    background-color: var(--cds-layer-01);
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: auto;
+      max-height: 480px;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--cds-border-subtle-00);
+  }
+
+  &__tags-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: var(--cds-text-secondary);
+    font-family: var(--cds-font-mono, monospace);
+  }
+
+  &__tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--cds-border-subtle-00);
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+}
+

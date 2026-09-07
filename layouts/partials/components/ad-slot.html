@@ -1,0 +1,110 @@
+{{/* Ad Slot Component — IBM Carbon v11 Design System */}}
+{{/* Gated by GDPR Cookie Consent & Configurable via hugo.yaml */}}
+{{/* Usage: {{ partial "components/ad-slot.html" (dict "position" "sidebar" "context" .) }} */}}
+{{/* Positions supported: "sidebar", "bottom", "inline", "dock" */}}
+
+{{ $position := .position | default "inline" }}
+{{ $context := .context | default . }}
+{{ $googleAds := $context.Site.Params.googleAds }}
+
+{{ if $googleAds.enable }}
+  {{ $slotConfig := index $googleAds.slots $position }}
+  {{ $isSlotEnabled := true }}
+  {{ if $slotConfig }}
+    {{ if isset $slotConfig "enable" }}
+      {{ $isSlotEnabled = $slotConfig.enable }}
+    {{ end }}
+  {{ end }}
+
+  {{ if $isSlotEnabled }}
+    {{ $slotId := "" }}
+    {{ if $slotConfig }}
+      {{ $slotId = $slotConfig.slotId | default "" }}
+    {{ end }}
+
+    {{ $format := "auto" }}
+    {{ $layoutAttr := "" }}
+    {{ if eq $position "inline" }}
+      {{ $format = "fluid" }}
+      {{ $layoutAttr = "in-article" }}
+    {{ else if eq $position "sidebar" }}
+      {{ $format = "rectangle,vertical" }}
+    {{ else if eq $position "bottom" }}
+      {{ $format = "horizontal" }}
+    {{ end }}
+
+    <div class="carbon-ad-slot carbon-ad-slot--{{ $position }}" 
+         data-ad-slot-position="{{ $position }}" 
+         data-ad-consent="advertising" 
+         role="region" 
+         aria-label="Advertisement">
+      <div class="carbon-ad-slot__header">
+        <div class="carbon-ad-slot__badge">
+          <svg class="carbon-ad-slot__badge-icon" width="12" height="12" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M28 2H4a2 2 0 0 0-2 2v24a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM4 28V4h24v24Z"/>
+            <path d="M18 9h-4v6H8v4h6v6h4v-6h6v-4h-6V9z"/>
+          </svg>
+          <span class="carbon-ad-slot__badge-text">Sponsored</span>
+        </div>
+        
+        <div class="carbon-ad-slot__actions">
+          <a href="{{ or $context.Site.Params.privacyPolicyURL "https://cesar.caldeira.cc/privacy-policy/" }}#advertising-cookies" class="carbon-ad-slot__info-btn" title="Advertising & Privacy Info" aria-label="Advertising & Privacy Info">
+            <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+              <path d="M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2Zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12Z"/>
+              <path d="M15 8h2v2h-2zm0 6h2v10h-2z"/>
+            </svg>
+          </a>
+          {{ if or (eq $position "bottom") (eq $position "dock") (eq $position "sidebar") }}
+            <button type="button" class="carbon-ad-slot__dismiss-btn" data-ad-action="dismiss" aria-label="Dismiss advertisement">
+              <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+                <path d="M24 9.4 22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z"/>
+              </svg>
+            </button>
+          {{ end }}
+        </div>
+      </div>
+
+      <div class="carbon-ad-slot__container">
+        {{ if and $slotId $googleAds.publisherId }}
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="{{ $googleAds.publisherId }}"
+               data-ad-slot="{{ $slotId }}"
+               data-ad-format="{{ $format }}"
+               data-full-width-responsive="true"
+               {{ with $layoutAttr }}data-ad-layout="{{ . }}"{{ end }}></ins>
+        {{ else }}
+          {{/* Carbon Design Mock/Placeholder when publisher ID/slot ID not set */}}
+          <div class="carbon-ad-slot__mock">
+            <div class="carbon-ad-slot__mock-graphic">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                <path d="M28 2H4a2 2 0 0 0-2 2v24a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM4 28V4h24v24Z"/>
+                <path d="M14 10h4v12h-4zM8 16h4v6H8zM20 13h4v9h-4z"/>
+              </svg>
+            </div>
+            <div class="carbon-ad-slot__mock-content">
+              <div class="carbon-ad-slot__mock-title">IBM Carbon Ad Placement</div>
+              <div class="carbon-ad-slot__mock-desc">Position: <code>{{ $position }}</code> • Managed via <code>hugo.yaml</code></div>
+            </div>
+            <a href="https://carbondesignsystem.com" target="_blank" rel="noopener noreferrer" class="carbon-ad-slot__mock-cta cds--btn cds--btn--ghost cds--btn--sm">
+              <span>Learn More</span>
+              <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+                <path d="M26 18A10 10 0 1 1 16 8h4.17l-3.59-3.59L18 3l6 6-6 6-1.41-1.41L20.17 10H16a8 8 0 1 0 8 8Z"/>
+              </svg>
+            </a>
+          </div>
+        {{ end }}
+      </div>
+
+      {{/* Fallback shown when user has not yet consented to Advertising cookies */}}
+      <div class="carbon-ad-slot__consent-notice" data-ad-no-consent>
+        <div class="carbon-ad-slot__consent-text">
+          <span>Personalised advertisements require cookie consent.</span>
+        </div>
+        <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm" data-cookie-action="open-settings">
+          Enable Advertising Cookies
+        </button>
+      </div>
+    </div>
+  {{ end }}
+{{ end }}

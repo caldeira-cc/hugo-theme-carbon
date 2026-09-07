@@ -1,0 +1,47 @@
+{{/* Zero-Dependency In-Browser Read-Aloud Player Shortcode */}}
+{{/* Usage: {{< read-aloud >}} or {{< read-aloud target=".custom-content" >}} */}}
+
+{{ $target := .Get "target" | default ".carbon-prose" }}
+{{ $title := .Get "title" | default "Listen to this article" }}
+
+<div class="carbon-read-aloud cds--tile" data-target="{{ $target }}" role="region" aria-label="Audio Reader">
+  <div class="carbon-read-aloud__header">
+    <div class="carbon-read-aloud__title-group">
+      <svg class="carbon-read-aloud__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+        <path d="M7 11v10h4l7 7V4l-7 7H7zM24 16c0-3.3-1.8-6.2-4.5-7.7v15.4C22.2 22.2 24 19.3 24 16zm-4.5-12.8v3.1c4.9 1.7 8.5 6.4 8.5 11.7s-3.6 10-8.5 11.7v3.1c6.6-1.8 11.5-7.9 11.5-14.8s-4.9-13-11.5-14.8z"/>
+      </svg>
+      <span class="carbon-read-aloud__title">{{ $title }}</span>
+    </div>
+    <span class="cds--tag cds--tag--blue carbon-read-aloud__status" aria-live="polite">Ready</span>
+  </div>
+
+  <div class="carbon-read-aloud__controls">
+    <button type="button" class="cds--btn cds--btn--primary cds--btn--sm carbon-read-aloud__play-btn" aria-label="Read article aloud">
+      <span class="carbon-read-aloud__btn-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 4v16l13-8z"/>
+        </svg>
+      </span>
+      <span class="carbon-read-aloud__btn-text">Read Aloud</span>
+    </button>
+
+    <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm carbon-read-aloud__stop-btn" aria-label="Stop reading aloud">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <rect x="5" y="5" width="14" height="14"/>
+      </svg>
+      <span>Stop</span>
+    </button>
+
+    <div class="carbon-read-aloud__rate-group">
+      <label for="speech-rate-{{ .Ordinal }}" class="cds--type-label">Speed: <span class="carbon-read-aloud__rate-label">1.00x</span></label>
+      <input type="range" id="speech-rate-{{ .Ordinal }}" class="carbon-read-aloud__rate-input" min="0.75" max="2.0" step="0.25" value="1.0" aria-label="Speech Speed Rate">
+    </div>
+
+    <div class="carbon-read-aloud__voice-group">
+      <label for="speech-voice-{{ .Ordinal }}" class="cds--type-label sr-only">Voice</label>
+      <select id="speech-voice-{{ .Ordinal }}" class="cds--select-input carbon-read-aloud__voice-select" aria-label="Select voice synthesizer">
+        <option value="">Default Voice</option>
+      </select>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+{{/* Shortcode: dashboard-metric-bar.html */}}
+{{- $label := .Get "label" | default "" -}}
+{{- $rawValue := .Get "value" | default "0" -}}
+{{- $unit := .Get "unit" | default "%" -}}
+{{- $color := .Get "color" | default "blue" -}}
+{{- $max := float (.Get "max" | default "100") -}}
+
+{{- $numValue := float (replace (string $rawValue) "%" "") -}}
+{{- $percent := 0.0 -}}
+{{- if gt $max 0.0 -}}
+  {{- $percent = div (mul $numValue 100.0) $max -}}
+{{- end -}}
+{{- if gt $percent 100.0 }}{{ $percent = 100.0 }}{{ end -}}
+{{- if lt $percent 0.0 }}{{ $percent = 0.0 }}{{ end -}}
+<div class="carbon-metric-bar">
+<div class="carbon-metric-bar__header">
+<span class="carbon-metric-bar__label">{{ $label }}</span>
+<span class="carbon-metric-bar__value">{{ $rawValue }}{{ if not (in (string $rawValue) $unit) }}{{ $unit }}{{ end }}</span>
+</div>
+<div class="carbon-metric-bar__track">
+<div class="carbon-metric-bar__fill carbon-metric-bar__fill--{{ $color }}" style="width: {{ printf "%.1f" $percent }}%;"></div>
+</div>
+</div>

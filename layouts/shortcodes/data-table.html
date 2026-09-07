@@ -1,0 +1,37 @@
+{{/*
+  IBM Carbon Design System v11 — DataTable Shortcode
+  Compliant with Carbon React DataTable Component Specifications.
+
+  Usage:
+  {{< data-table title="Architecture Metrics" description="Benchmark results" zebra="true" compact="false" >}}
+    | Module | Execution Target | Latency | Status |
+    |---|---|---|---|
+    | Physics Engine | Web Worker (60Hz) | 0.8ms | Optimal |
+    | Vector RAG | WebLLM WebGPU | 12ms | Optimal |
+  {{< /data-table >}}
+*/}}
+
+{{ $title := .Get "title" }}
+{{ $description := .Get "description" }}
+{{ $zebra := .Get "zebra" | default "true" }}
+{{ $compact := .Get "compact" | default "false" }}
+{{ $class := .Get "class" | default "" }}
+
+<div class="cds--data-table-container {{ with $class }}{{ . }}{{ end }}">
+  {{ if or $title $description }}
+    <div class="cds--data-table-header">
+      {{ with $title }}
+        <h4 class="cds--data-table-header__title">{{ . }}</h4>
+      {{ end }}
+      {{ with $description }}
+        <p class="cds--data-table-header__description">{{ . }}</p>
+      {{ end }}
+    </div>
+  {{ end }}
+
+  <div class="cds--table-wrapper">
+    <div class="cds--data-table-inner {{ if eq $zebra "true" }}cds--data-table--zebra{{ end }} {{ if eq $compact "true" }}cds--data-table--compact{{ end }}">
+      {{ .Inner | markdownify }}
+    </div>
+  </div>
+</div>

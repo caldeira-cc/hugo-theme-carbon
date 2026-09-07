@@ -1,0 +1,12 @@
+{{/* Google Ads Conditional Loader — Only active when enabled in hugo.yaml */}}
+{{/* The actual script injection is handled by cookie-consent.js based on user consent */}}
+
+{{ with .Site.Params.googleAds }}
+  {{ if .enable }}
+    {{ with .publisherId }}
+      <meta name="google-adsense-account" content="{{ . }}">
+      {{/* Data attribute for cookie-consent.js to read the publisher ID and inject the script */}}
+      <div data-google-ads-publisher="{{ . }}" style="display: none;" aria-hidden="true"></div>
+    {{ end }}
+  {{ end }}
+{{ end }}

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <rect width="800" height="450" fill="#161616"/>
+  <defs>
+    <pattern id="grid9" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#262626" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="url(#grid9)"/>
+  
+  <rect x="30" y="30" width="740" height="390" fill="none" stroke="#393939" stroke-width="1"/>
+  <line x1="30" y1="70" x2="770" y2="70" stroke="#393939" stroke-width="1"/>
+  <line x1="30" y1="380" x2="770" y2="380" stroke="#393939" stroke-width="1"/>
+  
+  <text x="45" y="55" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#8d8d8d" letter-spacing="1.5">FIG 09.2 // HYBRID STATIC SCAFFOLD &amp; INTERACTIVE ISLANDS</text>
+  <text x="755" y="55" font-family="'IBM Plex Mono', monospace" font-size="12" fill="#f4f4f4" text-anchor="end">ARCH.ISLANDS-v3</text>
+  
+  <!-- Ocean of Static HTML with Hydrated Islands -->
+  <g transform="translate(140, 130)">
+    <!-- Static Scaffold Base -->
+    <rect x="0" y="0" width="520" height="190" fill="#262626" stroke="#525252" stroke-width="1.5"/>
+    <text x="20" y="30" font-family="'IBM Plex Mono', monospace" font-size="11" fill="#8d8d8d">STATIC HTML OCEAN (0 KB JS)</text>
+    
+    <!-- Island 1: Interactive Data Table -->
+    <rect x="30" y="50" width="210" height="110" fill="#393939" stroke="#ffffff" stroke-width="2"/>
+    <text x="45" y="75" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#8d8d8d">ISLAND 01</text>
+    <text x="45" y="95" font-family="'IBM Plex Sans', sans-serif" font-weight="600" font-size="13" fill="#ffffff">Carbon DataTable</text>
+    <text x="45" y="115" font-family="'IBM Plex Mono', monospace" font-size="9" fill="#c6c6c6">PARTIAL HYDRATION: ON_VISIBLE</text>
+    <circle cx="210" cy="70" r="5" fill="#ffffff"/>
+    
+    <!-- Island 2: Interactive Chart -->
+    <rect x="280" y="50" width="210" height="110" fill="#393939" stroke="#ffffff" stroke-width="2"/>
+    <text x="295" y="75" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#8d8d8d">ISLAND 02</text>
+    <text x="295" y="95" font-family="'IBM Plex Sans', sans-serif" font-weight="600" font-size="13" fill="#ffffff">Telemetry Chart</text>
+    <text x="295" y="115" font-family="'IBM Plex Mono', monospace" font-size="9" fill="#c6c6c6">PARTIAL HYDRATION: ON_IDLE</text>
+    <circle cx="460" cy="70" r="5" fill="#ffffff"/>
+  </g>
+  
+  <text x="45" y="405" font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6f6f6f">BUNDLE SIZE: -78% // PERFORMANCE: 100/100 LIGHTHOUSE</text>
+  <text x="755" y="405" font-family="'IBM Plex Mono', monospace" font-size="11" fill="#8d8d8d" text-anchor="end">FIRST CONTENTFUL: 0.2s</text>
+</svg>

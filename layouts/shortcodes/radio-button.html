@@ -1,0 +1,23 @@
+{{/*
+  IBM Carbon Design System v11 — Radio Button Shortcode
+  Compliant with Carbon React RadioButton Component Specifications.
+
+  Usage:
+  {{< radio-button name="theme-opt" value="dark" label="Carbon Dark (Gray 100)" checked="true" />}}
+*/}}
+
+{{ $name := .Get "name" | default "radio-group" }}
+{{ $value := .Get "value" | default "opt" }}
+{{ $label := .Get "label" | default "Radio Option" }}
+{{ $checked := .Get "checked" | default "false" }}
+{{ $disabled := .Get "disabled" | default "false" }}
+{{ $id := .Get "id" | default (printf "cds-radio-%s-%s" $name $value | urlize) }}
+{{ $class := .Get "class" | default "" }}
+
+<div class="cds--radio-button-wrapper {{ with $class }}{{ . }}{{ end }}" style="margin: 0.375rem 0; display: flex; align-items: center; gap: 0.5rem;">
+  <input type="radio" class="cds--radio-button" id="{{ $id }}" name="{{ $name }}" value="{{ $value }}" {{ if eq $checked "true" }}checked{{ end }} {{ if eq $disabled "true" }}disabled{{ end }}>
+  <label for="{{ $id }}" class="cds--radio-button__label" style="font-size: 0.875rem; color: var(--cds-text-primary); cursor: pointer;">
+    <span class="cds--radio-button__appearance"></span>
+    <span class="cds--radio-button__label-text">{{ $label }}</span>
+  </label>
+</div>

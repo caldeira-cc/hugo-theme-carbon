@@ -1,0 +1,16 @@
+{{/* layouts/partials/components/get-authors.html */}}
+{{- $authors := slice -}}
+{{- if .Params.authors -}}
+  {{- if reflect.IsSlice .Params.authors -}}
+    {{- $authors = .Params.authors -}}
+  {{- else -}}
+    {{- $authors = slice .Params.authors -}}
+  {{- end -}}
+{{- else if .Params.author -}}
+  {{- if reflect.IsSlice .Params.author -}}
+    {{- $authors = .Params.author -}}
+  {{- else -}}
+    {{- $authors = slice .Params.author -}}
+  {{- end -}}
+{{- end -}}
+{{- return $authors -}}

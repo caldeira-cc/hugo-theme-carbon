@@ -1,0 +1,125 @@
+{{ define "main" }}
+{{ if and (ne .RelPermalink "/") (ne .RelPermalink "/apps/") (or (eq .Params.layout "app") (eq .Params.layout "single") .Params.runtime .Params.custom_js (not .Pages) (eq (len .Pages) 0)) }}
+  <div class="carbon-app-page" style="width: 100%; max-width: 100%; padding-top: 1.5rem; padding-bottom: 4rem; flex: 1 0 auto; display: flex; flex-direction: column;">
+    {{ partial "components/breadcrumbs.html" . }}
+
+    <header class="carbon-app-header" style="margin-bottom: 2rem; border-bottom: 1px solid var(--cds-border-subtle-00); padding-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <span class="cds--tag cds--tag--magenta" style="font-family: var(--cds-font-mono, monospace); text-transform: uppercase;">
+              INTERACTIVE APP
+            </span>
+            {{ with .Params.category }}
+              <span class="cds--tag cds--tag--blue">{{ . }}</span>
+            {{ end }}
+            {{ with .Params.status }}
+              <span class="cds--tag cds--tag--green">{{ . }}</span>
+            {{ end }}
+          </div>
+          <h1 class="cds--type-display-01" style="margin: 0 0 0.5rem 0; font-weight: 300; line-height: 1.15;">{{ .Title }}</h1>
+          {{ with .Description }}
+            <p class="cds--type-body-long-02" style="color: var(--cds-text-secondary); max-width: 900px; margin: 0; line-height: 1.6;">{{ . }}</p>
+          {{ end }}
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          {{ with .Params.version }}
+            <span class="cds--tag cds--tag--outline" style="font-family: var(--cds-font-mono, monospace);">v{{ . }}</span>
+          {{ end }}
+        </div>
+      </div>
+    </header>
+
+    {{/* Full-Width App Body Container (100% viewport span) */}}
+    <div class="carbon-app-content" style="width: 100%; flex: 1 0 auto;">
+      {{ .Content }}
+    </div>
+
+    {{/* Colocated Styles & Scripts from Page Resources */}}
+    {{ range .Resources.Match "*.css" }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}">
+    {{ end }}
+    {{ range .Resources.Match "*.js" }}
+      <script src="{{ .RelPermalink }}" defer></script>
+    {{ end }}
+    {{ with .Params.custom_js }}
+      {{ range . }}
+        {{ $script := resources.Get . }}
+        {{ if $script }}
+          <script src="{{ $script.RelPermalink }}" defer></script>
+        {{ else }}
+          <script src="{{ . | relURL }}" defer></script>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  </div>
+{{ else }}
+  <div class="carbon-collection-page carbon-apps-collection" style="width: 100%; max-width: 100%; padding-top: 1.5rem; padding-bottom: 4rem; flex: 1 0 auto; display: flex; flex-direction: column;">
+    {{ partial "components/breadcrumbs.html" . }}
+
+    <header class="carbon-collection-header" style="margin-bottom: 2rem; border-bottom: 1px solid var(--cds-border-subtle-00); padding-bottom: 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+        <span class="cds--tag cds--tag--magenta" style="font-family: var(--cds-font-mono, monospace); text-transform: uppercase;">
+          APPLICATION SUITE
+        </span>
+        <span class="cds--tag cds--tag--warm-gray" style="font-family: var(--cds-font-mono, monospace);">
+          {{ len .Pages }} APPS
+        </span>
+      </div>
+      <h1 class="cds--type-display-01" style="margin-bottom: 0.75rem; font-weight: 300;">{{ .Title }}</h1>
+      {{ with .Description }}
+        <p class="cds--type-body-long-02" style="color: var(--cds-text-secondary); max-width: 900px; margin: 0; line-height: 1.6;">{{ . }}</p>
+      {{ end }}
+    </header>
+
+    {{/* Body prose */}}
+    {{ with .Content }}
+      <div class="carbon-prose" style="margin-bottom: 2.5rem; max-width: 900px;">
+        {{ . }}
+      </div>
+    {{ end }}
+
+    {{/* Paginated Grid of Full-Width App Cards */}}
+    <div class="cds--row carbon-card-grid" style="row-gap: 1.5rem;">
+      {{ range .Pages }}
+        <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8 cds--col-xlg-8 carbon-card-col">
+          <div class="cds--tile carbon-page-card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); padding: 1.5rem;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                {{ with .Params.category }}<span class="cds--tag cds--tag--blue">{{ . }}</span>{{ end }}
+                {{ with .Params.status }}<span class="cds--tag cds--tag--green">{{ . }}</span>{{ end }}
+              </div>
+
+              <h3 style="margin: 0 0 0.5rem 0; font-size: 1.25rem; font-weight: 400;">
+                <a href="{{ .RelPermalink }}" class="cds--link" style="color: var(--cds-text-primary); text-decoration: none;">
+                  {{ .Title }}
+                </a>
+              </h3>
+
+              {{ with .Description }}
+                <p style="color: var(--cds-text-secondary); font-size: 0.875rem; line-height: 1.5; margin: 0 0 1.25rem 0;">
+                  {{ . }}
+                </p>
+              {{ end }}
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--cds-border-subtle-00); padding-top: 1rem; margin-top: 1rem;">
+              <div>
+                {{ with .Params.runtime }}
+                  <span style="font-family: var(--cds-font-mono, monospace); font-size: 0.75rem; color: var(--cds-text-secondary);">
+                    {{ . }}
+                  </span>
+                {{ end }}
+              </div>
+              <a href="{{ .RelPermalink }}" class="cds--btn cds--btn--primary cds--btn--sm" style="display: inline-flex; align-items: center; gap: 0.375rem;">
+                Launch App →
+              </a>
+            </div>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </div>
+{{ end }}
+{{ end }}

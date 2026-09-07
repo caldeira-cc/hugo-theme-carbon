@@ -1,0 +1,31 @@
+{{/*
+  IBM Carbon Design System v11 — Pagination Nav Shortcode
+  Compliant with Carbon React PaginationNav Component Specifications.
+
+  Usage:
+  {{< pagination-nav total="10" current="3" />}}
+*/}}
+
+{{ $total := .Get "total" | default "5" | int }}
+{{ $current := .Get "current" | default "1" | int }}
+{{ $id := .Get "id" | default (printf "cds-pagination-nav-%d" .Ordinal) }}
+
+<nav class="cds--pagination-nav" id="{{ $id }}" aria-label="Pagination Navigation" style="display: flex; align-items: center; gap: 0.25rem; margin: 1.5rem 0;">
+  <button class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only" {{ if le $current 1 }}disabled{{ end }} aria-label="Previous page">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10 13L4 8l6-5 1.4 1.4L6.8 8l4.6 3.6z"/></svg>
+  </button>
+
+  <ul style="display: flex; list-style: none; padding: 0; margin: 0; gap: 0.25rem;">
+    {{ range $num := seq 1 $total }}
+      <li>
+        <button class="cds--btn cds--btn--sm {{ if eq $num $current }}cds--btn--primary{{ else }}cds--btn--ghost{{ end }}" style="min-width: 32px; padding: 0 0.5rem; justify-content: center;" aria-current="{{ if eq $num $current }}page{{ else }}false{{ end }}">
+          {{ $num }}
+        </button>
+      </li>
+    {{ end }}
+  </ul>
+
+  <button class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only" {{ if ge $current $total }}disabled{{ end }} aria-label="Next page">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l6 5-6 5-1.4-1.4L9.2 8 4.6 4.4z"/></svg>
+  </button>
+</nav>

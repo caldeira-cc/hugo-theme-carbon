@@ -1,0 +1,84 @@
+{{/* Carbon Code Modal Component — IBM Carbon Design System v11 */}}
+{{/* Theme-adaptive full-screen code viewer with syntax highlighting */}}
+
+<div id="carbon-code-modal" 
+     class="carbon-code-modal" 
+     role="dialog" 
+     aria-modal="true" 
+     aria-hidden="true" 
+     aria-labelledby="carbon-code-modal-title">
+  
+  <div class="carbon-code-modal__backdrop" data-code-modal-close></div>
+
+  <div class="carbon-code-modal__container" role="document">
+    {{/* Modal Header */}}
+    <div class="carbon-code-modal__header">
+      <div class="carbon-code-modal__title-group">
+        <span class="cds--tag cds--tag--purple cds--tag--sm" data-code-modal-lang>CODE</span>
+        <h3 id="carbon-code-modal-title" class="carbon-code-modal__title">Source Viewer</h3>
+        <span class="carbon-code-modal__stats" data-code-modal-stats>0 lines</span>
+      </div>
+
+      <button type="button" class="carbon-code-modal__close-btn" data-code-modal-close aria-label="Close code modal">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M24 9.4 22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z"/>
+        </svg>
+      </button>
+    </div>
+
+    {{/* Controls Toolbar */}}
+    <div class="carbon-code-modal__toolbar">
+      <div class="carbon-code-modal__search">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M15 13.9l-3.6-3.6C12.4 9.1 13 7.6 13 6c0-3.9-3.1-7-7-7S-1 2.1-1 6s3.1 7 7 7c1.6.0 3.1-.6 4.3-1.6l3.6 3.6 1.1-1.1zM1 6c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5-5-2.2-5-5z"/>
+        </svg>
+        <input type="text" data-code-modal-search-input placeholder="Find in file…" aria-label="Find text in code">
+        <span class="carbon-search-match-count" data-code-modal-match-count></span>
+      </div>
+
+      <div class="carbon-code-modal__toggles">
+        <label class="carbon-code-modal__toggle-label">
+          <input type="checkbox" data-code-modal-wrap-toggle>
+          <span>Wrap</span>
+        </label>
+        <label class="carbon-code-modal__toggle-label">
+          <input type="checkbox" data-code-modal-lines-toggle checked>
+          <span>Lines</span>
+        </label>
+      </div>
+
+      <div class="carbon-code-modal__actions">
+        <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm" data-code-modal-copy-btn>
+          <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Z"/>
+            <path d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4Z"/>
+          </svg>
+          <span>Copy</span>
+        </button>
+
+        <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm" data-code-modal-download-btn title="Download file">
+          <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M26 24v4H6v-4H4v4a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2v-4Z"/>
+            <path d="M26 14l-1.4-1.4-7.6 7.6V2h-2v18.2l-7.6-7.6L6 14l10 10z"/>
+          </svg>
+          <span>Download</span>
+        </button>
+      </div>
+    </div>
+
+    {{/* Code Body: Gutter + Code Area */}}
+    <div class="carbon-code-modal__body">
+      <div class="carbon-code-modal__gutter" data-code-modal-gutter></div>
+      <pre class="carbon-code-modal__code-area" data-code-modal-code><code></code></pre>
+    </div>
+
+    {{/* Footer */}}
+    <div class="carbon-code-modal__footer">
+      <div class="carbon-code-modal__shortcuts">
+        <span><kbd>Esc</kbd> Close</span>
+        <span><kbd>/</kbd> Find</span>
+      </div>
+      <div class="carbon-code-modal__engine">IBM Carbon v11 Code Engine</div>
+    </div>
+  </div>
+</div>

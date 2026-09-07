@@ -1,0 +1,18 @@
+{{ $type := .Get "type" | default "author" | lower }}
+{{ $name := .Get "name" | default (.Get 0) | default .Inner | strings.TrimSpace }}
+
+{{ if or (eq $type "author") (eq $type "user") }}
+  <a href="{{ partial "components/author-url.html" $name }}" class="carbon-author-mention" title="View profile of {{ $name }}">
+    <span class="carbon-author-mention__avatar">{{ substr $name 0 1 }}</span>
+    <strong>{{ $name }}</strong>
+  </a>
+{{ else if or (eq $type "category") (eq $type "cat") }}
+  <a href="{{ partial "components/category-url.html" $name }}" class="cds--tag cds--tag--blue cds--tag--clickable" title="View category: {{ $name }}">
+    {{ $name }}
+  </a>
+{{ else }}
+  {{ $tagClean := $name | strings.TrimPrefix "#" }}
+  <a href="{{ partial "components/tag-url.html" $tagClean }}" class="cds--tag cds--tag--outline cds--tag--clickable" title="Tag: {{ $tagClean }}">
+    #{{ $tagClean }}
+  </a>
+{{ end }}

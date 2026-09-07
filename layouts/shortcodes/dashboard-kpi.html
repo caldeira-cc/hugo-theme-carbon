@@ -1,0 +1,56 @@
+{{/* Shortcode: dashboard-kpi.html */}}
+{{- $label := .Get "title" | default (.Get "label" | default "") -}}
+{{- $value := .Get "value" | default "" -}}
+{{- $unit := .Get "unit" | default "" -}}
+{{- $trend := .Get "trend" | default "" -}}
+{{- $trendDir := .Get "trend_dir" | default (.Get "direction" | default "") -}}
+{{- $sentiment := .Get "sentiment" | default "positive" -}}
+{{- $subtext := .Get "subtext" | default (.Get "description" | default "") -}}
+{{- $icon := .Get "icon" | default "" -}}
+<div class="carbon-kpi-card">
+<div class="carbon-kpi-card__header">
+<span class="carbon-kpi-card__label">{{ $label }}</span>
+{{- if $icon -}}
+<div class="carbon-kpi-card__icon" aria-hidden="true">
+{{- if eq $icon "server" -}}
+<svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M26 4H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 6H6V6h20ZM26 18H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2Zm0 6H6v-4h20Z"/><circle cx="9" cy="9" r="1"/><circle cx="9" cy="23" r="1"/></svg>
+{{- else if eq $icon "globe" -}}
+<svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2Zm10.9 13h-4.94a18.3 18.3 0 0 0-1.63-7.14A12 12 0 0 1 26.9 15ZM16 4.07A16.2 16.2 0 0 1 19.8 15h-7.6A16.2 16.2 0 0 1 16 4.07ZM11.67 7.86A18.3 18.3 0 0 0 10.04 15H5.1a12 12 0 0 1 6.57-7.14ZM5.1 17h4.94a18.3 18.3 0 0 0 1.63 7.14A12 12 0 0 1 5.1 17ZM16 27.93A16.2 16.2 0 0 1 12.2 17h7.6A16.2 16.2 0 0 1 16 27.93Zm4.33-3.79A18.3 18.3 0 0 0 21.96 17h4.94a12 12 0 0 1-6.57 7.14Z"/></svg>
+{{- else if eq $icon "activity" -}}
+<svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M27 18h-4.2l-4.4-11-6.8 19.3L7.3 18H5v-2h3.7l3.2 6.5 7.2-20.5 4.8 12H27Z"/></svg>
+{{- else if eq $icon "database" -}}
+<svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 2C8.3 2 2 3.8 2 6v20c0 2.2 6.3 4 14 4s14-1.8 14-4V6c0-2.2-6.3-4-14-4Zm12 20c0 1-5.1 2-12 2s-12-1-12-2v-4.3c2.7 1.4 7.2 2.3 12 2.3s9.3-.9 12-2.3Zm0-6c0 1-5.1 2-12 2s-12-1-12-2v-4.3c2.7 1.4 7.2 2.3 12 2.3s9.3-.9 12-2.3ZM16 4c6.9 0 12 1 12 2s-5.1 2-12 2-12-1-12-2 5.1-2 12-2Z"/></svg>
+{{- else if eq $icon "wifi" -}}
+<svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 22a3 3 0 1 0 3 3 3 3 0 0 0-3-3Zm0 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1ZM6.1 12.1a14 14 0 0 1 19.8 0l1.4-1.4a16 16 0 0 0-22.6 0Zm3.5 3.5a9 9 0 0 1 12.8 0l1.4-1.4a11 11 0 0 0-15.6 0Zm3.5 3.5a4 4 0 0 1 5.8 0l1.4-1.4a6 6 0 0 0-8.6 0Z"/></svg>
+{{- else if eq $icon "shield" -}}
+<svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 2 4 7v10c0 7.3 5.1 14.1 12 15 6.9-.9 12-7.7 12-15V7Zm10 15c0 6.1-4.2 11.9-10 12.9-5.8-1-10-6.8-10-12.9V8.6l10-4.2 10 4.2Z"/></svg>
+{{- else if eq $icon "lightning" -}}
+<svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M17 2 6 18h8v12l12-18h-9Z"/></svg>
+{{- else -}}
+<svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M4 4h24v4H4zm0 10h24v4H4zm0 10h24v4H4z"/></svg>
+{{- end -}}
+</div>
+{{- end -}}
+</div>
+<div class="carbon-kpi-card__value-row">
+<span class="carbon-kpi-card__value">{{ $value }}</span>
+{{- with $unit -}}
+<span class="carbon-kpi-card__unit">{{ . }}</span>
+{{- end -}}
+</div>
+<div class="carbon-kpi-card__footer">
+{{- if $trend -}}
+<span class="carbon-kpi-card__trend {{- if eq $sentiment "positive" }} carbon-kpi-card__trend--up-positive{{ else if eq $sentiment "negative" }} carbon-kpi-card__trend--down-negative{{ else }} carbon-kpi-card__trend--neutral{{ end -}}">
+{{- if or (eq $trendDir "up") (hasPrefix $trend "+") -}}
+<svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 3.5l5.5 5.5-1.4 1.4L9 7.3V14H7V7.3L3.9 10.4 2.5 9z"/></svg>
+{{- else if or (eq $trendDir "down") (hasPrefix $trend "-") -}}
+<svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12.5L2.5 7l1.4-1.4L7 8.7V2h2v6.7l3.1-3.1L13.5 7z"/></svg>
+{{- end -}}
+<span>{{ $trend }}</span>
+</span>
+{{- end -}}
+{{- with $subtext -}}
+<span class="carbon-kpi-card__subtext">{{ . }}</span>
+{{- end -}}
+</div>
+</div>

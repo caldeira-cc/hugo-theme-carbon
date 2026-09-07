@@ -1,0 +1,25 @@
+{{ $name := "" }}
+{{ if .IsNamedParams }}
+  {{ $name = .Get "name" }}
+{{ else if gt (len .Params) 0 }}
+  {{ $name = .Get 0 }}
+{{ end }}
+{{ $name = $name | default "Category" | strings.TrimSpace }}
+
+{{ $type := .Get "type" | default "blue" }}
+{{ $href := .Get "href" }}
+{{ $clickable := .Get "clickable" | default true }}
+
+{{ if $href }}
+  <a href="{{ $href }}" class="cds--tag cds--tag--{{ $type }} cds--tag--clickable" title="Category: {{ $name }}">
+    {{ $name }}
+  </a>
+{{ else if $clickable }}
+  <a href="{{ partial "components/category-url.html" $name }}" class="cds--tag cds--tag--{{ $type }} cds--tag--clickable" title="View all articles in category: {{ $name }}">
+    {{ $name }}
+  </a>
+{{ else }}
+  <span class="cds--tag cds--tag--{{ $type }}">
+    {{ $name }}
+  </span>
+{{ end }}

@@ -1,0 +1,8 @@
+{{/* Shortcode: dashboard-grid.html */}}
+{{- $class := .Get "class" | default "" -}}
+{{- $style := .Get "style" | default "" -}}
+<div class="carbon-dashboard-grid {{- with $class }} {{ . }}{{ end -}}" {{- with $style }} style="{{ . | safeCSS }}"{{- end -}}>
+<div class="cds--row">
+{{ .Inner }}
+</div>
+</div>

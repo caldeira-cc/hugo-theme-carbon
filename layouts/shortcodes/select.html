@@ -1,0 +1,33 @@
+{{/*
+  IBM Carbon Design System v11 — Select Shortcode
+  Compliant with Carbon React Select Component Specifications.
+
+  Usage:
+  {{< select label="Distribution Channel" helper="Select release channel" options="Stable,Beta,Nightly" />}}
+*/}}
+
+{{ $label := .Get "label" }}
+{{ $helper := .Get "helper" }}
+{{ $options := split (.Get "options" | default "") "," }}
+{{ $inline := .Get "inline" | default "false" }}
+{{ $id := .Get "id" | default (printf "cds-select-%d" .Ordinal) }}
+{{ $class := .Get "class" | default "" }}
+
+<div class="cds--form-item {{ with $class }}{{ . }}{{ end }}">
+  <div class="cds--select {{ if eq $inline "true" }}cds--select--inline{{ end }}">
+    {{ with $label }}<label for="{{ $id }}" class="cds--label">{{ . }}</label>{{ end }}
+    <div class="cds--select-input__wrapper" style="position: relative;">
+      <select id="{{ $id }}" class="cds--select-input" style="width: 100%; height: 2.5rem; background: var(--cds-field-01); color: var(--cds-text-primary); border: 1px solid var(--cds-border-subtle-01); border-bottom: 1px solid var(--cds-border-strong-01); padding: 0 2rem 0 1rem; font-family: inherit; font-size: 0.875rem;">
+        {{ range $options }}
+          <option value="{{ . }}">{{ . }}</option>
+        {{ end }}
+      </select>
+      <svg class="cds--select__arrow" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--cds-text-secondary);">
+        <path d="M8 11L3 6l1.4-1.4L8 8.2l3.6-3.6L13 6z"/>
+      </svg>
+    </div>
+    {{ with $helper }}
+      <div class="cds--form__helper-text" style="font-size: 0.75rem; color: var(--cds-text-secondary); margin-top: 0.25rem;">{{ . }}</div>
+    {{ end }}
+  </div>
+</div>

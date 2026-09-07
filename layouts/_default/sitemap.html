@@ -1,0 +1,178 @@
+{{ define "main" }}
+<div class="carbon-sitemap-page" style="padding-top: 1.5rem; padding-bottom: 4rem; flex: 1 0 auto; display: flex; flex-direction: column;">
+  {{ partial "components/breadcrumbs.html" . }}
+
+  <header class="carbon-collection-header" style="margin-bottom: 2rem;">
+    <h1 class="cds--type-display-01">{{ .Title }}</h1>
+    {{ with .Description }}
+      <p class="cds--type-body-long-02" style="color: var(--cds-text-secondary); max-width: 850px; margin-bottom: 0;">
+        {{ . }}
+      </p>
+    {{ end }}
+  </header>
+
+  {{/* High-Level Content KPI Metrics */}}
+  <div class="cds--row" style="margin-bottom: 1.5rem;">
+    <div class="cds--col-sm-4 cds--col-md-2 cds--col-lg-4" style="margin-bottom: 1rem;">
+      <div class="cds--tile" style="padding: 1rem;">
+        <span class="cds--type-label">Total Documents</span>
+        <div class="cds--type-heading-05" style="margin: 0.25rem 0 0; font-family: 'IBM Plex Mono', monospace;">
+          {{ len .Site.RegularPages }}
+        </div>
+      </div>
+    </div>
+    <div class="cds--col-sm-4 cds--col-md-2 cds--col-lg-4" style="margin-bottom: 1rem;">
+      <div class="cds--tile" style="padding: 1rem;">
+        <span class="cds--type-label">Sections & Folders</span>
+        <div class="cds--type-heading-05" style="margin: 0.25rem 0 0; font-family: 'IBM Plex Mono', monospace;">
+          {{ len .Site.Sections }}
+        </div>
+      </div>
+    </div>
+    <div class="cds--col-sm-4 cds--col-md-2 cds--col-lg-4" style="margin-bottom: 1rem;">
+      <div class="cds--tile" style="padding: 1rem;">
+        <span class="cds--type-label">Taxonomy Tags</span>
+        <div class="cds--type-heading-05" style="margin: 0.25rem 0 0; font-family: 'IBM Plex Mono', monospace;">
+          {{ len .Site.Taxonomies.tags }}
+        </div>
+      </div>
+    </div>
+    <div class="cds--col-sm-4 cds--col-md-2 cds--col-lg-4" style="margin-bottom: 1rem;">
+      <div class="cds--tile" style="padding: 1rem;">
+        <span class="cds--type-label">Authors</span>
+        <div class="cds--type-heading-05" style="margin: 0.25rem 0 0; font-family: 'IBM Plex Mono', monospace;">
+          {{ len .Site.Taxonomies.authors }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{/* Tree Toolbar (Search Filter & Expand/Collapse) */}}
+  <div class="cds--tile" style="padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div style="position: relative; max-width: 380px; width: 100%;">
+      <input type="text" id="sitemap-filter-input" placeholder="Filter pages by title or path..." class="csvw-search-input" style="width: 100%; height: 36px; padding-left: 2.25rem;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); fill: var(--cds-text-secondary); pointer-events: none;">
+        <path d="M15 13.9l-3.6-3.6C12.4 9.1 13 7.6 13 6c0-3.9-3.1-7-7-7S-1 2.1-1 6s3.1 7 7 7c1.6 0 3.1-.6 4.3-1.6l3.6 3.6 1.1-1.1zM1 6c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5-5-2.2-5-5z"/>
+      </svg>
+    </div>
+
+    <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <button type="button" class="cds--btn cds--btn--secondary cds--btn--sm" id="sitemap-expand-all-btn">
+        Expand All
+      </button>
+      <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm" id="sitemap-collapse-all-btn">
+        Collapse All
+      </button>
+    </div>
+  </div>
+
+  {{/* Hierarchical Folder Structure Tree Container */}}
+  <div class="carbon-sitemap-tree-container" id="carbon-sitemap-tree">
+    <div class="carbon-tree-root-header">
+      <div class="carbon-tree-icon carbon-tree-icon--folder" style="color: var(--cds-interactive-01);">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M14 4h-4.8L7.6 2.4C7.3 2.1 6.8 2 6.4 2H2C.9 2 0 2.9 0 4v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM2 3.5h4.4l1.6 1.6.3.3.4.1H14c.3 0 .5.2.5.5V7H1.5V4c0-.3.2-.5.5-.5zM14 12.5H2c-.3 0-.5-.2-.5-.5V8.5h13V12c0 .3-.2.5-.5.5z"/>
+        </svg>
+      </div>
+      <a href="/" class="carbon-tree-title carbon-tree-title--root">
+        {{ .Site.Title }} (Root)
+      </a>
+      <code class="carbon-tree-path">/</code>
+      <span class="cds--tag cds--tag--green" style="margin-left: auto;">
+        {{ len .Site.AllPages }} total entries
+      </span>
+    </div>
+
+    <ul class="carbon-tree-root-list">
+      {{/* Iterate through Top-Level Sections */}}
+      {{ range .Site.Sections }}
+        {{ partial "sitemap/tree-node.html" (dict "node" . "level" 1) }}
+      {{ end }}
+
+      {{/* Top-level standalone pages not in sections */}}
+      {{ range where .Site.RegularPages "Section" "" }}
+        {{ partial "sitemap/tree-node.html" (dict "node" . "level" 1) }}
+      {{ end }}
+    </ul>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const treeContainer = document.getElementById('carbon-sitemap-tree');
+  const filterInput = document.getElementById('sitemap-filter-input');
+  const expandBtn = document.getElementById('sitemap-expand-all-btn');
+  const collapseBtn = document.getElementById('sitemap-collapse-all-btn');
+
+  if (!treeContainer) return;
+
+  // Toggle individual folder
+  treeContainer.querySelectorAll('.js-tree-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const folderItem = btn.closest('.carbon-tree-item--folder');
+      if (!folderItem) return;
+
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !isExpanded);
+      folderItem.classList.toggle('is-collapsed', isExpanded);
+    });
+  });
+
+  // Expand all
+  if (expandBtn) {
+    expandBtn.addEventListener('click', () => {
+      treeContainer.querySelectorAll('.carbon-tree-item--folder').forEach(item => {
+        item.classList.remove('is-collapsed');
+        const btn = item.querySelector('.js-tree-toggle');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+      });
+    });
+  }
+
+  // Collapse all
+  if (collapseBtn) {
+    collapseBtn.addEventListener('click', () => {
+      treeContainer.querySelectorAll('.carbon-tree-item--folder').forEach(item => {
+        item.classList.add('is-collapsed');
+        const btn = item.querySelector('.js-tree-toggle');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Real-time text filter
+  if (filterInput) {
+    filterInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const rows = treeContainer.querySelectorAll('.carbon-tree-row');
+
+      if (!q) {
+        treeContainer.querySelectorAll('.carbon-tree-item').forEach(el => el.style.display = '');
+        return;
+      }
+
+      // Auto-expand all when searching
+      treeContainer.querySelectorAll('.carbon-tree-item--folder').forEach(item => {
+        item.classList.remove('is-collapsed');
+        const btn = item.querySelector('.js-tree-toggle');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+      });
+
+      treeContainer.querySelectorAll('.carbon-tree-item--file').forEach(fileItem => {
+        const text = fileItem.textContent.toLowerCase();
+        const matches = text.includes(q);
+        fileItem.style.display = matches ? '' : 'none';
+      });
+
+      // Hide empty folders
+      treeContainer.querySelectorAll('.carbon-tree-item--folder').forEach(folderItem => {
+        const visibleFiles = folderItem.querySelectorAll('.carbon-tree-item--file:not([style*="display: none"])');
+        const folderNameMatches = folderItem.querySelector('.carbon-tree-title--folder').textContent.toLowerCase().includes(q);
+        folderItem.style.display = (visibleFiles.length > 0 || folderNameMatches) ? '' : 'none';
+      });
+    });
+  }
+});
+</script>
+{{ end }}

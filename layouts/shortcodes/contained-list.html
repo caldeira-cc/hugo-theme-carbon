@@ -1,0 +1,10 @@
+{{ $title := .Get "title" | default "Contained List" }}
+
+<div class="cds--contained-list">
+  <div class="cds--contained-list__header">
+    <span>{{ $title }}</span>
+  </div>
+  <ul class="cds--contained-list__list">
+    {{ .Inner }}
+  </ul>
+</div>

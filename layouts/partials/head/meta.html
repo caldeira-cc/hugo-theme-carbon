@@ -1,0 +1,86 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description | default .Site.Title }}{{ end }}{{ end }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+<meta name="theme-color" content="#0f62fe">
+
+{{/* Multilingual Alternate Hreflang SEO Tags */}}
+{{ if and hugo.IsMultilingual (gt (len .AllTranslations) 1) }}
+  {{ range .AllTranslations }}
+    <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}">
+  {{ end }}
+  <link rel="alternate" hreflang="x-default" href="{{ (index .AllTranslations 0).Permalink | default .Permalink }}">
+{{ end }}
+
+{{/* RSS Auto-Discovery */}}
+{{ with .OutputFormats.Get "RSS" }}
+  <link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .Permalink }}">
+{{ end }}
+
+{{/* Open Graph & Twitter Cards */}}
+<meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description | default .Site.Title }}{{ end }}{{ end }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:locale" content="{{ .Language.LanguageCode | default "en_US" | replace "-" "_" }}">
+{{ range .Translations }}
+  <meta property="og:locale:alternate" content="{{ .Language.LanguageCode | default "en_US" | replace "-" "_" }}">
+{{ end }}
+{{ with .Site.Title }}<meta property="og:site_name" content="{{ . }}">{{ end }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description | default .Site.Title }}{{ end }}{{ end }}">
+
+{{/* Schema.org JSON-LD Structured Data with inLanguage */}}
+<script type="application/ld+json">
+{{ if .IsPage }}
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "inLanguage": {{ .Language.LanguageCode | default .Language.Lang | jsonify }},
+  "headline": {{ .Title | jsonify }},
+  "description": {{ with .Description }}{{ . | jsonify }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 | jsonify }}{{ else }}{{ .Title | jsonify }}{{ end }}{{ end }},
+  "url": {{ .Permalink | jsonify }},
+  "datePublished": {{ if not .Date.IsZero }}{{ .Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }}{{ else }}{{ now.Format "2006-01-02T15:04:05Z07:00" | jsonify }}{{ end }},
+  "dateModified": {{ if not .Lastmod.IsZero }}{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }}{{ else }}{{ now.Format "2006-01-02T15:04:05Z07:00" | jsonify }}{{ end }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ .Permalink | jsonify }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ .Site.Title | jsonify }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ "/assets/images/ibm-carbon-logo.svg" | absURL | jsonify }}
+    }
+  }
+  {{ $metaAuthors := partial "components/get-authors.html" . }}
+  {{ if gt (len $metaAuthors) 0 }},
+  "author": [
+    {{ range $idx, $auth := $metaAuthors }}
+      {{ if gt $idx 0 }},{{ end }}
+      {
+        "@type": "Person",
+        "name": {{ $auth | jsonify }}
+      }
+    {{ end }}
+  ]
+  {{ end }}
+}
+{{ else }}
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "inLanguage": {{ .Language.LanguageCode | default .Language.Lang | jsonify }},
+  "name": {{ .Site.Title | jsonify }},
+  "url": {{ .Site.BaseURL | jsonify }},
+  "description": {{ .Site.Params.description | default .Site.Title | jsonify }}
+}
+{{ end }}
+</script>
+
+{{/* Academic Zotero / Highwire Press Metadata */}}
+{{ partial "head/zotero-meta.html" . }}

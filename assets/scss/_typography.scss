@@ -1,0 +1,301 @@
+// IBM Carbon Design System v11 Typography Scale
+
+:root {
+  --cds-font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --cds-font-serif: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+  --cds-font-mono: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+
+  --cds-font-content: var(--cds-font-sans);
+  --cds-font-headings: var(--cds-font-sans);
+  --cds-font-navbar: var(--cds-font-sans);
+}
+
+$font-sans: var(--cds-font-sans);
+$font-mono: var(--cds-font-mono);
+$font-serif: var(--cds-font-serif);
+
+body {
+  font-family: var(--cds-font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--cds-text-primary);
+  background-color: var(--cds-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// Display Typography
+.cds--type-display-01 {
+  font-family: var(--cds-font-headings, var(--cds-font-sans));
+  font-size: 2.625rem; // 42px
+  font-weight: 300;
+  line-height: 3.125rem; // 50px
+  letter-spacing: 0;
+  margin-top: 0;
+  margin-bottom: 1rem;
+
+  @media (min-width: 42rem) {
+    font-size: 3.375rem; // 54px
+    line-height: 4rem; // 64px
+  }
+}
+
+.cds--type-display-02 {
+  font-family: var(--cds-font-headings, var(--cds-font-sans));
+  font-size: 2.625rem;
+  font-weight: 600;
+  line-height: 3.125rem;
+  letter-spacing: 0;
+  margin-top: 0;
+  margin-bottom: 1rem;
+
+  @media (min-width: 42rem) {
+    font-size: 3.375rem;
+    line-height: 4rem;
+  }
+}
+
+// Headings Scale
+.cds--type-heading-01, h6 {
+  font-family: var(--cds-font-headings, var(--cds-font-sans));
+  font-size: 0.875rem; // 14px
+  font-weight: 600;
+  line-height: 1.25rem; // 20px
+  letter-spacing: 0.16px;
+  color: var(--cds-text-primary);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cds--type-heading-02, h5 {
+  font-family: var(--cds-font-headings, var(--cds-font-sans));
+  font-size: 1rem; // 16px
+  font-weight: 600;
+  line-height: 1.375rem; // 22px
+  letter-spacing: 0;
+  color: var(--cds-text-primary);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cds--type-heading-03, h4 {
+  font-family: var(--cds-font-headings, var(--cds-font-sans));
+  font-size: 1.25rem; // 20px
+  font-weight: 400;
+  line-height: 1.625rem; // 26px
+  letter-spacing: 0;
+  color: var(--cds-text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.cds--type-heading-04, h3 {
+  font-family: var(--cds-font-headings, var(--cds-font-sans));
+  font-size: 1.75rem; // 28px
+  font-weight: 400;
+  line-height: 2.25rem; // 36px
+  letter-spacing: 0;
+  color: var(--cds-text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.cds--type-heading-05, h2 {
+  font-family: var(--cds-font-headings, var(--cds-font-sans));
+  font-size: 2rem; // 32px
+  font-weight: 400;
+  line-height: 2.5rem; // 40px
+  letter-spacing: 0;
+  color: var(--cds-text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.cds--type-heading-06, h1 {
+  font-family: var(--cds-font-headings, var(--cds-font-sans));
+  font-size: 2.625rem; // 42px
+  font-weight: 300;
+  line-height: 3.125rem; // 50px
+  letter-spacing: 0;
+  color: var(--cds-text-primary);
+  margin-top: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+// Body Typography
+.cds--type-body-long-01, p {
+  font-family: inherit;
+  font-size: 0.875rem; // 14px
+  font-weight: 400;
+  line-height: 1.43; // 20px
+  letter-spacing: 0.16px;
+  color: var(--cds-text-primary);
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.cds--type-body-long-02 {
+  font-family: inherit;
+  font-size: 1rem; // 16px
+  font-weight: 400;
+  line-height: 1.6; // 24px
+  letter-spacing: 0;
+  color: var(--cds-text-primary);
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.cds--type-body-short-01 {
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: 0.16px;
+}
+
+.cds--type-body-short-02 {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.375;
+  letter-spacing: 0;
+}
+
+// Carbon Prose Article Content Container
+.carbon-prose {
+  font-family: var(--cds-font-content, var(--cds-font-sans));
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--cds-text-primary);
+
+  p {
+    font-family: var(--cds-font-content, var(--cds-font-sans));
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+
+  li, blockquote, dd, dt {
+    font-family: inherit;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--cds-font-headings, var(--cds-font-sans));
+  }
+
+  code, pre, kbd, samp {
+    font-family: var(--cds-font-mono);
+  }
+}
+
+// UI Shell & System Elements Typography Shield
+.cds--header,
+.cds--header__name,
+.cds--header__nav,
+.cds--header__menu-item,
+.carbon-main-bar,
+.cds--breadcrumb,
+.carbon-sidebar-left,
+.carbon-sidebar-right,
+.carbon-mobile-drawer,
+.carbon-search-modal,
+.carbon-cookie-banner,
+.carbon-cookie-modal,
+.cds--tag,
+.cds--btn,
+.cds--tile,
+.cds--footer,
+footer,
+.carbon-footer {
+  font-family: var(--cds-font-sans);
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--cds-font-sans);
+  }
+}
+
+// Editorial Passages
+.carbon-editorial {
+  font-family: var(--cds-font-serif);
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+// Caption and Label
+.cds--type-caption, .carbon-caption {
+  font-family: inherit;
+  font-size: 0.75rem; // 12px
+  font-weight: 400;
+  line-height: 1rem; // 16px
+  letter-spacing: 0.32px;
+  color: var(--cds-text-secondary);
+}
+
+.cds--type-label {
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1rem;
+  letter-spacing: 0.32px;
+  color: var(--cds-text-secondary);
+}
+
+.cds--type-helper-text {
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1rem;
+  letter-spacing: 0.32px;
+  color: var(--cds-text-helper);
+}
+
+// Code Typography
+.cds--type-code-01, code {
+  font-family: var(--cds-font-mono);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: 0.32px;
+  background-color: var(--cds-layer-01);
+  padding: 0.125rem 0.375rem;
+  border-radius: 2px;
+  color: var(--cds-text-primary);
+}
+
+pre {
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-01);
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+
+  code {
+    background-color: transparent;
+    padding: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
+// Links
+a.cds--link, .cds--link {
+  font-family: inherit;
+  color: var(--cds-link-primary);
+  text-decoration: underline;
+  transition: color 0.11s cubic-bezier(0.2, 0, 0.38, 0.9);
+
+  &:hover {
+    color: var(--cds-link-primary-hover);
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: 2px solid var(--cds-focus);
+    outline-offset: 2px;
+  }
+}

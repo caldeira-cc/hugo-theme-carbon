@@ -1,0 +1,45 @@
+{{/*
+  IBM Carbon Design System v11 — Loading & InlineLoading Shortcode
+  Compliant with Carbon React Loading & InlineLoading Specifications.
+
+  Usage:
+  {{< loading type="inline" status="active" text="Processing dataset..." />}}
+  {{< loading type="spinner" small="true" />}}
+*/}}
+
+{{ $type := .Get "type" | default "spinner" }}
+{{ $status := .Get "status" | default "active" }}
+{{ $text := .Get "text" | default "Loading..." }}
+{{ $small := .Get "small" | default "false" }}
+{{ $class := .Get "class" | default "" }}
+
+{{ if eq $type "inline" }}
+  <div class="cds--inline-loading {{ with $class }}{{ . }}{{ end }}" aria-live="assertive">
+    <div class="cds--inline-loading__animation">
+      {{ if eq $status "active" }}
+        <div class="cds--loading cds--loading--small">
+          <svg class="cds--loading__svg" viewBox="0 0 100 100">
+            <circle class="cds--loading__background" cx="50" cy="50" r="44"/>
+            <circle class="cds--loading__stroke" cx="50" cy="50" r="44"/>
+          </svg>
+        </div>
+      {{ else if eq $status "finished" }}
+        <svg class="cds--inline-loading__checkmark-container" width="16" height="16" viewBox="0 0 16 16" fill="#24a148">
+          <path d="M8 1a7 7 0 1 0 7 7 7 7 0 0 0-7-7zm3.3 5.3l-4 4a.7.7 0 0 1-1 0l-2-2a.7.7 0 1 1 1-1L7 8.6l3.3-3.3a.7.7 0 0 1 1 1z"/>
+        </svg>
+      {{ else if eq $status "error" }}
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="#da1e28">
+          <path d="M8 1a7 7 0 1 0 7 7 7 7 0 0 0-7-7zm0 11.5a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm1-3.5H7V4h2z"/>
+        </svg>
+      {{ end }}
+    </div>
+    <p class="cds--inline-loading__text" style="font-size: 0.875rem; color: var(--cds-text-secondary); margin: 0;">{{ $text }}</p>
+  </div>
+{{ else }}
+  <div class="cds--loading {{ if eq $small "true" }}cds--loading--small{{ end }} {{ with $class }}{{ . }}{{ end }}" aria-live="assertive">
+    <svg class="cds--loading__svg" viewBox="0 0 100 100">
+      <circle class="cds--loading__background" cx="50" cy="50" r="44"/>
+      <circle class="cds--loading__stroke" cx="50" cy="50" r="44"/>
+    </svg>
+  </div>
+{{ end }}

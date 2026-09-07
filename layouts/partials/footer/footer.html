@@ -1,0 +1,64 @@
+<footer class="carbon-footer" role="contentinfo">
+  <div class="carbon-content-frame">
+    <div class="carbon-footer__grid">
+      <div class="carbon-footer__brand">
+        {{ with .Site.Title }}
+          <div class="carbon-footer__logo-title">
+            <span style="color: var(--cds-interactive-01);">{{ . }}</span>
+          </div>
+        {{ end }}
+        {{ with .Site.Params.description }}
+          <p class="cds--type-caption">
+            {{ . }}
+          </p>
+        {{ end }}
+      </div>
+
+      {{ if or .Site.Params.footer.columns .Site.Params.social }}
+        <div class="carbon-footer__links-group">
+          {{/* Configurable Footer Link Columns */}}
+          {{ with .Site.Params.footer.columns }}
+            {{ range . }}
+              <div class="carbon-footer__col">
+                {{ with .title }}<h4>{{ . }}</h4>{{ end }}
+                <ul>
+                  {{ range .links }}
+                    <li>
+                      <a href="{{ .url }}" 
+                         {{ if .external }}target="_blank" rel="noopener noreferrer"{{ end }}
+                         {{ with .data_action }}data-cookie-action="{{ . }}"{{ end }}>
+                        {{ .title }}
+                      </a>
+                    </li>
+                  {{ end }}
+                </ul>
+              </div>
+            {{ end }}
+          {{ end }}
+
+          {{/* Social Connections Column */}}
+          {{ with .Site.Params.social }}
+            <div class="carbon-footer__col">
+              <h4>{{ i18n "social.connect" | default "Connect & Follow" }}</h4>
+              <ul>
+                {{ range . }}
+                  <li>
+                    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.375rem;">
+                      {{ partial "components/social-icon.html" (dict "name" (or .icon .id) "size" "13") }}
+                      <span>{{ .name }}</span>
+                    </a>
+                  </li>
+                {{ end }}
+              </ul>
+            </div>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+
+    <div class="carbon-footer__bottom">
+      <div>&copy; {{ now.Format "2006" }} {{ with .Site.Params.footer.copyright }}{{ . }}{{ else }}{{ with .Site.Copyright }}{{ . }}{{ else }}{{ .Site.Title }}. Built with Carbon Design System.{{ end }}{{ end }}</div>
+      <div>{{ with .Site.Params.footer.compliance }}{{ . }}{{ else }}Compliant with WCAG 2.1 AA Standards &amp; GDPR{{ end }}</div>
+    </div>
+  </div>
+</footer>

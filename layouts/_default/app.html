@@ -1,0 +1,56 @@
+{{ define "main" }}
+<div class="carbon-app-page" style="width: 100%; max-width: 100%; padding-top: 1.5rem; padding-bottom: 4rem; flex: 1 0 auto; display: flex; flex-direction: column;">
+  {{ partial "components/breadcrumbs.html" . }}
+
+  <header class="carbon-app-header" style="margin-bottom: 2rem; border-bottom: 1px solid var(--cds-border-subtle-00); padding-bottom: 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+          <span class="cds--tag cds--tag--magenta" style="font-family: var(--cds-font-mono, monospace); text-transform: uppercase;">
+            INTERACTIVE APP
+          </span>
+          {{ with .Params.category }}
+            <span class="cds--tag cds--tag--blue">{{ . }}</span>
+          {{ end }}
+          {{ with .Params.status }}
+            <span class="cds--tag cds--tag--green">{{ . }}</span>
+          {{ end }}
+        </div>
+        <h1 class="cds--type-display-01" style="margin: 0 0 0.5rem 0; font-weight: 300; line-height: 1.15;">{{ .Title }}</h1>
+        {{ with .Description }}
+          <p class="cds--type-body-long-02" style="color: var(--cds-text-secondary); max-width: 900px; margin: 0; line-height: 1.6;">{{ . }}</p>
+        {{ end }}
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        {{ with .Params.version }}
+          <span class="cds--tag cds--tag--outline" style="font-family: var(--cds-font-mono, monospace);">v{{ . }}</span>
+        {{ end }}
+      </div>
+    </div>
+  </header>
+
+  {{/* Full-Width App Body Container (100% viewport span) */}}
+  <div class="carbon-app-content" style="width: 100%; flex: 1 0 auto;">
+    {{ .Content }}
+  </div>
+
+  {{/* Colocated Styles & Scripts from Page Resources */}}
+  {{ range .Resources.Match "*.css" }}
+    <link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{ end }}
+  {{ range .Resources.Match "*.js" }}
+    <script src="{{ .RelPermalink }}" defer></script>
+  {{ end }}
+  {{ with .Params.custom_js }}
+    {{ range . }}
+      {{ $script := resources.Get . }}
+      {{ if $script }}
+        <script src="{{ $script.RelPermalink }}" defer></script>
+      {{ else }}
+        <script src="{{ . | relURL }}" defer></script>
+      {{ end }}
+    {{ end }}
+  {{ end }}
+</div>
+{{ end }}

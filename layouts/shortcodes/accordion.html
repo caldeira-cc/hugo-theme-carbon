@@ -1,0 +1,9 @@
+{{ $align := .Get "align" | default "start" }}
+{{ $class := "cds--accordion" }}
+{{ if eq $align "end" }}
+  {{ $class = "cds--accordion cds--accordion--end" }}
+{{ end }}
+
+<ul class="{{ $class }}">
+  {{ .Inner }}
+</ul>

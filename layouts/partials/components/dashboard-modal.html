@@ -1,0 +1,56 @@
+{{/* Dashboard Interactive Modal Component — IBM Carbon Design System v11 */}}
+{{/* Fullscreen & Elevated Dashboard Modal for Multi-Widget Telemetry & Statistical Analytics */}}
+
+<div id="carbon-dashboard-modal" 
+     class="carbon-dashboard-modal" 
+     role="dialog" 
+     aria-modal="true" 
+     aria-hidden="true" 
+     aria-labelledby="carbon-dashboard-modal-title">
+  
+  <div class="carbon-dashboard-modal__backdrop" data-dashboard-modal-close></div>
+
+  <div class="carbon-dashboard-modal__container" role="document">
+    {{/* Modal Header */}}
+    <div class="carbon-dashboard-modal__header">
+      <div class="carbon-dashboard-modal__header-left">
+        <h3 id="carbon-dashboard-modal-title" class="carbon-dashboard-modal__title" data-dashboard-modal-title>
+          Data &amp; Statistical Analytics Dashboard
+        </h3>
+        <p class="carbon-dashboard-modal__subtitle" data-dashboard-modal-subtitle>
+          Multithreaded client-side dataset analytics, GNU PSPP statistical distributions, and geospatial tracking.
+        </p>
+      </div>
+
+      <div class="carbon-dashboard-modal__header-right">
+        <button type="button" class="carbon-dashboard-modal__close-btn" data-dashboard-modal-close aria-label="Close dashboard modal" title="Close (Esc)">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M24 9.4 22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    {{/* Modal Body Slot */}}
+    <div class="carbon-dashboard-modal__body" data-dashboard-modal-body>
+      {{/* Content injected dynamically or cloned from source dashboard */}}
+      <div class="carbon-dashboard-modal__placeholder" style="padding: 3rem 1rem; text-align: center; color: var(--cds-text-secondary);">
+        <div class="carbon-map-spinner" style="margin: 0 auto 1rem;"></div>
+        <span>Initialising Multithreaded Statistical Engine...</span>
+      </div>
+    </div>
+
+    {{/* Modal Footer */}}
+    <div class="carbon-dashboard-modal__footer">
+      <div class="carbon-dashboard-modal__footer-left">
+        <span class="cds--tag cds--tag--outline cds--tag--sm" style="font-family: var(--cds-font-mono, monospace);">STATIC DATASET (W3C CSVW)</span>
+        <span class="cds--tag cds--tag--purple cds--tag--sm" style="font-family: var(--cds-font-mono, monospace);">GNU PSPP COMPATIBLE</span>
+      </div>
+      <div class="carbon-dashboard-modal__footer-right">
+        <button type="button" class="cds--btn cds--btn--secondary cds--btn--sm" data-dashboard-modal-close>
+          Exit Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

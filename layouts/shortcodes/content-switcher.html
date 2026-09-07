@@ -1,0 +1,17 @@
+{{ $id := .Get "id" | default (printf "switcher-%d" now.UnixNano) }}
+{{ $options := split (.Get "options" | default "Option 1,Option 2") "," }}
+{{ $size := .Get "size" | default "md" }}
+
+{{ $class := "cds--content-switcher" }}
+{{ if eq $size "sm" }}
+  {{ $class = "cds--content-switcher cds--content-switcher--sm" }}
+{{ end }}
+
+<div class="{{ $class }}" id="{{ $id }}" role="tablist">
+  {{ range $index, $option := $options }}
+    {{ $trimmed := trim $option " " }}
+    <button type="button" class="cds--content-switcher__btn {{ if eq $index 0 }}cds--content-switcher--selected is-selected{{ end }}" role="tab" aria-selected="{{ if eq $index 0 }}true{{ else }}false{{ end }}">
+      {{ $trimmed }}
+    </button>
+  {{ end }}
+</div>

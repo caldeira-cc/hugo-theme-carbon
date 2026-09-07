@@ -1,0 +1,10 @@
+{{/* IBM Plex Typography Preload Hints (Self-Hosted WOFF2) */}}
+{{ $assetBase := .Site.Params.assetsURL | default "" }}
+{{ if hugo.IsServer }}
+  {{ $assetBase = "" }}
+{{ end }}
+<link rel="preload" href="{{ printf "%s%s" $assetBase ("/fonts/IBMPlexSans-Regular.woff2" | relURL) }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ printf "%s%s" $assetBase ("/fonts/IBMPlexSans-SemiBold.woff2" | relURL) }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ printf "%s%s" $assetBase ("/fonts/IBMPlexMono-Regular.woff2" | relURL) }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ printf "%s%s" $assetBase ("/fonts/IBMPlexSerif-Regular.woff2" | relURL) }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ printf "%s%s" $assetBase ("/fonts/IBMPlexMath-Regular.woff2" | relURL) }}" as="font" type="font/woff2" crossorigin>

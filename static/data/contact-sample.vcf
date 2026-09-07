@@ -1,0 +1,16 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Rostova;Elena;;Dr.;
+FN:Dr. Elena Rostova
+ORG:Cognitive Systems & Machine Learning Lab
+TITLE:Senior Research Director
+ROLE:Edge Neural Architectures
+EMAIL;TYPE=INTERNET,WORK;PREF:elena.rostova@lab.example.org
+TEL;TYPE=WORK,VOICE:+442079460912
+URL;TYPE=WORK:https://carbon.caldeira.cc
+ADR;TYPE=WORK:;;100 Innovation Way;London;;EC1A 1BB;United Kingdom
+NOTE:Leading edge computing and private AI systems research with IBM Carbon v11 interface standards.
+X-SOCIAL-LINKEDIN:https://linkedin.com/in/example
+X-SOCIAL-GITHUB:https://github.com/example
+REV:2026-08-29T22:45:00Z
+END:VCARD

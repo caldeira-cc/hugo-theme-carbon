@@ -1,0 +1,122 @@
+<aside class="carbon-sidebar-left" aria-label="Section Navigation">
+  {{/* 1. Resolve Sidebar Data Source (Cascade -> Front-matter -> Site Data) */}}
+  {{ $sidebarKey := or .Params.sidebar .Params.sidebar_file .Params.sidebars.left.data "" }}
+  {{ $sidebarData := dict }}
+
+  {{ if $sidebarKey }}
+    {{ if isset site.Data.sidebars $sidebarKey }}
+      {{ $sidebarData = index site.Data.sidebars $sidebarKey }}
+    {{ else if isset site.Data $sidebarKey }}
+      {{ $sidebarData = index site.Data $sidebarKey }}
+    {{ end }}
+  {{ else if and .Section (isset site.Data.sidebars .Section) }}
+    {{ $sidebarData = index site.Data.sidebars .Section }}
+  {{ end }}
+
+  {{/* 2. If Custom YAML Sidebar is Present, Render Up to 3-Level Hierarchy */}}
+  {{ if and $sidebarData $sidebarData.items }}
+    {{ with $sidebarData.title }}
+      <div class="carbon-sidebar-left__heading">{{ . }}</div>
+    {{ end }}
+
+    <nav aria-label="{{ with $sidebarData.title }}{{ . }}{{ else }}Navigation{{ end }}">
+      <div class="carbon-sidebar-left__tree">
+        {{ range $lvl1 := $sidebarData.items }}
+          <div class="carbon-sidebar-left__section" style="margin-bottom: 1.25rem;">
+            {{/* Level 1: Header / Group */}}
+            {{ if $lvl1.children }}
+              <div class="carbon-sidebar-left__group-title">
+                {{ if $lvl1.url }}
+                  <a href="{{ $lvl1.url }}" class="{{ if or (eq $.RelPermalink $lvl1.url) (eq $.Permalink $lvl1.url) }}is-active{{ end }}">
+                    {{ $lvl1.title }}
+                  </a>
+                {{ else }}
+                  <span>{{ $lvl1.title }}</span>
+                {{ end }}
+              </div>
+
+              {{/* Level 2 Sub-list */}}
+              <ul class="carbon-sidebar-left__nav carbon-sidebar-left__subnav">
+                {{ range $lvl2 := $lvl1.children }}
+                  {{ $lvl2Active := or (eq $.RelPermalink $lvl2.url) (eq $.Permalink $lvl2.url) }}
+                  
+                  {{ if $lvl2.children }}
+                    {{/* Level 2 item with Level 3 children */}}
+                    <li class="carbon-sidebar-left__item carbon-sidebar-left__item--parent">
+                      <a href="{{ $lvl2.url | default "#" }}" class="carbon-sidebar-left__link {{ if $lvl2Active }}is-active{{ end }}">
+                        <span>{{ $lvl2.title }}</span>
+                      </a>
+                      
+                      {{/* Level 3 Sub-list */}}
+                      <ul class="carbon-sidebar-left__subnav carbon-sidebar-left__subnav--lvl3">
+                        {{ range $lvl3 := $lvl2.children }}
+                          {{ $lvl3Active := or (eq $.RelPermalink $lvl3.url) (eq $.Permalink $lvl3.url) }}
+                          <li class="carbon-sidebar-left__item carbon-sidebar-left__item--lvl3">
+                            <a href="{{ $lvl3.url }}" class="carbon-sidebar-left__link {{ if $lvl3Active }}is-active{{ end }}">
+                              {{ $lvl3.title }}
+                            </a>
+                          </li>
+                        {{ end }}
+                      </ul>
+                    </li>
+                  {{ else }}
+                    {{/* Level 2 leaf item */}}
+                    <li class="carbon-sidebar-left__item">
+                      <a href="{{ $lvl2.url }}" class="carbon-sidebar-left__link {{ if $lvl2Active }}is-active{{ end }}">
+                        {{ $lvl2.title }}
+                      </a>
+                    </li>
+                  {{ end }}
+                {{ end }}
+              </ul>
+
+            {{ else }}
+              {{/* Level 1 direct link */}}
+              <ul class="carbon-sidebar-left__nav">
+                <li class="carbon-sidebar-left__item">
+                  <a href="{{ $lvl1.url }}" class="carbon-sidebar-left__link {{ if or (eq $.RelPermalink $lvl1.url) (eq $.Permalink $lvl1.url) }}is-active{{ end }}">
+                    {{ $lvl1.title }}
+                  </a>
+                </li>
+              </ul>
+            {{ end }}
+          </div>
+        {{ end }}
+      </div>
+    </nav>
+
+  {{/* 3. Fallback: Auto-Generated Section Page Hierarchy */}}
+  {{ else }}
+    {{ $currentSection := .CurrentSection }}
+    {{ if $currentSection }}
+      <div class="carbon-sidebar-left__heading">{{ $currentSection.Title }}</div>
+
+      <nav aria-label="{{ $currentSection.Title }}">
+        <ul class="carbon-sidebar-left__nav">
+          {{ range $currentSection.Pages }}
+            <li class="carbon-sidebar-left__item">
+              <a href="{{ .RelPermalink }}" class="{{ if eq $.RelPermalink .RelPermalink }}is-active{{ end }}">
+                {{ .Title }}
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      </nav>
+    {{ end }}
+
+    {{ if and $currentSection (ne $currentSection.Section "docs") }}
+      <div style="margin-top: 1.5rem;">
+        <div class="carbon-sidebar-left__heading">Explore Sections</div>
+        <ul class="carbon-sidebar-left__nav">
+          {{ range .Site.Sections }}
+            <li class="carbon-sidebar-left__item">
+              <a href="{{ .RelPermalink }}" class="{{ if eq $.Section .Section }}is-active{{ end }}">
+                {{ .Title }}
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      </div>
+    {{ end }}
+  {{ end }}
+</aside>

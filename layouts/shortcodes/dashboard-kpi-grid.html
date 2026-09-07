@@ -1,0 +1,5 @@
+{{/* Shortcode: dashboard-kpi-grid.html */}}
+{{- $class := .Get "class" | default "" -}}
+<div class="carbon-kpi-grid{{ with $class }} {{ . }}{{ end }}">
+{{ .Inner }}
+</div>

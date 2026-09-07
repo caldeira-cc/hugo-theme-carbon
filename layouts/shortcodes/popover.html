@@ -1,0 +1,25 @@
+{{/*
+  IBM Carbon Design System v11 — Popover Shortcode
+  Compliant with Carbon React Popover Component Specifications.
+
+  Usage:
+  {{< popover trigger="Details & Info" align="bottom" >}}
+    Additional context and interactive popover content.
+  {{< /popover >}}
+*/}}
+
+{{ $trigger := .Get "trigger" | default "Open Popover" }}
+{{ $align := .Get "align" | default "bottom" }}
+{{ $id := .Get "id" | default (printf "cds-popover-%d" .Ordinal) }}
+{{ $class := .Get "class" | default "" }}
+
+<div class="cds--popover-container {{ with $class }}{{ . }}{{ end }}" style="position: relative; display: inline-block; margin: 0.5rem 0;">
+  <button type="button" class="cds--btn cds--btn--secondary cds--btn--sm" aria-expanded="false" aria-controls="{{ $id }}" onclick="const p = this.nextElementSibling; const open = p.style.display !== 'none'; p.style.display = open ? 'none' : 'block'; this.setAttribute('aria-expanded', !open);">
+    {{ $trigger }}
+  </button>
+  <div class="cds--popover" id="{{ $id }}" role="dialog" style="display: none; position: absolute; top: calc(100% + 8px); left: 0; min-width: 240px; background: var(--cds-layer-02); border: 1px solid var(--cds-border-subtle-00); box-shadow: 0 4px 16px rgba(0,0,0,0.25); padding: 1rem; z-index: 8000; font-size: 0.875rem;">
+    <div class="cds--popover-content" style="color: var(--cds-text-primary); line-height: 1.45;">
+      {{ .Inner | markdownify }}
+    </div>
+  </div>
+</div>

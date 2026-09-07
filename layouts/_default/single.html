@@ -1,0 +1,134 @@
+{{ define "main" }}
+<article class="carbon-article">
+  {{ partial "components/breadcrumbs.html" . }}
+
+  {{/* COinS (Z3988) Academic Bibliographic Metadata Span for Zotero */}}
+  {{ $authors := partial "components/get-authors.html" . }}
+  <span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.jtitle={{ .Site.Title | urlquery }}&amp;rft.atitle={{ .Title | urlquery }}&amp;rft.date={{ if not .Date.IsZero }}{{ .Date.Format "2006-01-02" }}{{ end }}{{ range $authors }}&amp;rft.au={{ . | urlquery }}{{ end }}&amp;rft_id={{ .Permalink | urlquery }}" aria-hidden="true" style="display:none;"></span>
+
+  <header class="carbon-article__header">
+    <div class="carbon-article__tags-row">
+      {{ with .Params.categories }}
+        {{ range . }}
+          <a href="{{ partial "components/category-url.html" . }}" class="cds--tag cds--tag--blue cds--tag--clickable" title="View category: {{ . }}">
+            {{ . }}
+          </a>
+        {{ end }}
+      {{ end }}
+      {{ with .Params.status }}
+        <span class="cds--tag {{ if or (eq . "Completed") (eq . "Active") }}cds--tag--green{{ else }}cds--tag--purple{{ end }}">
+          {{ . }}
+        </span>
+      {{ end }}
+      {{ if .Params.password }}
+        <span class="cds--tag cds--tag--magenta" title="Protected with AES-256-GCM">
+          🔒 Encrypted
+        </span>
+      {{ end }}
+    </div>
+
+    <h1 class="cds--type-display-01 carbon-article__title">{{ .Title }}</h1>
+
+    {{ with .Description }}
+      <p class="cds--type-body-long-02 carbon-article__description">
+        {{ . }}
+      </p>
+    {{ end }}
+
+    <div class="carbon-article__meta">
+      {{ if gt (len $authors) 0 }}
+        <div>
+          <strong>{{ if eq (len $authors) 1 }}Author:{{ else }}Authors:{{ end }}</strong>
+          {{ range $idx, $auth := $authors }}
+            {{ if gt $idx 0 }}, {{ end }}
+            <a href="{{ partial "components/author-url.html" $auth }}" class="cds--link">{{ $auth }}</a>
+          {{ end }}
+        </div>
+      {{ end }}
+      {{ if not .Date.IsZero }}
+        <div><strong>Published:</strong> {{ .Date.Format "Jan 02, 2006" }}</div>
+      {{ end }}
+      {{ if .ReadingTime }}
+        <div><strong>Read Time:</strong> {{ .ReadingTime }} min</div>
+      {{ end }}
+    </div>
+  </header>
+
+  {{/* Featured Article Editorial Illustration */}}
+  {{ with .Params.image }}
+    <figure class="carbon-article__featured-image">
+      <img src="{{ . }}" alt="{{ $.Title }}" loading="eager">
+    </figure>
+  {{ end }}
+
+  {{/* Build-Time AES-256-GCM Decryption Container or Standard Prose */}}
+  {{ if .Params.password }}
+    <div id="encrypted-guard" class="carbon-encrypted-guard" data-password-protected="true">
+      <div class="carbon-encrypted-guard__header">
+        <svg class="carbon-encrypted-guard__icon" width="24" height="24" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M24 12h-2V8a6 6 0 0 0-12 0v4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V14a2 2 0 0 0-2-2zm-12-4a4 4 0 0 1 8 0v4H12zm12 20H8V14h16z"/>
+        </svg>
+        <h2 class="carbon-encrypted-guard__title">Password-Protected Page</h2>
+      </div>
+      <p class="carbon-encrypted-guard__description">
+        This document is protected with AES-256-GCM and derived via PBKDF2 (100,000 SHA-256 iterations). Enter the authorized password to decrypt the contents directly in your browser.
+      </p>
+      <form id="decrypt-form" class="carbon-encrypted-guard__form" onsubmit="return false;">
+        <div class="carbon-encrypted-guard__input-group">
+          <input type="password" id="decrypt-password" class="carbon-encrypted-guard__input" placeholder="Enter document password..." autocomplete="current-password" required aria-label="Access password">
+          <button type="submit" id="decrypt-submit-btn" class="cds--btn cds--btn--primary cds--btn--sm">
+            Unlock Content
+          </button>
+        </div>
+        <div id="decrypt-error" class="carbon-encrypted-guard__error" aria-live="assertive">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+          <span>Incorrect password. Decryption authentication tag mismatch.</span>
+        </div>
+      </form>
+    </div>
+
+    <div id="encrypted-content" class="carbon-encrypted-content" data-encrypted="true" style="display:none;">
+      {{ .Content }}
+    </div>
+  {{ else }}
+    <div class="carbon-prose">
+      {{ .Content }}
+    </div>
+  {{ end }}
+
+  {{ with .Params.tags }}
+    <footer class="carbon-article__footer">
+      <div class="carbon-article__tags-label">Tags</div>
+      <div class="carbon-article__tags-list">
+        {{ range . }}
+          <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" class="cds--tag cds--tag--outline cds--tag--clickable">
+            #{{ . }}
+          </a>
+        {{ end }}
+      </div>
+    </footer>
+  {{ end }}
+
+  {{/* Prev / Next Pagination Links */}}
+  {{ if or .PrevInSection .NextInSection }}
+    <nav class="carbon-article__nav">
+      <div>
+        {{ with .PrevInSection }}
+          <a href="{{ .RelPermalink }}" class="cds--link" style="display: inline-flex; align-items: center; gap: 0.375rem;">
+            <span>‹ {{ .Title }}</span>
+          </a>
+        {{ end }}
+      </div>
+      <div>
+        {{ with .NextInSection }}
+          <a href="{{ .RelPermalink }}" class="cds--link" style="display: inline-flex; align-items: center; gap: 0.375rem;">
+            <span>{{ .Title }} ›</span>
+          </a>
+        {{ end }}
+      </div>
+    </nav>
+  {{ end }}
+</article>
+{{ end }}

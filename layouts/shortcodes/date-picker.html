@@ -1,0 +1,23 @@
+{{/*
+  IBM Carbon Design System v11 — DatePicker Shortcode
+  Compliant with Carbon React DatePicker Component Specifications.
+
+  Usage:
+  {{< date-picker label="Observation Date" helper="Format: YYYY-MM-DD" placeholder="2026-08-29" />}}
+*/}}
+
+{{ $label := .Get "label" | default "Date" }}
+{{ $helper := .Get "helper" }}
+{{ $placeholder := .Get "placeholder" | default "YYYY-MM-DD" }}
+{{ $id := .Get "id" | default (printf "cds-date-picker-%d" .Ordinal) }}
+{{ $class := .Get "class" | default "" }}
+
+<div class="cds--form-item cds--date-picker {{ with $class }}{{ . }}{{ end }}" style="margin: 1rem 0; max-width: 280px;">
+  <label for="{{ $id }}" class="cds--label" style="font-size: 0.75rem; font-weight: 600; color: var(--cds-text-secondary); margin-bottom: 0.25rem; display: block;">{{ $label }}</label>
+  <div class="cds--date-picker-input__wrapper" style="position: relative;">
+    <input type="date" id="{{ $id }}" class="cds--date-picker__input" placeholder="{{ $placeholder }}" style="width: 100%; height: 2.5rem; background: var(--cds-field-01); color: var(--cds-text-primary); border: 1px solid var(--cds-border-subtle-01); border-bottom: 1px solid var(--cds-border-strong-01); padding: 0 1rem; font-family: inherit; font-size: 0.875rem;">
+  </div>
+  {{ with $helper }}
+    <div class="cds--form__helper-text" style="font-size: 0.75rem; color: var(--cds-text-secondary); margin-top: 0.25rem;">{{ . }}</div>
+  {{ end }}
+</div>

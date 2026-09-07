@@ -1,0 +1,797 @@
+// IBM Carbon Design System v11 — Code Snippets & Code Modal
+// Theme-adaptive styles using Carbon design tokens throughout.
+// All colours derive from --cds-* custom properties so that light
+// (white / g10) and dark (g90 / g100) themes are automatic.
+
+// ---------------------------------------------------------------------------
+// 1. Inline Code Snippet Container (.carbon-code-snippet)
+//    Used by both the {{< code-file >}} shortcode and the JS enhancer
+//    that wraps standard Markdown <pre><code> blocks.
+// ---------------------------------------------------------------------------
+
+.carbon-code-snippet {
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  border-radius: 0;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  // ---- Header (language badge + copy button) ----
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.75rem;
+    height: 2rem;
+    background-color: var(--cds-layer-02);
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+    gap: 0.5rem;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  &__lang-tag {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.32px;
+    flex-shrink: 0;
+  }
+
+  &__file-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    svg { flex-shrink: 0; }
+  }
+
+  &__line-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6875rem;
+    color: var(--cds-text-helper, var(--cds-text-secondary));
+    flex-shrink: 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    flex-shrink: 0;
+  }
+
+  // Small icon buttons (Copy / Expand)
+  &__btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--cds-icon-secondary, var(--cds-text-secondary));
+    padding: 0.25rem 0.375rem;
+    font-size: 0.6875rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 0;
+    font-family: inherit;
+    transition: background-color 0.11s ease, color 0.11s ease;
+
+    &:hover {
+      background-color: var(--cds-layer-hover-01, var(--cds-layer-01));
+      color: var(--cds-text-primary);
+    }
+    &:focus-visible {
+      outline: 2px solid var(--cds-focus);
+      outline-offset: -2px;
+    }
+    svg { width: 14px; height: 14px; fill: currentColor; }
+
+    .carbon-copy-label { white-space: nowrap; }
+
+    &.is-copied {
+      color: var(--cds-support-success, #24a148);
+    }
+  }
+
+  // ---- Code body ----
+  &__body {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    background-color: var(--cds-field-01, var(--cds-layer-01));
+
+    &.is-scrollable {
+      max-height: 460px;
+      overflow-y: auto;
+    }
+
+    // Reset Hugo Chroma-generated highlights
+    .highlight,
+    .chroma {
+      margin: 0 !important;
+      border: none !important;
+      background: transparent !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    // Chroma line-number table
+    table, table.lntable {
+      width: 100% !important;
+      max-width: 100% !important;
+      border-collapse: collapse !important;
+      border: none !important;
+      margin: 0 !important;
+      background: transparent !important;
+
+      tr { background: transparent !important; border: none !important; }
+      td { padding: 0 !important; border: none !important; vertical-align: top !important; }
+
+      // Gutter column
+      td:first-child {
+        width: auto !important;
+        min-width: 2.5rem !important;
+        padding: 0.75rem 0.5rem !important;
+        border-right: 1px solid var(--cds-border-subtle-00) !important;
+        background-color: var(--cds-layer-01) !important;
+        text-align: right !important;
+        user-select: none !important;
+
+        pre {
+          margin: 0 !important; padding: 0 !important;
+          background: transparent !important;
+          border: none !important; box-shadow: none !important;
+          font: 0.75rem/1.6 'IBM Plex Mono', monospace !important;
+          color: var(--cds-text-secondary) !important;
+          opacity: 0.5 !important;
+        }
+      }
+
+      // Code column
+      td:last-child {
+        width: 100% !important;
+        padding: 0.75rem 1rem !important;
+        overflow-x: auto !important;
+
+        pre {
+          margin: 0 !important; padding: 0 !important;
+          background: transparent !important;
+          border: none !important; box-shadow: none !important;
+          font: 0.8125rem/1.6 'IBM Plex Mono', monospace !important;
+          overflow-x: auto !important;
+
+          code {
+            font: inherit !important;
+            background: transparent !important;
+            padding: 0 !important;
+            white-space: pre !important;
+          }
+        }
+      }
+    }
+  }
+
+  // Standalone <pre> inside the body (non-Chroma / code-file shortcode)
+  &__pre {
+    margin: 0 !important;
+    padding: 0.75rem 1rem !important;
+    background: transparent !important;
+    border: none !important;
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    font: 0.8125rem/1.6 'IBM Plex Mono', monospace;
+    tab-size: 2;
+
+    code {
+      background: transparent !important;
+      padding: 0 !important;
+      border-radius: 0;
+      color: var(--cds-text-primary);
+      font: inherit;
+      white-space: pre;
+    }
+  }
+
+  // Loading skeleton
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+    gap: 0.75rem;
+    color: var(--cds-text-secondary);
+    font-size: 0.8125rem;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 2. Prose-level containment — prevent code blocks from overflowing
+// ---------------------------------------------------------------------------
+
+.carbon-prose,
+.carbon-article {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  .highlight {
+    width: 100%; max-width: 100%; box-sizing: border-box;
+    overflow-x: auto; margin: 1rem 0;
+  }
+  pre {
+    width: 100%; max-width: 100%; box-sizing: border-box;
+    overflow-x: auto;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 3. Fullscreen Code Modal (.carbon-code-modal)
+//    Entirely driven by Carbon tokens → theme-adaptive automatically.
+// ---------------------------------------------------------------------------
+
+.carbon-code-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  &.is-visible { display: flex; }
+
+  // Scrim
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  // Container card
+  &__container {
+    position: relative;
+    width: 92vw;
+    max-width: 1400px;
+    height: 88vh;
+    background-color: var(--cds-layer-01);
+    border: 1px solid var(--cds-border-subtle-00);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    overflow: hidden;
+    animation: carbonModalSlideIn 0.2s cubic-bezier(0, 0, 0.2, 1) both;
+  }
+
+  // Header
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: var(--cds-layer-02);
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  &__title {
+    margin: 0;
+    font: 600 0.875rem/1.3 'IBM Plex Mono', monospace;
+    color: var(--cds-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__stats {
+    font: 0.6875rem/1 'IBM Plex Mono', monospace;
+    color: var(--cds-text-secondary);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  &__close-btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--cds-icon-primary, var(--cds-text-primary));
+    width: 2rem; height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.11s ease;
+
+    &:hover  { background: var(--cds-layer-hover-02, var(--cds-layer-03)); }
+    &:focus-visible { outline: 2px solid var(--cds-focus); outline-offset: -2px; }
+  }
+
+  // Toolbar
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    padding: 0.375rem 1rem;
+    background: var(--cds-layer-01);
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  &__search {
+    display: flex;
+    align-items: center;
+    background: var(--cds-field-01, var(--cds-layer-02));
+    border: 1px solid var(--cds-border-subtle-00);
+    padding: 0.25rem 0.5rem;
+    min-width: 200px;
+    flex: 1 1 200px;
+    max-width: 360px;
+    gap: 0.35rem;
+
+    svg { color: var(--cds-icon-secondary, var(--cds-text-secondary)); flex-shrink: 0; }
+
+    input {
+      background: transparent;
+      border: none;
+      color: var(--cds-text-primary);
+      font: 0.75rem/1 'IBM Plex Mono', monospace;
+      width: 100%; outline: none;
+
+      &::placeholder { color: var(--cds-text-placeholder, var(--cds-text-secondary)); }
+    }
+
+    .carbon-search-match-count {
+      font: 0.6875rem/1 'IBM Plex Mono', monospace;
+      color: var(--cds-text-secondary);
+      white-space: nowrap;
+    }
+  }
+
+  &__toggles {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  &__toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.6875rem;
+    color: var(--cds-text-secondary);
+    cursor: pointer;
+    user-select: none;
+
+    input[type="checkbox"] { accent-color: var(--cds-interactive-01); cursor: pointer; }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: auto;
+  }
+
+  // Body (gutter + code)
+  &__body {
+    flex: 1 1 auto;
+    overflow: auto;
+    display: flex;
+    background: var(--cds-field-01, var(--cds-layer-01));
+  }
+
+  &__gutter {
+    background: var(--cds-layer-01);
+    border-right: 1px solid var(--cds-border-subtle-00);
+    padding: 0.75rem 0.5rem;
+    text-align: right;
+    font: 0.75rem/1.6 'IBM Plex Mono', monospace;
+    color: var(--cds-text-secondary);
+    opacity: 0.55;
+    user-select: none;
+    flex-shrink: 0;
+    min-width: 2.75rem;
+  }
+
+  &__code-area {
+    flex: 1 1 auto;
+    padding: 0.75rem 1rem;
+    margin: 0;
+    overflow-x: auto;
+    font: 0.8125rem/1.6 'IBM Plex Mono', monospace;
+    color: var(--cds-text-primary);
+    white-space: pre;
+    background: transparent;
+    border: none;
+
+    code {
+      font: inherit;
+      background: transparent !important;
+      padding: 0 !important;
+    }
+
+    &.is-wrapped {
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    // highlight.js overrides — let Carbon tokens win
+    .hljs { background: transparent !important; color: inherit !important; padding: 0 !important; }
+
+    mark.carbon-code-highlight {
+      background: var(--cds-highlight, #f1c21b);
+      color: #161616;
+      padding: 0 2px;
+      border-radius: 1px;
+    }
+  }
+
+  // Footer
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.375rem 1rem;
+    background: var(--cds-layer-02);
+    border-top: 1px solid var(--cds-border-subtle-00);
+    font: 0.6875rem/1 'IBM Plex Sans', sans-serif;
+    color: var(--cds-text-secondary);
+    flex-shrink: 0;
+  }
+
+  &__shortcuts {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    kbd {
+      display: inline-block;
+      background: var(--cds-layer-01);
+      border: 1px solid var(--cds-border-subtle-00);
+      padding: 0.0625rem 0.3125rem;
+      font: 0.625rem/1.4 'IBM Plex Mono', monospace;
+      color: var(--cds-text-primary);
+      border-radius: 2px;
+      margin-right: 0.125rem;
+    }
+  }
+
+  &__engine {
+    font-size: 0.625rem;
+    color: var(--cds-text-helper, var(--cds-text-secondary));
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 4. Syntax Highlighting & Code Block Theming (Highlight.js & Hugo Chroma)
+// ---------------------------------------------------------------------------
+
+// Shared syntax token rules
+.carbon-code-snippet,
+.carbon-code-modal,
+.carbon-prose pre,
+.carbon-article pre,
+pre {
+  .hljs { background: transparent !important; color: inherit !important; padding: 0 !important; }
+}
+
+// ---------------------------------------------------------------------------
+// Light Themes: White / Gray 10
+// Clean light canvas (#fbfbfb / #ffffff), muted border, dark text, vibrant GitHub/Carbon Light syntax
+// ---------------------------------------------------------------------------
+html[data-carbon-theme="white"],
+html[data-carbon-theme="g10"],
+:root:not([data-carbon-theme="g90"]):not([data-carbon-theme="g100"]) {
+  .carbon-code-snippet {
+    background-color: #f4f4f4;
+    border-color: #e0e0e0;
+
+    &__header {
+      background-color: #e8e8e8;
+      border-bottom-color: #dcdcdc;
+    }
+
+    &__body {
+      background-color: #fbfbfb;
+      color: #161616;
+    }
+
+    // Gutter & Table
+    table.lntable,
+    table {
+      td:first-child {
+        background-color: #f0f0f0 !important;
+        border-right-color: #e0e0e0 !important;
+        pre { color: #6a737d !important; opacity: 0.8 !important; }
+      }
+      td:last-child {
+        background-color: #fbfbfb !important;
+        pre code { color: #161616 !important; }
+      }
+    }
+
+    &__pre code {
+      color: #161616;
+    }
+  }
+
+  // Standalone pre and inline code
+  .carbon-prose pre,
+  .carbon-article pre,
+  pre {
+    background-color: #f4f4f4;
+    border-color: #e0e0e0;
+    color: #161616;
+
+    code {
+      color: #161616;
+    }
+  }
+
+  code:not(pre code) {
+    background-color: #f0f0f0;
+    color: #161616;
+    border: 1px solid #e0e0e0;
+  }
+
+  // Modal in light theme
+  .carbon-code-modal {
+    &__dialog {
+      background: #ffffff;
+      border-color: #e0e0e0;
+    }
+    &__header {
+      background: #f4f4f4;
+      border-bottom-color: #e0e0e0;
+    }
+    &__body {
+      background: #fbfbfb;
+    }
+    &__gutter {
+      background: #f0f0f0;
+      border-right-color: #e0e0e0;
+      color: #6a737d;
+    }
+    &__code-area {
+      color: #161616;
+    }
+    &__footer {
+      background: #f4f4f4;
+      border-top-color: #e0e0e0;
+    }
+  }
+
+  // Syntax highlighting tokens (Light)
+  .hljs-comment, .hljs-quote,
+  .chroma .c, .chroma .c1, .chroma .cm, .chroma .cp, .chroma .cs {
+    color: #6a737d !important;
+    font-style: italic;
+  }
+
+  .hljs-keyword, .hljs-selector-tag,
+  .chroma .k, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr {
+    color: #d73a49 !important;
+    font-weight: 600;
+  }
+
+  .hljs-string, .hljs-attr,
+  .chroma .s, .chroma .s1, .chroma .s2, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .sd, .chroma .se, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr, .chroma .ss {
+    color: #032f62 !important;
+  }
+
+  .hljs-number, .hljs-literal,
+  .chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo, .chroma .kc {
+    color: #005cc5 !important;
+  }
+
+  .hljs-built_in, .hljs-type,
+  .chroma .kt, .chroma .nc, .chroma .ne {
+    color: #6f42c1 !important;
+  }
+
+  .hljs-title, .hljs-section,
+  .chroma .nf, .chroma .fm, .chroma .na {
+    color: #6f42c1 !important;
+    font-weight: 600;
+  }
+
+  .hljs-name, .hljs-tag,
+  .chroma .nt {
+    color: #22863a !important;
+  }
+
+  .hljs-attribute, .hljs-variable,
+  .chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi {
+    color: #e36209 !important;
+  }
+
+  .hljs-meta,
+  .chroma .nd {
+    color: #6a737d !important;
+  }
+
+  .chroma .o, .chroma .ow, .chroma .p {
+    color: #24292e !important;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Dark Themes: Gray 90 / Gray 100
+// Deep dark canvas (#161616 / #121212), dark border, white text, Carbon One-Dark syntax
+// ---------------------------------------------------------------------------
+html[data-carbon-theme="g90"],
+html[data-carbon-theme="g100"] {
+  .carbon-code-snippet {
+    background-color: #161616;
+    border-color: #393939;
+
+    &__header {
+      background-color: #262626;
+      border-bottom-color: #393939;
+    }
+
+    &__body {
+      background-color: #121212;
+      color: #f4f4f4;
+    }
+
+    // Gutter & Table
+    table.lntable,
+    table {
+      td:first-child {
+        background-color: #1a1a1a !important;
+        border-right-color: #393939 !important;
+        pre { color: #8d8d8d !important; opacity: 0.8 !important; }
+      }
+      td:last-child {
+        background-color: #121212 !important;
+        pre code { color: #f4f4f4 !important; }
+      }
+    }
+
+    &__pre code {
+      color: #f4f4f4;
+    }
+  }
+
+  // Standalone pre and inline code
+  .carbon-prose pre,
+  .carbon-article pre,
+  pre {
+    background-color: #161616;
+    border-color: #393939;
+    color: #f4f4f4;
+
+    code {
+      color: #f4f4f4;
+    }
+  }
+
+  code:not(pre code) {
+    background-color: #262626;
+    color: #f4f4f4;
+    border: 1px solid #393939;
+  }
+
+  // Modal in dark theme
+  .carbon-code-modal {
+    &__dialog {
+      background: #161616;
+      border-color: #393939;
+    }
+    &__header {
+      background: #262626;
+      border-bottom-color: #393939;
+    }
+    &__body {
+      background: #121212;
+    }
+    &__gutter {
+      background: #1a1a1a;
+      border-right-color: #393939;
+      color: #8d8d8d;
+    }
+    &__code-area {
+      color: #f4f4f4;
+    }
+    &__footer {
+      background: #262626;
+      border-top-color: #393939;
+    }
+  }
+
+  // Syntax highlighting tokens (Dark)
+  .hljs-comment, .hljs-quote,
+  .chroma .c, .chroma .c1, .chroma .cm, .chroma .cp, .chroma .cs {
+    color: #7f848e !important;
+    font-style: italic;
+  }
+
+  .hljs-keyword, .hljs-selector-tag,
+  .chroma .k, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr {
+    color: #c678dd !important;
+    font-weight: 600;
+  }
+
+  .hljs-string, .hljs-attr,
+  .chroma .s, .chroma .s1, .chroma .s2, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .sd, .chroma .se, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr, .chroma .ss {
+    color: #98c379 !important;
+  }
+
+  .hljs-number, .hljs-literal,
+  .chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo, .chroma .kc {
+    color: #d19a66 !important;
+  }
+
+  .hljs-built_in, .hljs-type,
+  .chroma .kt, .chroma .nc, .chroma .ne {
+    color: #e5c07b !important;
+  }
+
+  .hljs-title, .hljs-section,
+  .chroma .nf, .chroma .fm, .chroma .na {
+    color: #61afef !important;
+    font-weight: 600;
+  }
+
+  .hljs-name, .hljs-tag,
+  .chroma .nt {
+    color: #e06c75 !important;
+  }
+
+  .hljs-attribute, .hljs-variable,
+  .chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi {
+    color: #e06c75 !important;
+  }
+
+  .hljs-meta,
+  .chroma .nd {
+    color: #7f848e !important;
+  }
+
+  .chroma .o, .chroma .ow, .chroma .p {
+    color: #abb2bf !important;
+  }
+}
+
+@keyframes carbonModalSlideIn {
+  from { transform: translateY(8px); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}

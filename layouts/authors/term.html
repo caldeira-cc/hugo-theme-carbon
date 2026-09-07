@@ -1,0 +1,82 @@
+{{ define "main" }}
+<div style="padding-top: 1.5rem; padding-bottom: 4rem; flex: 1 0 auto; display: flex; flex-direction: column;">
+  {{ partial "components/breadcrumbs.html" . }}
+
+  {{/* Author Profile Header Tile */}}
+  <header class="cds--tile" style="padding: 2rem; margin-bottom: 2.5rem; border-left: 4px solid var(--cds-interactive-01);">
+    <div style="display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap;">
+      
+      {{ with .Params.avatar }}
+        <img src="{{ . }}" alt="{{ $.Title }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--cds-border-subtle-01); flex-shrink: 0;">
+      {{ else }}
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--cds-layer-02); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--cds-interactive-01); font-size: 2rem; border: 2px solid var(--cds-border-subtle-01); flex-shrink: 0;">
+          {{ substr .Title 0 1 }}
+        </div>
+      {{ end }}
+
+      <div style="flex: 1; min-width: 260px;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+          <h1 class="cds--type-heading-05" style="margin: 0;">{{ .Title }}</h1>
+          {{ with .Params.role }}
+            <span class="cds--tag cds--tag--blue" style="margin: 0;">{{ . }}</span>
+          {{ end }}
+        </div>
+
+        {{ with .Params.bio | default .Description }}
+          <p class="cds--type-body-long-01" style="color: var(--cds-text-secondary); max-width: 750px; margin-bottom: 1rem;">
+            {{ . }}
+          </p>
+        {{ end }}
+
+        {{ with .Content }}
+          <div class="carbon-prose" style="font-size: 0.875rem; margin-bottom: 1rem;">
+            {{ . }}
+          </div>
+        {{ end }}
+
+        {{/* Social & Link Badges */}}
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; font-size: 0.8125rem;">
+          {{ with .Params.email }}
+            <a href="mailto:{{ . }}" class="cds--link" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+              ✉ {{ . }}
+            </a>
+          {{ end }}
+          {{ with .Params.github }}
+            <a href="https://github.com/{{ . }}" target="_blank" rel="noopener noreferrer" class="cds--link" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+              GitHub (@{{ . }})
+            </a>
+          {{ end }}
+          {{ with .Params.linkedin }}
+            <a href="https://linkedin.com/in/{{ . }}" target="_blank" rel="noopener noreferrer" class="cds--link" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+              LinkedIn
+            </a>
+          {{ end }}
+          {{ with .Params.website }}
+            <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="cds--link" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+              Website
+            </a>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {{/* Author Publications Section */}}
+  <section>
+    <div class="carbon-filter-bar">
+      <div class="carbon-filter-bar__group">
+        <span class="carbon-filter-bar__label">Publications</span>
+        <span class="cds--tag cds--tag--outline" style="margin: 0;">
+          {{ len .Pages }} {{ if eq (len .Pages) 1 }}article{{ else }}articles & guides{{ end }}
+        </span>
+      </div>
+    </div>
+
+    <div class="cds--row carbon-card-grid">
+      {{ range .Pages }}
+        {{ partial "components/page-card.html" . }}
+      {{ end }}
+    </div>
+  </section>
+</div>
+{{ end }}

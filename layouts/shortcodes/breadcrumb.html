@@ -1,0 +1,36 @@
+{{/*
+  IBM Carbon Design System v11 — Breadcrumb Shortcode
+  Compliant with Carbon React Breadcrumb & BreadcrumbItem Component Specifications.
+
+  Usage:
+  {{< breadcrumb items="Home (/), Documentation (/docs/), Carbon Components (/docs/carbon-components/)" />}}
+*/}}
+
+{{ $itemsStr := .Get "items" | default "Home (/)" }}
+{{ $rawItems := split $itemsStr "," }}
+{{ $class := .Get "class" | default "" }}
+
+<nav class="cds--breadcrumb {{ with $class }}{{ . }}{{ end }}" aria-label="Breadcrumb Navigation" style="margin: 1rem 0;">
+  <ol style="display: flex; list-style: none; padding: 0; margin: 0; flex-wrap: wrap; align-items: center;">
+    {{ range $idx, $item := $rawItems }}
+      {{ $trimmed := trim $item " " }}
+      {{ $isLast := eq (add $idx 1) (len $rawItems) }}
+      
+      {{/* Parse "Title (URL)" syntax */}}
+      {{ $title := $trimmed }}
+      {{ $url := "#" }}
+      {{ if findRE `\((.*?)\)` $trimmed }}
+        {{ $url = replaceRE `^.*?\((.*?)\).*$` "$1" $trimmed }}
+        {{ $title = replaceRE `^(.*?)\(.*?\).*$` "$1" $trimmed | trim " " }}
+      {{ end }}
+
+      <li class="cds--breadcrumb-item {{ if $isLast }}cds--breadcrumb-item--current{{ end }}" {{ if $isLast }}aria-current="page"{{ end }}>
+        {{ if $isLast }}
+          <span style="color: var(--cds-text-primary); font-weight: 500;">{{ $title }}</span>
+        {{ else }}
+          <a href="{{ $url }}" class="cds--link" style="color: var(--cds-text-secondary); text-decoration: none;">{{ $title }}</a>
+        {{ end }}
+      </li>
+    {{ end }}
+  </ol>
+</nav>

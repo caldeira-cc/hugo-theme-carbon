@@ -1,0 +1,112 @@
+{{/* Shortcode: code-file.html */}}
+{{/* Loads and previews a source file with Carbon v11 styling, copy action, and full Modal expansion */}}
+
+{{ $src := .Get "src" }}
+{{ $title := .Get "title" | default (path.Base $src) }}
+{{ $lang := .Get "lang" }}
+{{ if not $lang }}
+  {{ $ext := path.Ext $src }}
+  {{ if or (eq $ext ".json") (eq $ext ".geojson") }}
+    {{ $lang = "json" }}
+  {{ else if or (eq $ext ".yaml") (eq $ext ".yml") }}
+    {{ $lang = "yaml" }}
+  {{ else if or (eq $ext ".scss") (eq $ext ".sass") }}
+    {{ $lang = "scss" }}
+  {{ else if eq $ext ".css" }}
+    {{ $lang = "css" }}
+  {{ else if or (eq $ext ".js") (eq $ext ".mjs") }}
+    {{ $lang = "javascript" }}
+  {{ else if or (eq $ext ".html") (eq $ext ".htm") }}
+    {{ $lang = "html" }}
+  {{ else if eq $ext ".csv" }}
+    {{ $lang = "csv" }}
+  {{ else if eq $ext ".md" }}
+    {{ $lang = "markdown" }}
+  {{ else }}
+    {{ $lang = "text" }}
+  {{ end }}
+{{ end }}
+
+{{ $height := .Get "height" | default "360px" }}
+{{ $expandable := .Get "expandable" | default "true" }}
+
+{{/* Try to read file at build time for instant zero-latency preview */}}
+{{ $fileContent := "" }}
+{{ if $src }}
+  {{ $staticPath := printf "static%s" $src }}
+  {{ if fileExists $staticPath }}
+    {{ $fileContent = readFile $staticPath }}
+  {{ else if fileExists $src }}
+    {{ $fileContent = readFile $src }}
+  {{ end }}
+{{ end }}
+
+{{/* Fallback to inner content if provided */}}
+{{ if not $fileContent }}
+  {{ $fileContent = .Inner }}
+{{ end }}
+
+<div class="carbon-code-snippet" 
+     data-code-snippet
+     {{ with $src }}data-code-src="{{ . }}"{{ end }}
+     data-code-title="{{ $title }}"
+     data-code-lang="{{ $lang }}">
+  
+  {{/* Header Bar */}}
+  <div class="carbon-code-snippet__header">
+    <div class="carbon-code-snippet__meta">
+      <span class="cds--tag cds--tag--purple cds--tag--sm carbon-code-snippet__lang-tag">{{ $lang }}</span>
+      <span class="carbon-code-snippet__file-title" title="{{ $src }}">
+        <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M25.7 9.3l-7-7A.9.9 0 0 0 18 2H8a2 2 0 0 0-2 2v24a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V10a.9.9 0 0 0-.3-.7zM18 4.4l5.6 5.6H18zM24 28H8V4h8v6a2 2 0 0 0 2 2h6z"/>
+        </svg>
+        <span>{{ $title }}</span>
+      </span>
+      <span class="carbon-code-snippet__line-count" data-snippet-lines></span>
+    </div>
+
+    <div class="carbon-code-snippet__actions">
+      {{/* Copy Button */}}
+      <button type="button" 
+              class="carbon-code-snippet__btn" 
+              data-code-action="copy" 
+              title="Copy code to clipboard"
+              aria-label="Copy code">
+        <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Z"/>
+          <path d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4Z"/>
+        </svg>
+        <span class="carbon-copy-label">Copy</span>
+      </button>
+
+      {{/* Open in Modal Button */}}
+      {{ if eq $expandable "true" }}
+        <button type="button" 
+                class="carbon-code-snippet__btn" 
+                data-code-action="modal" 
+                title="Expand file into full interactive modal"
+                aria-label="Open in full modal">
+          <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M26 4H6a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2ZM6 6h20v4H6Zm0 6h20v14H6Z"/>
+            <path d="M12 18h8v2h-8zm0 4h5v2h-5z"/>
+          </svg>
+          <span>Modal</span>
+        </button>
+      {{ end }}
+    </div>
+  </div>
+
+  {{/* Body */}}
+  <div class="carbon-code-snippet__body is-scrollable" style="max-height: {{ $height }};">
+    {{ if $fileContent }}
+      <pre class="carbon-code-snippet__pre"><code class="language-{{ $lang }}">{{ $fileContent }}</code></pre>
+      <script type="text/plain" class="carbon-code-raw-store" style="display:none;">{{ $fileContent }}</script>
+    {{ else }}
+      <div class="carbon-code-snippet__loading" data-code-loading>
+        <div class="carbon-system-dot" style="animation: carbonPulse 1.2s infinite;"></div>
+        <span>Loading source file...</span>
+      </div>
+      <pre class="carbon-code-snippet__pre" style="display:none;"><code class="language-{{ $lang }}"></code></pre>
+    {{ end }}
+  </div>
+</div>

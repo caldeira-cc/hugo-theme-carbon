@@ -1,0 +1,34 @@
+<!-- layouts/shortcodes/figure.html -->
+<figure class="carbon-figure {{ with .Get "class" }}{{.}}{{ end }}">
+  <div class="carbon-figure__frame">
+    <img 
+      src="{{ .Get "src" }}" 
+      alt="{{ .Get "alt" | default (.Get "caption") }}" 
+      loading="lazy" 
+      class="carbon-figure__image"
+    />
+  </div>
+  {{ if or (.Get "caption") (.Get "legend") (.Get "source") }}
+    <figcaption class="carbon-figure__caption-box">
+      <div class="carbon-figure__header">
+        {{ with .Get "number" }}
+          <span class="carbon-figure__number">Figure {{ . }}:</span>
+        {{ end }}
+        {{ with .Get "caption" }}
+          <span class="carbon-figure__title">{{ . }}</span>
+        {{ end }}
+      </div>
+      {{ with .Get "legend" }}
+        <p class="carbon-figure__legend-body">{{ . }}</p>
+      {{ end }}
+      {{ with .Get "source" }}
+        <div class="carbon-figure__source-line">
+          <span class="cds--type-caption">Reference:</span>
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="cds--link cds--type-caption">
+            {{ $.Get "sourceText" | default "External Source Document" }}
+          </a>
+        </div>
+      {{ end }}
+    </figcaption>
+  {{ end }}
+</figure>

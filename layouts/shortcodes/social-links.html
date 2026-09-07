@@ -1,0 +1,5 @@
+{{/* Shortcode: {{< social-links layout="inline|grid|icons|list" >}} */}}
+{{ $layout := .Get "layout" | default "inline" }}
+{{ $class := .Get "class" | default "" }}
+
+{{ partial "components/social-links.html" (dict "Site" .Site "layout" $layout "class" $class) }}

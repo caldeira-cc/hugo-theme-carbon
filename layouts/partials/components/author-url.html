@@ -1,0 +1,23 @@
+{{/* layouts/partials/components/author-url.html */}}
+{{- $author := . -}}
+{{- $term := site.Taxonomies.authors.Get $author -}}
+{{- if not $term -}}
+  {{- $term = site.Taxonomies.authors.Get ($author | urlize) -}}
+{{- end -}}
+{{- if not $term -}}
+  {{- $term = site.Taxonomies.authors.Get ($author | lower) -}}
+{{- end -}}
+{{- if $term -}}
+  {{- $term.Page.RelPermalink -}}
+{{- else -}}
+  {{- $slug := $author | lower | replaceRE "[éèêë]" "e" | replaceRE "[áàâäã]" "a" | replaceRE "[óòôöõ]" "o" | replaceRE "[úùûü]" "u" | replaceRE "[íìîï]" "i" | replaceRE "[ç]" "c" | replaceRE "[^a-z0-9]+" "-" | strings.TrimPrefix "-" | strings.TrimSuffix "-" -}}
+  {{- $authorPage := site.GetPage (printf "authors/%s" $slug) -}}
+  {{- if not $authorPage -}}
+    {{- $authorPage = site.GetPage (printf "authors/%s" ($author | urlize)) -}}
+  {{- end -}}
+  {{- if $authorPage -}}
+    {{- $authorPage.RelPermalink -}}
+  {{- else -}}
+    {{- printf "/authors/%s/" ($author | urlize) | relLangURL -}}
+  {{- end -}}
+{{- end -}}

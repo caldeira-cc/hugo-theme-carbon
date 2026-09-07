@@ -1,0 +1,17 @@
+{{ $type := .Get "type" | default "text" }}
+{{ $id := .Get "id" | default (printf "input-%d" now.UnixNano) }}
+{{ $label := .Get "label" | default "Label" }}
+{{ $placeholder := .Get "placeholder" | default "" }}
+{{ $helper := .Get "helper" }}
+
+<div class="cds--form-item">
+  <label for="{{ $id }}" class="cds--label">{{ $label }}</label>
+  {{ if eq $type "textarea" }}
+    <textarea id="{{ $id }}" class="cds--text-area" placeholder="{{ $placeholder }}">{{ .Inner }}</textarea>
+  {{ else }}
+    <input type="{{ $type }}" id="{{ $id }}" class="cds--text-input" placeholder="{{ $placeholder }}" value="{{ .Inner }}">
+  {{ end }}
+  {{ with $helper }}
+    <div class="cds--form__helper-text" style="font-size: 0.75rem; color: var(--cds-text-helper); margin-top: 0.25rem;">{{ . }}</div>
+  {{ end }}
+</div>

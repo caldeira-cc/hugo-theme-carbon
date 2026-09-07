@@ -1,0 +1,35 @@
+{{ $paginator := .Paginator }}
+{{ if gt $paginator.TotalPages 1 }}
+<div class="cds--pagination" role="navigation" aria-label="Pagination">
+  <div class="cds--pagination__left">
+    <span class="cds--pagination__text">
+      Showing {{ mul (sub $paginator.PageNumber 1) $paginator.PagerSize | add 1 }}–{{ math.Min (mul $paginator.PageNumber $paginator.PagerSize) $paginator.TotalNumberOfElements }} of {{ $paginator.TotalNumberOfElements }} items
+    </span>
+  </div>
+
+  <div class="cds--pagination__right">
+    <span class="cds--pagination__text">Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>
+    <div class="cds--pagination__control-buttons">
+      {{ if $paginator.HasPrev }}
+        <a href="{{ $paginator.Prev.URL }}" class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only cds--pagination__button cds--pagination__button--backward" aria-label="Previous Page">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10 13L4 8l6-5 1.4 1.4L6.8 8l4.6 3.6z"/></svg>
+        </a>
+      {{ else }}
+        <button class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only cds--pagination__button cds--pagination__button--backward" disabled aria-label="Previous Page">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10 13L4 8l6-5 1.4 1.4L6.8 8l4.6 3.6z"/></svg>
+        </button>
+      {{ end }}
+
+      {{ if $paginator.HasNext }}
+        <a href="{{ $paginator.Next.URL }}" class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only cds--pagination__button cds--pagination__button--forward" aria-label="Next Page">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l6 5-6 5-1.4-1.4L9.2 8 4.6 4.4z"/></svg>
+        </a>
+      {{ else }}
+        <button class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only cds--pagination__button cds--pagination__button--forward" disabled aria-label="Next Page">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l6 5-6 5-1.4-1.4L9.2 8 4.6 4.4z"/></svg>
+        </button>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

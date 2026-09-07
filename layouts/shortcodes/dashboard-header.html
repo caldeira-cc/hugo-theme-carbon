@@ -1,0 +1,29 @@
+{{/* Shortcode: dashboard-header.html */}}
+{{/* Standalone Dashboard Header Bar */}}
+
+{{ $title := .Get "title" }}
+{{ $subtitle := or (.Get "subtitle") (.Get "description") }}
+{{ $status := .Get "status" }}
+{{ $tag := or (.Get "tag") (.Get "badge") }}
+
+<header class="carbon-dashboard__header">
+  <div class="carbon-dashboard__header-top">
+    <div class="carbon-dashboard__badges">
+      {{ with $tag }}
+        <span class="cds--tag cds--tag--purple">{{ . }}</span>
+      {{ end }}
+
+      {{ with $status }}
+        <span class="cds--tag cds--tag--green">{{ . }}</span>
+      {{ end }}
+    </div>
+  </div>
+
+  {{ with $title }}
+    <h2 class="cds--type-heading-05 carbon-dashboard__title" style="margin-top: 0.5rem;">{{ . }}</h2>
+  {{ end }}
+
+  {{ with $subtitle }}
+    <p class="cds--type-body-long-01 carbon-dashboard__description">{{ . }}</p>
+  {{ end }}
+</header>

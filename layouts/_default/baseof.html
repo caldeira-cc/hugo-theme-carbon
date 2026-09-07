@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="{{ .Language.Lang | default "en" }}" dir="{{ or .Language.LanguageDirection "ltr" }}" data-section="{{ with .Section }}{{ . }}{{ else }}{{ with .Type }}{{ . }}{{ else }}home{{ end }}{{ end }}" data-carbon-theme="{{ .Site.Params.carbon.defaultThemeMode | default "system" }}"{{ with .Site.Params.carbon.allowedThemes }} data-allowed-themes="{{ delimit . "," }}"{{ end }}>
+<head>
+  {{ partial "head/meta.html" . }}
+  {{ partial "head/fonts.html" . }}
+  {{ partial "head/styles.html" . }}
+  <script>
+    (function() {
+      try {
+        var allowedAttr = document.documentElement.getAttribute('data-allowed-themes');
+        var allowed = allowedAttr ? allowedAttr.split(',').filter(Boolean) : null;
+        var defaultMode = {{ .Site.Params.carbon.defaultThemeMode | default "system" | jsonify }};
+        var saved = localStorage.getItem('carbon-theme-preference') || defaultMode;
+        var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var activeTheme = 'white';
+        if (allowed && allowed.length > 0) {
+          if (!saved || saved === 'system') {
+            activeTheme = isDark ? (allowed.includes('g90') ? 'g90' : allowed[allowed.length - 1]) : (allowed.includes('g10') ? 'g10' : allowed[0]);
+          } else if (saved === 'light') {
+            activeTheme = allowed.includes('g10') ? 'g10' : allowed[0];
+          } else if (saved === 'dark') {
+            activeTheme = allowed.includes('g90') ? 'g90' : allowed[allowed.length - 1];
+          } else if (allowed.includes(saved)) {
+            activeTheme = saved;
+          } else {
+            activeTheme = isDark ? (allowed.includes('g90') ? 'g90' : allowed[allowed.length - 1]) : (allowed.includes('g10') ? 'g10' : allowed[0]);
+          }
+        } else {
+          if (!saved || saved === 'system') {
+            activeTheme = isDark ? 'g100' : 'white';
+          } else if (saved === 'light') {
+            activeTheme = 'white';
+          } else if (saved === 'dark') {
+            activeTheme = 'g100';
+          } else {
+            activeTheme = saved;
+          }
+        }
+        document.documentElement.setAttribute('data-carbon-theme', activeTheme);
+        document.documentElement.setAttribute('data-theme-preference', saved);
+      } catch(e) {}
+    })();
+  </script>
+  {{ partial "head/google-ads.html" . }}
+  {{ $assetBase := .Site.Params.assetsURL | default "" }}
+  {{ if hugo.IsServer }}
+    {{ $assetBase = "" }}
+  {{ end }}
+  {{ with .Params.custom_css }}
+    {{ range . }}
+      {{ if (urls.Parse .).Scheme }}
+        <link rel="stylesheet" href="{{ . }}">
+      {{ else }}
+        {{ $customStyle := resources.Get . }}
+        {{ if $customStyle }}
+          <link rel="stylesheet" href="{{ $assetBase }}{{ $customStyle.RelPermalink }}">
+        {{ else }}
+          <link rel="stylesheet" href="{{ printf "%s%s" $assetBase (. | relURL) }}">
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+</head>
+<body class="carbon-theme-body">
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+  {{/* UI Shell Top Header */}}
+  {{ partial "header/navbar.html" . }}
+
+  {{/* Main Action Bar & Modular Widgets */}}
+  {{ partial "main-bar/bar.html" . }}
+
+  {{/* Sidebar Configuration Resolution */}}
+  {{ $leftSidebar := .Site.Params.sidebars.left.enable }}
+  {{ $rightSidebar := .Site.Params.sidebars.right.enable }}
+
+  {{/* Allow Page / Cascaded Front-Matter overrides */}}
+  {{ with .Params.sidebars }}
+    {{ with .left }}
+      {{ if isset . "enable" }}{{ $leftSidebar = .enable }}{{ end }}
+    {{ end }}
+    {{ with .right }}
+      {{ if isset . "enable" }}{{ $rightSidebar = .enable }}{{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{/* 404 & Apps Pages always enforce full-width layout without sidebars */}}
+  {{ if or (eq .Kind "404") (eq .RelPermalink "/404.html") (eq .Title "404 Page not found") (eq .Section "apps") (eq .Type "apps") (eq .Params.layout "app") (eq .Params.layout "apps") }}
+    {{ $leftSidebar = false }}
+    {{ $rightSidebar = false }}
+  {{ end }}
+
+  {{/* Layout Scaffold Class */}}
+  {{ $layoutClass := "carbon-layout--full" }}
+  {{ if and $leftSidebar $rightSidebar }}
+    {{ $layoutClass = "carbon-layout--dual" }}
+  {{ else if $leftSidebar }}
+    {{ $layoutClass = "carbon-layout--single-left" }}
+  {{ else if $rightSidebar }}
+    {{ $layoutClass = "carbon-layout--single-right" }}
+  {{ end }}
+
+  <div class="carbon-layout {{ $layoutClass }}">
+    <div class="carbon-layout__body">
+      <div class="carbon-layout__container">
+        {{/* Left Sidebar Slot */}}
+        {{ if $leftSidebar }}
+          <div class="carbon-layout__sidebar-left">
+            {{ partial "sidebars/left.html" . }}
+          </div>
+        {{ end }}
+
+        {{/* Main Content Landmark */}}
+        <main id="main-content" class="carbon-layout__main" role="main">
+          {{ block "main" . }}{{ end }}
+        </main>
+
+        {{/* Right Sidebar Slot */}}
+        {{ if $rightSidebar }}
+          <div class="carbon-layout__sidebar-right">
+            {{ partial "sidebars/right.html" . }}
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+
+  {{/* Off-Canvas Mobile Navigation Drawers */}}
+  {{ partial "sidebars/mobile-drawers.html" . }}
+
+  {{/* Search Modal */}}
+  {{ partial "components/search-modal.html" . }}
+
+  {{/* Cookie Consent Banner & Preferences Modal */}}
+  {{ partial "components/cookie-banner.html" . }}
+
+  {{/* GeoJSON Map Interactive Modal */}}
+  {{ partial "components/geojson-modal.html" . }}
+
+  {{/* Code Viewer & File Modal */}}
+  {{ partial "components/code-modal.html" . }}
+
+  {{/* GNU PSPP Statistical Analysis Engine Modal */}}
+  {{ partial "components/pspp-modal.html" . }}
+
+  {{/* Operational Intelligence Dashboard Modal */}}
+  {{ partial "components/dashboard-modal.html" . }}
+
+  {{/* Carbon Footer */}}
+  {{ partial "footer/footer.html" . }}
+
+  {{/* Floating AI Trigger Button & Slide-Over Right Drawer (Overlay) */}}
+  {{ if or (eq .Site.Params.aiAgent.enable true) (eq .Params.aiAgent.enable true) }}
+    {{ partial "components/ai-drawer.html" . }}
+  {{ end }}
+
+  {{/* Main JavaScript Bundle */}}
+  {{ $js := resources.Get "js/main.js" | js.Build (dict "target" "es2020" "minify" hugo.IsProduction) }}
+  <script src="{{ $assetBase }}{{ $js.RelPermalink }}" defer></script>
+
+  {{/* Custom Page-Specific JavaScript */}}
+  {{ with .Params.custom_js }}
+    {{ range . }}
+      {{ if (urls.Parse .).Scheme }}
+        <script src="{{ . }}" defer></script>
+      {{ else }}
+        {{ $customScript := resources.Get . }}
+        {{ if $customScript }}
+          {{ $builtScript := $customScript | js.Build (dict "target" "es2020" "minify" hugo.IsProduction) }}
+          <script src="{{ $assetBase }}{{ $builtScript.RelPermalink }}" defer></script>
+        {{ else }}
+          <script src="{{ printf "%s%s" $assetBase (. | relURL) }}" defer></script>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+</body>
+</html>

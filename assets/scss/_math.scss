@@ -1,0 +1,169 @@
+// IBM Carbon Design System v11 — Mathematical Typesetting & LaTeX Styles
+// Default font family: IBM Plex Math (Self-hosted WOFF2)
+
+.carbon-math-block,
+.carbon-math-card {
+  position: relative;
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-01);
+  border-left: 3px solid var(--cds-interactive-01);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  border-radius: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--cds-layer-02, var(--cds-layer-01));
+    border-color: var(--cds-border-strong-01, var(--cds-border-subtle-01));
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--cds-border-subtle-00);
+  }
+
+  &__title {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--cds-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.32px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__copy-btn {
+    height: 1.5rem;
+    min-height: 1.5rem;
+    padding: 0 0.5rem;
+    font-size: 0.6875rem;
+    color: var(--cds-link-primary);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background-color: var(--cds-layer-02);
+      border-color: var(--cds-border-subtle-01);
+    }
+  }
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 0.5rem 0;
+    font-size: 1.125rem;
+    color: var(--cds-text-primary);
+    overflow-x: auto;
+  }
+
+  &__equation-num {
+    position: absolute;
+    right: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8125rem;
+    color: var(--cds-text-secondary);
+  }
+}
+
+// Inline Math
+.carbon-math-inline {
+  display: inline;
+  padding: 0.125rem 0.25rem;
+  color: var(--cds-text-primary);
+  vertical-align: middle;
+}
+
+// KaTeX Global Override to enforce IBM Plex Math font family
+.katex,
+.katex * {
+  font-family: 'IBM Plex Math', 'IBM Plex Serif', 'IBM Plex Sans', serif !important;
+}
+
+.katex {
+  font-family: 'IBM Plex Math', 'IBM Plex Serif', serif !important;
+  font-style: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  .mathnormal,
+  .mathit,
+  .mathrm,
+  .mathbf,
+  .boldsymbol,
+  .mainrm,
+  .textrm,
+  .amsrm,
+  .mathbb,
+  .textbb,
+  .mathcal,
+  .mathfrak,
+  .textfrak,
+  .mathboldfrak,
+  .textboldfrak,
+  .mathscr,
+  .textscr,
+  .delimsizing,
+  .op-symbol,
+  .mord,
+  .mbin,
+  .mrel,
+  .mopen,
+  .mclose,
+  .mpunct,
+  .minner,
+  .mop,
+  .sqrt,
+  .mfrac {
+    font-family: 'IBM Plex Math', 'IBM Plex Serif', serif !important;
+  }
+
+  .textsf,
+  .mathsf,
+  .mathboldsf,
+  .textboldsf,
+  .mathitsf,
+  .textitsf {
+    font-family: 'IBM Plex Sans', sans-serif !important;
+  }
+
+  .mathtt,
+  .texttt {
+    font-family: 'IBM Plex Mono', monospace !important;
+  }
+}
+
+.katex-display {
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+.katex-display > .katex {
+  font-family: 'IBM Plex Math', 'IBM Plex Serif', serif !important;
+  text-align: center;
+}
+
+// MathML Fallback font family
+math,
+math * {
+  font-family: 'IBM Plex Math', serif !important;
+}
+

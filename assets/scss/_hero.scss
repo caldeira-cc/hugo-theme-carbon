@@ -1,0 +1,315 @@
+// IBM Carbon Hero Component System
+// Full-height image docking, flush right border spanning, and main-content width breakout
+
+.carbon-hero {
+  position: relative;
+  box-sizing: border-box;
+  background-color: var(--cds-background);
+  // Follows regular border rules (1px subtle border)
+  border-bottom: 1px solid var(--cds-border-subtle-00);
+  margin-bottom: 0;
+
+  // Spans the entire width (padding included) of main-content
+  margin-left: -1rem;
+  margin-right: -1rem;
+  width: calc(100% + 2rem);
+  padding: 3rem 1rem 2.5rem 1rem;
+
+  @media (min-width: $breakpoint-md) {
+    margin-left: -2rem;
+    margin-right: -2rem;
+    width: calc(100% + 4rem);
+    padding: 4rem 2rem 3.5rem 2rem;
+  }
+
+  // Split Two-Column Layout (Content on Left, Full-Height Media Column on Right)
+  &--split {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+
+    @media (min-width: $breakpoint-md) {
+      flex-direction: row;
+      align-items: stretch; // Ensures content and media columns share identical 100% height
+      padding: 0;
+    }
+
+    .carbon-hero__content {
+      flex: 1 1 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 2rem 3rem 1rem;
+      box-sizing: border-box;
+
+      @media (min-width: $breakpoint-md) {
+        padding: 3.5rem 2.5rem 3.5rem 2rem; // Left padding aligns with 2rem main content grid padding
+      }
+
+      @media (min-width: $breakpoint-lg) {
+        flex: 0 0 62.5%; // 10 of 16 columns
+        padding: 4rem 3.5rem 4rem 2rem;
+      }
+
+      @media (max-width: ($breakpoint-md - 0.02rem)) {
+        padding: 2rem 1rem 2rem 1rem;
+      }
+    }
+
+    .carbon-hero__media-column {
+      flex: 0 0 40%;
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0; // Spans flush to the right vertical border of the container
+      min-height: 100%;
+
+      @media (min-width: $breakpoint-lg) {
+        flex: 0 0 37.5%; // 6 of 16 columns
+      }
+
+      @media (max-width: ($breakpoint-md - 0.02rem)) {
+        flex: none;
+        width: 100%;
+        height: 420px;
+        min-height: 360px;
+      }
+    }
+  }
+
+  // Media Frame / Image Card Container
+  &__media-frame {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: 100%;
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    background-color: var(--cds-layer-01);
+    border-left: 1px solid var(--cds-border-subtle-00);
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    overflow: hidden;
+    position: relative;
+
+    @media (max-width: ($breakpoint-md - 0.02rem)) {
+      border-left: none;
+      border-top: 1px solid var(--cds-border-subtle-00);
+    }
+  }
+
+  // Image Element & Wrapper - Spans vertically to the hero border
+  &__image-wrapper {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--cds-layer-01);
+
+    img,
+    .carbon-hero__image {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+  }
+
+  // Caption & Metadata Bar - Docked at the bottom of the hero frame
+  &__caption {
+    flex: 0 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--cds-border-subtle-00);
+    background-color: var(--cds-layer-01);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--cds-font-mono, monospace);
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary);
+
+    &__text {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &__tag {
+      flex-shrink: 0;
+    }
+  }
+
+  // Full-width Banner Variant
+  &--banner {
+    padding: 2.5rem 1rem 3.5rem 1rem;
+
+    @media (min-width: $breakpoint-md) {
+      padding: 2.5rem 2rem 3.5rem 2rem;
+    }
+
+    .carbon-hero__banner-frame {
+      width: 100%;
+      border: 1px solid var(--cds-border-subtle-00);
+      background-color: var(--cds-layer-01);
+      overflow: hidden;
+      box-shadow: var(--cds-shadow-01);
+      margin-top: 2rem;
+
+      img {
+        width: 100%;
+        height: auto;
+        max-height: 440px;
+        object-fit: cover;
+        display: block;
+      }
+    }
+  }
+}
+
+// Homepage Showcase Sections (Features & Ecosystem)
+.carbon-features-section {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--cds-border-subtle-00);
+
+  &__header {
+    margin-bottom: 2rem;
+  }
+
+  &__tag {
+    margin-bottom: 0.5rem;
+    font-family: var(--cds-font-mono, monospace);
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__grid {
+    row-gap: 1.5rem;
+  }
+}
+
+.carbon-features-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+  background-color: var(--cds-layer-01);
+  text-decoration: none;
+  color: inherit;
+  border-left: 3px solid var(--cds-interactive-01);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+
+  &:hover {
+    background-color: var(--cds-layer-02);
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  &__category {
+    color: var(--cds-interactive-01);
+    font-family: var(--cds-font-mono, monospace);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__id {
+    margin: 0;
+    font-family: var(--cds-font-mono, monospace);
+  }
+
+  &__heading {
+    margin: 0 0 0.75rem;
+  }
+
+  &__description {
+    color: var(--cds-text-secondary);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  &__cta {
+    margin-top: 1.5rem;
+    font-family: var(--cds-font-mono, monospace);
+    font-size: 0.8125rem;
+    color: var(--cds-interactive-01);
+  }
+}
+
+.carbon-ecosystem-section {
+  padding: 3.5rem 0;
+
+  &__header {
+    margin-bottom: 2rem;
+  }
+
+  &__tag {
+    margin-bottom: 0.5rem;
+    font-family: var(--cds-font-mono, monospace);
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__grid {
+    row-gap: 1.5rem;
+  }
+}
+
+.carbon-ecosystem-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--cds-layer-02);
+    border-color: var(--cds-border-subtle-01);
+  }
+
+  &__heading {
+    margin: 0 0 0.5rem;
+  }
+
+  &__description {
+    color: var(--cds-text-secondary);
+    margin: 0;
+  }
+
+  &__cta {
+    font-family: var(--cds-font-mono, monospace);
+    font-size: 0.75rem;
+    color: var(--cds-interactive-01);
+    margin-top: 1.5rem;
+  }
+}
+

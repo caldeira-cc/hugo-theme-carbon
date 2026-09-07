@@ -1,0 +1,148 @@
+{{ $mainBar := .Site.Params.mainBar }}
+{{ $mainBarEnable := $mainBar.enable }}
+{{ with .Params.mainBar }}
+  {{ if isset . "enable" }}
+    {{ $mainBarEnable = .enable }}
+  {{ end }}
+{{ end }}
+{{ if or (eq .Kind "404") (eq .RelPermalink "/404.html") (eq .Title "404 Page not found") }}
+  {{ $mainBarEnable = false }}
+{{ end }}
+
+{{/* Check if page overrides mainBar widgets via cascade */}}
+{{ $widgets := $mainBar.widgets }}
+{{ with .Params.mainBar.widgets }}
+  {{ $widgets = merge $widgets . }}
+{{ end }}
+
+{{ if $mainBarEnable }}
+{{ $barClass := "carbon-main-bar" }}
+{{ if or (eq $mainBar.style "accent") $mainBar.useAccentColor }}
+  {{ $barClass = printf "%s carbon-main-bar--accent" $barClass }}
+{{ end }}
+<section class="{{ $barClass }}" aria-label="Main Action Bar">
+  <div class="carbon-main-bar__container">
+    <div class="carbon-main-bar__group">
+      {{/* Mobile Drawer Triggers */}}
+      <div class="carbon-main-bar__drawer-toggles">
+        {{ if or .Site.Params.sidebars.left.enable (and .Site.Params.navigation.navbar (gt (len .Site.Params.navigation.navbar) 0)) }}
+        <button class="carbon-main-bar__drawer-btn js-open-left-drawer" id="bar-open-left-drawer" aria-label="Toggle section navigation">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 3h12v2H2zm0 4h12v2H2zm0 4h12v2H2z"/></svg>
+          <span>Nav</span>
+        </button>
+        {{ end }}
+        {{ if or .TableOfContents .IsHome (eq .Section "theme") (eq .Section "style") }}
+          <button class="carbon-main-bar__drawer-btn js-open-right-drawer" id="bar-open-right-drawer" aria-label="Toggle Table of Contents">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3 3h10v2H3zm0 4h10v2H3zm0 4h6v2H3z"/></svg>
+            <span>Contents</span>
+          </button>
+        {{ end }}
+      </div>
+
+      {{/* Upgraded Timezone Clock Widget (Click to toggle Local vs Configured Timezone) */}}
+      {{ if $widgets.clock.enable }}
+        <div class="carbon-main-bar__widget carbon-main-bar__clock" data-timezone="{{ $widgets.clock.timezone | default "Europe/London" }}" data-mode="{{ $widgets.clock.mode | default "timezone" }}" title="Click to toggle between Local and Configured Timezone">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z"/>
+            <path d="M7.5 4v4.5l3.5 2 .8-1.2-2.8-1.6V4z"/>
+          </svg>
+          <span class="carbon-clock-time">--:--:--</span>
+          <span class="cds--tag cds--tag--outline carbon-clock-tz">TZ</span>
+        </div>
+      {{ end }}
+
+      {{/* Live Availability & Vacation Widget */}}
+      {{ if $widgets.availability.enable }}
+        <a href="{{ $widgets.availability.url | default "/availability/" }}" class="carbon-main-bar__widget carbon-main-bar__availability" title="Consult Working Hours & Availability Timetable">
+          <span class="carbon-availability-dot status-available"></span>
+          <span class="carbon-availability-text">AVAILABLE</span>
+        </a>
+      {{ end }}
+
+      {{/* Date Widget */}}
+      {{ if $widgets.date.enable }}
+        <div class="carbon-main-bar__widget carbon-main-bar__widget--secondary" title="Current Date">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M14 2H13V0H11V2H5V0H3V2H2C0.9 2 0 2.9 0 4V14C0 15.1 0.9 16 2 16H14C15.1 16 16 15.1 16 14V4C16 2.9 15.1 2 14 2ZM14 14H2V6H14V14Z"/>
+          </svg>
+          <span class="carbon-main-bar__text">{{ now.Format "Mon, Jan 2" }}</span>
+        </div>
+      {{ end }}
+
+      {{/* Location Widget */}}
+      {{ if $widgets.location.enable }}
+        <div class="carbon-main-bar__widget carbon-main-bar__widget--secondary" title="Location Hub">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C4.7 0 2 2.7 2 6C2 10.2 8 16 8 16S14 10.2 14 6C14 2.7 11.3 0 8 0ZM8 8.5C6.6 8.5 5.5 7.4 5.5 6C5.5 4.6 6.6 3.5 8 3.5C9.4 3.5 10.5 4.6 10.5 6C10.5 7.4 9.4 8.5 8 8.5Z"/>
+          </svg>
+          <span class="carbon-main-bar__text">{{ $widgets.location.defaultLocation | default "London / Lisbon" }}</span>
+        </div>
+      {{ end }}
+
+      {{/* Weather Widget */}}
+      {{ if $widgets.weather.enable }}
+        <div class="carbon-main-bar__widget carbon-main-bar__widget--secondary">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M12.5 6c-.3-2.3-2.2-4-4.5-4-1.9 0-3.5 1.2-4.2 3-.1 0-.2 0-.3 0-2 0-3.5 1.6-3.5 3.5S1.5 12 3.5 12h9c1.9 0 3.5-1.6 3.5-3.5 0-1.8-1.4-3.3-3.2-3.5h-.3z"/>
+          </svg>
+          <div id="carbon-weather-widget" class="carbon-main-bar__weather" data-lat="{{ $widgets.weather.latitude | default "51.5074" }}" data-lon="{{ $widgets.weather.longitude | default "-0.1278" }}" data-units="{{ $widgets.weather.units | default "metric" }}">
+            <span class="weather-temp">--°C</span>
+          </div>
+        </div>
+      {{ end }}
+
+
+    </div>
+
+    <div class="carbon-main-bar__group">
+      {{/* Search Widget Trigger */}}
+      {{ if $widgets.search.enable }}
+        <button class="carbon-main-bar__search-btn js-open-search" type="button" aria-label="Open search dialog">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M15 13.9L11.4 10.3C12.4 9.1 13 7.6 13 6c0-3.9-3.1-7-7-7S-1 2.1-1 6s3.1 7 7 7c1.6 0 3.1-.6 4.3-1.6l3.6 3.6 1.1-1.1zM1 6c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5-5-2.2-5-5z"/>
+          </svg>
+          <span class="carbon-main-bar__search-text">Search</span>
+          <span class="search-key-hint">/</span>
+        </button>
+      {{ end }}
+
+      {{/* Language Switcher Widget */}}
+      {{ if and hugo.IsMultilingual (gt (len .AllTranslations) 1) }}
+        <div class="carbon-main-bar__theme-toggle carbon-main-bar__lang-toggle" title="Switch Language">
+          <label for="lang-switcher-select" class="cds--type-caption carbon-main-bar__toggle-label" style="margin-right: 2px;">{{ i18n "mainBar.language" | default "Lang" }}:</label>
+          <select id="lang-switcher-select" class="theme-select" aria-label="Select Language" onchange="if (this.value) window.location.href=this.value;">
+            {{ range .AllTranslations }}
+              <option value="{{ .Permalink }}" {{ if eq .Lang $.Lang }}selected{{ end }}>
+                {{ .Language.LanguageName }}
+              </option>
+            {{ end }}
+          </select>
+        </div>
+      {{ end }}
+
+      {{/* Theme Switcher Widget */}}
+      {{ if $widgets.themeSwitcher.enable }}
+        <div class="carbon-main-bar__theme-toggle" title="{{ i18n "mainBar.theme" | default "Theme" }}">
+          <label for="theme-switcher-select" class="cds--type-caption carbon-main-bar__toggle-label" style="margin-right: 2px;">{{ i18n "mainBar.theme" | default "Theme" }}:</label>
+          <select id="theme-switcher-select" class="theme-select" aria-label="{{ i18n "mainBar.theme" | default "Theme" }}">
+            <option value="system">{{ i18n "theme.system" | default "Browser Default" }}</option>
+            {{ $allowed := .Site.Params.carbon.allowedThemes }}
+            {{ if .Site.Data.themes.themes }}
+              {{ range $themeId, $themeData := .Site.Data.themes.themes }}
+                {{ if or (not $allowed) (in $allowed $themeId) }}
+                  <option value="{{ $themeId }}">{{ $themeData.name | default (title $themeId) }}</option>
+                {{ end }}
+              {{ end }}
+            {{ else }}
+              {{ if or (not $allowed) (in $allowed "white") }}<option value="white">White (Light)</option>{{ end }}
+              {{ if or (not $allowed) (in $allowed "g10") }}<option value="g10">Gray 10 (Soft Light)</option>{{ end }}
+              {{ if or (not $allowed) (in $allowed "g90") }}<option value="g90">Gray 90 (Dark)</option>{{ end }}
+              {{ if or (not $allowed) (in $allowed "g100") }}<option value="g100">Gray 100 (Deep Dark)</option>{{ end }}
+            {{ end }}
+          </select>
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
