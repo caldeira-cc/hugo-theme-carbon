@@ -258,26 +258,36 @@
 
       this.map.on('error', (e) => {
         const err = (e && e.error) ? e.error : e;
-        const msg = err ? (err.stack || err.message || String(err)) : 'Unknown error';
-        console.error('[MapLibre Error Stack]:', msg);
-      });
-
-      this.map.on('sourcedata', (e) => {
-        if (e.isSourceLoaded) {
-          console.log('[MapLibre source loaded]', e.sourceId, e.dataType);
+        const msg = err ? (err.message || String(err)) : 'Unknown map error';
+        if (msg.includes('tile') || msg.includes('403') || msg.includes('404')) {
+          console.warn('[CarbonMap] Basemap tile network notice (using fallback styling):', msg);
+        } else {
+          console.error('[MapLibre Error]:', msg);
         }
       });
 
       this.map.on('style.load', () => {
-        console.log('[MapLibre style loaded successfully]');
-      });
-
-      this.map.on('load', () => {
-        console.log('[MapLibre map loaded]');
         if (this.geoJsonData) {
           this.renderGeoJsonLayer();
         }
       });
+
+      this.map.on('load', () => {
+        if (this.geoJsonData) {
+          this.renderGeoJsonLayer();
+        }
+        this.resize();
+      });
+
+      // Automatic container resize observation
+      if (typeof ResizeObserver !== 'undefined' && this.container) {
+        this._resizeObserver = new ResizeObserver(() => {
+          if (this.map) this.map.resize();
+        });
+        this._resizeObserver.observe(this.container);
+      }
+      setTimeout(() => { if (this.map) this.map.resize(); }, 150);
+      setTimeout(() => { if (this.map) this.map.resize(); }, 600);
 
       // Observe Carbon theme mutations
       this.observeThemeChanges();
@@ -345,70 +355,39 @@
     }
 
     loadGeoJSON(data) {
+      if (!data) return;
       this.geoJsonData = data;
-      if (this.map && this.map.isStyleLoaded()) {
-        this.renderGeoJsonLayer();
+      if (!this.map) return;
+
+      // Render DOM markers immediately without waiting for vector tiles
+      this.renderDomMarkers();
+
+      // Render vector layers if style is already loaded, or register event listeners
+      if (this.map.isStyleLoaded()) {
+        this.renderVectorLayers();
+      } else {
+        this.map.once('style.load', () => this.renderVectorLayers());
+        this.map.once('load', () => this.renderVectorLayers());
       }
     }
 
     renderGeoJsonLayer() {
+      this.renderDomMarkers();
+      this.renderVectorLayers();
+    }
+
+    renderDomMarkers() {
       if (!this.map || !this.geoJsonData) return;
 
       // Clear previous HTML DOM markers
-      this.markers.forEach(m => m.remove());
+      this.markers.forEach(m => {
+        try { m.remove(); } catch (_) {}
+      });
       this.markers = [];
 
-      // Add or update vector layers for Polygons and LineStrings
-      if (this.map.getSource('carbon-custom-geojson')) {
-        this.map.getSource('carbon-custom-geojson').setData(this.geoJsonData);
-      } else {
-        this.map.addSource('carbon-custom-geojson', {
-          type: 'geojson',
-          data: this.geoJsonData
-        });
-
-        // Polygons (Translucent Sage Green fill)
-        this.map.addLayer({
-          id: 'carbon-custom-polygons',
-          type: 'fill',
-          source: 'carbon-custom-geojson',
-          filter: ['any', ['==', '$type', 'Polygon'], ['==', '$type', 'MultiPolygon']],
-          paint: {
-            'fill-color': '#69a280',
-            'fill-opacity': 0.2
-          }
-        });
-
-        // Polygon Outlines (Sage Green outline)
-        this.map.addLayer({
-          id: 'carbon-custom-polygon-outlines',
-          type: 'line',
-          source: 'carbon-custom-geojson',
-          filter: ['any', ['==', '$type', 'Polygon'], ['==', '$type', 'MultiPolygon']],
-          paint: {
-            'line-color': '#69a280',
-            'line-width': 1.8,
-            'line-opacity': 0.85
-          }
-        });
-
-        // LineStrings (Dashed Faded Jeans Blue lines for connectivity / cables)
-        this.map.addLayer({
-          id: 'carbon-custom-lines',
-          type: 'line',
-          source: 'carbon-custom-geojson',
-          filter: ['any', ['==', '$type', 'LineString'], ['==', '$type', 'MultiLineString']],
-          paint: {
-            'line-color': '#7a9eb3',
-            'line-width': 2.5,
-            'line-dasharray': [3, 2],
-            'line-opacity': 0.85
-          }
-        });
-      }
-
-      // Extract points for custom Carbon pulsing DOM markers & compute bounds
       const features = this.geoJsonData.features || (this.geoJsonData.type === 'Feature' ? [this.geoJsonData] : []);
+      if (!features.length) return;
+
       const bounds = new window.maplibregl.LngLatBounds();
       let hasValidCoords = false;
 
@@ -442,18 +421,80 @@
             maxWidth: '320px'
           }).setHTML(popupHtml);
 
-          const marker = new window.maplibregl.Marker({ element: el })
-            .setLngLat(coords)
-            .setPopup(popup)
-            .addTo(this.map);
+          try {
+            const marker = new window.maplibregl.Marker({ element: el })
+              .setLngLat(coords)
+              .setPopup(popup)
+              .addTo(this.map);
 
-          this.markers.push(marker);
+            this.markers.push(marker);
+          } catch (mErr) {
+            console.warn('[CarbonMap] Failed to add DOM marker:', mErr);
+          }
         }
       });
 
       // Fit map bounds if data features exist
       if (hasValidCoords && !bounds.isEmpty()) {
-        this.map.fitBounds(bounds, { padding: 50, maxZoom: 8, duration: 800 });
+        try {
+          this.map.fitBounds(bounds, { padding: 50, maxZoom: 8, duration: 800 });
+        } catch (_) {}
+      }
+    }
+
+    renderVectorLayers() {
+      if (!this.map || !this.map.isStyleLoaded() || !this.geoJsonData) return;
+
+      try {
+        if (this.map.getSource('carbon-custom-geojson')) {
+          this.map.getSource('carbon-custom-geojson').setData(this.geoJsonData);
+        } else {
+          this.map.addSource('carbon-custom-geojson', {
+            type: 'geojson',
+            data: this.geoJsonData
+          });
+
+          // Polygons (Translucent Sage Green fill)
+          this.map.addLayer({
+            id: 'carbon-custom-polygons',
+            type: 'fill',
+            source: 'carbon-custom-geojson',
+            filter: ['any', ['==', '$type', 'Polygon'], ['==', '$type', 'MultiPolygon']],
+            paint: {
+              'fill-color': '#69a280',
+              'fill-opacity': 0.2
+            }
+          });
+
+          // Polygon Outlines (Sage Green outline)
+          this.map.addLayer({
+            id: 'carbon-custom-polygon-outlines',
+            type: 'line',
+            source: 'carbon-custom-geojson',
+            filter: ['any', ['==', '$type', 'Polygon'], ['==', '$type', 'MultiPolygon']],
+            paint: {
+              'line-color': '#69a280',
+              'line-width': 1.8,
+              'line-opacity': 0.85
+            }
+          });
+
+          // LineStrings (Dashed Faded Jeans Blue lines for connectivity / cables)
+          this.map.addLayer({
+            id: 'carbon-custom-lines',
+            type: 'line',
+            source: 'carbon-custom-geojson',
+            filter: ['any', ['==', '$type', 'LineString'], ['==', '$type', 'MultiLineString']],
+            paint: {
+              'line-color': '#7a9eb3',
+              'line-width': 2.5,
+              'line-dasharray': [3, 2],
+              'line-opacity': 0.85
+            }
+          });
+        }
+      } catch (err) {
+        console.warn('[CarbonMap] Error setting up vector layers (relying on DOM markers):', err);
       }
     }
 
@@ -717,7 +758,16 @@
         });
       }
 
-      if (src) {
+      // Check for inline GeoJSON data first
+      const inlineScript = canvas.parentElement ? canvas.parentElement.querySelector('.carbon-map-inline-data') : null;
+      if (inlineScript && inlineScript.textContent) {
+        try {
+          const inlineData = JSON.parse(inlineScript.textContent);
+          ctrl.loadGeoJSON(inlineData);
+        } catch (e) {
+          console.warn('[MapLibre] Could not parse inline GeoJSON:', e);
+        }
+      } else if (src) {
         try {
           const resp = await fetch(src);
           if (resp.ok) {

@@ -1,0 +1,37 @@
+{
+  "@context": "http://www.w3.org/ns/csvw",
+  "title": "Global Environmental Sensors Network",
+  "description": "Geospatial air quality, particulate matter, and meteorological indicators from edge telemetry nodes.",
+  "tableSchema": {
+    "columns": [
+      { "name": "sensor_id", "titles": "Sensor ID", "datatype": "string", "cds-variable-style": "mono" },
+      { "name": "city", "titles": "City", "datatype": "string" },
+      { "name": "lat", "titles": "Latitude", "datatype": "number" },
+      { "name": "lng", "titles": "Longitude", "datatype": "number" },
+      { "name": "pm25_ugm3", "titles": "PM2.5 (µg/m³)", "datatype": "number" },
+      { "name": "temp_c", "titles": "Temperature (°C)", "datatype": "number" },
+      { "name": "humidity_pct", "titles": "Humidity (%)", "datatype": "number" },
+      {
+        "name": "aqi_score",
+        "titles": "Air Quality",
+        "datatype": "string",
+        "cds-variable-style": {
+          "Good": "tag:green",
+          "Moderate": "tag:warm-gray",
+          "Unhealthy": "tag:red"
+        }
+      },
+      {
+        "name": "status",
+        "titles": "Operational Status",
+        "datatype": "string",
+        "cds-variable-style": {
+          "Healthy": "tag:green",
+          "Warning": "tag:warm-gray",
+          "Degraded": "tag:red"
+        }
+      }
+    ],
+    "primaryKey": "sensor_id"
+  }
+}

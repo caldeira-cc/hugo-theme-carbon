@@ -57,9 +57,29 @@
    ------------------------------------------------------------------------- */}}
 {{ $csvContent := "" }}
 {{ if $csv }}
-  {{ $staticPath := printf "static%s" $csv }}
-  {{ if (fileExists $staticPath) }}
-    {{ $csvContent = os.ReadFile $staticPath }}
+  {{ $cleanedCsv := strings.TrimPrefix "/" $csv }}
+  {{ if (fileExists (printf "static/%s" $cleanedCsv)) }}
+    {{ $csvContent = os.ReadFile (printf "static/%s" $cleanedCsv) }}
+  {{ else if (fileExists (printf "../static/%s" $cleanedCsv)) }}
+    {{ $csvContent = os.ReadFile (printf "../static/%s" $cleanedCsv) }}
+  {{ else if (fileExists (printf "hugo-theme-carbon/static/%s" $cleanedCsv)) }}
+    {{ $csvContent = os.ReadFile (printf "hugo-theme-carbon/static/%s" $cleanedCsv) }}
+  {{ else if (fileExists (printf "../hugo-theme-carbon/static/%s" $cleanedCsv)) }}
+    {{ $csvContent = os.ReadFile (printf "../hugo-theme-carbon/static/%s" $cleanedCsv) }}
+  {{ end }}
+{{ end }}
+
+{{ $metaContent := "" }}
+{{ if $metadata }}
+  {{ $cleanedMeta := strings.TrimPrefix "/" $metadata }}
+  {{ if (fileExists (printf "static/%s" $cleanedMeta)) }}
+    {{ $metaContent = os.ReadFile (printf "static/%s" $cleanedMeta) }}
+  {{ else if (fileExists (printf "../static/%s" $cleanedMeta)) }}
+    {{ $metaContent = os.ReadFile (printf "../static/%s" $cleanedMeta) }}
+  {{ else if (fileExists (printf "hugo-theme-carbon/static/%s" $cleanedMeta)) }}
+    {{ $metaContent = os.ReadFile (printf "hugo-theme-carbon/static/%s" $cleanedMeta) }}
+  {{ else if (fileExists (printf "../hugo-theme-carbon/static/%s" $cleanedMeta)) }}
+    {{ $metaContent = os.ReadFile (printf "../hugo-theme-carbon/static/%s" $cleanedMeta) }}
   {{ end }}
 {{ end }}
 
@@ -234,8 +254,10 @@
     {{ end }}
 
     {{ if $tableEnable }}
+      {{ $workerJS := resources.Get "js/workers/csvw-worker.js" | js.Build (dict "target" "es2020" "minify" hugo.IsProduction) }}
       <div class="carbon-analytics-suite__table-block" style="width: 100%;">
         <div class="carbon-csvw-container carbon-csvw-table"
+             data-worker-url="{{ $workerJS.RelPermalink }}"
              data-csv="{{ $csv }}"
              data-metadata="{{ $metadata }}"
              data-title="{{ $tableTitle }}"
@@ -244,6 +266,12 @@
              data-page-size="{{ $tablePageSize }}"
              data-summary-row="{{ $tableSummaryRow }}"
              {{ with $tableVars }}data-variables="{{ . }}"{{ end }}>
+          {{ if $csvContent }}
+            <div class="raw-csv-data" style="display: none;">{{ $csvContent }}</div>
+          {{ end }}
+          {{ if $metaContent }}
+            <div class="raw-meta-data" style="display: none;">{{ $metaContent }}</div>
+          {{ end }}
         </div>
       </div>
     {{ end }}

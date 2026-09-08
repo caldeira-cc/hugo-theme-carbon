@@ -1,0 +1,193 @@
+{
+  "type": "FeatureCollection",
+  "name": "Global Infrastructure & Edge Nodes",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "node-lon-01",
+        "name": "London Primary Edge Facility",
+        "category": "Core Datacenter",
+        "status": "Operational",
+        "tier": "Tier IV",
+        "throughput": "800 Gbps",
+        "latency_ms": 1.2,
+        "region": "Europe West",
+        "established": 2021
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.1276, 51.5074]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "node-lis-01",
+        "name": "Lisbon Atlantic Gateway",
+        "category": "Subsea Terminal",
+        "status": "Operational",
+        "tier": "Tier III+",
+        "throughput": "400 Gbps",
+        "latency_ms": 2.4,
+        "region": "Europe South",
+        "established": 2023
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-9.1393, 38.7223]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "node-zrh-01",
+        "name": "Zurich Alpine Vault",
+        "category": "Compute Cluster",
+        "status": "Active",
+        "tier": "Tier IV",
+        "throughput": "1.2 Tbps",
+        "latency_ms": 0.8,
+        "region": "Europe Central",
+        "established": 2020
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [8.5417, 47.3769]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "node-nyc-01",
+        "name": "New York Metro Hub",
+        "category": "Core Datacenter",
+        "status": "Operational",
+        "tier": "Tier IV",
+        "throughput": "2.4 Tbps",
+        "latency_ms": 0.5,
+        "region": "US East",
+        "established": 2019
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.006, 40.7128]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "node-tyo-01",
+        "name": "Tokyo Pacific Gateway",
+        "category": "Edge Gateway",
+        "status": "Operational",
+        "tier": "Tier IV",
+        "throughput": "1.6 Tbps",
+        "latency_ms": 1.1,
+        "region": "Asia East",
+        "established": 2022
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [139.6917, 35.6895]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fiber-transatlantic-01",
+        "name": "Transatlantic Trans-Optic Link 1",
+        "category": "Subsea High-Capacity Fiber",
+        "status": "Operational",
+        "capacity": "160 Tbps",
+        "length_km": 5600,
+        "owner": "Global Consortium"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-74.006, 40.7128],
+          [-65.0, 42.0],
+          [-45.0, 48.0],
+          [-25.0, 50.0],
+          [-10.0, 50.5],
+          [-0.1276, 51.5074]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fiber-atlantic-south-01",
+        "name": "Iberian-Atlantic Transit Trunk",
+        "category": "Terrestrial & Coastal Fiber",
+        "status": "Operational",
+        "capacity": "80 Tbps",
+        "length_km": 1750,
+        "owner": "EuroTransit"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-0.1276, 51.5074],
+          [-1.5, 48.0],
+          [-4.0, 44.0],
+          [-8.5, 41.5],
+          [-9.1393, 38.7223]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "zone-london-campus",
+        "name": "London Tech City Innovation District",
+        "category": "Innovation Zone",
+        "area_sqkm": 4.8,
+        "security_level": "High",
+        "power_redundancy": "N+2"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-0.145, 51.525],
+            [-0.075, 51.525],
+            [-0.075, 51.495],
+            [-0.145, 51.495],
+            [-0.145, 51.525]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "zone-lisbon-dock",
+        "name": "Lisbon Hub Tejo Ocean Terminal Zone",
+        "category": "Innovation Zone",
+        "area_sqkm": 2.6,
+        "security_level": "High",
+        "power_redundancy": "2N"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-9.165, 38.735],
+            [-9.115, 38.735],
+            [-9.115, 38.705],
+            [-9.165, 38.705],
+            [-9.165, 38.735]
+          ]
+        ]
+      }
+    }
+  ]
+}

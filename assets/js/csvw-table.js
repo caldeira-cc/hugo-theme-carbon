@@ -10,55 +10,399 @@
   'use strict';
 
   // -------------------------------------------------------------------------
-  // 1. Worker Instance Pool / Manager
+  // 1. Worker Instance Pool / Manager with Full Synchronous Main-Thread Engine
   // -------------------------------------------------------------------------
   let workerInstance = null;
   let workerSupported = typeof window.Worker !== 'undefined';
+  let activeWorkerUrl = '/js/workers/csvw-worker.js';
   const pendingWorkerCallbacks = new Map();
+  const pendingWorkerMessages = new Map();
   let workerMsgId = 0;
 
-  function getWorker() {
+  // Synchronous CSV Parser Fallback (RFC 4180 compliant)
+  function parseCSV(csvText, delimiter = ',') {
+    if (!csvText || typeof csvText !== 'string') return { headers: [], rows: [] };
+    const lines = csvText.trim().split(/\r?\n/);
+    if (lines.length === 0) return { headers: [], rows: [] };
+
+    function parseLine(line, delim) {
+      const result = [];
+      let cur = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"') {
+          inQuotes = !inQuotes;
+        } else if (c === delim && !inQuotes) {
+          result.push(cur.trim());
+          cur = '';
+        } else {
+          cur += c;
+        }
+      }
+      result.push(cur.trim());
+      return result;
+    }
+
+    const headers = parseLine(lines[0], delimiter);
+    const rows = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      const vals = parseLine(line, delimiter);
+      const rowObj = { _id: `row-${i}` };
+      headers.forEach((h, colIdx) => {
+        let val = vals[colIdx] !== undefined ? vals[colIdx] : '';
+        if (typeof val === 'string' && val.startsWith('"') && val.endsWith('"')) {
+          val = val.slice(1, -1).replace(/""/g, '"');
+        }
+        rowObj[h] = val;
+      });
+      rows.push(rowObj);
+    }
+
+    return { headers, rows };
+  }
+
+  // Synchronous Descriptive Statistics (SPSS/PSPP standard)
+  function computeDescriptives(values) {
+    const nums = values
+      .map(v => (typeof v === 'number' ? v : parseFloat(String(v).replace(/[^0-9.-]+/g, ''))))
+      .filter(v => typeof v === 'number' && !isNaN(v))
+      .sort((a, b) => a - b);
+
+    const n = nums.length;
+    if (n === 0) return null;
+
+    const sum = nums.reduce((acc, v) => acc + v, 0);
+    const mean = sum / n;
+    const variance = nums.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / (n > 1 ? n - 1 : 1);
+    const stdDev = Math.sqrt(variance);
+    const stdErr = stdDev / Math.sqrt(n);
+
+    const min = nums[0];
+    const max = nums[n - 1];
+    const range = max - min;
+
+    const q1 = nums[Math.floor(n * 0.25)];
+    const median = n % 2 === 0 ? (nums[n / 2 - 1] + nums[n / 2]) / 2 : nums[Math.floor(n / 2)];
+    const q3 = nums[Math.floor(n * 0.75)];
+    const iqr = q3 - q1;
+
+    let m3 = 0;
+    let m4 = 0;
+    for (let i = 0; i < n; i++) {
+      const diff = nums[i] - mean;
+      m3 += Math.pow(diff, 3);
+      m4 += Math.pow(diff, 4);
+    }
+    const skewness = (m3 / n) / Math.pow(stdDev || 1, 3);
+    const kurtosis = ((m4 / n) / Math.pow(variance || 1, 2)) - 3;
+
+    return {
+      n,
+      sum: Number(sum.toFixed(4)),
+      mean: Number(mean.toFixed(4)),
+      stdErr: Number(stdErr.toFixed(4)),
+      median: Number(median.toFixed(4)),
+      stdDev: Number(stdDev.toFixed(4)),
+      variance: Number(variance.toFixed(4)),
+      skewness: Number(skewness.toFixed(4)),
+      kurtosis: Number(kurtosis.toFixed(4)),
+      min: Number(min.toFixed(4)),
+      max: Number(max.toFixed(4)),
+      range: Number(range.toFixed(4)),
+      q1: Number(q1.toFixed(4)),
+      q3: Number(q3.toFixed(4)),
+      iqr: Number(iqr.toFixed(4))
+    };
+  }
+
+  function computeFrequencies(values) {
+    const counts = {};
+    let total = 0;
+    values.forEach(v => {
+      const key = v === null || v === undefined || v === '' ? '(Missing)' : String(v);
+      counts[key] = (counts[key] || 0) + 1;
+      total++;
+    });
+
+    let cumCount = 0;
+    const rows = Object.keys(counts)
+      .sort((a, b) => counts[b] - counts[a])
+      .map(key => {
+        const count = counts[key];
+        cumCount += count;
+        const percent = total > 0 ? (count / total) * 100 : 0;
+        const cumPercent = total > 0 ? (cumCount / total) * 100 : 0;
+        return {
+          value: key,
+          frequency: count,
+          percent: Number(percent.toFixed(2)),
+          cumPercent: Number(cumPercent.toFixed(2))
+        };
+      });
+
+    return { total, rows };
+  }
+
+  function computeCrosstab(rowVals, colVals, rowName = 'RowVar', colName = 'ColVar') {
+    const len = Math.min(rowVals.length, colVals.length);
+    const table = {};
+    const colSet = new Set();
+    const rowSet = new Set();
+    let grandTotal = 0;
+
+    for (let i = 0; i < len; i++) {
+      const r = String(rowVals[i] ?? '(Missing)');
+      const c = String(colVals[i] ?? '(Missing)');
+      rowSet.add(r);
+      colSet.add(c);
+      if (!table[r]) table[r] = {};
+      table[r][c] = (table[r][c] || 0) + 1;
+      grandTotal++;
+    }
+
+    const rowCategories = Array.from(rowSet);
+    const colCategories = Array.from(colSet);
+    const rowTotals = {};
+    const colTotals = {};
+    colCategories.forEach(c => (colTotals[c] = 0));
+
+    rowCategories.forEach(r => {
+      let rSum = 0;
+      colCategories.forEach(c => {
+        const count = table[r]?.[c] || 0;
+        rSum += count;
+        colTotals[c] += count;
+      });
+      rowTotals[r] = rSum;
+    });
+
+    let chiSquare = 0;
+    rowCategories.forEach(r => {
+      colCategories.forEach(c => {
+        const observed = table[r]?.[c] || 0;
+        const expected = (rowTotals[r] * colTotals[c]) / (grandTotal || 1);
+        if (expected > 0) chiSquare += Math.pow(observed - expected, 2) / expected;
+      });
+    });
+
+    const df = (rowCategories.length - 1) * (colCategories.length - 1);
+    return { rowName, colName, rowCategories, colCategories, table, rowTotals, colTotals, grandTotal, chiSquare: Number(chiSquare.toFixed(4)), df };
+  }
+
+  function computeCorrelation(xVals, yVals, xName = 'X', yName = 'Y') {
+    const pairs = [];
+    for (let i = 0; i < Math.min(xVals.length, yVals.length); i++) {
+      const x = parseFloat(String(xVals[i]).replace(/[^0-9.-]+/g, ''));
+      const y = parseFloat(String(yVals[i]).replace(/[^0-9.-]+/g, ''));
+      if (!isNaN(x) && !isNaN(y)) pairs.push([x, y]);
+    }
+    const n = pairs.length;
+    if (n < 2) return null;
+
+    const sumX = pairs.reduce((acc, p) => acc + p[0], 0);
+    const sumY = pairs.reduce((acc, p) => acc + p[1], 0);
+    const meanX = sumX / n;
+    const meanY = sumY / n;
+    let num = 0, denX = 0, denY = 0;
+    pairs.forEach(p => {
+      const dx = p[0] - meanX;
+      const dy = p[1] - meanY;
+      num += dx * dy;
+      denX += dx * dx;
+      denY += dy * dy;
+    });
+
+    const r = denX && denY ? num / Math.sqrt(denX * denY) : 0;
+    const r2 = r * r;
+    const slope = denX ? num / denX : 0;
+    const intercept = meanY - slope * meanX;
+    const tStat = r2 < 1 ? (r * Math.sqrt(n - 2)) / Math.sqrt(1 - r2) : 0;
+
+    return { n, r: Number(r.toFixed(4)), r2: Number(r2.toFixed(4)), tStat: Number(tStat.toFixed(4)), slope: Number(slope.toFixed(4)), intercept: Number(intercept.toFixed(4)), xName, yName };
+  }
+
+  function executeFallback(msg) {
+    if (!msg || !msg.type) return { fallback: true };
+    switch (msg.type) {
+      case 'PARSE_CSV': {
+        const parsed = parseCSV(msg.csvText, msg.delimiter || ',');
+        return {
+          type: 'PARSE_CSV_RESULT',
+          id: msg.id,
+          headers: parsed.headers,
+          rows: parsed.rows,
+          fallback: true
+        };
+      }
+      case 'COMPUTE_DESCRIPTIVES': {
+        const results = {};
+        if (msg.columns && typeof msg.columns === 'object') {
+          Object.keys(msg.columns).forEach(col => {
+            results[col] = computeDescriptives(msg.columns[col]);
+          });
+        }
+        return {
+          type: 'DESCRIPTIVES_RESULT',
+          id: msg.id,
+          results,
+          fallback: true
+        };
+      }
+      case 'FILTER_SORT': {
+        let filtered = Array.isArray(msg.rows) ? [...msg.rows] : [];
+        if (msg.query) {
+          const q = msg.query.toLowerCase().trim();
+          filtered = filtered.filter(row =>
+            Object.keys(row).some(k => !k.startsWith('_') && String(row[k] ?? '').toLowerCase().includes(q))
+          );
+        }
+        if (msg.columnFilters && typeof msg.columnFilters === 'object') {
+          Object.keys(msg.columnFilters).forEach(col => {
+            const val = msg.columnFilters[col]?.toLowerCase().trim();
+            if (val) {
+              filtered = filtered.filter(row => String(row[col] ?? '').toLowerCase().includes(val));
+            }
+          });
+        }
+        if (msg.sortColumn) {
+          const col = msg.sortColumn;
+          const dir = msg.sortDirection === 'desc' ? -1 : 1;
+          filtered.sort((a, b) => {
+            const valA = a[col] ?? '';
+            const valB = b[col] ?? '';
+            const numA = parseFloat(String(valA).replace(/[^0-9.-]+/g, ''));
+            const numB = parseFloat(String(valB).replace(/[^0-9.-]+/g, ''));
+            if (!isNaN(numA) && !isNaN(numB)) {
+              return (numA - numB) * dir;
+            }
+            return String(valA).localeCompare(String(valB)) * dir;
+          });
+        }
+        return {
+          type: 'FILTER_SORT_RESULT',
+          id: msg.id,
+          rows: filtered,
+          totalFiltered: filtered.length,
+          fallback: true
+        };
+      }
+      case 'COMPUTE_FREQUENCIES': {
+        const results = computeFrequencies(msg.values || []);
+        return {
+          type: 'FREQUENCIES_RESULT',
+          id: msg.id,
+          column: msg.column,
+          results,
+          fallback: true
+        };
+      }
+      case 'COMPUTE_CROSSTAB': {
+        const results = computeCrosstab(msg.rowVals || [], msg.colVals || [], msg.rowName, msg.colName);
+        return {
+          type: 'CROSSTAB_RESULT',
+          id: msg.id,
+          results,
+          fallback: true
+        };
+      }
+      case 'COMPUTE_CORRELATION': {
+        const results = computeCorrelation(msg.xVals || [], msg.yVals || [], msg.xName, msg.yName);
+        return {
+          type: 'CORRELATION_RESULT',
+          id: msg.id,
+          xName: msg.xName,
+          yName: msg.yName,
+          results,
+          fallback: true
+        };
+      }
+      default:
+        return { type: msg.type + '_RESULT', fallback: true };
+    }
+  }
+
+  function getWorker(customUrl) {
     if (!workerSupported) return null;
-    if (!workerInstance) {
+    const targetUrl = customUrl || activeWorkerUrl;
+    if (!workerInstance || (customUrl && customUrl !== activeWorkerUrl)) {
+      if (workerInstance) {
+        try { workerInstance.terminate(); } catch (_) {}
+      }
+      activeWorkerUrl = targetUrl;
       try {
-        workerInstance = new Worker('/js/workers/csvw-worker.js');
+        workerInstance = new Worker(targetUrl);
         workerInstance.onmessage = function (e) {
           const data = e.data;
           if (data && data.id && pendingWorkerCallbacks.has(data.id)) {
             const cb = pendingWorkerCallbacks.get(data.id);
             pendingWorkerCallbacks.delete(data.id);
+            pendingWorkerMessages.delete(data.id);
             cb(data);
           }
         };
         workerInstance.onerror = function (err) {
           console.warn('[CSVW Engine] Worker error, falling back to main thread:', err);
           workerSupported = false;
+          // Immediately resolve all pending callbacks using synchronous fallback
+          for (const [id, cb] of pendingWorkerCallbacks.entries()) {
+            const pendingMsg = pendingWorkerMessages.get(id);
+            pendingWorkerCallbacks.delete(id);
+            pendingWorkerMessages.delete(id);
+            if (pendingMsg) cb(executeFallback(pendingMsg));
+          }
+          if (workerInstance) {
+            try { workerInstance.terminate(); } catch (_) {}
+            workerInstance = null;
+          }
         };
       } catch (err) {
         console.warn('[CSVW Engine] Could not initialize Web Worker, using main thread fallback:', err);
         workerSupported = false;
+        return null;
       }
     }
     return workerInstance;
   }
 
-  function postToWorker(msg) {
+  function postToWorker(msg, customUrl) {
     return new Promise(resolve => {
-      const worker = getWorker();
+      const worker = getWorker(customUrl);
       if (worker && workerSupported) {
         const id = `msg-${++workerMsgId}`;
         msg.id = id;
-        pendingWorkerCallbacks.set(id, resolve);
-        worker.postMessage(msg);
+
+        let timeoutId = null;
+        const wrappedCallback = (res) => {
+          if (timeoutId) clearTimeout(timeoutId);
+          pendingWorkerCallbacks.delete(id);
+          pendingWorkerMessages.delete(id);
+          resolve(res);
+        };
+
+        // 2-second watchdog guard: if worker hangs or network stalls, fall back to synchronous execution
+        timeoutId = setTimeout(() => {
+          console.warn(`[CSVW Engine] Worker timeout on ${msg.type} after 2000ms, using main-thread fallback.`);
+          workerSupported = false;
+          wrappedCallback(executeFallback(msg));
+        }, 2000);
+
+        pendingWorkerCallbacks.set(id, wrappedCallback);
+        pendingWorkerMessages.set(id, msg);
+        try {
+          worker.postMessage(msg);
+        } catch (postErr) {
+          console.warn('[CSVW Engine] Failed to post message to worker, using fallback:', postErr);
+          wrappedCallback(executeFallback(msg));
+        }
       } else {
-        // Fallback for environments where Web Workers are disabled
+        // Fallback for environments where Web Workers are disabled or unavailable
         resolve(executeFallback(msg));
       }
     });
-  }
-
-  function executeFallback(msg) {
-    return { type: msg.type + '_RESULT', fallback: true };
   }
 
   function escapeHtml(str) {
@@ -74,6 +418,7 @@
   class CsvwTableController {
     constructor(container) {
       this.container = container;
+      this.workerUrl = container.getAttribute('data-worker-url') || '/js/workers/csvw-worker.js';
       this.csvUrl = container.getAttribute('data-csv');
       this.metaUrl = container.getAttribute('data-metadata');
       this.title = container.getAttribute('data-title') || 'CSVW Interactive Data Explorer';
@@ -147,18 +492,22 @@
       const embeddedCsv = this.container.querySelector('.raw-csv-data');
       const embeddedMeta = this.container.querySelector('.raw-meta-data');
 
-      if (embeddedMeta) {
-        try { this.metadata = JSON.parse(embeddedMeta.textContent); } catch (_) {}
+      if (embeddedMeta && embeddedMeta.textContent) {
+        try { this.metadata = JSON.parse(embeddedMeta.textContent.trim()); } catch (_) {}
       }
-      if (embeddedCsv) {
-        this.rawCsv = embeddedCsv.textContent;
+      if (embeddedCsv && embeddedCsv.textContent) {
+        this.rawCsv = embeddedCsv.textContent.trim();
       }
 
       // 2. Fetch CSV if needed
       if (!this.rawCsv && this.csvUrl) {
         try {
           const res = await fetch(this.csvUrl);
-          this.rawCsv = await res.text();
+          if (res.ok) {
+            this.rawCsv = (await res.text()).trim();
+          } else {
+            console.error(`[CSVW] Failed to load CSV file from ${this.csvUrl}: HTTP ${res.status} ${res.statusText}`);
+          }
         } catch (e) {
           console.error('[CSVW] Failed to load CSV file:', e);
         }
@@ -177,26 +526,46 @@
         }
       }
 
-      // 4. Parse CSV with Web Worker
+      // 4. Parse CSV with Web Worker (or synchronous fallback)
       if (this.rawCsv) {
-        const parsed = await postToWorker({
-          type: 'PARSE_CSV',
-          csvText: this.rawCsv,
-          delimiter: ','
-        });
-        this.headers = parsed.headers || [];
-        this.rows = parsed.rows || [];
-        this.filteredRows = [...this.rows];
+        try {
+          const parsed = await postToWorker({
+            type: 'PARSE_CSV',
+            csvText: this.rawCsv,
+            delimiter: ','
+          }, this.workerUrl);
+          this.headers = parsed.headers || [];
+          this.rows = parsed.rows || [];
+          this.filteredRows = [...this.rows];
+        } catch (parseErr) {
+          console.warn('[CSVW] Worker parsing error, executing fallback:', parseErr);
+          const fallbackParsed = parseCSV(this.rawCsv, ',');
+          this.headers = fallbackParsed.headers || [];
+          this.rows = fallbackParsed.rows || [];
+          this.filteredRows = [...this.rows];
+        }
       }
 
       // 5. Compute Statistics in Web Worker
-      await this.computeStats();
+      try {
+        await this.computeStats();
+      } catch (statsErr) {
+        console.warn('[CSVW] computeStats error:', statsErr);
+      }
 
       // 6. Update any linked KPI cards in DOM
-      this.updateLinkedKPIs();
+      try {
+        this.updateLinkedKPIs();
+      } catch (kpiErr) {
+        console.warn('[CSVW] updateLinkedKPIs error:', kpiErr);
+      }
 
       // 7. Render Full Component
-      this.render();
+      try {
+        this.render();
+      } catch (renderErr) {
+        console.error('[CSVW] render error:', renderErr);
+      }
 
       // 8. Listen for GeoJSON Map events
       window.addEventListener('carbon:map-marker-click', e => {
@@ -221,7 +590,7 @@
       const res = await postToWorker({
         type: 'COMPUTE_DESCRIPTIVES',
         columns: numericColumns
-      });
+      }, this.workerUrl);
 
       if (res && res.results) {
         this.descriptives = res.results;
@@ -270,7 +639,7 @@
         columnFilters: this.columnFilters,
         sortColumn: this.sortColumn,
         sortDirection: this.sortDirection
-      });
+      }, this.workerUrl);
 
       this.filteredRows = res.rows || [];
       this.renderBodyAndPagination();
@@ -399,8 +768,10 @@
             <tbody>
               ${paginatedRows.length === 0 ? `
                 <tr>
-                  <td colspan="${columns.length + 1}" style="text-align: center; padding: 2.5rem; color: var(--cds-text-secondary);">
-                    No matching records found.
+                  <td colspan="${Math.max(columns.length + 1, 1)}" style="text-align: center; padding: 2.5rem; color: var(--cds-text-secondary);">
+                    ${(!this.rawCsv && this.headers.length === 0) 
+                      ? (this.csvUrl ? `Unable to load dataset from ${escapeHtml(this.csvUrl)}.` : 'No dataset loaded.') 
+                      : 'No matching records found.'}
                   </td>
                 </tr>
               ` : paginatedRows.map((row, idx) => `
@@ -409,7 +780,7 @@
                     ${startIndex + idx + 1}
                   </td>
                   ${columns.map(col => {
-                    const val = row[col.name] || '';
+                    const val = row[col.name] !== undefined ? row[col.name] : '';
                     return `<td>${this.formatCellValue(col, val, row)}</td>`;
                   }).join('')}
                 </tr>
@@ -618,14 +989,26 @@
         rawCols = this.metadata.tableSchema.columns.map(col => ({
           name: col.name,
           title: col.titles || col.name,
-          datatype: col.datatype || 'string'
+          datatype: col.datatype || 'string',
+          variableStyle: col['cds-variable-style'] || col['cdsVariableStyle'] || null
         }));
       } else {
         rawCols = this.headers.map(h => ({
           name: h,
           title: h,
-          datatype: 'string'
+          datatype: 'string',
+          variableStyle: null
         }));
+      }
+
+      // Merge any CSV headers not declared in metadata schema
+      if (this.headers && this.headers.length > 0) {
+        const existingNames = new Set(rawCols.map(c => c.name));
+        this.headers.forEach(h => {
+          if (!existingNames.has(h)) {
+            rawCols.push({ name: h, title: h, datatype: 'string', variableStyle: null });
+          }
+        });
       }
 
       if (this.selectedVariables && this.selectedVariables.length > 0) {
@@ -634,31 +1017,118 @@
       return rawCols;
     }
 
+    applyCarbonStyle(val, style) {
+      if (!style) return escapeHtml(val);
+
+      // 1. Object specification: { type: 'tag', color: 'green', outline: true } or { class: '...' }
+      if (typeof style === 'object') {
+        if (style.class) {
+          return `<span class="${escapeHtml(style.class)}">${escapeHtml(val)}</span>`;
+        }
+        const tagType = style.type || 'tag';
+        if (tagType === 'tag') {
+          const color = style.color || 'gray';
+          const size = style.size ? `cds--tag--${style.size}` : 'cds--tag--sm';
+          const outline = style.outline ? 'cds--tag--outline' : '';
+          return `<span class="cds--tag cds--tag--${escapeHtml(color)} ${size} ${outline}`.trim() + `">${escapeHtml(val)}</span>`;
+        }
+        if (tagType === 'mono') {
+          return `<span style="font-family: var(--cds-font-mono, monospace);">${escapeHtml(val)}</span>`;
+        }
+        if (tagType === 'code') {
+          return `<code class="cds--snippet cds--snippet--inline">${escapeHtml(val)}</code>`;
+        }
+        if (tagType === 'badge') {
+          return `<span class="cds--badge cds--badge--${escapeHtml(style.color || 'blue')}">${escapeHtml(val)}</span>`;
+        }
+      }
+
+      // 2. String specification: "tag:green", "green", "cds--tag cds--tag--green", "code", "mono"
+      if (typeof style === 'string') {
+        const s = style.trim();
+
+        // Direct Carbon CSS class
+        if (s.startsWith('cds--')) {
+          return `<span class="${escapeHtml(s)}">${escapeHtml(val)}</span>`;
+        }
+
+        // Tag format: "tag:green", "tag:warm-gray", or shorthand color names "green", "red", etc.
+        const tagColorMatch = s.match(/^(?:tag:)?(red|magenta|purple|blue|cyan|teal|green|gray|cool-gray|warm-gray|high-contrast|outline)$/i);
+        if (tagColorMatch) {
+          const color = tagColorMatch[1].toLowerCase();
+          return `<span class="cds--tag cds--tag--${color} cds--tag--sm">${escapeHtml(val)}</span>`;
+        }
+
+        // Outline tag format: "outline:green", "tag:outline:blue"
+        const outlineMatch = s.match(/^(?:tag:)?outline:([a-z-]+)$/i);
+        if (outlineMatch) {
+          const color = outlineMatch[1].toLowerCase();
+          return `<span class="cds--tag cds--tag--${color} cds--tag--outline cds--tag--sm">${escapeHtml(val)}</span>`;
+        }
+
+        // Code / inline snippet
+        if (s === 'code' || s === 'snippet') {
+          return `<code class="cds--snippet cds--snippet--inline">${escapeHtml(val)}</code>`;
+        }
+
+        // Monospace font
+        if (s === 'mono' || s === 'monospace') {
+          return `<span style="font-family: var(--cds-font-mono, monospace);">${escapeHtml(val)}</span>`;
+        }
+
+        // Badge format
+        if (s.startsWith('badge')) {
+          const bColor = s.includes(':') ? s.split(':')[1].trim() : 'blue';
+          return `<span class="cds--badge cds--badge--${escapeHtml(bColor)}">${escapeHtml(val)}</span>`;
+        }
+
+        // Bold / strong
+        if (s === 'bold' || s === 'strong') return `<strong>${escapeHtml(val)}</strong>`;
+        if (s === 'italic' || s === 'em') return `<em>${escapeHtml(val)}</em>`;
+      }
+
+      return escapeHtml(val);
+    }
+
     formatCellValue(col, val, row) {
       if (val === '' || val === null || val === undefined) return '<span style="color: var(--cds-text-helper);">—</span>';
 
-      // Status tags
-      if (col.name === 'status' || col.name === 'health' || col.name === 'aqi_status') {
-        const clean = String(val).toLowerCase();
-        if (clean === 'healthy' || clean === 'active' || clean === 'online' || clean === 'good' || clean === 'pass') {
-          return `<span class="cds--tag cds--tag--green cds--tag--sm">${escapeHtml(val)}</span>`;
+      // Check for custom, metadata-driven Carbon Design System variable styles ('cds-variable-style')
+      const styleDef = col.variableStyle;
+      if (styleDef && (typeof styleDef === 'object' || typeof styleDef === 'string')) {
+        let matchedStyle = null;
+
+        if (typeof styleDef === 'object') {
+          // Exact match
+          if (styleDef[val] !== undefined) {
+            matchedStyle = styleDef[val];
+          } else {
+            // Case-insensitive match
+            const strVal = String(val).toLowerCase().trim();
+            for (const key of Object.keys(styleDef)) {
+              if (key.toLowerCase().trim() === strVal) {
+                matchedStyle = styleDef[key];
+                break;
+              }
+            }
+          }
+          // Default / wildcard fallback
+          if (!matchedStyle && (styleDef['*'] !== undefined || styleDef['_default'] !== undefined)) {
+            matchedStyle = styleDef['*'] !== undefined ? styleDef['*'] : styleDef['_default'];
+          }
+        } else if (typeof styleDef === 'string' && styleDef.trim() !== '') {
+          matchedStyle = styleDef.trim();
         }
-        if (clean === 'warning' || clean === 'degraded' || clean === 'moderate' || clean === 'slow') {
-          return `<span class="cds--tag cds--tag--warm-gray cds--tag--sm">${escapeHtml(val)}</span>`;
-        }
-        if (clean === 'error' || clean === 'critical' || clean === 'offline' || clean === 'unhealthy' || clean === 'fail') {
-          return `<span class="cds--tag cds--tag--red cds--tag--sm">${escapeHtml(val)}</span>`;
+
+        if (matchedStyle) {
+          return this.applyCarbonStyle(val, matchedStyle);
         }
       }
 
-      // Geo coordinate link
-      if ((col.name === 'lat' || col.name === 'latitude') && (row['lng'] || row['longitude'])) {
+      // When cds-variable-style is empty or unconfigured, ensure no added non-numeric style is added to the variable.
+      // Standard numeric formatting is applied only for numeric datatypes per Carbon specs.
+      if (col.datatype === 'number' || col.datatype === 'integer' || col.datatype === 'float' || typeof val === 'number') {
         return `<span style="font-family: var(--cds-font-mono, monospace);">${escapeHtml(val)}</span>`;
-      }
-
-      // Check URL
-      if (String(val).startsWith('http://') || String(val).startsWith('https://')) {
-        return `<a href="${escapeHtml(val)}" class="cds--link" target="_blank" rel="noopener">${escapeHtml(val)}</a>`;
       }
 
       return escapeHtml(val);
@@ -786,4 +1256,5 @@
   }
 
   window.initCsvwTables = initAllCsvwTables;
+  window.CsvwTableController = CsvwTableController;
 })();

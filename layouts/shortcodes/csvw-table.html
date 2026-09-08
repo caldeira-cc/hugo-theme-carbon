@@ -13,8 +13,47 @@
 {{ $id := .Get "id" | default (printf "csvw-table-%d" .Ordinal) }}
 {{ $class := .Get "class" | default "" }}
 
+{{ $workerJS := resources.Get "js/workers/csvw-worker.js" | js.Build (dict "target" "es2020" "minify" hugo.IsProduction) }}
+
+{{/* Resolve CSV data on disk for instant build-time pre-embedding */}}
+{{ $csvContent := "" }}
+{{ if .Inner }}
+  {{ $csvContent = .Inner }}
+{{ else if $csv }}
+  {{ $cleanedCsv := strings.TrimPrefix "/" $csv }}
+  {{ if fileExists (printf "static/%s" $cleanedCsv) }}
+    {{ $csvContent = readFile (printf "static/%s" $cleanedCsv) }}
+  {{ else if fileExists (printf "../static/%s" $cleanedCsv) }}
+    {{ $csvContent = readFile (printf "../static/%s" $cleanedCsv) }}
+  {{ else if fileExists (printf "hugo-theme-carbon/static/%s" $cleanedCsv) }}
+    {{ $csvContent = readFile (printf "hugo-theme-carbon/static/%s" $cleanedCsv) }}
+  {{ else if fileExists (printf "../hugo-theme-carbon/static/%s" $cleanedCsv) }}
+    {{ $csvContent = readFile (printf "../hugo-theme-carbon/static/%s" $cleanedCsv) }}
+  {{ else if fileExists $cleanedCsv }}
+    {{ $csvContent = readFile $cleanedCsv }}
+  {{ end }}
+{{ end }}
+
+{{/* Resolve CSVW schema metadata on disk for instant pre-embedding */}}
+{{ $metaContent := "" }}
+{{ if $meta }}
+  {{ $cleanedMeta := strings.TrimPrefix "/" $meta }}
+  {{ if fileExists (printf "static/%s" $cleanedMeta) }}
+    {{ $metaContent = readFile (printf "static/%s" $cleanedMeta) }}
+  {{ else if fileExists (printf "../static/%s" $cleanedMeta) }}
+    {{ $metaContent = readFile (printf "../static/%s" $cleanedMeta) }}
+  {{ else if fileExists (printf "hugo-theme-carbon/static/%s" $cleanedMeta) }}
+    {{ $metaContent = readFile (printf "hugo-theme-carbon/static/%s" $cleanedMeta) }}
+  {{ else if fileExists (printf "../hugo-theme-carbon/static/%s" $cleanedMeta) }}
+    {{ $metaContent = readFile (printf "../hugo-theme-carbon/static/%s" $cleanedMeta) }}
+  {{ else if fileExists $cleanedMeta }}
+    {{ $metaContent = readFile $cleanedMeta }}
+  {{ end }}
+{{ end }}
+
 <div class="carbon-csvw-container carbon-csvw-table {{ with $class }}{{ . }}{{ end }}" 
      id="{{ $id }}"
+     data-worker-url="{{ $workerJS.RelPermalink }}"
      {{ with $csv }}data-csv="{{ . }}"{{ end }} 
      {{ with $meta }}data-metadata="{{ . }}"{{ end }}
      {{ with $title }}data-title="{{ . }}"{{ end }}
@@ -22,9 +61,12 @@
      data-features="{{ $features }}"
      data-page-size="{{ $pageSize }}">
   
-  {{/* If inline inner content is provided as CSV */}}
-  {{ if .Inner }}
-    <div class="raw-csv-data" style="display: none;">{{ .Inner }}</div>
+  {{/* Pre-embedded dataset and schema metadata for zero-latency execution */}}
+  {{ if $csvContent }}
+    <div class="raw-csv-data" style="display: none;">{{ $csvContent }}</div>
+  {{ end }}
+  {{ if $metaContent }}
+    <div class="raw-meta-data" style="display: none;">{{ $metaContent }}</div>
   {{ end }}
 
   <noscript>

@@ -1,0 +1,11 @@
+server_id,cluster_name,region,cpu_utilization,memory_usage,uptime_days,status
+srv-us-east-101,Edge Gateway Alpha,us-east,42%,68%,142,Active
+srv-us-east-102,Edge Gateway Beta,us-east,89%,94%,28,Warning
+srv-us-west-201,Compute Cluster 1,us-west,24%,45%,310,Active
+srv-us-west-202,Compute Cluster 2,us-west,99%,98%,4,Critical
+srv-eu-central-301,Telemetry Ingestion,eu-central,35%,52%,89,Active
+srv-eu-west-401,Database Replica A,eu-west,71%,80%,215,Active
+srv-ap-southeast-501,API Proxy South,ap-southeast,58%,61%,77,Active
+srv-ap-northeast-601,Analytics Worker,ap-northeast,92%,88%,12,Degraded
+srv-sa-east-701,Storage Node Alpha,sa-east,15%,32%,420,Active
+srv-ca-central-801,Backup Vault,ca-central,08%,21%,540,Active
