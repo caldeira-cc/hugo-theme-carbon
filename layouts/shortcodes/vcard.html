@@ -60,6 +60,12 @@
   {{ $diskPath := "" }}
   {{ if fileExists (printf "static/%s" $cleanedPath) }}
     {{ $diskPath = printf "static/%s" $cleanedPath }}
+  {{ else if fileExists (printf "../static/%s" $cleanedPath) }}
+    {{ $diskPath = printf "../static/%s" $cleanedPath }}
+  {{ else if fileExists (printf "hugo-theme-carbon/static/%s" $cleanedPath) }}
+    {{ $diskPath = printf "hugo-theme-carbon/static/%s" $cleanedPath }}
+  {{ else if fileExists (printf "../hugo-theme-carbon/static/%s" $cleanedPath) }}
+    {{ $diskPath = printf "../hugo-theme-carbon/static/%s" $cleanedPath }}
   {{ else if fileExists $cleanedPath }}
     {{ $diskPath = $cleanedPath }}
   {{ end }}

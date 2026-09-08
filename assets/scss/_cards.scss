@@ -77,6 +77,8 @@
   box-sizing: border-box;
   color: var(--cds-text-primary);
   position: relative;
+  min-width: 0;
+  max-width: 100%;
   transition: background-color 0.11s, border-color 0.11s, transform 0.11s;
 
   &--clickable {
@@ -155,7 +157,11 @@
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
-  height: 100%;
+  height: auto;
+  min-height: auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5rem 0;
   transition: background-color 0.11s, border-color 0.11s, transform 0.11s, box-shadow 0.11s;
 
   &--clickable {

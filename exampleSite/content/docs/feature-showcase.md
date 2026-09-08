@@ -23,16 +23,21 @@ Welcome to the **Hugo-Carbon Feature Showcase**. This master specimen page exerc
 Compliant with IBM Carbon v11 16-column grid, token-driven theming, and zero runtime external CDN invariants.
 {{< /card >}}
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-  {{< clickable-tile href="/docs/carbon-components/" title="Clickable Tile Specimen" >}}
+<div class="cds--grid cds--grid--full-width" style="padding: 0; margin: 1.5rem 0;">
+  <div class="cds--row" style="margin: 0 -0.5rem;">
+    <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0.5rem;">
+      {{< clickable-tile href="/docs/carbon-components/" title="Clickable Tile Specimen" >}}
 Clickable tile with hover elevation and Carbon focus ring.
-  {{< /clickable-tile >}}
-  
-  {{< expandable-tile title="Expandable Tile Specimen" >}}
+      {{< /clickable-tile >}}
+    </div>
+    <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0.5rem;">
+      {{< expandable-tile title="Expandable Tile Specimen" >}}
 Above-the-fold summary content visible by default.
 <!-- more -->
 Below-the-fold expanded details revealed smoothly on chevron click.
-  {{< /expandable-tile >}}
+      {{< /expandable-tile >}}
+    </div>
+  </div>
 </div>
 
 ### Digital Business Cards (RFC 6350 vCard Engine)
@@ -282,3 +287,60 @@ Connect with the design systems team on {{< social "linkedin" >}}, follow update
 - {{< link href="/docs/geojson-maps/" icon="launch" >}}Geospatial Vector Map Explorer{{< /link >}}
 - {{< link href="/docs/dashboard-layout/" icon="launch" >}}Modular Dashboard Engine{{< /link >}}
 - {{< link href="/style/" icon="launch" >}}Style Guide Studio{{< /link >}}
+
+---
+
+## 14. Universal IBM Carbon Icon Suite (2,762 Official Glyphs)
+
+The theme bundles the entire official **IBM Carbon Icon Library (`@carbon/icons` v11.87.0)** with **2,762 unique vector icons** (5,600 files across sizes `16/`, `20/`, `24/`, `32/`, and root) hosted 100% locally with zero external network CDN requests.
+
+Icons can be rendered anywhere via the `{{< icon >}}` shortcode, injected as parameters into standard components (`button`, `card`, `tag`, `clickable-tile`, `link`, `notification`), or called programmatically in templates via `partial "components/icon.html"`.
+
+### Specimen Matrix: Multi-Size Vector Glyphs
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+  <div class="cds--tile" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; text-align: center; padding: 1.5rem;">
+    {{< icon name="terminal" size="32" >}}
+    <span class="cds--type-caption" style="font-family: var(--cds-font-mono);">terminal (32px)</span>
+  </div>
+  <div class="cds--tile" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; text-align: center; padding: 1.5rem;">
+    {{< icon name="data--structured" size="32" >}}
+    <span class="cds--type-caption" style="font-family: var(--cds-font-mono);">data--structured</span>
+  </div>
+  <div class="cds--tile" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; text-align: center; padding: 1.5rem;">
+    {{< icon name="network--3" size="32" >}}
+    <span class="cds--type-caption" style="font-family: var(--cds-font-mono);">network--3</span>
+  </div>
+  <div class="cds--tile" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; text-align: center; padding: 1.5rem;">
+    {{< icon name="cloud--download" size="32" >}}
+    <span class="cds--type-caption" style="font-family: var(--cds-font-mono);">cloud--download</span>
+  </div>
+  <div class="cds--tile" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; text-align: center; padding: 1.5rem;">
+    {{< icon name="locked" size="32" >}}
+    <span class="cds--type-caption" style="font-family: var(--cds-font-mono);">locked</span>
+  </div>
+  <div class="cds--tile" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; text-align: center; padding: 1.5rem;">
+    {{< icon name="analytics" size="32" >}}
+    <span class="cds--type-caption" style="font-family: var(--cds-font-mono);">analytics</span>
+  </div>
+</div>
+
+### Button Icon Integration
+
+{{< button-set >}}
+  {{< button kind="primary" icon="terminal" >}}Launch Shell{{< /button >}}
+  {{< button kind="secondary" icon="cloud--download" >}}Fetch Artifacts{{< /button >}}
+  {{< button kind="tertiary" icon="data--structured" >}}Inspect Schema{{< /button >}}
+  {{< button kind="ghost" icon="launch" href="https://carbondesignsystem.com" >}}Design Specs{{< /button >}}
+{{< /button-set >}}
+
+### Status Badges with Operational Glyphs
+
+<div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0;">
+  {{< tag name="Edge Gateway Operational" type="green" icon="checkmark--filled" clickable="false" >}}
+  {{< tag name="Worker Queue Rebalancing" type="yellow" icon="warning--alt--filled" clickable="false" >}}
+  {{< tag name="Rate Limiter Threshold Exceeded" type="red" icon="error--filled" clickable="false" >}}
+  {{< tag name="Vector Map Layer Cached" type="blue" icon="information--filled" clickable="false" >}}
+  {{< tag name="Multi-Tenant Filter" type="purple" filter="true" >}}
+</div>
+

@@ -17,23 +17,15 @@
 {{ if and $href (not $disabled) }}
   <a href="{{ $href }}" class="{{ $btnClass }}" {{ with $ariaLabel }}aria-label="{{ . }}" title="{{ . }}"{{ end }}>
     {{ if not $iconOnly }}{{ .Inner | default (.Get "text") }}{{ end }}
-    {{ if eq $icon "arrow-right" }}
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
-    {{ else if eq $icon "launch" }}
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 14H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h5v1H3v10h10V8h1v5c0 .6-.4 1-1 1z"/><path d="M10 1h5v5h-1V2.7L8.9 7.9l-.7-.7L13.3 2H10V1z"/></svg>
-    {{ else if eq $icon "copy" }}
-      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z"/><path d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4v14z"/></svg>
+    {{ with $icon }}
+      {{ partial "components/icon.html" (dict "name" . "size" 16 "class" "cds--btn__icon") }}
     {{ end }}
   </a>
 {{ else }}
   <button type="button" class="{{ $btnClass }}" {{ if $disabled }}disabled aria-disabled="true"{{ end }} {{ with $ariaLabel }}aria-label="{{ . }}" title="{{ . }}"{{ end }}>
     {{ if not $iconOnly }}{{ .Inner | default (.Get "text") }}{{ end }}
-    {{ if eq $icon "arrow-right" }}
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
-    {{ else if eq $icon "launch" }}
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 14H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h5v1H3v10h10V8h1v5c0 .6-.4 1-1 1z"/><path d="M10 1h5v5h-1V2.7L8.9 7.9l-.7-.7L13.3 2H10V1z"/></svg>
-    {{ else if eq $icon "copy" }}
-      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z"/><path d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4v14z"/></svg>
+    {{ with $icon }}
+      {{ partial "components/icon.html" (dict "name" . "size" 16 "class" "cds--btn__icon") }}
     {{ end }}
   </button>
 {{ end }}

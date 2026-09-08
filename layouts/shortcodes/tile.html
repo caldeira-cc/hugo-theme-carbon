@@ -8,7 +8,7 @@
   <label class="cds--tile cds--tile--selectable{{ if $selected }} cds--tile--is-selected is-selected{{ end }}{{ with $class }} {{ . }}{{ end }}" for="{{ $id }}" onclick="this.classList.toggle('cds--tile--is-selected'); this.classList.toggle('is-selected');">
     <input type="checkbox" id="{{ $id }}" class="cds--tile-input" style="position: absolute; opacity: 0; pointer-events: none;" {{ if $selected }}checked{{ end }}>
     <div class="cds--tile__checkmark">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 10.8L2.7 7.5 1.3 8.9 6 13.6 15 4.6 13.6 3.2z"/></svg>
+      {{ partial "components/icon.html" (dict "name" "checkmark" "size" 16 "class" "cds--tile__checkmark-icon") }}
     </div>
     <div class="cds--tile-content">
       {{ .Inner | markdownify }}

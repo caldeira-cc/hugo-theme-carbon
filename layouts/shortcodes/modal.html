@@ -31,7 +31,7 @@
           <h3 class="cds--modal-header__heading" id="{{ $id }}-heading" style="margin: 0; font-size: 1.25rem;">{{ . }}</h3>
         {{ end }}
         <button type="button" class="cds--modal-close" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; cursor: pointer; color: var(--cds-text-secondary);" data-modal-close aria-label="Close modal">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M12 4.7L11.3 4 8 7.3 4.7 4 4 4.7 7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"/></svg>
+          {{ partial "components/icon.html" (dict "name" "close" "size" 16 "class" "cds--modal-close__icon") }}
         </button>
       </div>
 

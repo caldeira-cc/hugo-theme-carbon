@@ -14,20 +14,19 @@
 {{ $actionHref := .Get "actionHref" | default "" }}
 {{ $hideClose := .Get "hideClose" | default "false" }}
 {{ $class := .Get "class" | default "" }}
+{{ $icon := .Get "icon" }}
+{{ $iconName := $icon }}
+{{ if not $iconName }}
+  {{ if eq $kind "success" }}{{ $iconName = "checkmark--filled" }}
+  {{ else if eq $kind "warning" }}{{ $iconName = "warning--alt--filled" }}
+  {{ else if eq $kind "error" }}{{ $iconName = "error--filled" }}
+  {{ else }}{{ $iconName = "information--filled" }}
+  {{ end }}
+{{ end }}
 
 <div class="cds--inline-notification cds--inline-notification--{{ $kind }} {{ with $class }}{{ . }}{{ end }}" role="status" aria-live="polite">
   <div class="cds--inline-notification__details">
-    <svg class="cds--inline-notification__icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-      {{ if eq $kind "success" }}
-        <path d="M10 1c-4.9 0-9 4.1-9 9s4.1 9 9 9 9-4.1 9-9-4.1-9-9-9zm3.5 5.7l-4.7 6.3c-.2.2-.4.3-.7.3s-.5-.1-.7-.3l-2.4-2.4c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l1.7 1.7 4-5.3c.4-.4 1-.4 1.4 0s.4 1 0 1.4z"/>
-      {{ else if eq $kind "warning" }}
-        <path d="M10 1L1 18h18L10 1zm0 3.5L16.5 16h-13L10 4.5zM9 8h2v4H9V8zm0 5h2v2H9v-2z"/>
-      {{ else if eq $kind "error" }}
-        <path d="M10 1c-4.9 0-9 4.1-9 9s4.1 9 9 9 9-4.1 9-9-4.1-9-9-9zm3.7 11.3l-1.4 1.4L10 11.4l-2.3 2.3-1.4-1.4 2.3-2.3-2.3-2.3 1.4-1.4 2.3 2.3 2.3-2.3 1.4 1.4-2.3 2.3 2.3 2.3z"/>
-      {{ else }}
-        <path d="M10 1c-4.9 0-9 4.1-9 9s4.1 9 9 9 9-4.1 9-9-4.1-9-9-9zm1 13H9V9h2v5zm0-7H9V5h2v2z"/>
-      {{ end }}
-    </svg>
+    {{ partial "components/icon.html" (dict "name" $iconName "size" 20 "class" "cds--inline-notification__icon") }}
     <div class="cds--inline-notification__text-wrapper">
       <p class="cds--inline-notification__title">{{ $title }}</p>
       {{ with $subtitle }}
@@ -47,9 +46,7 @@
 
   {{ if ne $hideClose "true" }}
     <button class="cds--inline-notification__close-button" type="button" aria-label="Close notification" onclick="this.closest('.cds--inline-notification').remove();">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M12 4.7L11.3 4 8 7.3 4.7 4 4 4.7 7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"/>
-      </svg>
+      {{ partial "components/icon.html" (dict "name" "close" "size" 16 "class" "cds--inline-notification__close-icon") }}
     </button>
   {{ end }}
 </div>

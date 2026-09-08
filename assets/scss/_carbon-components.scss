@@ -843,6 +843,21 @@
   resize: vertical;
 }
 
+.cds--select-input__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cds--select__arrow {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  fill: var(--cds-icon-primary, var(--cds-text-secondary));
+}
+
 .cds--checkbox-wrapper,
 .cds--radio-button-wrapper {
   display: flex;

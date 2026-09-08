@@ -48,10 +48,12 @@ REQUIRED_FILES = [
     "static/fonts/IBMPlexMono-Regular.woff2",
     "static/fonts/IBMPlexMath-Regular.woff2",
     "static/fonts/IBMPlexSerif-Regular.woff2",
-    # Carbon Design System Component Catalog
+    # Carbon Design System Component & Icon Catalogs
     "static/lib/carbon-components/carbon-catalog.json",
+    "data/carbon-icons.json",
     # License files
     "static/licenses/APACHE-2.0.txt",
+    "static/licenses/APACHE-2.0-CARBON-ICONS.txt",
     "static/licenses/MIT.txt",
     "static/licenses/BSD-2-CLAUSE.txt",
     "static/licenses/BSD-3-CLAUSE.txt",
@@ -82,7 +84,7 @@ def main():
     failed = False
 
     # 1. Check all required local distribution files
-    print("\n[1/3] Checking required local library and license files...")
+    print("\n[1/4] Checking required local library and license files...")
     for fpath in REQUIRED_FILES:
         resolved = resolve_path(fpath)
         if not os.path.exists(resolved):
@@ -101,7 +103,7 @@ def main():
     katex_fonts_dir = resolve_path("static/lib/katex/fonts")
     if os.path.exists(katex_fonts_dir):
         kfonts = [f for f in os.listdir(katex_fonts_dir) if f.endswith('.woff2')]
-        print(f"\n[2/3] KaTeX Font Assets: Found {len(kfonts)} / 20 WOFF2 font files.")
+        print(f"\n[2/4] KaTeX Font Assets: Found {len(kfonts)} / 20 WOFF2 font files.")
         if len(kfonts) < 20:
             print("  ❌ Missing some KaTeX font files!")
             failed = True
@@ -115,14 +117,28 @@ def main():
     plex_fonts_dir = resolve_path("static/fonts")
     if os.path.exists(plex_fonts_dir):
         pfonts = [f for f in os.listdir(plex_fonts_dir) if f.endswith('.woff2')]
-        print(f"\n[3/3] IBM Plex Fonts: Found {len(pfonts)} / 29 WOFF2 font files.")
+        print(f"\n[3/4] IBM Plex Fonts: Found {len(pfonts)} / 29 WOFF2 font files.")
         if len(pfonts) < 29:
             print("  ❌ Missing some IBM Plex font files!")
             failed = True
         else:
             print("  ✓ All 29 IBM Plex WOFF2 font files present.")
 
-    # 4. Verify no CDN script references remain in assets/js
+    # 4. Check total Carbon Icon SVG count
+    icons_dir = resolve_path("assets/icons")
+    if os.path.exists(icons_dir):
+        svg_count = sum(len([f for f in files if f.endswith('.svg')]) for _, _, files in os.walk(icons_dir))
+        print(f"\n[4/4] Carbon Design System Icons: Found {svg_count} SVG icons in {icons_dir}.")
+        if svg_count < 2000:
+            print("  ❌ Missing Carbon icon suite!")
+            failed = True
+        else:
+            print(f"  ✓ {svg_count} official Carbon SVG icons present.")
+    else:
+        print(f"  ❌ Carbon icons directory missing: {icons_dir}!")
+        failed = True
+
+    # 5. Verify no CDN script references remain in assets/js
     print("\n[Audit] Scanning assets/js for third-party script CDN URLs...")
     cdn_patterns = [
         re.compile(r'https?://cdnjs\.cloudflare\.com/ajax/libs/'),

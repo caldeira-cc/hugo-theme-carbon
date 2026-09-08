@@ -38,8 +38,6 @@
     {{ end }}
   </div>
   <button type="button" class="cds--tile__chevron" aria-label="Expand tile" style="background: transparent; border: none; cursor: pointer; color: var(--cds-text-secondary); padding: 0;">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-      <path d="M8 11L3 6l1.4-1.4L8 8.2l3.6-3.6L13 6z"/>
-    </svg>
+    {{ partial "components/icon.html" (dict "name" "chevron--down" "size" 16 "class" "cds--tile__chevron-icon") }}
   </button>
 </div>

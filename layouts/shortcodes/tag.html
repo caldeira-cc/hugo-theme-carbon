@@ -21,6 +21,7 @@
 {{ if or (eq (.Get "filter") true) (eq (.Get "filter") "true") }}
   {{ $filter = true }}
 {{ end }}
+{{ $icon := .Get "icon" }}
 
 {{ $tagClasses := printf "cds--tag cds--tag--%s cds--tag--%s" $type $size }}
 {{ if $filter }}
@@ -29,23 +30,26 @@
 
 {{ if $href }}
   <a href="{{ $href }}" class="{{ $tagClasses }} cds--tag--clickable" title="Tag: {{ $name }}">
+    {{ with $icon }}{{ partial "components/icon.html" (dict "name" . "size" 12 "class" "cds--tag__custom-icon") }}{{ end }}
     {{ if $showHash }}#{{ end }}{{ $name }}
     {{ if $filter }}
       <span class="cds--tag__close-icon" aria-label="Clear tag" onclick="event.preventDefault(); this.closest('.cds--tag').remove();">
-        <svg width="12" height="12" viewBox="0 0 32 32" fill="currentColor"><path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z"/></svg>
+        {{ partial "components/icon.html" (dict "name" "close" "size" 12 "class" "cds--tag__close-icon-svg") }}
       </span>
     {{ end }}
   </a>
 {{ else if and $clickable (not $filter) }}
   <a href="{{ partial "components/tag-url.html" $name }}" class="{{ $tagClasses }} cds--tag--clickable" title="View all pages tagged with #{{ $name }}">
+    {{ with $icon }}{{ partial "components/icon.html" (dict "name" . "size" 12 "class" "cds--tag__custom-icon") }}{{ end }}
     {{ if $showHash }}#{{ end }}{{ $name }}
   </a>
 {{ else }}
   <span class="{{ $tagClasses }}">
+    {{ with $icon }}{{ partial "components/icon.html" (dict "name" . "size" 12 "class" "cds--tag__custom-icon") }}{{ end }}
     {{ if $showHash }}#{{ end }}{{ $name }}
     {{ if $filter }}
       <span class="cds--tag__close-icon" aria-label="Clear tag" onclick="this.closest('.cds--tag').remove();">
-        <svg width="12" height="12" viewBox="0 0 32 32" fill="currentColor"><path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z"/></svg>
+        {{ partial "components/icon.html" (dict "name" "close" "size" 12 "class" "cds--tag__close-icon-svg") }}
       </span>
     {{ end }}
   </span>

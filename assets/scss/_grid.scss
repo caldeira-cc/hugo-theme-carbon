@@ -148,6 +148,7 @@ $breakpoint-max: 90rem;  // 1440px
     }
     .carbon-layout__main {
       flex: 1 1 100%;
+      min-width: 0;
       max-width: 100%;
       display: flex;
       flex-direction: column;
@@ -190,6 +191,7 @@ $breakpoint-max: 90rem;  // 1440px
     }
     .carbon-layout__main {
       flex: 1 1 100%;
+      min-width: 0;
       max-width: 100%;
       display: flex;
       flex-direction: column;
@@ -213,6 +215,7 @@ $breakpoint-max: 90rem;  // 1440px
   &--single-right {
     .carbon-layout__main {
       flex: 1 1 100%;
+      min-width: 0;
       max-width: 100%;
       display: flex;
       flex-direction: column;
@@ -246,6 +249,7 @@ $breakpoint-max: 90rem;  // 1440px
   &--full {
     .carbon-layout__main {
       flex: 1 1 100%;
+      min-width: 0;
       max-width: 100%;
       margin: 0 auto;
       padding: 0 1rem;

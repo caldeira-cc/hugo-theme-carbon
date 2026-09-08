@@ -1,0 +1,27 @@
+{{/*
+  IBM Carbon Design System v11 — Icon Shortcode
+  Usage:
+  {{< icon name="arrow--right" size="16" class="..." >}}
+  {{< icon "launch" >}}
+*/}}
+{{ $name := "" }}
+{{ $size := 16 }}
+{{ $class := "" }}
+{{ $ariaLabel := "" }}
+
+{{ if .IsNamedParams }}
+  {{ $name = .Get "name" | default (.Get "icon" | default (.Get "id")) }}
+  {{ $size = .Get "size" | default 16 }}
+  {{ $class = .Get "class" | default "" }}
+  {{ $ariaLabel = .Get "label" | default (.Get "aria-label" | default "") }}
+{{ else if gt (len .Params) 0 }}
+  {{ $name = .Get 0 }}
+  {{ if gt (len .Params) 1 }}
+    {{ $size = .Get 1 }}
+  {{ end }}
+  {{ if gt (len .Params) 2 }}
+    {{ $class = .Get 2 }}
+  {{ end }}
+{{ end }}
+
+{{ partial "components/icon.html" (dict "name" $name "size" $size "class" $class "ariaLabel" $ariaLabel) }}

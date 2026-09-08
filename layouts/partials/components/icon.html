@@ -1,0 +1,88 @@
+{{/*
+  IBM Carbon Design System v11 — Universal Icon Partial
+  Renders any official Carbon SVG icon from assets/icons/.
+
+  Usage:
+  {{ partial "components/icon.html" (dict "name" "arrow--right" "size" 16 "class" "cds--btn__icon") }}
+  {{ partial "components/icon.html" "launch" }}
+*/}}
+
+{{ $name := "" }}
+{{ $size := 16 }}
+{{ $class := "" }}
+{{ $ariaLabel := "" }}
+{{ $ariaHidden := true }}
+
+{{ if reflect.IsMap . }}
+  {{ $name = .name | default (.Name | default "") }}
+  {{ $size = .size | default (.Size | default 16) }}
+  {{ $class = .class | default (.Class | default "") }}
+  {{ $ariaLabel = .ariaLabel | default (.AriaLabel | default "") }}
+  {{ if isset . "ariaHidden" }}{{ $ariaHidden = .ariaHidden }}{{ end }}
+{{ else }}
+  {{ $name = printf "%v" . }}
+{{ end }}
+
+{{ $name = strings.TrimSuffix ".svg" $name }}
+
+{{ if $name }}
+  {{/* Map friendly aliases */}}
+  {{ if eq $name "info" }}{{ $name = "information" }}
+  {{ else if eq $name "check" }}{{ $name = "checkmark" }}
+  {{ else if eq $name "close-filled" }}{{ $name = "close--filled" }}
+  {{ end }}
+
+  {{/* Try size-specific directory first (e.g. icons/16/name.svg), then canonical base (icons/name.svg) */}}
+  {{ $iconPath := printf "icons/%v/%s.svg" $size $name }}
+  {{ $iconRes := resources.Get $iconPath }}
+  {{ if not $iconRes }}
+    {{ $iconPath = printf "icons/%s.svg" $name }}
+    {{ $iconRes = resources.Get $iconPath }}
+  {{ end }}
+
+  {{/* Dash normalization fallback: single dash to double dash */}}
+  {{ if not $iconRes }}
+    {{ $altName := replaceRE "([a-z0-9])-([a-z0-9])" "$1--$2" $name }}
+    {{ $iconPath = printf "icons/%v/%s.svg" $size $altName }}
+    {{ $iconRes = resources.Get $iconPath }}
+    {{ if not $iconRes }}
+      {{ $iconPath = printf "icons/%s.svg" $altName }}
+      {{ $iconRes = resources.Get $iconPath }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Dash normalization fallback: double dash to single dash */}}
+  {{ if not $iconRes }}
+    {{ $altName := replaceRE "--" "-" $name }}
+    {{ $iconPath = printf "icons/%v/%s.svg" $size $altName }}
+    {{ $iconRes = resources.Get $iconPath }}
+    {{ if not $iconRes }}
+      {{ $iconPath = printf "icons/%s.svg" $altName }}
+      {{ $iconRes = resources.Get $iconPath }}
+    {{ end }}
+  {{ end }}
+
+  {{ if $iconRes }}
+    {{ $rawSvg := $iconRes.Content }}
+    {{/* Inject or replace attributes on <svg> */}}
+    {{ $svgAttrs := printf `width="%v" height="%v"` $size $size }}
+    {{ if $class }}
+      {{ $svgAttrs = printf `%s class="%s"` $svgAttrs $class }}
+    {{ end }}
+    {{ if $ariaLabel }}
+      {{ $svgAttrs = printf `%s role="img" aria-label="%s"` $svgAttrs ($ariaLabel | htmlEscape) }}
+    {{ else if $ariaHidden }}
+      {{ $svgAttrs = printf `%s aria-hidden="true"` $svgAttrs }}
+    {{ end }}
+
+    {{/* Replace <svg with <svg attrs */}}
+    {{ $renderedSvg := replaceRE `^<svg\s*` (printf "<svg %s " $svgAttrs) $rawSvg }}
+    {{ $renderedSvg | safeHTML }}
+  {{ else }}
+    {{/* Fallback SVG when icon is missing */}}
+    <svg width="{{ $size }}" height="{{ $size }}" viewBox="0 0 16 16" fill="currentColor" {{ if $class }}class="{{ $class }}"{{ end }} aria-hidden="true" data-icon-missing="{{ $name }}">
+      <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1" fill="none" opacity="0.3"/>
+      <line x1="4" y1="4" x2="12" y2="12" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+    </svg>
+  {{ end }}
+{{ end }}
