@@ -1,23 +1,1268 @@
 {
-  "title": "IBM Carbon Design System v11 Component Catalog",
+  "title": "IBM Carbon Design System v11 Component Catalog & Hugo Mapping Suite",
+  "version": "1.115.0",
   "source": "https://react.carbondesignsystem.com / https://github.com/carbon-design-system/carbon",
   "license": "Apache-2.0",
   "packages": {
     "@carbon/react": {
       "version": "1.115.0",
       "description": "React components for the Carbon Design System",
-      "license": "Apache-2.0",
-      "main": "lib/index.js",
-      "module": "es/index.js",
-      "types": "lib/index.d.ts"
+      "license": "Apache-2.0"
     },
     "@carbon/styles": {
       "version": "1.114.0",
-      "description": "Styles for the Carbon Design System",
-      "license": "Apache-2.0",
-      "main": null,
-      "module": null,
-      "types": null
+      "description": "Tokens and styles for the Carbon Design System",
+      "license": "Apache-2.0"
+    },
+    "@carbon/colors": {
+      "version": "11.21.0",
+      "description": "Official color palette scales across 12 families",
+      "license": "Apache-2.0"
+    },
+    "@carbon/charts": {
+      "version": "1.16.0",
+      "description": "Data visualization palettes and categorical tokens",
+      "license": "Apache-2.0"
     }
-  }
+  },
+  "tokens": {
+    "colorFamilies": 12,
+    "shadesPerFamily": 10,
+    "totalPaletteColors": 120,
+    "chartsCategoricalColors": 14,
+    "standardThemes": [
+      "white",
+      "g10",
+      "g90",
+      "g100"
+    ],
+    "dualStyles": [
+      "light",
+      "dark"
+    ],
+    "tagColorFamilies": [
+      "red",
+      "magenta",
+      "purple",
+      "blue",
+      "cyan",
+      "teal",
+      "green",
+      "gray",
+      "cool-gray",
+      "warm-gray",
+      "high-contrast",
+      "outline"
+    ]
+  },
+  "components": [
+    {
+      "name": "Accordion",
+      "reactComponents": [
+        "Accordion",
+        "AccordionItem",
+        "AccordionSkeleton"
+      ],
+      "category": "Disclosure",
+      "hugoShortcodes": [
+        "accordion",
+        "accordion-item"
+      ],
+      "bemClasses": [
+        ".cds--accordion",
+        ".cds--accordion__item",
+        ".cds--accordion__heading",
+        ".cds--accordion__title",
+        ".cds--accordion__content"
+      ],
+      "props": [
+        "align",
+        "open",
+        "title",
+        "disabled"
+      ],
+      "accessibility": {
+        "role": "region",
+        "ariaAttributes": [
+          "aria-expanded",
+          "aria-controls"
+        ]
+      }
+    },
+    {
+      "name": "Breadcrumb",
+      "reactComponents": [
+        "Breadcrumb",
+        "BreadcrumbItem",
+        "BreadcrumbSkeleton"
+      ],
+      "category": "Navigation",
+      "hugoShortcodes": [
+        "breadcrumb"
+      ],
+      "bemClasses": [
+        ".cds--breadcrumb",
+        ".cds--breadcrumb-item",
+        ".cds--link"
+      ],
+      "props": [
+        "items",
+        "noTrailingSlash"
+      ],
+      "accessibility": {
+        "role": "navigation",
+        "ariaAttributes": [
+          "aria-label",
+          "aria-current"
+        ]
+      }
+    },
+    {
+      "name": "Button",
+      "reactComponents": [
+        "Button",
+        "ButtonSet",
+        "ButtonSkeleton",
+        "IconButton"
+      ],
+      "category": "Buttons",
+      "hugoShortcodes": [
+        "button",
+        "button-set"
+      ],
+      "bemClasses": [
+        ".cds--btn",
+        ".cds--btn--primary",
+        ".cds--btn--secondary",
+        ".cds--btn--tertiary",
+        ".cds--btn--ghost",
+        ".cds--btn--danger",
+        ".cds--btn--danger--tertiary",
+        ".cds--btn--danger--ghost",
+        ".cds--btn--sm",
+        ".cds--btn--md",
+        ".cds--btn--lg",
+        ".cds--btn--xl",
+        ".cds--btn--2xl",
+        ".cds--btn--icon-only",
+        ".cds--btn-set",
+        ".cds--btn-set--stacked"
+      ],
+      "props": [
+        "kind",
+        "size",
+        "href",
+        "icon",
+        "icon_only",
+        "disabled",
+        "stacked"
+      ],
+      "accessibility": {
+        "role": "button",
+        "ariaAttributes": [
+          "aria-disabled",
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "name": "Card",
+      "reactComponents": [
+        "Card",
+        "CardHeader",
+        "CardBody",
+        "CardFooter"
+      ],
+      "category": "Surfaces",
+      "hugoShortcodes": [
+        "card",
+        "dashboard-card"
+      ],
+      "bemClasses": [
+        ".cds--card",
+        ".cds--card__header",
+        ".cds--card__title",
+        ".cds--card__body",
+        ".cds--card__footer"
+      ],
+      "props": [
+        "title",
+        "eyebrow",
+        "tag",
+        "href",
+        "actionText"
+      ],
+      "accessibility": {
+        "role": "article"
+      }
+    },
+    {
+      "name": "Checkbox",
+      "reactComponents": [
+        "Checkbox",
+        "CheckboxGroup",
+        "CheckboxSkeleton"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "checkbox",
+        "form-input"
+      ],
+      "bemClasses": [
+        ".cds--checkbox-wrapper",
+        ".cds--checkbox",
+        ".cds--checkbox-label"
+      ],
+      "props": [
+        "id",
+        "label",
+        "checked",
+        "disabled",
+        "indeterminate"
+      ],
+      "accessibility": {
+        "role": "checkbox",
+        "ariaAttributes": [
+          "aria-checked"
+        ]
+      }
+    },
+    {
+      "name": "CodeSnippet",
+      "reactComponents": [
+        "CodeSnippet",
+        "CodeSnippetSkeleton"
+      ],
+      "category": "Code",
+      "hugoShortcodes": [
+        "code-snippet",
+        "code-file"
+      ],
+      "bemClasses": [
+        ".cds--snippet",
+        ".cds--snippet--single",
+        ".cds--snippet--multi",
+        ".cds--snippet--inline",
+        ".cds--snippet-button",
+        ".cds--copy-btn"
+      ],
+      "props": [
+        "type",
+        "text",
+        "copyText",
+        "expandable",
+        "hideCopyButton"
+      ],
+      "accessibility": {
+        "role": "region",
+        "ariaAttributes": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "name": "ContainedList",
+      "reactComponents": [
+        "ContainedList",
+        "ContainedListItem"
+      ],
+      "category": "Lists",
+      "hugoShortcodes": [
+        "contained-list",
+        "contained-list-item"
+      ],
+      "bemClasses": [
+        ".cds--contained-list",
+        ".cds--contained-list__header",
+        ".cds--contained-list__row"
+      ],
+      "props": [
+        "title",
+        "size",
+        "disclosed",
+        "action"
+      ],
+      "accessibility": {
+        "role": "list"
+      }
+    },
+    {
+      "name": "ContentSwitcher",
+      "reactComponents": [
+        "ContentSwitcher",
+        "Switch"
+      ],
+      "category": "Controls",
+      "hugoShortcodes": [
+        "content-switcher"
+      ],
+      "bemClasses": [
+        ".cds--content-switcher",
+        ".cds--content-switcher__btn",
+        ".cds--content-switcher--selected"
+      ],
+      "props": [
+        "options",
+        "target_id",
+        "size"
+      ],
+      "accessibility": {
+        "role": "tablist",
+        "ariaAttributes": [
+          "aria-selected"
+        ]
+      }
+    },
+    {
+      "name": "CopyButton",
+      "reactComponents": [
+        "CopyButton"
+      ],
+      "category": "Buttons",
+      "hugoShortcodes": [
+        "copy-button"
+      ],
+      "bemClasses": [
+        ".cds--copy-btn",
+        ".cds--copy-btn__feedback"
+      ],
+      "props": [
+        "text",
+        "feedback",
+        "aria_label"
+      ],
+      "accessibility": {
+        "role": "button",
+        "ariaAttributes": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "name": "DataTable",
+      "reactComponents": [
+        "DataTable",
+        "Table",
+        "TableContainer",
+        "TableToolbar",
+        "TableToolbarSearch",
+        "TableBatchActions",
+        "TableHeader",
+        "TableRow",
+        "TableCell",
+        "DataTableSkeleton"
+      ],
+      "category": "Data Display",
+      "hugoShortcodes": [
+        "data-table",
+        "csvw-table",
+        "xml-table"
+      ],
+      "bemClasses": [
+        ".cds--data-table-container",
+        ".cds--data-table",
+        ".cds--data-table--zebra",
+        ".cds--data-table--compact",
+        ".cds--data-table--short",
+        ".cds--data-table--tall",
+        ".cds--table-toolbar"
+      ],
+      "props": [
+        "title",
+        "description",
+        "sortable",
+        "searchable",
+        "zebra",
+        "size"
+      ],
+      "accessibility": {
+        "role": "table",
+        "ariaAttributes": [
+          "aria-sort",
+          "aria-describedby"
+        ]
+      }
+    },
+    {
+      "name": "DatePicker",
+      "reactComponents": [
+        "DatePicker",
+        "DatePickerInput",
+        "DatePickerSkeleton"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "date-picker"
+      ],
+      "bemClasses": [
+        ".cds--date-picker",
+        ".cds--date-picker-input__wrapper",
+        ".cds--date-picker__input"
+      ],
+      "props": [
+        "datePickerType",
+        "minDate",
+        "maxDate",
+        "dateFormat"
+      ],
+      "accessibility": {
+        "role": "combobox"
+      }
+    },
+    {
+      "name": "FileUploader",
+      "reactComponents": [
+        "FileUploader",
+        "FileUploaderButton",
+        "FileUploaderDropContainer",
+        "FileUploaderItem",
+        "FileUploaderSkeleton"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "file-uploader"
+      ],
+      "bemClasses": [
+        ".cds--file",
+        ".cds--file-browse-btn",
+        ".cds--file__drop-container",
+        ".cds--file-container"
+      ],
+      "props": [
+        "labelTitle",
+        "labelDescription",
+        "buttonLabel",
+        "multiple",
+        "accept"
+      ],
+      "accessibility": {
+        "role": "button"
+      }
+    },
+    {
+      "name": "Form",
+      "reactComponents": [
+        "Form",
+        "FormGroup",
+        "FormItem",
+        "FormLabel"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "form-input"
+      ],
+      "bemClasses": [
+        ".cds--form",
+        ".cds--form-item",
+        ".cds--label",
+        ".cds--text-input",
+        ".cds--text-area"
+      ],
+      "props": [
+        "type",
+        "label",
+        "placeholder",
+        "helper",
+        "invalid",
+        "invalidText"
+      ],
+      "accessibility": {
+        "role": "form"
+      }
+    },
+    {
+      "name": "InlineLoading",
+      "reactComponents": [
+        "InlineLoading"
+      ],
+      "category": "Loading",
+      "hugoShortcodes": [
+        "loading"
+      ],
+      "bemClasses": [
+        ".cds--inline-loading",
+        ".cds--inline-loading__animation",
+        ".cds--inline-loading__text"
+      ],
+      "props": [
+        "status",
+        "description"
+      ],
+      "accessibility": {
+        "role": "status",
+        "ariaAttributes": [
+          "aria-live"
+        ]
+      }
+    },
+    {
+      "name": "Link",
+      "reactComponents": [
+        "Link"
+      ],
+      "category": "Navigation",
+      "hugoShortcodes": [
+        "link"
+      ],
+      "bemClasses": [
+        ".cds--link",
+        ".cds--link--inline",
+        ".cds--link--visited"
+      ],
+      "props": [
+        "href",
+        "inline",
+        "visited"
+      ],
+      "accessibility": {
+        "role": "link"
+      }
+    },
+    {
+      "name": "Loading",
+      "reactComponents": [
+        "Loading"
+      ],
+      "category": "Loading",
+      "hugoShortcodes": [
+        "loading"
+      ],
+      "bemClasses": [
+        ".cds--loading",
+        ".cds--loading--small",
+        ".cds--loading-overlay"
+      ],
+      "props": [
+        "active",
+        "small",
+        "withOverlay",
+        "description"
+      ],
+      "accessibility": {
+        "role": "status",
+        "ariaAttributes": [
+          "aria-live",
+          "aria-busy"
+        ]
+      }
+    },
+    {
+      "name": "Modal",
+      "reactComponents": [
+        "Modal",
+        "ComposedModal",
+        "ModalHeader",
+        "ModalBody",
+        "ModalFooter"
+      ],
+      "category": "Overlays",
+      "hugoShortcodes": [
+        "modal",
+        "dashboard-modal"
+      ],
+      "bemClasses": [
+        ".cds--modal",
+        ".cds--modal-container",
+        ".cds--modal-header",
+        ".cds--modal-content",
+        ".cds--modal-footer"
+      ],
+      "props": [
+        "id",
+        "title",
+        "label",
+        "primaryButtonText",
+        "secondaryButtonText",
+        "open",
+        "danger"
+      ],
+      "accessibility": {
+        "role": "dialog",
+        "ariaAttributes": [
+          "aria-modal",
+          "aria-labelledby"
+        ]
+      }
+    },
+    {
+      "name": "Notification",
+      "reactComponents": [
+        "InlineNotification",
+        "ToastNotification",
+        "ActionableNotification"
+      ],
+      "category": "Feedback",
+      "hugoShortcodes": [
+        "notification",
+        "toast",
+        "callout"
+      ],
+      "bemClasses": [
+        ".cds--inline-notification",
+        ".cds--toast-notification",
+        ".cds--actionable-notification",
+        ".cds--inline-notification--error",
+        ".cds--inline-notification--success",
+        ".cds--inline-notification--warning",
+        ".cds--inline-notification--info"
+      ],
+      "props": [
+        "kind",
+        "title",
+        "subtitle",
+        "caption",
+        "hideCloseButton",
+        "lowContrast"
+      ],
+      "accessibility": {
+        "role": "status",
+        "ariaAttributes": [
+          "aria-live"
+        ]
+      }
+    },
+    {
+      "name": "NumberInput",
+      "reactComponents": [
+        "NumberInput",
+        "NumberInputSkeleton"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "number-input"
+      ],
+      "bemClasses": [
+        ".cds--number",
+        ".cds--number__controls"
+      ],
+      "props": [
+        "id",
+        "label",
+        "min",
+        "max",
+        "step",
+        "value"
+      ],
+      "accessibility": {
+        "role": "spinbutton"
+      }
+    },
+    {
+      "name": "OverflowMenu",
+      "reactComponents": [
+        "OverflowMenu",
+        "OverflowMenuItem"
+      ],
+      "category": "Navigation",
+      "hugoShortcodes": [
+        "overflow-menu"
+      ],
+      "bemClasses": [
+        ".cds--overflow-menu",
+        ".cds--overflow-menu__trigger",
+        ".cds--overflow-menu-options"
+      ],
+      "props": [
+        "items",
+        "align",
+        "flipped",
+        "aria_label"
+      ],
+      "accessibility": {
+        "role": "menu",
+        "ariaAttributes": [
+          "aria-haspopup",
+          "aria-expanded"
+        ]
+      }
+    },
+    {
+      "name": "Pagination",
+      "reactComponents": [
+        "Pagination",
+        "PaginationNav",
+        "PaginationSkeleton"
+      ],
+      "category": "Navigation",
+      "hugoShortcodes": [
+        "pagination",
+        "pagination-nav"
+      ],
+      "bemClasses": [
+        ".cds--pagination",
+        ".cds--pagination-nav",
+        ".cds--pagination__control"
+      ],
+      "props": [
+        "total",
+        "page",
+        "pageSize",
+        "pageSizes"
+      ],
+      "accessibility": {
+        "role": "navigation",
+        "ariaAttributes": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "name": "Popover",
+      "reactComponents": [
+        "Popover",
+        "PopoverContent"
+      ],
+      "category": "Overlays",
+      "hugoShortcodes": [
+        "popover"
+      ],
+      "bemClasses": [
+        ".cds--popover",
+        ".cds--popover-content"
+      ],
+      "props": [
+        "align",
+        "open",
+        "dropShadow",
+        "highContrast"
+      ],
+      "accessibility": {
+        "role": "dialog"
+      }
+    },
+    {
+      "name": "ProgressBar",
+      "reactComponents": [
+        "ProgressBar",
+        "ProgressBarSkeleton"
+      ],
+      "category": "Feedback",
+      "hugoShortcodes": [
+        "progress-bar"
+      ],
+      "bemClasses": [
+        ".cds--progress-bar",
+        ".cds--progress-bar__track",
+        ".cds--progress-bar__bar"
+      ],
+      "props": [
+        "value",
+        "max",
+        "label",
+        "helper",
+        "status",
+        "size"
+      ],
+      "accessibility": {
+        "role": "progressbar",
+        "ariaAttributes": [
+          "aria-valuenow",
+          "aria-valuemin",
+          "aria-valuemax"
+        ]
+      }
+    },
+    {
+      "name": "ProgressIndicator",
+      "reactComponents": [
+        "ProgressIndicator",
+        "ProgressStep",
+        "ProgressIndicatorSkeleton"
+      ],
+      "category": "Feedback",
+      "hugoShortcodes": [
+        "progress-indicator"
+      ],
+      "bemClasses": [
+        ".cds--progress",
+        ".cds--progress-step",
+        ".cds--progress-step--current",
+        ".cds--progress-step--complete",
+        ".cds--progress-step--incomplete"
+      ],
+      "props": [
+        "steps",
+        "current",
+        "vertical"
+      ],
+      "accessibility": {
+        "role": "list"
+      }
+    },
+    {
+      "name": "RadioButton",
+      "reactComponents": [
+        "RadioButton",
+        "RadioButtonGroup",
+        "RadioButtonSkeleton"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "radio-button",
+        "radio-group"
+      ],
+      "bemClasses": [
+        ".cds--radio-button-wrapper",
+        ".cds--radio-button-group",
+        ".cds--radio-button"
+      ],
+      "props": [
+        "name",
+        "value",
+        "labelText",
+        "checked",
+        "disabled"
+      ],
+      "accessibility": {
+        "role": "radiogroup"
+      }
+    },
+    {
+      "name": "Search",
+      "reactComponents": [
+        "Search",
+        "SearchSkeleton",
+        "ExpandableSearch"
+      ],
+      "category": "Search",
+      "hugoShortcodes": [
+        "search"
+      ],
+      "bemClasses": [
+        ".cds--search",
+        ".cds--search-input",
+        ".cds--search-magnifier",
+        ".cds--search-close"
+      ],
+      "props": [
+        "placeholder",
+        "size",
+        "labelText",
+        "expandable"
+      ],
+      "accessibility": {
+        "role": "searchbox"
+      }
+    },
+    {
+      "name": "Select",
+      "reactComponents": [
+        "Select",
+        "SelectItem",
+        "SelectItemGroup",
+        "SelectSkeleton"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "select"
+      ],
+      "bemClasses": [
+        ".cds--select",
+        ".cds--select-input",
+        ".cds--select__arrow"
+      ],
+      "props": [
+        "id",
+        "label",
+        "helper",
+        "inline",
+        "invalid",
+        "options"
+      ],
+      "accessibility": {
+        "role": "combobox"
+      }
+    },
+    {
+      "name": "Skeleton",
+      "reactComponents": [
+        "SkeletonText",
+        "SkeletonPlaceholder",
+        "SkeletonIcon"
+      ],
+      "category": "Loading",
+      "hugoShortcodes": [
+        "skeleton"
+      ],
+      "bemClasses": [
+        ".cds--skeleton__text",
+        ".cds--skeleton__text--heading",
+        ".cds--skeleton__placeholder",
+        ".cds--skeleton__icon",
+        ".cds--btn--skeleton",
+        ".cds--data-table--skeleton",
+        ".cds--accordion--skeleton"
+      ],
+      "props": [
+        "type",
+        "width",
+        "count"
+      ],
+      "accessibility": {
+        "role": "status",
+        "ariaAttributes": [
+          "aria-hidden",
+          "aria-busy"
+        ]
+      }
+    },
+    {
+      "name": "Slider",
+      "reactComponents": [
+        "Slider",
+        "SliderSkeleton"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "slider"
+      ],
+      "bemClasses": [
+        ".cds--slider",
+        ".cds--slider__track",
+        ".cds--slider__thumb"
+      ],
+      "props": [
+        "min",
+        "max",
+        "step",
+        "value",
+        "label"
+      ],
+      "accessibility": {
+        "role": "slider",
+        "ariaAttributes": [
+          "aria-valuenow"
+        ]
+      }
+    },
+    {
+      "name": "StructuredList",
+      "reactComponents": [
+        "StructuredListWrapper",
+        "StructuredListHead",
+        "StructuredListRow",
+        "StructuredListCell",
+        "StructuredListBody",
+        "StructuredListSkeleton"
+      ],
+      "category": "Data Display",
+      "hugoShortcodes": [
+        "structured-list"
+      ],
+      "bemClasses": [
+        ".cds--structured-list",
+        ".cds--structured-list-thead",
+        ".cds--structured-list-tbody",
+        ".cds--structured-list-row",
+        ".cds--structured-list-td"
+      ],
+      "props": [
+        "headers",
+        "selectable"
+      ],
+      "accessibility": {
+        "role": "table"
+      }
+    },
+    {
+      "name": "Tabs",
+      "reactComponents": [
+        "Tabs",
+        "TabList",
+        "Tab",
+        "TabPanels",
+        "TabPanel",
+        "TabsSkeleton"
+      ],
+      "category": "Navigation",
+      "hugoShortcodes": [
+        "tabs",
+        "tab-panel"
+      ],
+      "bemClasses": [
+        ".cds--tabs",
+        ".cds--tabs__nav",
+        ".cds--tabs__nav-item",
+        ".cds--tabs__nav-link",
+        ".cds--tab-content",
+        ".cds--tabs--contained"
+      ],
+      "props": [
+        "type",
+        "tabs",
+        "title",
+        "icon"
+      ],
+      "accessibility": {
+        "role": "tablist",
+        "ariaAttributes": [
+          "aria-selected",
+          "aria-controls"
+        ]
+      }
+    },
+    {
+      "name": "Tag",
+      "reactComponents": [
+        "Tag",
+        "TagSkeleton",
+        "DismissableTag",
+        "OperationalTag",
+        "SelectableTag"
+      ],
+      "category": "Feedback",
+      "hugoShortcodes": [
+        "tag"
+      ],
+      "bemClasses": [
+        ".cds--tag",
+        ".cds--tag--red",
+        ".cds--tag--magenta",
+        ".cds--tag--purple",
+        ".cds--tag--blue",
+        ".cds--tag--cyan",
+        ".cds--tag--teal",
+        ".cds--tag--green",
+        ".cds--tag--gray",
+        ".cds--tag--cool-gray",
+        ".cds--tag--warm-gray",
+        ".cds--tag--high-contrast",
+        ".cds--tag--outline",
+        ".cds--tag--filter",
+        ".cds--tag--sm",
+        ".cds--tag--md"
+      ],
+      "props": [
+        "type",
+        "name",
+        "size",
+        "filter",
+        "href",
+        "clickable",
+        "hash"
+      ],
+      "accessibility": {
+        "role": "status"
+      }
+    },
+    {
+      "name": "Tile",
+      "reactComponents": [
+        "Tile",
+        "ClickableTile",
+        "ExpandableTile",
+        "SelectableTile",
+        "RadioTile",
+        "TileGroup"
+      ],
+      "category": "Surfaces",
+      "hugoShortcodes": [
+        "tile",
+        "clickable-tile",
+        "expandable-tile"
+      ],
+      "bemClasses": [
+        ".cds--tile",
+        ".cds--tile--clickable",
+        ".cds--tile--expandable",
+        ".cds--tile--selectable",
+        ".cds--tile__checkmark",
+        ".cds--tile__chevron"
+      ],
+      "props": [
+        "type",
+        "href",
+        "selected",
+        "id"
+      ],
+      "accessibility": {
+        "role": "region"
+      }
+    },
+    {
+      "name": "TimePicker",
+      "reactComponents": [
+        "TimePicker",
+        "TimePickerSelect"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "time-picker"
+      ],
+      "bemClasses": [
+        ".cds--time-picker",
+        ".cds--time-picker__input",
+        ".cds--time-picker__select"
+      ],
+      "props": [
+        "id",
+        "label",
+        "placeholder"
+      ],
+      "accessibility": {
+        "role": "combobox"
+      }
+    },
+    {
+      "name": "Toggle",
+      "reactComponents": [
+        "Toggle",
+        "ToggleSkeleton"
+      ],
+      "category": "Forms",
+      "hugoShortcodes": [
+        "toggle"
+      ],
+      "bemClasses": [
+        ".cds--toggle",
+        ".cds--toggle__switch",
+        ".cds--toggle__label-text"
+      ],
+      "props": [
+        "id",
+        "label",
+        "label_on",
+        "label_off",
+        "checked",
+        "size"
+      ],
+      "accessibility": {
+        "role": "switch",
+        "ariaAttributes": [
+          "aria-checked"
+        ]
+      }
+    },
+    {
+      "name": "Tooltip",
+      "reactComponents": [
+        "Tooltip",
+        "DefinitionTooltip"
+      ],
+      "category": "Overlays",
+      "hugoShortcodes": [
+        "tooltip"
+      ],
+      "bemClasses": [
+        ".cds--tooltip",
+        ".cds--tooltip--definition",
+        ".cds--tooltip__content"
+      ],
+      "props": [
+        "text",
+        "align",
+        "definition"
+      ],
+      "accessibility": {
+        "role": "tooltip"
+      }
+    },
+    {
+      "name": "TreeView",
+      "reactComponents": [
+        "TreeView",
+        "TreeNode"
+      ],
+      "category": "Navigation",
+      "hugoShortcodes": [
+        "tree-view",
+        "tree-node"
+      ],
+      "bemClasses": [
+        ".cds--tree",
+        ".cds--tree__node",
+        ".cds--tree__node__label",
+        ".cds--tree__node__chevron",
+        ".cds--tree__node__children",
+        ".cds--tree__node--expanded",
+        ".cds--tree__node--selected",
+        ".cds--tree__node--leaf"
+      ],
+      "props": [
+        "label",
+        "id",
+        "leaf",
+        "expanded",
+        "selected",
+        "icon"
+      ],
+      "accessibility": {
+        "role": "tree",
+        "ariaAttributes": [
+          "aria-expanded",
+          "aria-selected"
+        ]
+      }
+    },
+    {
+      "name": "UIShell",
+      "reactComponents": [
+        "Header",
+        "HeaderName",
+        "HeaderNav",
+        "HeaderMenuItem",
+        "HeaderMenu",
+        "HeaderGlobalBar",
+        "HeaderGlobalAction",
+        "SideNav",
+        "SideNavItems",
+        "SideNavLink",
+        "SideNavMenu",
+        "SkipToContent"
+      ],
+      "category": "UI Shell",
+      "hugoShortcodes": [],
+      "bemClasses": [
+        ".cds--header",
+        ".cds--header__name",
+        ".cds--header__nav",
+        ".cds--header__menu-item",
+        ".cds--header__submenu",
+        ".cds--side-nav",
+        ".cds--skip-to-content"
+      ],
+      "props": [
+        "brand",
+        "navbar",
+        "sidebars"
+      ],
+      "accessibility": {
+        "role": "banner",
+        "ariaAttributes": [
+          "aria-label"
+        ]
+      }
+    },
+    {
+      "name": "AIChat",
+      "reactComponents": [
+        "AIChat",
+        "ChatContainer",
+        "ChatComposer",
+        "ChatMessages"
+      ],
+      "category": "Carbon for AI",
+      "hugoShortcodes": [
+        "ai-chat",
+        "persona-ai"
+      ],
+      "bemClasses": [
+        ".cds--chat",
+        ".cds--chat-header",
+        ".cds--chat-messages",
+        ".cds--chat-composer"
+      ],
+      "props": [
+        "title",
+        "model",
+        "height"
+      ],
+      "accessibility": {
+        "role": "region",
+        "ariaAttributes": [
+          "aria-live"
+        ]
+      }
+    }
+  ]
 }

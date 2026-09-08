@@ -2,28 +2,39 @@
 {{ $size := .Get "size" | default "md" }}
 {{ $href := .Get "href" }}
 {{ $icon := .Get "icon" }}
+{{ $iconOnly := .Get "icon_only" | default false }}
+{{ $disabled := .Get "disabled" | default false }}
+{{ $ariaLabel := .Get "aria_label" | default (.Get "title") }}
 
-{{ $btnClass := printf "cds--btn cds--btn--%s" $kind }}
-{{ if eq $size "sm" }}
-  {{ $btnClass = printf "%s cds--btn--sm" $btnClass }}
-{{ else if eq $size "lg" }}
-  {{ $btnClass = printf "%s cds--btn--lg" $btnClass }}
+{{ $btnClass := printf "cds--btn cds--btn--%s cds--btn--%s" $kind $size }}
+{{ if $iconOnly }}
+  {{ $btnClass = printf "%s cds--btn--icon-only" $btnClass }}
+{{ end }}
+{{ if $disabled }}
+  {{ $btnClass = printf "%s cds--btn--disabled" $btnClass }}
 {{ end }}
 
-{{ if $href }}
-  <a href="{{ $href }}" class="{{ $btnClass }}">
-    {{ .Inner | default (.Get "text") }}
+{{ if and $href (not $disabled) }}
+  <a href="{{ $href }}" class="{{ $btnClass }}" {{ with $ariaLabel }}aria-label="{{ . }}" title="{{ . }}"{{ end }}>
+    {{ if not $iconOnly }}{{ .Inner | default (.Get "text") }}{{ end }}
     {{ if eq $icon "arrow-right" }}
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left: 0.5rem;"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
     {{ else if eq $icon "launch" }}
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left: 0.5rem;"><path d="M13 14H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h5v1H3v10h10V8h1v5c0 .6-.4 1-1 1z"/><path d="M10 1h5v5h-1V2.7L8.9 7.9l-.7-.7L13.3 2H10V1z"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 14H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h5v1H3v10h10V8h1v5c0 .6-.4 1-1 1z"/><path d="M10 1h5v5h-1V2.7L8.9 7.9l-.7-.7L13.3 2H10V1z"/></svg>
+    {{ else if eq $icon "copy" }}
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z"/><path d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4v14z"/></svg>
     {{ end }}
   </a>
 {{ else }}
-  <button type="button" class="{{ $btnClass }}">
-    {{ .Inner | default (.Get "text") }}
+  <button type="button" class="{{ $btnClass }}" {{ if $disabled }}disabled aria-disabled="true"{{ end }} {{ with $ariaLabel }}aria-label="{{ . }}" title="{{ . }}"{{ end }}>
+    {{ if not $iconOnly }}{{ .Inner | default (.Get "text") }}{{ end }}
     {{ if eq $icon "arrow-right" }}
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left: 0.5rem;"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M9.3 3.3L8 4.7l3.3 3.3H2v2h9.3L8 13.3l1.3 1.4L15 9z"/></svg>
+    {{ else if eq $icon "launch" }}
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 14H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h5v1H3v10h10V8h1v5c0 .6-.4 1-1 1z"/><path d="M10 1h5v5h-1V2.7L8.9 7.9l-.7-.7L13.3 2H10V1z"/></svg>
+    {{ else if eq $icon "copy" }}
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z"/><path d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4v14z"/></svg>
     {{ end }}
   </button>
 {{ end }}
+

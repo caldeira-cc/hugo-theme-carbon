@@ -1,12 +1,11 @@
 // IBM Carbon Design System v11 Color Tokens & Theming Engine
-// Official token scales for White, Gray 10, Gray 90, and Gray 100
+// Full token scales for White, Gray 10, Gray 90, Gray 100, and standard Dual Styles (Light/Dark)
+// Includes complete @carbon/colors palette (120 shades) and @carbon/charts categorical palette
 
 // ==========================================
-// 0. DEFAULT VISUAL THEME - SAGE ACCENT (Light & Dark)
-// Primary Palette Anchor: rgb(105, 162, 128) [#69a280]
+// 0. UNIVERSAL CARBON METRICS & PALETTES
 // ==========================================
 
-// Universal Carbon v11 Tokens & Metrics
 :root {
   // Spacing Tokens (Carbon v11 8px mini-unit & 4px baseline scale)
   --cds-spacing-01: 0.125rem; // 2px
@@ -46,10 +45,166 @@
   --cds-shadow-03: 0 8px 16px rgba(0, 0, 0, 0.14);
   --cds-shadow-04: 0 12px 24px rgba(0, 0, 0, 0.16);
   --cds-shadow-05: 0 16px 32px rgba(0, 0, 0, 0.18);
+
+  // ---------------------------------------------------------------------------
+  // IBM Carbon Color Palette (@carbon/colors v11: 12 families x 10 grades)
+  // ---------------------------------------------------------------------------
+  // Red
+  --cds-color-red-10: #fff1f1;
+  --cds-color-red-20: #ffd7d9;
+  --cds-color-red-30: #ffb3b8;
+  --cds-color-red-40: #ff8389;
+  --cds-color-red-50: #fa4d56;
+  --cds-color-red-60: #da1e28;
+  --cds-color-red-70: #ba1b23;
+  --cds-color-red-80: #a2191f;
+  --cds-color-red-90: #750e13;
+  --cds-color-red-100: #2d0709;
+  // Magenta
+  --cds-color-magenta-10: #fff0f7;
+  --cds-color-magenta-20: #ffd6e8;
+  --cds-color-magenta-30: #ffafd2;
+  --cds-color-magenta-40: #ff7eb6;
+  --cds-color-magenta-50: #ee5396;
+  --cds-color-magenta-60: #d12771;
+  --cds-color-magenta-70: #9f1853;
+  --cds-color-magenta-80: #740937;
+  --cds-color-magenta-90: #510224;
+  --cds-color-magenta-100: #2a0616;
+  // Purple
+  --cds-color-purple-10: #f6f2ff;
+  --cds-color-purple-20: #e8daff;
+  --cds-color-purple-30: #d4bbff;
+  --cds-color-purple-40: #be95ff;
+  --cds-color-purple-50: #a56eff;
+  --cds-color-purple-60: #8a3ffc;
+  --cds-color-purple-70: #6929c4;
+  --cds-color-purple-80: #491d8b;
+  --cds-color-purple-90: #31135e;
+  --cds-color-purple-100: #1c0f30;
+  // Blue
+  --cds-color-blue-10: #edf5ff;
+  --cds-color-blue-20: #d0e2ff;
+  --cds-color-blue-30: #a6c8ff;
+  --cds-color-blue-40: #78a9ff;
+  --cds-color-blue-50: #4589ff;
+  --cds-color-blue-60: #0f62fe;
+  --cds-color-blue-70: #0043ce;
+  --cds-color-blue-80: #002d9c;
+  --cds-color-blue-90: #001d6c;
+  --cds-color-blue-100: #001141;
+  // Cyan
+  --cds-color-cyan-10: #e5f6ff;
+  --cds-color-cyan-20: #bae6ff;
+  --cds-color-cyan-30: #82cfff;
+  --cds-color-cyan-40: #33b1ff;
+  --cds-color-cyan-50: #1192e8;
+  --cds-color-cyan-60: #0072c3;
+  --cds-color-cyan-70: #00539a;
+  --cds-color-cyan-80: #003a6d;
+  --cds-color-cyan-90: #012749;
+  --cds-color-cyan-100: #061727;
+  // Teal
+  --cds-color-teal-10: #d9fbfb;
+  --cds-color-teal-20: #9ef0f0;
+  --cds-color-teal-30: #3ddbd9;
+  --cds-color-teal-40: #08bdba;
+  --cds-color-teal-50: #009d9a;
+  --cds-color-teal-60: #007d79;
+  --cds-color-teal-70: #005d5d;
+  --cds-color-teal-80: #004144;
+  --cds-color-teal-90: #022b30;
+  --cds-color-teal-100: #081a1c;
+  // Green
+  --cds-color-green-10: #defbe6;
+  --cds-color-green-20: #a7f0ba;
+  --cds-color-green-30: #6fdc8c;
+  --cds-color-green-40: #42be65;
+  --cds-color-green-50: #24a148;
+  --cds-color-green-60: #198038;
+  --cds-color-green-70: #0e6027;
+  --cds-color-green-80: #044317;
+  --cds-color-green-90: #022d0d;
+  --cds-color-green-100: #071908;
+  // Yellow
+  --cds-color-yellow-10: #fcf4d6;
+  --cds-color-yellow-20: #fddc69;
+  --cds-color-yellow-30: #f1c21b;
+  --cds-color-yellow-40: #d2a106;
+  --cds-color-yellow-50: #b28600;
+  --cds-color-yellow-60: #8e6a00;
+  --cds-color-yellow-70: #684e00;
+  --cds-color-yellow-80: #483700;
+  --cds-color-yellow-90: #302400;
+  --cds-color-yellow-100: #1c1500;
+  // Orange
+  --cds-color-orange-10: #fff2e8;
+  --cds-color-orange-20: #ffd9be;
+  --cds-color-orange-30: #ffb784;
+  --cds-color-orange-40: #ff832b;
+  --cds-color-orange-50: #eb6200;
+  --cds-color-orange-60: #ba4e00;
+  --cds-color-orange-70: #8a3800;
+  --cds-color-orange-80: #5e2400;
+  --cds-color-orange-90: #3e1700;
+  --cds-color-orange-100: #230d00;
+  // Gray
+  --cds-color-gray-10: #f4f4f4;
+  --cds-color-gray-20: #e0e0e0;
+  --cds-color-gray-30: #c6c6c6;
+  --cds-color-gray-40: #a8a8a8;
+  --cds-color-gray-50: #8d8d8d;
+  --cds-color-gray-60: #6f6f6f;
+  --cds-color-gray-70: #525252;
+  --cds-color-gray-80: #393939;
+  --cds-color-gray-90: #262626;
+  --cds-color-gray-100: #161616;
+  // Cool-Gray
+  --cds-color-cool-gray-10: #f2f4f8;
+  --cds-color-cool-gray-20: #dde1e6;
+  --cds-color-cool-gray-30: #c1c7cd;
+  --cds-color-cool-gray-40: #a2a9b0;
+  --cds-color-cool-gray-50: #878d96;
+  --cds-color-cool-gray-60: #697077;
+  --cds-color-cool-gray-70: #4d5358;
+  --cds-color-cool-gray-80: #343a3f;
+  --cds-color-cool-gray-90: #21272a;
+  --cds-color-cool-gray-100: #121619;
+  // Warm-Gray
+  --cds-color-warm-gray-10: #f7f3f2;
+  --cds-color-warm-gray-20: #e5e0df;
+  --cds-color-warm-gray-30: #cac5c4;
+  --cds-color-warm-gray-40: #ada8a8;
+  --cds-color-warm-gray-50: #8f8b8b;
+  --cds-color-warm-gray-60: #726e6e;
+  --cds-color-warm-gray-70: #565151;
+  --cds-color-warm-gray-80: #3c3838;
+  --cds-color-warm-gray-90: #272525;
+  --cds-color-warm-gray-100: #171414;
+  --cds-color-white: #ffffff;
+  --cds-color-black: #000000;
+
+  // ---------------------------------------------------------------------------
+  // Data Visualization Categorical Colors (@carbon/charts 14-palette)
+  // ---------------------------------------------------------------------------
+  --cds-charts-color-categorical-1: #6929c4;
+  --cds-charts-color-categorical-2: #1192e8;
+  --cds-charts-color-categorical-3: #005d5d;
+  --cds-charts-color-categorical-4: #9f1853;
+  --cds-charts-color-categorical-5: #fa4d56;
+  --cds-charts-color-categorical-6: #570408;
+  --cds-charts-color-categorical-7: #198038;
+  --cds-charts-color-categorical-8: #002d9c;
+  --cds-charts-color-categorical-9: #ee538b;
+  --cds-charts-color-categorical-10: #b28600;
+  --cds-charts-color-categorical-11: #009d9a;
+  --cds-charts-color-categorical-12: #012749;
+  --cds-charts-color-categorical-13: #8a3ffc;
+  --cds-charts-color-categorical-14: #a7f0ba;
 }
 
 // ==========================================
-// 1. STANDARD CARBON LIGHT THEME (White / Light Neutral)
+// 1. STANDARD CARBON LIGHT THEME (White / Light Neutral Default)
 // ==========================================
 :root,
 html[data-carbon-theme="light"],
@@ -58,86 +213,132 @@ html[data-carbon-theme="default_light"],
 body[data-carbon-theme="default_light"] {
   color-scheme: light;
 
-  // Background & Layers (Standard IBM Carbon White)
+  // Background & Surface
   --cds-background: #ffffff;
+  --cds-background-hover: #e5e5e5;
+  --cds-background-active: #c6c6c6;
+  --cds-background-selected: #edf5ff;
+  --cds-background-selected-hover: #d0e2ff;
+  --cds-background-inverse: #161616;
+  --cds-background-inverse-hover: #262626;
+  --cds-background-brand: #0f62fe;
+
+  // Layer Tokens
   --cds-layer-01: #f4f4f4;
-  --cds-layer-02: #e0e0e0;
-  --cds-layer-03: #c6c6c6;
+  --cds-layer-hover-01: #e5e5e5;
+  --cds-layer-active-01: #c6c6c6;
+  --cds-layer-selected-01: #e0e0e0;
+  --cds-layer-selected-hover-01: #d1d1d1;
+  --cds-layer-02: #ffffff;
+  --cds-layer-hover-02: #e5e5e5;
+  --cds-layer-active-02: #c6c6c6;
+  --cds-layer-selected-02: #e0e0e0;
+  --cds-layer-selected-hover-02: #d1d1d1;
+  --cds-layer-03: #f4f4f4;
+  --cds-layer-hover-03: #e5e5e5;
+  --cds-layer-active-03: #c6c6c6;
+  --cds-layer-selected-03: #e0e0e0;
+  --cds-layer-selected-hover-03: #d1d1d1;
   --cds-layer-accent-01: #e0e0e0;
-  --cds-layer-accent-02: #c6c6c6;
+  --cds-layer-accent-hover-01: #d1d1d1;
+  --cds-layer-accent-active-01: #a8a8a8;
+  --cds-layer-accent-02: #e0e0e0;
+  --cds-layer-accent-hover-02: #d1d1d1;
+  --cds-layer-accent-active-02: #a8a8a8;
+  --cds-layer-accent-03: #c6c6c6;
+  --cds-layer-accent-hover-03: #b8b8b8;
+  --cds-layer-accent-active-03: #8d8d8d;
   --cds-skeleton-01: #e0e0e0;
   --cds-skeleton-02: #c6c6c6;
 
-  // Typography Tokens (Standard IBM Neutral Scale)
+  // Typography Tokens
   --cds-text-primary: #161616;
   --cds-text-secondary: #525252;
   --cds-text-placeholder: #a8a8a8;
   --cds-text-helper: #6f6f6f;
   --cds-text-error: #da1e28;
+  --cds-text-on-color: #ffffff;
+  --cds-text-on-color-disabled: #8d8d8d;
   --cds-text-inverse: #ffffff;
+  --cds-text-disabled: #8d8d8d;
 
-  // Links (IBM Blue 60 / Blue 70)
+  // Link Tokens
   --cds-link-primary: #0f62fe;
   --cds-link-primary-hover: #0043ce;
   --cds-link-secondary: #0043ce;
+  --cds-link-inverse: #78a9ff;
   --cds-link-visited: #8a3ffc;
 
-  // Interactive Elements (IBM Blue 60)
+  // Interactive & Button Tokens
+  --cds-interactive: #0f62fe;
   --cds-interactive-01: #0f62fe;
   --cds-interactive-02: #393939;
   --cds-interactive-03: #0f62fe;
   --cds-interactive-04: #0043ce;
+  --cds-button-primary: #0f62fe;
+  --cds-button-primary-hover: #0353e9;
+  --cds-button-primary-active: #002d9c;
+  --cds-button-secondary: #393939;
+  --cds-button-secondary-hover: #4c4c4c;
+  --cds-button-secondary-active: #262626;
+  --cds-button-tertiary: #0f62fe;
+  --cds-button-tertiary-hover: #0353e9;
+  --cds-button-tertiary-active: #002d9c;
+  --cds-button-danger-primary: #da1e28;
+  --cds-button-danger-secondary: #da1e28;
+  --cds-button-danger-hover: #ba1b23;
+  --cds-button-danger-active: #750e13;
+  --cds-button-separator: #e0e0e0;
+  --cds-button-disabled: #8d8d8d;
 
   // Focus Rings
   --cds-focus: #0f62fe;
   --cds-focus-inset: #ffffff;
   --cds-focus-inverse: #ffffff;
 
-  // Borders
+  // Border Tokens
   --cds-border-subtle-00: #e0e0e0;
   --cds-border-subtle-01: #c6c6c6;
   --cds-border-subtle-02: #a8a8a8;
+  --cds-border-subtle-03: #8d8d8d;
+  --cds-border-subtle-selected-01: #c6c6c6;
+  --cds-border-subtle-selected-02: #a8a8a8;
+  --cds-border-subtle-selected-03: #8d8d8d;
   --cds-border-strong-01: #8d8d8d;
+  --cds-border-strong-02: #161616;
   --cds-border-tile-01: #e0e0e0;
+  --cds-border-tile-02: #c6c6c6;
+  --cds-border-tile-03: #a8a8a8;
+  --cds-border-interactive: #0f62fe;
+  --cds-border-inverse: #161616;
+  --cds-border-disabled: #e0e0e0;
 
-  // Form Fields & Controls
+  // Form Field Tokens
   --cds-field-01: #f4f4f4;
+  --cds-field-hover-01: #e5e5e5;
   --cds-field-02: #ffffff;
+  --cds-field-hover-02: #e5e5e5;
+  --cds-field-03: #f4f4f4;
+  --cds-field-hover-03: #e5e5e5;
+  --cds-field-disabled: #f4f4f4;
 
-  // Feedback & Support
+  // Feedback & Support Tokens
   --cds-support-error: #da1e28;
+  --cds-support-error-inverse: #fa4d56;
   --cds-support-success: #24a148;
+  --cds-support-success-inverse: #42be65;
   --cds-support-warning: #f1c21b;
+  --cds-support-warning-inverse: #f1c21b;
   --cds-support-info: #0043ce;
+  --cds-support-info-inverse: #4589ff;
+  --cds-support-caution-major: #ff832b;
+  --cds-support-caution-minor: #f1c21b;
 
-  // Standard Carbon Tag Tokens
-  --cds-tag-background-blue: #edf5ff;
-  --cds-tag-color-blue: #0043ce;
-  --cds-tag-border-blue: #a6c8ff;
-
-  --cds-tag-background-green: #defbe6;
-  --cds-tag-color-green: #0e6027;
-  --cds-tag-border-green: #6fdc8c;
-
-  --cds-tag-background-teal: #d9fbfb;
-  --cds-tag-color-teal: #005d5d;
-  --cds-tag-border-teal: #08bdba;
-
-  --cds-tag-background-warm-gray: #f4f4f4;
-  --cds-tag-color-warm-gray: #393939;
-  --cds-tag-border-warm-gray: #c6c6c6;
-
-  --cds-tag-background-purple: #f6f2ff;
-  --cds-tag-color-purple: #6929c4;
-  --cds-tag-border-purple: #bb8eff;
-
-  --cds-tag-background-red: #fff1f1;
-  --cds-tag-color-red: #a2191f;
-  --cds-tag-border-red: #ff8389;
-
-  --cds-tag-background-gray: #e0e0e0;
-  --cds-tag-color-gray: #393939;
-  --cds-tag-border-gray: #c6c6c6;
+  // Notification Backgrounds
+  --cds-notification-background-error: #fff1f1;
+  --cds-notification-background-success: #defbe6;
+  --cds-notification-background-warning: #fdf5d8;
+  --cds-notification-background-info: #edf5ff;
 
   // UI Shell Top Navbar
   --cds-ui-shell-background: #161616;
@@ -169,10 +370,58 @@ body[data-carbon-theme="default_light"] {
   // Shadows
   --cds-shadow-01: 0 2px 6px rgba(0, 0, 0, 0.08);
   --cds-shadow-02: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  // ---------------------------------------------------------------------------
+  // Standard Carbon Tag Tokens (Light - 11 Families)
+  // ---------------------------------------------------------------------------
+  --cds-tag-background-red: #fff1f1;
+  --cds-tag-color-red: #a2191f;
+  --cds-tag-border-red: #ff8389;
+  --cds-tag-hover-red: #ffd7d9;
+  --cds-tag-background-magenta: #fff0f7;
+  --cds-tag-color-magenta: #9f1853;
+  --cds-tag-border-magenta: #ff7eb6;
+  --cds-tag-hover-magenta: #ffd6e8;
+  --cds-tag-background-purple: #f6f2ff;
+  --cds-tag-color-purple: #6929c4;
+  --cds-tag-border-purple: #bb8eff;
+  --cds-tag-hover-purple: #e8daff;
+  --cds-tag-background-blue: #edf5ff;
+  --cds-tag-color-blue: #0043ce;
+  --cds-tag-border-blue: #a6c8ff;
+  --cds-tag-hover-blue: #d0e2ff;
+  --cds-tag-background-cyan: #e5f6ff;
+  --cds-tag-color-cyan: #00539a;
+  --cds-tag-border-cyan: #82cfff;
+  --cds-tag-hover-cyan: #bae6ff;
+  --cds-tag-background-teal: #d9fbfb;
+  --cds-tag-color-teal: #005d5d;
+  --cds-tag-border-teal: #08bdba;
+  --cds-tag-hover-teal: #9ef0f0;
+  --cds-tag-background-green: #defbe6;
+  --cds-tag-color-green: #0e6027;
+  --cds-tag-border-green: #6fdc8c;
+  --cds-tag-hover-green: #a7f0ba;
+  --cds-tag-background-gray: #e0e0e0;
+  --cds-tag-color-gray: #393939;
+  --cds-tag-border-gray: #a8a8a8;
+  --cds-tag-hover-gray: #c6c6c6;
+  --cds-tag-background-cool-gray: #dde1e6;
+  --cds-tag-color-cool-gray: #343a3f;
+  --cds-tag-border-cool-gray: #a2a9b0;
+  --cds-tag-hover-cool-gray: #c1c7cd;
+  --cds-tag-background-warm-gray: #e5e0df;
+  --cds-tag-color-warm-gray: #3c3838;
+  --cds-tag-border-warm-gray: #ada8a8;
+  --cds-tag-hover-warm-gray: #cac5c4;
+  --cds-tag-background-high-contrast: #161616;
+  --cds-tag-color-high-contrast: #ffffff;
+  --cds-tag-border-high-contrast: #161616;
+  --cds-tag-hover-high-contrast: #393939;
 }
 
 // ==========================================
-// 2. STANDARD CARBON DARK THEME (Gray 100 Deep Dark)
+// 2. STANDARD CARBON DARK THEME (Gray 100 Deep Dark Default)
 // ==========================================
 html[data-carbon-theme="dark"],
 body[data-carbon-theme="dark"],
@@ -180,86 +429,132 @@ html[data-carbon-theme="default_dark"],
 body[data-carbon-theme="default_dark"] {
   color-scheme: dark;
 
-  // Background & Layers (Standard IBM Gray 100 Deep Dark)
+  // Background & Surface
   --cds-background: #161616;
-  --cds-layer-01: #262626;
-  --cds-layer-02: #393939;
-  --cds-layer-03: #525252;
-  --cds-layer-accent-01: #393939;
-  --cds-layer-accent-02: #525252;
-  --cds-skeleton-01: #393939;
-  --cds-skeleton-02: #525252;
+  --cds-background-hover: #262626;
+  --cds-background-active: #393939;
+  --cds-background-selected: #262626;
+  --cds-background-selected-hover: #333333;
+  --cds-background-inverse: #f4f4f4;
+  --cds-background-inverse-hover: #e5e5e5;
+  --cds-background-brand: #0f62fe;
 
-  // Typography Tokens (Standard IBM Neutral Dark Scale)
+  // Layer Tokens
+  --cds-layer-01: #262626;
+  --cds-layer-hover-01: #333333;
+  --cds-layer-active-01: #393939;
+  --cds-layer-selected-01: #393939;
+  --cds-layer-selected-hover-01: #474747;
+  --cds-layer-02: #161616;
+  --cds-layer-hover-02: #262626;
+  --cds-layer-active-02: #262626;
+  --cds-layer-selected-02: #262626;
+  --cds-layer-selected-hover-02: #333333;
+  --cds-layer-03: #262626;
+  --cds-layer-hover-03: #333333;
+  --cds-layer-active-03: #393939;
+  --cds-layer-selected-03: #393939;
+  --cds-layer-selected-hover-03: #474747;
+  --cds-layer-accent-01: #393939;
+  --cds-layer-accent-hover-01: #474747;
+  --cds-layer-accent-active-01: #525252;
+  --cds-layer-accent-02: #393939;
+  --cds-layer-accent-hover-02: #474747;
+  --cds-layer-accent-active-02: #525252;
+  --cds-layer-accent-03: #525252;
+  --cds-layer-accent-hover-03: #606060;
+  --cds-layer-accent-active-03: #6f6f6f;
+  --cds-skeleton-01: #262626;
+  --cds-skeleton-02: #393939;
+
+  // Typography Tokens
   --cds-text-primary: #f4f4f4;
   --cds-text-secondary: #c6c6c6;
   --cds-text-placeholder: #6f6f6f;
   --cds-text-helper: #8d8d8d;
   --cds-text-error: #ff8389;
+  --cds-text-on-color: #ffffff;
+  --cds-text-on-color-disabled: #6f6f6f;
   --cds-text-inverse: #161616;
+  --cds-text-disabled: #525252;
 
-  // Links
+  // Link Tokens
   --cds-link-primary: #78a9ff;
   --cds-link-primary-hover: #a6c8ff;
   --cds-link-secondary: #a6c8ff;
+  --cds-link-inverse: #0f62fe;
   --cds-link-visited: #be95ff;
 
-  // Interactive Elements (IBM Blue 60 / Blue 40)
+  // Interactive & Button Tokens
+  --cds-interactive: #0f62fe;
   --cds-interactive-01: #0f62fe;
   --cds-interactive-02: #525252;
   --cds-interactive-03: #0f62fe;
   --cds-interactive-04: #78a9ff;
+  --cds-button-primary: #0f62fe;
+  --cds-button-primary-hover: #0353e9;
+  --cds-button-primary-active: #002d9c;
+  --cds-button-secondary: #525252;
+  --cds-button-secondary-hover: #4c4c4c;
+  --cds-button-secondary-active: #262626;
+  --cds-button-tertiary: #ffffff;
+  --cds-button-tertiary-hover: #f4f4f4;
+  --cds-button-tertiary-active: #c6c6c6;
+  --cds-button-danger-primary: #da1e28;
+  --cds-button-danger-secondary: #fa4d56;
+  --cds-button-danger-hover: #ba1b23;
+  --cds-button-danger-active: #750e13;
+  --cds-button-separator: #000000;
+  --cds-button-disabled: #525252;
 
   // Focus Rings
   --cds-focus: #ffffff;
   --cds-focus-inset: #161616;
   --cds-focus-inverse: #0f62fe;
 
-  // Borders
+  // Border Tokens
   --cds-border-subtle-00: #262626;
   --cds-border-subtle-01: #393939;
   --cds-border-subtle-02: #525252;
+  --cds-border-subtle-03: #6f6f6f;
+  --cds-border-subtle-selected-01: #393939;
+  --cds-border-subtle-selected-02: #525252;
+  --cds-border-subtle-selected-03: #6f6f6f;
   --cds-border-strong-01: #8d8d8d;
+  --cds-border-strong-02: #f4f4f4;
   --cds-border-tile-01: #262626;
+  --cds-border-tile-02: #393939;
+  --cds-border-tile-03: #525252;
+  --cds-border-interactive: #78a9ff;
+  --cds-border-inverse: #f4f4f4;
+  --cds-border-disabled: #262626;
 
-  // Form Fields & Controls
+  // Form Field Tokens
   --cds-field-01: #262626;
-  --cds-field-02: #393939;
+  --cds-field-hover-01: #333333;
+  --cds-field-02: #161616;
+  --cds-field-hover-02: #262626;
+  --cds-field-03: #262626;
+  --cds-field-hover-03: #333333;
+  --cds-field-disabled: #262626;
 
-  // Feedback & Support
+  // Feedback & Support Tokens
   --cds-support-error: #fa4d56;
+  --cds-support-error-inverse: #da1e28;
   --cds-support-success: #42be65;
+  --cds-support-success-inverse: #24a148;
   --cds-support-warning: #f1c21b;
+  --cds-support-warning-inverse: #f1c21b;
   --cds-support-info: #4589ff;
+  --cds-support-info-inverse: #0043ce;
+  --cds-support-caution-major: #ff832b;
+  --cds-support-caution-minor: #f1c21b;
 
-  // Standard Carbon Tag Tokens
-  --cds-tag-background-blue: #002d9c;
-  --cds-tag-color-blue: #edf5ff;
-  --cds-tag-border-blue: #0043ce;
-
-  --cds-tag-background-green: #044317;
-  --cds-tag-color-green: #defbe6;
-  --cds-tag-border-green: #0e6027;
-
-  --cds-tag-background-teal: #004144;
-  --cds-tag-color-teal: #d9fbfb;
-  --cds-tag-border-teal: #005d5d;
-
-  --cds-tag-background-warm-gray: #262626;
-  --cds-tag-color-warm-gray: #f4f4f4;
-  --cds-tag-border-warm-gray: #525252;
-
-  --cds-tag-background-purple: #491d8b;
-  --cds-tag-color-purple: #f6f2ff;
-  --cds-tag-border-purple: #6929c4;
-
-  --cds-tag-background-red: #750e13;
-  --cds-tag-color-red: #fff1f1;
-  --cds-tag-border-red: #a2191f;
-
-  --cds-tag-background-gray: #393939;
-  --cds-tag-color-gray: #f4f4f4;
-  --cds-tag-border-gray: #525252;
+  // Notification Backgrounds
+  --cds-notification-background-error: #391014;
+  --cds-notification-background-success: #0e2615;
+  --cds-notification-background-warning: #2e2508;
+  --cds-notification-background-info: #102447;
 
   // UI Shell Top Navbar
   --cds-ui-shell-background: #000000;
@@ -291,22 +586,98 @@ body[data-carbon-theme="default_dark"] {
   // Shadows
   --cds-shadow-01: 0 2px 6px rgba(0, 0, 0, 0.6);
   --cds-shadow-02: 0 4px 12px rgba(0, 0, 0, 0.7);
+
+  // ---------------------------------------------------------------------------
+  // Standard Carbon Tag Tokens (Dark - 11 Families)
+  // ---------------------------------------------------------------------------
+  --cds-tag-background-red: #750e13;
+  --cds-tag-color-red: #fff1f1;
+  --cds-tag-border-red: #a2191f;
+  --cds-tag-hover-red: #a2191f;
+  --cds-tag-background-magenta: #740937;
+  --cds-tag-color-magenta: #fff0f7;
+  --cds-tag-border-magenta: #9f1853;
+  --cds-tag-hover-magenta: #9f1853;
+  --cds-tag-background-purple: #491d8b;
+  --cds-tag-color-purple: #f6f2ff;
+  --cds-tag-border-purple: #6929c4;
+  --cds-tag-hover-purple: #6929c4;
+  --cds-tag-background-blue: #002d9c;
+  --cds-tag-color-blue: #edf5ff;
+  --cds-tag-border-blue: #0043ce;
+  --cds-tag-hover-blue: #0043ce;
+  --cds-tag-background-cyan: #003a6d;
+  --cds-tag-color-cyan: #e5f6ff;
+  --cds-tag-border-cyan: #00539a;
+  --cds-tag-hover-cyan: #00539a;
+  --cds-tag-background-teal: #004144;
+  --cds-tag-color-teal: #d9fbfb;
+  --cds-tag-border-teal: #005d5d;
+  --cds-tag-hover-teal: #005d5d;
+  --cds-tag-background-green: #044317;
+  --cds-tag-color-green: #defbe6;
+  --cds-tag-border-green: #0e6027;
+  --cds-tag-hover-green: #0e6027;
+  --cds-tag-background-gray: #393939;
+  --cds-tag-color-gray: #f4f4f4;
+  --cds-tag-border-gray: #525252;
+  --cds-tag-hover-gray: #525252;
+  --cds-tag-background-cool-gray: #343a3f;
+  --cds-tag-color-cool-gray: #f2f4f8;
+  --cds-tag-border-cool-gray: #4d5358;
+  --cds-tag-hover-cool-gray: #4d5358;
+  --cds-tag-background-warm-gray: #3c3838;
+  --cds-tag-color-warm-gray: #f7f3f2;
+  --cds-tag-border-warm-gray: #565151;
+  --cds-tag-hover-warm-gray: #565151;
+  --cds-tag-background-high-contrast: #f4f4f4;
+  --cds-tag-color-high-contrast: #161616;
+  --cds-tag-border-high-contrast: #f4f4f4;
+  --cds-tag-hover-high-contrast: #e0e0e0;
 }
 
 // ==========================================
-// 1. WHITE THEME (Pure IBM Showcase Reference)
+// 3. WHITE THEME (Pure IBM Showcase Reference)
 // ==========================================
 html[data-carbon-theme="white"],
 body[data-carbon-theme="white"] {
   color-scheme: light;
 
-  // Background & Layers
+  // Background & Surface
   --cds-background: #ffffff;
+  --cds-background-hover: #e5e5e5;
+  --cds-background-active: #c6c6c6;
+  --cds-background-selected: #edf5ff;
+  --cds-background-selected-hover: #d0e2ff;
+  --cds-background-inverse: #161616;
+  --cds-background-inverse-hover: #262626;
+  --cds-background-brand: #0f62fe;
+
+  // Layer Tokens
   --cds-layer-01: #f4f4f4;
-  --cds-layer-02: #e0e0e0;
-  --cds-layer-03: #c6c6c6;
+  --cds-layer-hover-01: #e5e5e5;
+  --cds-layer-active-01: #c6c6c6;
+  --cds-layer-selected-01: #e0e0e0;
+  --cds-layer-selected-hover-01: #d1d1d1;
+  --cds-layer-02: #ffffff;
+  --cds-layer-hover-02: #e5e5e5;
+  --cds-layer-active-02: #c6c6c6;
+  --cds-layer-selected-02: #e0e0e0;
+  --cds-layer-selected-hover-02: #d1d1d1;
+  --cds-layer-03: #f4f4f4;
+  --cds-layer-hover-03: #e5e5e5;
+  --cds-layer-active-03: #c6c6c6;
+  --cds-layer-selected-03: #e0e0e0;
+  --cds-layer-selected-hover-03: #d1d1d1;
   --cds-layer-accent-01: #e0e0e0;
-  --cds-layer-accent-02: #c6c6c6;
+  --cds-layer-accent-hover-01: #d1d1d1;
+  --cds-layer-accent-active-01: #a8a8a8;
+  --cds-layer-accent-02: #e0e0e0;
+  --cds-layer-accent-hover-02: #d1d1d1;
+  --cds-layer-accent-active-02: #a8a8a8;
+  --cds-layer-accent-03: #c6c6c6;
+  --cds-layer-accent-hover-03: #b8b8b8;
+  --cds-layer-accent-active-03: #8d8d8d;
   --cds-skeleton-01: #e0e0e0;
   --cds-skeleton-02: #c6c6c6;
 
@@ -316,282 +687,783 @@ body[data-carbon-theme="white"] {
   --cds-text-placeholder: #a8a8a8;
   --cds-text-helper: #6f6f6f;
   --cds-text-error: #da1e28;
+  --cds-text-on-color: #ffffff;
+  --cds-text-on-color-disabled: #8d8d8d;
   --cds-text-inverse: #ffffff;
+  --cds-text-disabled: #8d8d8d;
 
-  // Links
+  // Link Tokens
   --cds-link-primary: #0f62fe;
   --cds-link-primary-hover: #0043ce;
   --cds-link-secondary: #0043ce;
+  --cds-link-inverse: #78a9ff;
   --cds-link-visited: #8a3ffc;
 
-  // Interactive Elements
+  // Interactive & Button Tokens
+  --cds-interactive: #0f62fe;
   --cds-interactive-01: #0f62fe;
   --cds-interactive-02: #393939;
   --cds-interactive-03: #0f62fe;
   --cds-interactive-04: #0043ce;
+  --cds-button-primary: #0f62fe;
+  --cds-button-primary-hover: #0353e9;
+  --cds-button-primary-active: #002d9c;
+  --cds-button-secondary: #393939;
+  --cds-button-secondary-hover: #4c4c4c;
+  --cds-button-secondary-active: #262626;
+  --cds-button-tertiary: #0f62fe;
+  --cds-button-tertiary-hover: #0353e9;
+  --cds-button-tertiary-active: #002d9c;
+  --cds-button-danger-primary: #da1e28;
+  --cds-button-danger-secondary: #da1e28;
+  --cds-button-danger-hover: #ba1b23;
+  --cds-button-danger-active: #750e13;
+  --cds-button-separator: #e0e0e0;
+  --cds-button-disabled: #8d8d8d;
 
   // Focus Rings
   --cds-focus: #0f62fe;
   --cds-focus-inset: #ffffff;
   --cds-focus-inverse: #ffffff;
 
-  // Borders
+  // Border Tokens
   --cds-border-subtle-00: #e0e0e0;
   --cds-border-subtle-01: #c6c6c6;
   --cds-border-subtle-02: #a8a8a8;
+  --cds-border-subtle-03: #8d8d8d;
+  --cds-border-subtle-selected-01: #c6c6c6;
+  --cds-border-subtle-selected-02: #a8a8a8;
+  --cds-border-subtle-selected-03: #8d8d8d;
   --cds-border-strong-01: #8d8d8d;
+  --cds-border-strong-02: #161616;
   --cds-border-tile-01: #e0e0e0;
+  --cds-border-tile-02: #c6c6c6;
+  --cds-border-tile-03: #a8a8a8;
+  --cds-border-interactive: #0f62fe;
+  --cds-border-inverse: #161616;
+  --cds-border-disabled: #e0e0e0;
 
-  // Form Fields & Controls
+  // Form Field Tokens
   --cds-field-01: #f4f4f4;
+  --cds-field-hover-01: #e5e5e5;
   --cds-field-02: #ffffff;
+  --cds-field-hover-02: #e5e5e5;
+  --cds-field-03: #f4f4f4;
+  --cds-field-hover-03: #e5e5e5;
+  --cds-field-disabled: #f4f4f4;
 
-  // Feedback & Support
+  // Feedback & Support Tokens
   --cds-support-error: #da1e28;
+  --cds-support-error-inverse: #fa4d56;
   --cds-support-success: #24a148;
+  --cds-support-success-inverse: #42be65;
   --cds-support-warning: #f1c21b;
+  --cds-support-warning-inverse: #f1c21b;
   --cds-support-info: #0043ce;
+  --cds-support-info-inverse: #4589ff;
+  --cds-support-caution-major: #ff832b;
+  --cds-support-caution-minor: #f1c21b;
 
-  // Tag Tokens
-  --cds-tag-background-blue: #edf5ff;
-  --cds-tag-color-blue: #0043ce;
-  --cds-tag-background-green: #defbe6;
-  --cds-tag-color-green: #0e6027;
-  --cds-tag-background-red: #fff1f1;
-  --cds-tag-color-red: #a2191f;
-  --cds-tag-background-purple: #f6f2ff;
-  --cds-tag-color-purple: #6929c4;
-  --cds-tag-background-teal: #d9fbfb;
-  --cds-tag-color-teal: #005d5d;
-  --cds-tag-background-gray: #e0e0e0;
-  --cds-tag-color-gray: #393939;
+  // Notification Backgrounds
+  --cds-notification-background-error: #fff1f1;
+  --cds-notification-background-success: #defbe6;
+  --cds-notification-background-warning: #fdf5d8;
+  --cds-notification-background-info: #edf5ff;
 
-  // UI Shell
+  // UI Shell Top Navbar
   --cds-ui-shell-background: #161616;
   --cds-ui-shell-text: #f4f4f4;
   --cds-ui-shell-border: #393939;
   --cds-ui-shell-hover: #262626;
 
+  // Brand Block in Header
+  --cds-brand-block-background: #161616;
+  --cds-brand-block-text: #ffffff;
+  --cds-brand-block-border: #393939;
+  --cds-brand-block-hover: #262626;
+
+  // Search Action in Header
+  --cds-search-action-background: #161616;
+  --cds-search-action-text: #ffffff;
+  --cds-search-action-border: #393939;
+  --cds-search-action-hover: #262626;
+
+  // Main Bar
+  --cds-main-bar-background: #f4f4f4;
+  --cds-main-bar-text: #525252;
+  --cds-main-bar-text-primary: #161616;
+  --cds-main-bar-border: #e0e0e0;
+  --cds-main-bar-widget-bg: #ffffff;
+  --cds-main-bar-widget-border: #e0e0e0;
+  --cds-main-bar-widget-hover: #e8e8e8;
+
   // Shadows
-  --cds-shadow-01: 0 2px 6px rgba(0, 0, 0, 0.1);
-  --cds-shadow-02: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --cds-shadow-01: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --cds-shadow-02: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  // ---------------------------------------------------------------------------
+  // Standard Carbon Tag Tokens (Light - 11 Families)
+  // ---------------------------------------------------------------------------
+  --cds-tag-background-red: #fff1f1;
+  --cds-tag-color-red: #a2191f;
+  --cds-tag-border-red: #ff8389;
+  --cds-tag-hover-red: #ffd7d9;
+  --cds-tag-background-magenta: #fff0f7;
+  --cds-tag-color-magenta: #9f1853;
+  --cds-tag-border-magenta: #ff7eb6;
+  --cds-tag-hover-magenta: #ffd6e8;
+  --cds-tag-background-purple: #f6f2ff;
+  --cds-tag-color-purple: #6929c4;
+  --cds-tag-border-purple: #bb8eff;
+  --cds-tag-hover-purple: #e8daff;
+  --cds-tag-background-blue: #edf5ff;
+  --cds-tag-color-blue: #0043ce;
+  --cds-tag-border-blue: #a6c8ff;
+  --cds-tag-hover-blue: #d0e2ff;
+  --cds-tag-background-cyan: #e5f6ff;
+  --cds-tag-color-cyan: #00539a;
+  --cds-tag-border-cyan: #82cfff;
+  --cds-tag-hover-cyan: #bae6ff;
+  --cds-tag-background-teal: #d9fbfb;
+  --cds-tag-color-teal: #005d5d;
+  --cds-tag-border-teal: #08bdba;
+  --cds-tag-hover-teal: #9ef0f0;
+  --cds-tag-background-green: #defbe6;
+  --cds-tag-color-green: #0e6027;
+  --cds-tag-border-green: #6fdc8c;
+  --cds-tag-hover-green: #a7f0ba;
+  --cds-tag-background-gray: #e0e0e0;
+  --cds-tag-color-gray: #393939;
+  --cds-tag-border-gray: #a8a8a8;
+  --cds-tag-hover-gray: #c6c6c6;
+  --cds-tag-background-cool-gray: #dde1e6;
+  --cds-tag-color-cool-gray: #343a3f;
+  --cds-tag-border-cool-gray: #a2a9b0;
+  --cds-tag-hover-cool-gray: #c1c7cd;
+  --cds-tag-background-warm-gray: #e5e0df;
+  --cds-tag-color-warm-gray: #3c3838;
+  --cds-tag-border-warm-gray: #ada8a8;
+  --cds-tag-hover-warm-gray: #cac5c4;
+  --cds-tag-background-high-contrast: #161616;
+  --cds-tag-color-high-contrast: #ffffff;
+  --cds-tag-border-high-contrast: #161616;
+  --cds-tag-hover-high-contrast: #393939;
 }
 
 // ==========================================
-// 2. GRAY 10 THEME (Warm Light Neutral)
+// 4. GRAY 10 THEME (Warm Light Neutral)
 // ==========================================
 html[data-carbon-theme="g10"],
 body[data-carbon-theme="g10"] {
   color-scheme: light;
 
+  // Background & Surface
   --cds-background: #f4f4f4;
+  --cds-background-hover: #e5e5e5;
+  --cds-background-active: #c6c6c6;
+  --cds-background-selected: #edf5ff;
+  --cds-background-selected-hover: #d0e2ff;
+  --cds-background-inverse: #161616;
+  --cds-background-inverse-hover: #262626;
+  --cds-background-brand: #0f62fe;
+
+  // Layer Tokens
   --cds-layer-01: #ffffff;
-  --cds-layer-02: #e0e0e0;
-  --cds-layer-03: #c6c6c6;
+  --cds-layer-hover-01: #e5e5e5;
+  --cds-layer-active-01: #c6c6c6;
+  --cds-layer-selected-01: #e0e0e0;
+  --cds-layer-selected-hover-01: #d1d1d1;
+  --cds-layer-02: #f4f4f4;
+  --cds-layer-hover-02: #e5e5e5;
+  --cds-layer-active-02: #c6c6c6;
+  --cds-layer-selected-02: #e0e0e0;
+  --cds-layer-selected-hover-02: #d1d1d1;
+  --cds-layer-03: #ffffff;
+  --cds-layer-hover-03: #e5e5e5;
+  --cds-layer-active-03: #c6c6c6;
+  --cds-layer-selected-03: #e0e0e0;
+  --cds-layer-selected-hover-03: #d1d1d1;
   --cds-layer-accent-01: #e0e0e0;
-  --cds-layer-accent-02: #c6c6c6;
+  --cds-layer-accent-hover-01: #d1d1d1;
+  --cds-layer-accent-active-01: #a8a8a8;
+  --cds-layer-accent-02: #e0e0e0;
+  --cds-layer-accent-hover-02: #d1d1d1;
+  --cds-layer-accent-active-02: #a8a8a8;
+  --cds-layer-accent-03: #c6c6c6;
+  --cds-layer-accent-hover-03: #b8b8b8;
+  --cds-layer-accent-active-03: #8d8d8d;
   --cds-skeleton-01: #e0e0e0;
   --cds-skeleton-02: #c6c6c6;
 
+  // Typography Tokens
   --cds-text-primary: #161616;
   --cds-text-secondary: #525252;
   --cds-text-placeholder: #a8a8a8;
   --cds-text-helper: #6f6f6f;
   --cds-text-error: #da1e28;
+  --cds-text-on-color: #ffffff;
+  --cds-text-on-color-disabled: #8d8d8d;
   --cds-text-inverse: #ffffff;
+  --cds-text-disabled: #8d8d8d;
 
+  // Link Tokens
   --cds-link-primary: #0f62fe;
   --cds-link-primary-hover: #0043ce;
   --cds-link-secondary: #0043ce;
+  --cds-link-inverse: #78a9ff;
   --cds-link-visited: #8a3ffc;
 
+  // Interactive & Button Tokens
+  --cds-interactive: #0f62fe;
   --cds-interactive-01: #0f62fe;
   --cds-interactive-02: #393939;
   --cds-interactive-03: #0f62fe;
   --cds-interactive-04: #0043ce;
+  --cds-button-primary: #0f62fe;
+  --cds-button-primary-hover: #0353e9;
+  --cds-button-primary-active: #002d9c;
+  --cds-button-secondary: #393939;
+  --cds-button-secondary-hover: #4c4c4c;
+  --cds-button-secondary-active: #262626;
+  --cds-button-tertiary: #0f62fe;
+  --cds-button-tertiary-hover: #0353e9;
+  --cds-button-tertiary-active: #002d9c;
+  --cds-button-danger-primary: #da1e28;
+  --cds-button-danger-secondary: #da1e28;
+  --cds-button-danger-hover: #ba1b23;
+  --cds-button-danger-active: #750e13;
+  --cds-button-separator: #e0e0e0;
+  --cds-button-disabled: #8d8d8d;
 
+  // Focus Rings
   --cds-focus: #0f62fe;
   --cds-focus-inset: #ffffff;
   --cds-focus-inverse: #ffffff;
 
+  // Border Tokens
   --cds-border-subtle-00: #e0e0e0;
   --cds-border-subtle-01: #c6c6c6;
   --cds-border-subtle-02: #a8a8a8;
+  --cds-border-subtle-03: #8d8d8d;
+  --cds-border-subtle-selected-01: #c6c6c6;
+  --cds-border-subtle-selected-02: #a8a8a8;
+  --cds-border-subtle-selected-03: #8d8d8d;
   --cds-border-strong-01: #8d8d8d;
+  --cds-border-strong-02: #161616;
   --cds-border-tile-01: #e0e0e0;
+  --cds-border-tile-02: #c6c6c6;
+  --cds-border-tile-03: #a8a8a8;
+  --cds-border-interactive: #0f62fe;
+  --cds-border-inverse: #161616;
+  --cds-border-disabled: #e0e0e0;
 
+  // Form Field Tokens
   --cds-field-01: #ffffff;
+  --cds-field-hover-01: #e5e5e5;
   --cds-field-02: #f4f4f4;
+  --cds-field-hover-02: #e5e5e5;
+  --cds-field-03: #ffffff;
+  --cds-field-hover-03: #e5e5e5;
+  --cds-field-disabled: #f4f4f4;
 
+  // Feedback & Support Tokens
   --cds-support-error: #da1e28;
+  --cds-support-error-inverse: #fa4d56;
   --cds-support-success: #24a148;
+  --cds-support-success-inverse: #42be65;
   --cds-support-warning: #f1c21b;
+  --cds-support-warning-inverse: #f1c21b;
   --cds-support-info: #0043ce;
+  --cds-support-info-inverse: #4589ff;
+  --cds-support-caution-major: #ff832b;
+  --cds-support-caution-minor: #f1c21b;
 
-  --cds-tag-background-blue: #edf5ff;
-  --cds-tag-color-blue: #0043ce;
-  --cds-tag-background-green: #defbe6;
-  --cds-tag-color-green: #0e6027;
-  --cds-tag-background-red: #fff1f1;
-  --cds-tag-color-red: #a2191f;
-  --cds-tag-background-purple: #f6f2ff;
-  --cds-tag-color-purple: #6929c4;
-  --cds-tag-background-teal: #d9fbfb;
-  --cds-tag-color-teal: #005d5d;
-  --cds-tag-background-gray: #e0e0e0;
-  --cds-tag-color-gray: #393939;
+  // Notification Backgrounds
+  --cds-notification-background-error: #fff1f1;
+  --cds-notification-background-success: #defbe6;
+  --cds-notification-background-warning: #fdf5d8;
+  --cds-notification-background-info: #edf5ff;
 
+  // UI Shell Top Navbar
   --cds-ui-shell-background: #161616;
   --cds-ui-shell-text: #f4f4f4;
   --cds-ui-shell-border: #393939;
   --cds-ui-shell-hover: #262626;
 
-  --cds-shadow-01: 0 2px 6px rgba(0, 0, 0, 0.1);
-  --cds-shadow-02: 0 4px 12px rgba(0, 0, 0, 0.15);
+  // Main Bar
+  --cds-main-bar-background: #e0e0e0;
+  --cds-main-bar-text: #525252;
+  --cds-main-bar-text-primary: #161616;
+  --cds-main-bar-border: #c6c6c6;
+  --cds-main-bar-widget-bg: #f4f4f4;
+  --cds-main-bar-widget-border: #c6c6c6;
+  --cds-main-bar-widget-hover: #e8e8e8;
+
+  // Shadows
+  --cds-shadow-01: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --cds-shadow-02: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  // ---------------------------------------------------------------------------
+  // Standard Carbon Tag Tokens (Light - 11 Families)
+  // ---------------------------------------------------------------------------
+  --cds-tag-background-red: #fff1f1;
+  --cds-tag-color-red: #a2191f;
+  --cds-tag-border-red: #ff8389;
+  --cds-tag-hover-red: #ffd7d9;
+  --cds-tag-background-magenta: #fff0f7;
+  --cds-tag-color-magenta: #9f1853;
+  --cds-tag-border-magenta: #ff7eb6;
+  --cds-tag-hover-magenta: #ffd6e8;
+  --cds-tag-background-purple: #f6f2ff;
+  --cds-tag-color-purple: #6929c4;
+  --cds-tag-border-purple: #bb8eff;
+  --cds-tag-hover-purple: #e8daff;
+  --cds-tag-background-blue: #edf5ff;
+  --cds-tag-color-blue: #0043ce;
+  --cds-tag-border-blue: #a6c8ff;
+  --cds-tag-hover-blue: #d0e2ff;
+  --cds-tag-background-cyan: #e5f6ff;
+  --cds-tag-color-cyan: #00539a;
+  --cds-tag-border-cyan: #82cfff;
+  --cds-tag-hover-cyan: #bae6ff;
+  --cds-tag-background-teal: #d9fbfb;
+  --cds-tag-color-teal: #005d5d;
+  --cds-tag-border-teal: #08bdba;
+  --cds-tag-hover-teal: #9ef0f0;
+  --cds-tag-background-green: #defbe6;
+  --cds-tag-color-green: #0e6027;
+  --cds-tag-border-green: #6fdc8c;
+  --cds-tag-hover-green: #a7f0ba;
+  --cds-tag-background-gray: #e0e0e0;
+  --cds-tag-color-gray: #393939;
+  --cds-tag-border-gray: #a8a8a8;
+  --cds-tag-hover-gray: #c6c6c6;
+  --cds-tag-background-cool-gray: #dde1e6;
+  --cds-tag-color-cool-gray: #343a3f;
+  --cds-tag-border-cool-gray: #a2a9b0;
+  --cds-tag-hover-cool-gray: #c1c7cd;
+  --cds-tag-background-warm-gray: #e5e0df;
+  --cds-tag-color-warm-gray: #3c3838;
+  --cds-tag-border-warm-gray: #ada8a8;
+  --cds-tag-hover-warm-gray: #cac5c4;
+  --cds-tag-background-high-contrast: #161616;
+  --cds-tag-color-high-contrast: #ffffff;
+  --cds-tag-border-high-contrast: #161616;
+  --cds-tag-hover-high-contrast: #393939;
 }
 
 // ==========================================
-// 3. GRAY 90 THEME (Balanced Dark Theme)
+// 5. GRAY 90 THEME (Balanced Dark Theme)
 // ==========================================
 html[data-carbon-theme="g90"],
 body[data-carbon-theme="g90"] {
   color-scheme: dark;
 
+  // Background & Surface
   --cds-background: #262626;
+  --cds-background-hover: #333333;
+  --cds-background-active: #525252;
+  --cds-background-selected: #393939;
+  --cds-background-selected-hover: #474747;
+  --cds-background-inverse: #f4f4f4;
+  --cds-background-inverse-hover: #e5e5e5;
+  --cds-background-brand: #0f62fe;
+
+  // Layer Tokens
   --cds-layer-01: #393939;
-  --cds-layer-02: #525252;
-  --cds-layer-03: #6f6f6f;
+  --cds-layer-hover-01: #474747;
+  --cds-layer-active-01: #525252;
+  --cds-layer-selected-01: #525252;
+  --cds-layer-selected-hover-01: #606060;
+  --cds-layer-02: #262626;
+  --cds-layer-hover-02: #333333;
+  --cds-layer-active-02: #393939;
+  --cds-layer-selected-02: #393939;
+  --cds-layer-selected-hover-02: #474747;
+  --cds-layer-03: #393939;
+  --cds-layer-hover-03: #474747;
+  --cds-layer-active-03: #525252;
+  --cds-layer-selected-03: #525252;
+  --cds-layer-selected-hover-03: #606060;
   --cds-layer-accent-01: #525252;
-  --cds-layer-accent-02: #6f6f6f;
+  --cds-layer-accent-hover-01: #606060;
+  --cds-layer-accent-active-01: #6f6f6f;
+  --cds-layer-accent-02: #525252;
+  --cds-layer-accent-hover-02: #606060;
+  --cds-layer-accent-active-02: #6f6f6f;
+  --cds-layer-accent-03: #6f6f6f;
+  --cds-layer-accent-hover-03: #7d7d7d;
+  --cds-layer-accent-active-03: #8d8d8d;
   --cds-skeleton-01: #393939;
   --cds-skeleton-02: #525252;
 
+  // Typography Tokens
   --cds-text-primary: #f4f4f4;
   --cds-text-secondary: #c6c6c6;
   --cds-text-placeholder: #6f6f6f;
   --cds-text-helper: #8d8d8d;
   --cds-text-error: #ff8389;
+  --cds-text-on-color: #ffffff;
+  --cds-text-on-color-disabled: #6f6f6f;
   --cds-text-inverse: #161616;
+  --cds-text-disabled: #525252;
 
+  // Link Tokens
   --cds-link-primary: #78a9ff;
   --cds-link-primary-hover: #a6c8ff;
   --cds-link-secondary: #a6c8ff;
+  --cds-link-inverse: #0f62fe;
   --cds-link-visited: #be95ff;
 
+  // Interactive & Button Tokens
+  --cds-interactive: #0f62fe;
   --cds-interactive-01: #0f62fe;
   --cds-interactive-02: #6f6f6f;
   --cds-interactive-03: #0f62fe;
   --cds-interactive-04: #78a9ff;
+  --cds-button-primary: #0f62fe;
+  --cds-button-primary-hover: #0353e9;
+  --cds-button-primary-active: #002d9c;
+  --cds-button-secondary: #6f6f6f;
+  --cds-button-secondary-hover: #606060;
+  --cds-button-secondary-active: #393939;
+  --cds-button-tertiary: #ffffff;
+  --cds-button-tertiary-hover: #f4f4f4;
+  --cds-button-tertiary-active: #c6c6c6;
+  --cds-button-danger-primary: #da1e28;
+  --cds-button-danger-secondary: #fa4d56;
+  --cds-button-danger-hover: #ba1b23;
+  --cds-button-danger-active: #750e13;
+  --cds-button-separator: #161616;
+  --cds-button-disabled: #525252;
 
+  // Focus Rings
   --cds-focus: #ffffff;
   --cds-focus-inset: #161616;
   --cds-focus-inverse: #0f62fe;
 
+  // Border Tokens
   --cds-border-subtle-00: #393939;
   --cds-border-subtle-01: #525252;
   --cds-border-subtle-02: #6f6f6f;
+  --cds-border-subtle-03: #8d8d8d;
+  --cds-border-subtle-selected-01: #525252;
+  --cds-border-subtle-selected-02: #6f6f6f;
+  --cds-border-subtle-selected-03: #8d8d8d;
   --cds-border-strong-01: #8d8d8d;
+  --cds-border-strong-02: #f4f4f4;
   --cds-border-tile-01: #393939;
+  --cds-border-tile-02: #525252;
+  --cds-border-tile-03: #6f6f6f;
+  --cds-border-interactive: #78a9ff;
+  --cds-border-inverse: #f4f4f4;
+  --cds-border-disabled: #393939;
 
+  // Form Field Tokens
   --cds-field-01: #393939;
-  --cds-field-02: #525252;
+  --cds-field-hover-01: #474747;
+  --cds-field-02: #262626;
+  --cds-field-hover-02: #333333;
+  --cds-field-03: #393939;
+  --cds-field-hover-03: #474747;
+  --cds-field-disabled: #393939;
 
+  // Feedback & Support Tokens
   --cds-support-error: #fa4d56;
+  --cds-support-error-inverse: #da1e28;
   --cds-support-success: #42be65;
+  --cds-support-success-inverse: #24a148;
   --cds-support-warning: #f1c21b;
+  --cds-support-warning-inverse: #f1c21b;
   --cds-support-info: #4589ff;
+  --cds-support-info-inverse: #0043ce;
+  --cds-support-caution-major: #ff832b;
+  --cds-support-caution-minor: #f1c21b;
 
-  --cds-tag-background-blue: #002d9c;
-  --cds-tag-color-blue: #edf5ff;
-  --cds-tag-background-green: #044317;
-  --cds-tag-color-green: #defbe6;
-  --cds-tag-background-red: #750e13;
-  --cds-tag-color-red: #fff1f1;
-  --cds-tag-background-purple: #491d8b;
-  --cds-tag-color-purple: #f6f2ff;
-  --cds-tag-background-teal: #004144;
-  --cds-tag-color-teal: #d9fbfb;
-  --cds-tag-background-gray: #525252;
-  --cds-tag-color-gray: #f4f4f4;
+  // Notification Backgrounds
+  --cds-notification-background-error: #391014;
+  --cds-notification-background-success: #0e2615;
+  --cds-notification-background-warning: #2e2508;
+  --cds-notification-background-info: #102447;
 
+  // UI Shell Top Navbar
   --cds-ui-shell-background: #161616;
   --cds-ui-shell-text: #f4f4f4;
   --cds-ui-shell-border: #393939;
   --cds-ui-shell-hover: #262626;
 
+  // Main Bar
+  --cds-main-bar-background: #262626;
+  --cds-main-bar-text: #c6c6c6;
+  --cds-main-bar-text-primary: #f4f4f4;
+  --cds-main-bar-border: #393939;
+  --cds-main-bar-widget-bg: #333333;
+  --cds-main-bar-widget-border: #474747;
+  --cds-main-bar-widget-hover: #3d3d3d;
+
+  // Shadows
   --cds-shadow-01: 0 2px 6px rgba(0, 0, 0, 0.4);
   --cds-shadow-02: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+  // ---------------------------------------------------------------------------
+  // Standard Carbon Tag Tokens (Dark - 11 Families)
+  // ---------------------------------------------------------------------------
+  --cds-tag-background-red: #750e13;
+  --cds-tag-color-red: #fff1f1;
+  --cds-tag-border-red: #a2191f;
+  --cds-tag-hover-red: #a2191f;
+  --cds-tag-background-magenta: #740937;
+  --cds-tag-color-magenta: #fff0f7;
+  --cds-tag-border-magenta: #9f1853;
+  --cds-tag-hover-magenta: #9f1853;
+  --cds-tag-background-purple: #491d8b;
+  --cds-tag-color-purple: #f6f2ff;
+  --cds-tag-border-purple: #6929c4;
+  --cds-tag-hover-purple: #6929c4;
+  --cds-tag-background-blue: #002d9c;
+  --cds-tag-color-blue: #edf5ff;
+  --cds-tag-border-blue: #0043ce;
+  --cds-tag-hover-blue: #0043ce;
+  --cds-tag-background-cyan: #003a6d;
+  --cds-tag-color-cyan: #e5f6ff;
+  --cds-tag-border-cyan: #00539a;
+  --cds-tag-hover-cyan: #00539a;
+  --cds-tag-background-teal: #004144;
+  --cds-tag-color-teal: #d9fbfb;
+  --cds-tag-border-teal: #005d5d;
+  --cds-tag-hover-teal: #005d5d;
+  --cds-tag-background-green: #044317;
+  --cds-tag-color-green: #defbe6;
+  --cds-tag-border-green: #0e6027;
+  --cds-tag-hover-green: #0e6027;
+  --cds-tag-background-gray: #393939;
+  --cds-tag-color-gray: #f4f4f4;
+  --cds-tag-border-gray: #525252;
+  --cds-tag-hover-gray: #525252;
+  --cds-tag-background-cool-gray: #343a3f;
+  --cds-tag-color-cool-gray: #f2f4f8;
+  --cds-tag-border-cool-gray: #4d5358;
+  --cds-tag-hover-cool-gray: #4d5358;
+  --cds-tag-background-warm-gray: #3c3838;
+  --cds-tag-color-warm-gray: #f7f3f2;
+  --cds-tag-border-warm-gray: #565151;
+  --cds-tag-hover-warm-gray: #565151;
+  --cds-tag-background-high-contrast: #f4f4f4;
+  --cds-tag-color-high-contrast: #161616;
+  --cds-tag-border-high-contrast: #f4f4f4;
+  --cds-tag-hover-high-contrast: #e0e0e0;
 }
 
 // ==========================================
-// 4. GRAY 100 THEME (High Contrast Deep Dark)
+// 6. GRAY 100 THEME (High Contrast Deep Dark)
 // ==========================================
 html[data-carbon-theme="g100"],
 body[data-carbon-theme="g100"] {
   color-scheme: dark;
 
+  // Background & Surface
   --cds-background: #161616;
+  --cds-background-hover: #262626;
+  --cds-background-active: #393939;
+  --cds-background-selected: #262626;
+  --cds-background-selected-hover: #333333;
+  --cds-background-inverse: #f4f4f4;
+  --cds-background-inverse-hover: #e5e5e5;
+  --cds-background-brand: #0f62fe;
+
+  // Layer Tokens
   --cds-layer-01: #262626;
-  --cds-layer-02: #393939;
-  --cds-layer-03: #525252;
+  --cds-layer-hover-01: #333333;
+  --cds-layer-active-01: #393939;
+  --cds-layer-selected-01: #393939;
+  --cds-layer-selected-hover-01: #474747;
+  --cds-layer-02: #161616;
+  --cds-layer-hover-02: #262626;
+  --cds-layer-active-02: #262626;
+  --cds-layer-selected-02: #262626;
+  --cds-layer-selected-hover-02: #333333;
+  --cds-layer-03: #262626;
+  --cds-layer-hover-03: #333333;
+  --cds-layer-active-03: #393939;
+  --cds-layer-selected-03: #393939;
+  --cds-layer-selected-hover-03: #474747;
   --cds-layer-accent-01: #393939;
-  --cds-layer-accent-02: #525252;
+  --cds-layer-accent-hover-01: #474747;
+  --cds-layer-accent-active-01: #525252;
+  --cds-layer-accent-02: #393939;
+  --cds-layer-accent-hover-02: #474747;
+  --cds-layer-accent-active-02: #525252;
+  --cds-layer-accent-03: #525252;
+  --cds-layer-accent-hover-03: #606060;
+  --cds-layer-accent-active-03: #6f6f6f;
   --cds-skeleton-01: #262626;
   --cds-skeleton-02: #393939;
 
+  // Typography Tokens
   --cds-text-primary: #f4f4f4;
   --cds-text-secondary: #c6c6c6;
   --cds-text-placeholder: #6f6f6f;
   --cds-text-helper: #8d8d8d;
   --cds-text-error: #ff8389;
+  --cds-text-on-color: #ffffff;
+  --cds-text-on-color-disabled: #6f6f6f;
   --cds-text-inverse: #161616;
+  --cds-text-disabled: #525252;
 
+  // Link Tokens
   --cds-link-primary: #78a9ff;
   --cds-link-primary-hover: #a6c8ff;
   --cds-link-secondary: #a6c8ff;
+  --cds-link-inverse: #0f62fe;
   --cds-link-visited: #be95ff;
 
+  // Interactive & Button Tokens
+  --cds-interactive: #0f62fe;
   --cds-interactive-01: #0f62fe;
   --cds-interactive-02: #525252;
   --cds-interactive-03: #0f62fe;
   --cds-interactive-04: #78a9ff;
+  --cds-button-primary: #0f62fe;
+  --cds-button-primary-hover: #0353e9;
+  --cds-button-primary-active: #002d9c;
+  --cds-button-secondary: #525252;
+  --cds-button-secondary-hover: #4c4c4c;
+  --cds-button-secondary-active: #262626;
+  --cds-button-tertiary: #ffffff;
+  --cds-button-tertiary-hover: #f4f4f4;
+  --cds-button-tertiary-active: #c6c6c6;
+  --cds-button-danger-primary: #da1e28;
+  --cds-button-danger-secondary: #fa4d56;
+  --cds-button-danger-hover: #ba1b23;
+  --cds-button-danger-active: #750e13;
+  --cds-button-separator: #000000;
+  --cds-button-disabled: #525252;
 
+  // Focus Rings
   --cds-focus: #ffffff;
   --cds-focus-inset: #161616;
   --cds-focus-inverse: #0f62fe;
 
+  // Border Tokens
   --cds-border-subtle-00: #262626;
   --cds-border-subtle-01: #393939;
   --cds-border-subtle-02: #525252;
+  --cds-border-subtle-03: #6f6f6f;
+  --cds-border-subtle-selected-01: #393939;
+  --cds-border-subtle-selected-02: #525252;
+  --cds-border-subtle-selected-03: #6f6f6f;
   --cds-border-strong-01: #8d8d8d;
-  --cds-border-tile-01: #393939;
+  --cds-border-strong-02: #f4f4f4;
+  --cds-border-tile-01: #262626;
+  --cds-border-tile-02: #393939;
+  --cds-border-tile-03: #525252;
+  --cds-border-interactive: #78a9ff;
+  --cds-border-inverse: #f4f4f4;
+  --cds-border-disabled: #262626;
 
+  // Form Field Tokens
   --cds-field-01: #262626;
-  --cds-field-02: #393939;
+  --cds-field-hover-01: #333333;
+  --cds-field-02: #161616;
+  --cds-field-hover-02: #262626;
+  --cds-field-03: #262626;
+  --cds-field-hover-03: #333333;
+  --cds-field-disabled: #262626;
 
+  // Feedback & Support Tokens
   --cds-support-error: #fa4d56;
+  --cds-support-error-inverse: #da1e28;
   --cds-support-success: #42be65;
+  --cds-support-success-inverse: #24a148;
   --cds-support-warning: #f1c21b;
+  --cds-support-warning-inverse: #f1c21b;
   --cds-support-info: #4589ff;
+  --cds-support-info-inverse: #0043ce;
+  --cds-support-caution-major: #ff832b;
+  --cds-support-caution-minor: #f1c21b;
 
-  --cds-tag-background-blue: #002d9c;
-  --cds-tag-color-blue: #edf5ff;
-  --cds-tag-background-green: #044317;
-  --cds-tag-color-green: #defbe6;
-  --cds-tag-background-red: #750e13;
-  --cds-tag-color-red: #fff1f1;
-  --cds-tag-background-purple: #491d8b;
-  --cds-tag-color-purple: #f6f2ff;
-  --cds-tag-background-teal: #004144;
-  --cds-tag-color-teal: #d9fbfb;
-  --cds-tag-background-gray: #393939;
-  --cds-tag-color-gray: #f4f4f4;
+  // Notification Backgrounds
+  --cds-notification-background-error: #391014;
+  --cds-notification-background-success: #0e2615;
+  --cds-notification-background-warning: #2e2508;
+  --cds-notification-background-info: #102447;
 
+  // UI Shell Top Navbar
   --cds-ui-shell-background: #000000;
   --cds-ui-shell-text: #ffffff;
   --cds-ui-shell-border: #262626;
   --cds-ui-shell-hover: #161616;
 
+  // Brand Block in Header
+  --cds-brand-block-background: #000000;
+  --cds-brand-block-text: #ffffff;
+  --cds-brand-block-border: #262626;
+  --cds-brand-block-hover: #161616;
+
+  // Search Action in Header
+  --cds-search-action-background: #000000;
+  --cds-search-action-text: #ffffff;
+  --cds-search-action-border: #262626;
+  --cds-search-action-hover: #161616;
+
+  // Main Bar
+  --cds-main-bar-background: #1f1f1f;
+  --cds-main-bar-text: #c6c6c6;
+  --cds-main-bar-text-primary: #f4f4f4;
+  --cds-main-bar-border: #2e2e2e;
+  --cds-main-bar-widget-bg: #2a2a2a;
+  --cds-main-bar-widget-border: #3d3d3d;
+  --cds-main-bar-widget-hover: #353535;
+
+  // Shadows
   --cds-shadow-01: 0 2px 6px rgba(0, 0, 0, 0.6);
   --cds-shadow-02: 0 4px 12px rgba(0, 0, 0, 0.7);
+
+  // ---------------------------------------------------------------------------
+  // Standard Carbon Tag Tokens (Dark - 11 Families)
+  // ---------------------------------------------------------------------------
+  --cds-tag-background-red: #750e13;
+  --cds-tag-color-red: #fff1f1;
+  --cds-tag-border-red: #a2191f;
+  --cds-tag-hover-red: #a2191f;
+  --cds-tag-background-magenta: #740937;
+  --cds-tag-color-magenta: #fff0f7;
+  --cds-tag-border-magenta: #9f1853;
+  --cds-tag-hover-magenta: #9f1853;
+  --cds-tag-background-purple: #491d8b;
+  --cds-tag-color-purple: #f6f2ff;
+  --cds-tag-border-purple: #6929c4;
+  --cds-tag-hover-purple: #6929c4;
+  --cds-tag-background-blue: #002d9c;
+  --cds-tag-color-blue: #edf5ff;
+  --cds-tag-border-blue: #0043ce;
+  --cds-tag-hover-blue: #0043ce;
+  --cds-tag-background-cyan: #003a6d;
+  --cds-tag-color-cyan: #e5f6ff;
+  --cds-tag-border-cyan: #00539a;
+  --cds-tag-hover-cyan: #00539a;
+  --cds-tag-background-teal: #004144;
+  --cds-tag-color-teal: #d9fbfb;
+  --cds-tag-border-teal: #005d5d;
+  --cds-tag-hover-teal: #005d5d;
+  --cds-tag-background-green: #044317;
+  --cds-tag-color-green: #defbe6;
+  --cds-tag-border-green: #0e6027;
+  --cds-tag-hover-green: #0e6027;
+  --cds-tag-background-gray: #393939;
+  --cds-tag-color-gray: #f4f4f4;
+  --cds-tag-border-gray: #525252;
+  --cds-tag-hover-gray: #525252;
+  --cds-tag-background-cool-gray: #343a3f;
+  --cds-tag-color-cool-gray: #f2f4f8;
+  --cds-tag-border-cool-gray: #4d5358;
+  --cds-tag-hover-cool-gray: #4d5358;
+  --cds-tag-background-warm-gray: #3c3838;
+  --cds-tag-color-warm-gray: #f7f3f2;
+  --cds-tag-border-warm-gray: #565151;
+  --cds-tag-hover-warm-gray: #565151;
+  --cds-tag-background-high-contrast: #f4f4f4;
+  --cds-tag-color-high-contrast: #161616;
+  --cds-tag-border-high-contrast: #f4f4f4;
+  --cds-tag-hover-high-contrast: #e0e0e0;
 }

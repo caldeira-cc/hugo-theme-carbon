@@ -73,9 +73,11 @@
       {{ range $k, $v := . }}
         {{ if eq $k "primary" }}
           --cds-interactive-01: {{ $v | safeCSS }};
+          --cds-button-primary: {{ $v | safeCSS }};
           {{ if not $.Site.Params.carbon.theme.light.focus }}--cds-focus: {{ $v | safeCSS }};{{ end }}
         {{ else if eq $k "secondary" }}
           --cds-interactive-02: {{ $v | safeCSS }};
+          --cds-button-secondary: {{ $v | safeCSS }};
         {{ else if eq $k "background" }}
           --cds-background: {{ $v | safeCSS }};
         {{ else if eq $k "layer01" }}
@@ -133,9 +135,11 @@
       {{ range $k, $v := . }}
         {{ if eq $k "primary" }}
           --cds-interactive-01: {{ $v | safeCSS }};
+          --cds-button-primary: {{ $v | safeCSS }};
           {{ if not $.Site.Params.carbon.theme.dark.focus }}--cds-focus: {{ $v | safeCSS }};{{ end }}
         {{ else if eq $k "secondary" }}
           --cds-interactive-02: {{ $v | safeCSS }};
+          --cds-button-secondary: {{ $v | safeCSS }};
         {{ else if eq $k "background" }}
           --cds-background: {{ $v | safeCSS }};
         {{ else if eq $k "layer01" }}

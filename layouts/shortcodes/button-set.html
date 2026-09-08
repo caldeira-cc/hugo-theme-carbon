@@ -1,0 +1,6 @@
+{{ $stacked := .Get "stacked" | default false }}
+{{ $class := .Get "class" }}
+
+<div class="cds--btn-set{{ if $stacked }} cds--btn-set--stacked{{ end }}{{ with $class }} {{ . }}{{ end }}">
+  {{ .Inner }}
+</div>

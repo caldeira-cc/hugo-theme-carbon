@@ -1,0 +1,15 @@
+{{ $text := "" }}
+{{ if .IsNamedParams }}
+  {{ $text = .Get "text" }}
+{{ else if gt (len .Params) 0 }}
+  {{ $text = .Get 0 }}
+{{ end }}
+{{ $feedback := .Get "feedback" | default "Copied!" }}
+{{ $label := .Get "aria_label" | default "Copy to clipboard" }}
+
+<span class="cds--copy-button-wrapper">
+  <button type="button" class="cds--copy-btn" aria-label="{{ $label }}" title="{{ $label }}" onclick="navigator.clipboard.writeText('{{ $text }}'); const el = this.querySelector('.cds--copy-btn__feedback'); if (el) { el.classList.add('is-visible'); setTimeout(() => el.classList.remove('is-visible'), 2000); }">
+    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M28 10v18H10V10h18m0-2H10a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z"/><path d="M4 18H2V4a2 2 0 0 1 2-2h14v2H4v14z"/></svg>
+    <span class="cds--copy-btn__feedback" role="status">{{ $feedback }}</span>
+  </button>
+</span>

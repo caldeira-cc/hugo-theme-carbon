@@ -8,19 +8,45 @@
 
 {{ $type := .Get "type" | default "outline" }}
 {{ $href := .Get "href" }}
-{{ $clickable := .Get "clickable" | default true }}
-{{ $showHash := .Get "hash" | default true }}
+{{ $clickable := true }}
+{{ if or (eq (.Get "clickable") false) (eq (.Get "clickable") "false") }}
+  {{ $clickable = false }}
+{{ end }}
+{{ $showHash := true }}
+{{ if or (eq (.Get "hash") false) (eq (.Get "hash") "false") }}
+  {{ $showHash = false }}
+{{ end }}
+{{ $size := .Get "size" | default "md" }}
+{{ $filter := false }}
+{{ if or (eq (.Get "filter") true) (eq (.Get "filter") "true") }}
+  {{ $filter = true }}
+{{ end }}
+
+{{ $tagClasses := printf "cds--tag cds--tag--%s cds--tag--%s" $type $size }}
+{{ if $filter }}
+  {{ $tagClasses = printf "%s cds--tag--filter" $tagClasses }}
+{{ end }}
 
 {{ if $href }}
-  <a href="{{ $href }}" class="cds--tag cds--tag--{{ $type }} cds--tag--clickable" title="Tag: {{ $name }}">
+  <a href="{{ $href }}" class="{{ $tagClasses }} cds--tag--clickable" title="Tag: {{ $name }}">
     {{ if $showHash }}#{{ end }}{{ $name }}
+    {{ if $filter }}
+      <span class="cds--tag__close-icon" aria-label="Clear tag" onclick="event.preventDefault(); this.closest('.cds--tag').remove();">
+        <svg width="12" height="12" viewBox="0 0 32 32" fill="currentColor"><path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z"/></svg>
+      </span>
+    {{ end }}
   </a>
-{{ else if $clickable }}
-  <a href="{{ partial "components/tag-url.html" $name }}" class="cds--tag cds--tag--{{ $type }} cds--tag--clickable" title="View all pages tagged with #{{ $name }}">
+{{ else if and $clickable (not $filter) }}
+  <a href="{{ partial "components/tag-url.html" $name }}" class="{{ $tagClasses }} cds--tag--clickable" title="View all pages tagged with #{{ $name }}">
     {{ if $showHash }}#{{ end }}{{ $name }}
   </a>
 {{ else }}
-  <span class="cds--tag cds--tag--{{ $type }}">
+  <span class="{{ $tagClasses }}">
     {{ if $showHash }}#{{ end }}{{ $name }}
+    {{ if $filter }}
+      <span class="cds--tag__close-icon" aria-label="Clear tag" onclick="this.closest('.cds--tag').remove();">
+        <svg width="12" height="12" viewBox="0 0 32 32" fill="currentColor"><path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z"/></svg>
+      </span>
+    {{ end }}
   </span>
 {{ end }}

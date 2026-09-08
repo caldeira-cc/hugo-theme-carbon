@@ -981,3 +981,243 @@
     display: block;
   }
 }
+
+// ==========================================
+// 13. CODE SNIPPETS & STANDALONE COPY BUTTON
+// ==========================================
+
+.cds--snippet {
+  position: relative;
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  width: 100%;
+  margin: 1.25rem 0;
+  box-sizing: border-box;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+  }
+
+  code, pre {
+    font-family: var(--cds-font-mono, 'IBM Plex Mono', monospace);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--cds-text-primary);
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    white-space: pre;
+  }
+
+  // Single-line snippet
+  &--single {
+    .cds--snippet__container {
+      height: 48px;
+      padding: 0 3rem 0 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  // Multi-line snippet
+  &--multi {
+    pre {
+      padding: 1rem 3rem 1rem 1rem;
+      max-height: 280px;
+      overflow: auto;
+    }
+
+    &.cds--snippet--expandable {
+      .cds--snippet__btn--expand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 32px;
+        background-color: var(--cds-layer-02);
+        border: none;
+        border-top: 1px solid var(--cds-border-subtle-00);
+        color: var(--cds-link-primary);
+        font-family: inherit;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: background-color 110ms;
+
+        &:hover {
+          background-color: var(--cds-layer-hover-01, var(--cds-layer-01));
+        }
+      }
+    }
+  }
+
+  // Inline snippet
+  &--inline {
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    margin: 0 0.125rem;
+    background-color: var(--cds-layer-02);
+    border: none;
+    padding: 0.125rem 0.375rem;
+    cursor: pointer;
+    vertical-align: baseline;
+    transition: background-color 110ms;
+
+    code {
+      font-size: 0.75rem;
+    }
+
+    &:hover {
+      background-color: var(--cds-layer-hover-01, var(--cds-layer-03));
+    }
+  }
+}
+
+// Copy Button (Component & Embedded)
+.cds--copy-btn,
+.cds--snippet-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  color: var(--cds-text-secondary);
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 110ms, color 110ms;
+
+  &:hover {
+    background-color: var(--cds-layer-hover-01, var(--cds-layer-02));
+    color: var(--cds-text-primary);
+  }
+
+  &:active {
+    background-color: var(--cds-layer-active-01, var(--cds-layer-03));
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .cds--copy-btn__feedback {
+    position: absolute;
+    bottom: 100%;
+    right: 50%;
+    transform: translateX(50%);
+    background-color: var(--cds-layer-03, #393939);
+    color: var(--cds-text-inverse, #ffffff);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.6875rem;
+    white-space: nowrap;
+    border-radius: 2px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 150ms ease;
+    margin-bottom: 4px;
+    z-index: 9999;
+
+    &.is-visible {
+      opacity: 1;
+    }
+  }
+}
+
+// Standalone Copy Button Inline Wrapper
+.cds--copy-button-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+}
+
+// ==========================================
+// 14. TREE VIEW & TREE NODE
+// ==========================================
+
+.cds--tree {
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0;
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  font-family: inherit;
+  font-size: 0.875rem;
+
+  &__node {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &__label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      color: var(--cds-text-primary);
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 110ms;
+
+      &:hover {
+        background-color: var(--cds-layer-hover-01, var(--cds-layer-02));
+      }
+
+      &:focus {
+        outline: 2px solid var(--cds-focus);
+        outline-offset: -2px;
+      }
+    }
+
+    &--selected > &__label {
+      background-color: var(--cds-layer-selected-01, var(--cds-layer-02));
+      font-weight: 600;
+    }
+
+    &__chevron {
+      width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 150ms cubic-bezier(0.2, 0, 0.38, 0.9);
+
+      svg {
+        width: 12px;
+        height: 12px;
+        fill: currentColor;
+      }
+    }
+
+    &--expanded > &__label > &__chevron {
+      transform: rotate(90deg);
+    }
+
+    &__children {
+      list-style: none;
+      padding-left: 1.25rem;
+      margin: 0;
+      display: none;
+    }
+
+    &--expanded > &__children {
+      display: block;
+    }
+
+    &--leaf &__chevron {
+      visibility: hidden;
+    }
+  }
+}
+

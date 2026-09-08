@@ -240,22 +240,67 @@
   transition: background-color 0.11s, color 0.11s, border-color 0.11s;
   border: 1px solid transparent;
 
+  &--red {
+    background-color: var(--cds-tag-background-red);
+    color: var(--cds-tag-color-red);
+    border-color: var(--cds-tag-border-red, transparent);
+    &:hover { background-color: var(--cds-tag-hover-red, var(--cds-tag-background-red)); }
+  }
+
+  &--magenta {
+    background-color: var(--cds-tag-background-magenta);
+    color: var(--cds-tag-color-magenta);
+    border-color: var(--cds-tag-border-magenta, transparent);
+    &:hover { background-color: var(--cds-tag-hover-magenta, var(--cds-tag-background-magenta)); }
+  }
+
+  &--purple {
+    background-color: var(--cds-tag-background-purple);
+    color: var(--cds-tag-color-purple);
+    border-color: var(--cds-tag-border-purple, transparent);
+    &:hover { background-color: var(--cds-tag-hover-purple, var(--cds-tag-background-purple)); }
+  }
+
   &--blue {
     background-color: var(--cds-tag-background-blue);
     color: var(--cds-tag-color-blue);
     border-color: var(--cds-tag-border-blue, transparent);
+    &:hover { background-color: var(--cds-tag-hover-blue, var(--cds-tag-background-blue)); }
   }
 
-  &--green {
-    background-color: var(--cds-tag-background-green);
-    color: var(--cds-tag-color-green);
-    border-color: var(--cds-tag-border-green, transparent);
+  &--cyan {
+    background-color: var(--cds-tag-background-cyan);
+    color: var(--cds-tag-color-cyan);
+    border-color: var(--cds-tag-border-cyan, transparent);
+    &:hover { background-color: var(--cds-tag-hover-cyan, var(--cds-tag-background-cyan)); }
   }
 
   &--teal {
     background-color: var(--cds-tag-background-teal);
     color: var(--cds-tag-color-teal);
     border-color: var(--cds-tag-border-teal, transparent);
+    &:hover { background-color: var(--cds-tag-hover-teal, var(--cds-tag-background-teal)); }
+  }
+
+  &--green {
+    background-color: var(--cds-tag-background-green);
+    color: var(--cds-tag-color-green);
+    border-color: var(--cds-tag-border-green, transparent);
+    &:hover { background-color: var(--cds-tag-hover-green, var(--cds-tag-background-green)); }
+  }
+
+  &--gray {
+    background-color: var(--cds-tag-background-gray);
+    color: var(--cds-tag-color-gray);
+    border-color: var(--cds-tag-border-gray, transparent);
+    &:hover { background-color: var(--cds-tag-hover-gray, var(--cds-tag-background-gray)); }
+  }
+
+  &--cool-gray {
+    background-color: var(--cds-tag-background-cool-gray);
+    color: var(--cds-tag-color-cool-gray);
+    border-color: var(--cds-tag-border-cool-gray, transparent);
+    &:hover { background-color: var(--cds-tag-hover-cool-gray, var(--cds-tag-background-cool-gray)); }
   }
 
   &--warm-gray,
@@ -263,41 +308,65 @@
     background-color: var(--cds-tag-background-warm-gray);
     color: var(--cds-tag-color-warm-gray);
     border-color: var(--cds-tag-border-warm-gray, transparent);
+    &:hover { background-color: var(--cds-tag-hover-warm-gray, var(--cds-tag-background-warm-gray)); }
   }
 
-  &--purple,
-  &--magenta {
-    background-color: var(--cds-tag-background-purple);
-    color: var(--cds-tag-color-purple);
-    border-color: var(--cds-tag-border-purple, transparent);
-  }
-
-  &--red {
-    background-color: var(--cds-tag-background-red);
-    color: var(--cds-tag-color-red);
-    border-color: var(--cds-tag-border-red, transparent);
-  }
-
-  &--gray {
-    background-color: var(--cds-tag-background-gray);
-    color: var(--cds-tag-color-gray);
-    border-color: var(--cds-tag-border-gray, transparent);
+  &--high-contrast {
+    background-color: var(--cds-tag-background-high-contrast);
+    color: var(--cds-tag-color-high-contrast);
+    border-color: var(--cds-tag-border-high-contrast, transparent);
+    &:hover { background-color: var(--cds-tag-hover-high-contrast, var(--cds-tag-background-high-contrast)); }
   }
 
   &--outline {
     background-color: transparent;
     border: 1px solid var(--cds-border-strong-01);
     color: var(--cds-text-primary);
+    &:hover {
+      background-color: var(--cds-layer-hover-01, var(--cds-layer-01));
+    }
+  }
+
+  // Sizes
+  &--sm {
+    height: 1.125rem;
+    padding: 0 0.375rem;
+    font-size: 0.6875rem;
+  }
+
+  &--md {
+    height: 1.5rem;
+    padding: 0 0.5rem;
+  }
+
+  // Filter / Dismissable Tag
+  &--filter {
+    padding-right: 0.25rem;
+
+    .cds--tag__close-icon {
+      margin-left: 0.25rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      transition: background-color 0.11s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.15);
+      }
+    }
   }
 
   &--clickable,
   a#{&} {
     cursor: pointer;
     text-decoration: none;
-    transition: opacity 0.11s, filter 0.11s, transform 0.11s;
+    transition: opacity 0.11s, filter 0.11s, transform 0.11s, background-color 0.11s;
 
     &:hover {
-      filter: brightness(0.92);
       text-decoration: none;
     }
 
@@ -306,6 +375,7 @@
     }
   }
 }
+
 
 // Author Mention Chip
 .carbon-author-mention {
@@ -354,37 +424,50 @@
   font-weight: 400;
   line-height: 1.25rem;
   padding: 0.875rem 1rem;
+  min-height: 48px;
   border: 1px solid transparent;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.11s, border-color 0.11s;
+  box-sizing: border-box;
+  vertical-align: middle;
+  transition: background-color 0.11s, border-color 0.11s, color 0.11s;
 
   &--primary {
-    background-color: var(--cds-interactive-01);
+    background-color: var(--cds-button-primary, var(--cds-interactive-01));
     color: #ffffff;
     &:hover {
-      background-color: var(--cds-link-primary-hover);
+      background-color: var(--cds-button-primary-hover, var(--cds-link-primary-hover));
       text-decoration: none;
+    }
+    &:active {
+      background-color: var(--cds-button-primary-active, #002d9c);
     }
   }
 
   &--secondary {
-    background-color: var(--cds-interactive-02);
+    background-color: var(--cds-button-secondary, var(--cds-interactive-02));
     color: #ffffff;
     &:hover {
-      background-color: #4c4c4c;
+      background-color: var(--cds-button-secondary-hover, #4c4c4c);
       text-decoration: none;
+    }
+    &:active {
+      background-color: var(--cds-button-secondary-active, #262626);
     }
   }
 
   &--tertiary {
     background-color: transparent;
-    border: 1px solid var(--cds-interactive-01);
-    color: var(--cds-interactive-01);
+    border: 1px solid var(--cds-button-tertiary, var(--cds-interactive-01));
+    color: var(--cds-button-tertiary, var(--cds-interactive-01));
     &:hover {
-      background-color: var(--cds-interactive-01);
+      background-color: var(--cds-button-tertiary, var(--cds-interactive-01));
       color: #ffffff;
       text-decoration: none;
+    }
+    &:active {
+      background-color: var(--cds-button-tertiary-active, #002d9c);
+      color: #ffffff;
     }
   }
 
@@ -392,21 +475,135 @@
     background-color: transparent;
     color: var(--cds-link-primary);
     &:hover {
-      background-color: var(--cds-layer-01);
+      background-color: var(--cds-layer-hover-01, var(--cds-layer-01));
+      color: var(--cds-link-primary-hover);
       text-decoration: none;
     }
   }
 
+  &--danger,
+  &--danger--primary {
+    background-color: var(--cds-button-danger-primary, var(--cds-support-error));
+    color: #ffffff;
+    &:hover {
+      background-color: var(--cds-button-danger-hover, #ba1b23);
+      text-decoration: none;
+    }
+    &:active {
+      background-color: var(--cds-button-danger-active, #750e13);
+    }
+  }
+
+  &--danger--tertiary {
+    background-color: transparent;
+    border: 1px solid var(--cds-button-danger-secondary, var(--cds-support-error));
+    color: var(--cds-button-danger-secondary, var(--cds-support-error));
+    &:hover {
+      background-color: var(--cds-button-danger-secondary, var(--cds-support-error));
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+
+  &--danger--ghost {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: var(--cds-button-danger-secondary, var(--cds-support-error));
+    &:hover {
+      background-color: var(--cds-layer-hover-01, var(--cds-layer-01));
+      text-decoration: none;
+    }
+  }
+
+  // Sizes
   &--sm {
+    min-height: 32px;
     padding: 0.375rem 0.75rem;
     font-size: 0.75rem;
+  }
+
+  &--md {
+    min-height: 40px;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+  }
+
+  &--lg {
+    min-height: 48px;
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  &--xl {
+    min-height: 64px;
+    padding: 1.125rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  &--2xl {
+    min-height: 80px;
+    padding: 1.375rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  &--icon-only {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    padding: 0;
+    justify-content: center;
+
+    &.cds--btn--sm {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+    }
+
+    &.cds--btn--md {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+    }
+
+    svg {
+      margin-left: 0 !important;
+    }
+  }
+
+  &:disabled,
+  &--disabled {
+    background-color: var(--cds-button-disabled, var(--cds-layer-02)) !important;
+    color: var(--cds-text-disabled) !important;
+    border-color: transparent !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
   }
 
   svg {
     margin-left: 0.5rem;
     fill: currentColor;
+    flex-shrink: 0;
   }
 }
+
+// Button Set
+.cds--btn-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  align-items: center;
+  margin: 1rem 0;
+
+  &--stacked {
+    flex-direction: column;
+    align-items: stretch;
+
+    .cds--btn {
+      width: 100%;
+    }
+  }
+}
+
 
 // Breadcrumbs
 .cds--breadcrumb {
