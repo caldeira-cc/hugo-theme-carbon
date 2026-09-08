@@ -2,7 +2,7 @@
 title: "Mathematical Typesetting & IBM Plex Math"
 description: "How to render LaTeX mathematical expressions offline using KaTeX delimiters and self-hosted IBM Plex Math typography."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Architecture Team"
 categories: ["Design System", "Typography"]
 tags: ["Math", "KaTeX", "IBM Plex"]
 version: "v11.2.0"

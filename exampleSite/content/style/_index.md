@@ -1,6 +1,6 @@
 ---
 title: "Design System & Style Guide"
-description: "Comprehensive visual specification, tripartite colour harmony (Sage, Khaki, Faded Denim), IBM Plex typography scale, and IBM Design System principles."
+description: "Comprehensive visual specification, IBM Carbon v11 color tokens, IBM Plex typography scale, and IBM Design Language principles."
 layout: "list"
 cascade:
   params:

@@ -2,7 +2,7 @@
 title: "Modular Dashboards & W3C CSVW Data Engine"
 description: "How to build executive KPI metric bars, status matrices, and interactive W3C CSVW tabular data explorer components."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Site Reliability Engineering"
 categories: ["Architecture", "Data"]
 tags: ["CSVW", "Dashboards", "Metrics"]
 version: "v11.2.0"

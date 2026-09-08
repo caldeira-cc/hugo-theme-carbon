@@ -1,5 +1,5 @@
 baseURL: "https://carbon.caldeira.cc/"
-title: "Carbon Design System Engine | César Caldeira"
+title: "Hugo Carbon — IBM Carbon Design System v11 Theme"
 defaultContentLanguage: "en"
 defaultContentLanguageInSubdir: false
 
@@ -8,16 +8,16 @@ languages:
     languageName: "English (UK)"
     languageCode: "en-GB"
     weight: 1
-    title: "Carbon Design System Engine | César Caldeira"
+    title: "Hugo Carbon — IBM Carbon Design System v11 Theme"
     params:
-      description: "Enterprise theme architecture, technical documentation, style guide studio, and W3C CSVW data engine."
+      description: "Modular, zero-CDN Hugo theme implementing IBM Carbon Design System v11 with W3C CSVW data engine, MapLibre GL maps, and dual-style theming."
   pt:
     languageName: "Português"
     languageCode: "pt-PT"
     weight: 2
-    title: "Motor Carbon Design System | César Caldeira"
+    title: "Hugo Carbon — Tema IBM Carbon Design System v11"
     params:
-      description: "Arquitetura empresarial de temas, documentação técnica, guia de estilos e motor de dados W3C CSVW."
+      description: "Tema modular para Hugo implementando o IBM Carbon Design System v11 com motor de dados W3C CSVW, mapas MapLibre GL e temas duplos."
 
 taxonomies:
   category: categories
@@ -100,12 +100,12 @@ params:
       clock:
         enable: true
         mode: "timezone"
-        timezone: "Europe/Lisbon"
+        timezone: "UTC"
       date:
         enable: true
       availability:
         enable: true
-        url: "https://cesar.caldeira.cc/#contact"
+        url: "#"
       themeSwitcher:
         enable: true
       search:
@@ -118,7 +118,7 @@ params:
   navigation:
     brand:
       title: "CARBON"
-      description: "[Theme & Docs]"
+      description: "[Theme Engine]"
       logoUrl: "/assets/images/ibm-carbon-logo.svg"
     navbar:
       - title: "Overview"
@@ -127,36 +127,36 @@ params:
       - title: "Docs"
         url: "/docs/"
         icon: "Catalog20"
+      - title: "Components"
+        url: "/docs/carbon-components/"
+        icon: "Application20"
+      - title: "Showcase"
+        url: "/docs/feature-showcase/"
+        icon: "Portfolio20"
       - title: "Style Guide"
         url: "/style/"
         icon: "ColorPalette20"
       - title: "Data Explorer"
         url: "/data/"
         icon: "Table20"
+      - title: "Dashboard"
+        url: "/analytics/"
+        icon: "Dashboard20"
       - title: "Case Studies"
         url: "/portfolio/"
-        icon: "Portfolio20"
-      - title: "Hub"
-        url: "https://cesar.caldeira.cc/"
-        icon: "Home20"
-      - title: "Insights"
-        url: "https://blog.caldeira.cc/"
         icon: "Notebook20"
-      - title: "Apps"
-        url: "https://apps.caldeira.cc/"
-        icon: "Application20"
 
   social:
     - name: "GitHub"
       id: "github"
-      url: "https://github.com/carbon-design-system/carbon"
-      handle: "carbon-design-system"
+      url: "https://github.com/caldeira-cc/hugo-theme-carbon"
+      handle: "caldeira-cc/hugo-theme-carbon"
       icon: "github"
-    - name: "Twitter / X"
-      id: "twitter"
-      url: "https://twitter.com/_carbondesign"
-      handle: "@_carbondesign"
-      icon: "twitter"
+    - name: "Carbon Design"
+      id: "carbon"
+      url: "https://carbondesignsystem.com/"
+      handle: "IBM Carbon Design System"
+      icon: "globe"
     - name: "IBM Design"
       id: "ibm"
       url: "https://www.ibm.com/design/language/"
@@ -164,38 +164,40 @@ params:
       icon: "globe"
 
   footer:
-    copyright: "Hugo-Carbon Open Source Engine. Built on IBM Carbon Design System v11."
-    compliance: "Compliant with WCAG 2.1 AA Standards & GDPR"
+    copyright: "Hugo Carbon Theme. Built with IBM Carbon Design System v11."
+    compliance: "Compliant with WCAG 2.1 AA Standards & Zero External CDNs."
     columns:
-      - title: "Architecture"
+      - title: "Documentation"
         links:
           - title: "Overview"
             url: "/"
           - title: "Technical Docs"
             url: "/docs/"
+          - title: "75+ Components"
+            url: "/docs/carbon-components/"
+          - title: "Configuration"
+            url: "/docs/configuration/"
+      - title: "Showcase & Engines"
+        links:
+          - title: "Feature Showcase"
+            url: "/docs/feature-showcase/"
           - title: "Style Guide"
             url: "/style/"
           - title: "Data Explorer"
             url: "/data/"
-      - title: "Ecosystem"
-        links:
-          - title: "Hub Subdomain"
-            url: "https://cesar.caldeira.cc/"
-          - title: "Insights & Essays"
-            url: "https://blog.caldeira.cc/"
-          - title: "Interactive Apps"
-            url: "https://apps.caldeira.cc/"
-          - title: "Theme Showcase"
-            url: "https://carbon.caldeira.cc/"
-      - title: "Legal & Standards"
+          - title: "Dashboard Analytics"
+            url: "/analytics/"
+      - title: "Standards & Legal"
         links:
           - title: "Privacy Policy"
-            url: "https://cesar.caldeira.cc/privacy-policy/"
+            url: "/privacy/"
+          - title: "Terms of Service"
+            url: "/terms/"
+          - title: "Open Source Licenses"
+            url: "/licenses/"
           - title: "Cookie Settings"
             url: "#"
             data_action: "open-settings"
-          - title: "Open Source Licenses"
-            url: "https://cesar.caldeira.cc/open-source-licenses/"
 
 module:
   mounts:

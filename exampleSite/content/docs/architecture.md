@@ -2,7 +2,7 @@
 title: "Architecture & 2x Grid Specification"
 description: "Mathematical layout specifications for the IBM Carbon 2x Grid, 8px mini-unit spatial system, and IBM Plex typeface scale."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Design Systems Team"
 categories: ["Architecture", "Design System"]
 tags: ["Carbon v11", "Grid", "IBM Plex"]
 version: "v11.2.0"
@@ -108,33 +108,46 @@ flowchart LR
 
 ---
 
-## 5. Standalone Theme Package & Multi-Site Monorepo Architecture
+## 5. Standalone Theme Module Architecture & Integration
 
-The repository isolates the **Hugo-Carbon Theme** into a standalone, portable theme package located in `themes/carbon/`:
+The **Hugo-Carbon Theme** is structured as an autonomous, decoupled Hugo module (`github.com/caldeira-cc/hugo-theme-carbon`):
 
 ```
-Hugo-Carbon Workspace Root/
-├── themes/carbon/              <-- Standalone Reusable Hugo Theme
-│   ├── assets/                 <-- Token-driven SCSS & modular JS engines
-│   ├── layouts/                <-- Decoupled HTML5 templates & shortcodes
-│   ├── static/                 <-- Self-hosted fonts, licenses, and libraries
-│   ├── data/                   <-- Dynamic palette themes (themes.yaml)
-│   └── theme.yaml              <-- Theme manifest & metadata (v11.2.0)
-│
-├── content/                    <-- Individual Websites
-│   ├── cesar/                  <-- Personal Landing Page (Hub)
-│   ├── blog/                   <-- Publication & Academic Blog
-│   ├── carbon/                 <-- Theme Documentation & Specimen Portal
-│   └── apps/                   <-- Interactive Web Application Sandbox
-│
-├── config/                     <-- Multi-Environment Config Cascade
-│   ├── _default/hugo.yaml      <-- Base config loading theme: "carbon"
-│   ├── cesar/hugo.yaml         <-- cesar.caldeira.cc environment
-│   ├── blog/hugo.yaml          <-- blog.caldeira.cc environment
-│   └── carbon/hugo.yaml        <-- carbon.caldeira.cc environment
-│
-└── .agents/                    <-- Dual-Agent Operating Framework
-    ├── skills/theme-engineer/  <-- Theme Engineer Agent (Hugo & Theme Maintenance)
-    └── skills/content-creator/ <-- Content Creator Agent (Site Content Authoring)
+hugo-theme-carbon/
+├── assets/                     <-- SCSS design tokens & vanilla JS modules
+│   ├── scss/                   <-- Token scales, 2x Grid, and typography
+│   └── js/                     <-- Theme manager, CSVW, MapLibre, PSPP
+├── layouts/                    <-- Decoupled HTML5 templates & 75+ shortcodes
+│   ├── _default/               <-- Master baseof.html, single, list, dashboard
+│   ├── partials/               <-- Headers, widgets, sidebars, dynamic styles
+│   └── shortcodes/             <-- Complete Carbon UI component library
+├── static/                     <-- 100% self-hosted WOFF2 fonts, licenses, vendor libs
+├── data/                       <-- Color themes and availability data
+└── theme.yaml                  <-- Theme manifest & metadata
+```
+
+### Importing into Any Hugo Site
+
+#### Method 1: Hugo Modules (Recommended)
+In your site's `hugo.yaml`:
+```yaml
+module:
+  imports:
+    - path: github.com/caldeira-cc/hugo-theme-carbon
+```
+
+Run:
+```bash
+hugo mod get github.com/caldeira-cc/hugo-theme-carbon
+```
+
+#### Method 2: Git Submodule
+```bash
+git submodule add https://github.com/caldeira-cc/hugo-theme-carbon.git themes/hugo-theme-carbon
+```
+
+In your site's `hugo.yaml`:
+```yaml
+theme: "hugo-theme-carbon"
 ```
 

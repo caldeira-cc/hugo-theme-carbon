@@ -1,142 +1,117 @@
 ---
-title: "Multi-Subdomain Cloudflare Deployment Guide"
-description: "Step-by-step production blueprint for deploying Hugo-Carbon with multiple subdomains on Cloudflare Pages and DNS completely for free."
+title: "Production Deployment Guide"
+description: "Comprehensive blueprint for deploying Hugo-Carbon static sites to Cloudflare Pages, GitHub Pages, and Netlify with automated CI/CD."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Cloud Infrastructure Group"
 categories: ["Deployment", "Cloudflare"]
-tags: ["Cloudflare", "CI/CD", "Hugo"]
+tags: ["Cloudflare", "CI/CD", "Hugo", "Hosting"]
 version: "v11.2.0"
+cascade:
+  params:
+    collectionType: "docs"
+    sidebars:
+      left:
+        enable: true
+        data: "docs"
+      right:
+        enable: true
 ---
 
-This guide provides a comprehensive, production-ready blueprint for deploying the **Hugo-Carbon Modular Engine** across multiple isolated subdomains using **Cloudflare Pages** and **Cloudflare DNS** at **zero monthly hosting cost ($0/mo)**.
+This guide provides a comprehensive, production-ready blueprint for deploying websites built on the **Hugo Carbon Theme** to modern static hosting platforms including **Cloudflare Pages**, **GitHub Pages**, and **Netlify** with zero hosting costs and automated Git-based CI/CD pipelines.
 
 ```
-                    ┌────────────────────────┐
-                    │  Cloudflare Anycast    │
-                    │      Edge Network      │
-                    └───────────┬────────────┘
-                                │
-        ┌───────────────┬───────┴───────┬───────────────┐
-        ▼               ▼               ▼               ▼
-┌──────────────┐┌──────────────┐┌──────────────┐┌──────────────┐
-│    cesar     ││     blog     ││     apps     ││    carbon    │
-│  .caldeira.cc││  .caldeira.cc││  .caldeira.cc││  .caldeira.cc│
-│ (Personal)   ││ (Publication)││ (Interactive)││ (Engine/Docs)│
-└──────────────┘└──────────────┘└──────────────┘└──────────────┘
-        │               │               │               │
-        └───────────────┴───────┬───────┴───────────────┘
-                                ▼
-                    ┌────────────────────────┐
-                    │   assets.caldeira.cc   │
-                    │   (Shared Static CDN)  │
-                    └────────────────────────┘
+┌─────────────────────────────────┐
+│        Git Push to Main         │
+│  (GitHub / GitLab / Bitbucket)  │
+└────────────────┬────────────────┘
+                 │ Webhook Trigger
+                 ▼
+┌─────────────────────────────────┐
+│     Cloudflare / GitHub CI      │
+│  - Hugo Extended v0.149.0       │
+│  - SCSS Dart Sass Compilation   │
+│  - AES-256-GCM Encryption Tool  │
+└────────────────┬────────────────┘
+                 │ Deploy Artifact
+                 ▼
+┌─────────────────────────────────┐
+│      Global Anycast Edge        │
+│   (Zero-CDN / 100% In-Origin)   │
+└─────────────────────────────────┘
 ```
 
 ---
 
-## 1. Multi-Target Build Strategy
+## 1. Cloudflare Pages Deployment (Recommended)
 
-The Hugo-Carbon project compiles into 5 discrete public directories:
+Cloudflare Pages provides global Anycast edge distribution, instant cache purges, unlimited bandwidth, and automatic TLS certificates.
+
+### Step 1: Connect Git Repository
+1. Log into your [Cloudflare Dashboard](https://dash.cloudflare.com/).
+2. Navigate to **Compute (Workers & Pages)** -> **Create application** -> **Pages** -> **Connect to Git**.
+3. Select your repository containing the Hugo site.
+
+### Step 2: Configure Build Settings
+Fill in the deployment configuration modal:
+
+| Configuration Setting | Recommended Value | Notes |
+| :--- | :--- | :--- |
+| **Project name** | `my-carbon-site` | Generates `my-carbon-site.pages.dev` |
+| **Production branch** | `main` | Production deployment trigger |
+| **Framework preset** | `Hugo` | Pre-selects Hugo build environment |
+| **Build command** | `hugo --gc --minify` | Runs garbage collection and HTML/CSS minification |
+| **Build output directory**| `public` | Default Hugo destination directory |
+| **Root directory** | `/` (or `exampleSite` if testing demo) | Repository root where `hugo.yaml` is located |
+
+### Step 3: Set Required Environment Variables
+Under **Environment variables (advanced)**, add:
+
+```
+HUGO_VERSION = 0.149.0
+```
+
+> [!IMPORTANT]
+> Cloudflare Pages defaults to an older Hugo runtime if `HUGO_VERSION` is omitted. Setting `0.149.0` guarantees that Dart Sass, Hugo Pipes, and ESBuild features compile without errors.
+
+### Step 4: Add Post-Build Encryption (Optional)
+If your site contains encrypted notes using the `password:` front-matter parameter, chain the Python encryption script to your build command:
 
 ```bash
-# Compile each environment into its respective target directory
-hugo --environment cesar  -d public/cesar  --cleanDestinationDir
-hugo --environment blog   -d public/blog   --cleanDestinationDir
-hugo --environment apps   -d public/apps   --cleanDestinationDir
-hugo --environment carbon -d public/carbon --cleanDestinationDir
-hugo --environment assets -d public/assets --cleanDestinationDir
+hugo --gc --minify && python3 scripts/encrypt.py --dir public
 ```
 
-### Automation Shell Script (`scripts/build-all.sh`)
-
-Create an executable build script in your repository root:
-
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-echo "=================================================="
-echo "Compiling all Hugo-Carbon Subdomains..."
-echo "=================================================="
-
-export HUGO_ENV="production"
-
-for env in cesar blog apps carbon assets; do
-  echo "--> Building target: ${env}..."
-  hugo --environment "${env}" -d "public/${env}" --cleanDestinationDir --minify
-done
-
-echo "--> Running dependency and license audit..."
-python3 scripts/verify-dependencies.py
-
-echo "--> Auditing internal link integrity..."
-python3 scripts/test_public_html.py
-
-echo "🎉 ALL SUBDOMAINS COMPILED AND VERIFIED SUCCESSFULLY!"
-```
-
-Make it executable:
-```bash
-chmod +x scripts/build-all.sh
-```
+### Step 5: Custom Domain & DNS
+Once the build completes:
+1. Go to **Custom domains** in the Pages project.
+2. Click **Set up a custom domain** (e.g. `docs.example.org`).
+3. Cloudflare automatically configures the CNAME record and provisions a Cloudflare SSL certificate.
 
 ---
 
-## 2. Cloudflare Pages Project Configuration
+## 2. GitHub Pages Deployment via GitHub Actions
 
-Cloudflare Pages provides unlimited bandwidth, global SSD edge CDN, automatic SSL certificates, and 500 build operations per month on the Free tier.
-
-### Method A: Individual Cloudflare Pages Projects (Recommended)
-
-Create 5 distinct Pages projects linked to the same GitHub repository:
-
-| Pages Project Name | Custom Subdomain | Build Command | Output Directory |
-| :--- | :--- | :--- | :--- |
-| `caldeira-cesar` | `cesar.caldeira.cc` | `hugo --environment cesar -d public/cesar` | `public/cesar` |
-| `caldeira-blog` | `blog.caldeira.cc` | `hugo --environment blog -d public/blog` | `public/blog` |
-| `caldeira-apps` | `apps.caldeira.cc` | `hugo --environment apps -d public/apps` | `public/apps` |
-| `caldeira-carbon` | `carbon.caldeira.cc` | `hugo --environment carbon -d public/carbon` | `public/carbon` |
-| `caldeira-assets` | `assets.caldeira.cc` | `hugo --environment assets -d public/assets` | `public/assets` |
-
-#### Environment Variables in Cloudflare Pages Dashboard
-For each project, navigate to **Settings > Environment Variables** and add:
-- `HUGO_VERSION`: `0.149.0` (or `latest extended`)
-- `NODE_VERSION`: `20.x`
-
----
-
-## 3. GitHub Actions Automated Deployment Workflow
-
-Instead of relying on Cloudflare's native build limits, you can use **GitHub Actions** to build all 5 subdomains in parallel and deploy them directly using Wrangler.
-
-Create `.github/workflows/deploy.yml`:
+To deploy directly to GitHub Pages without third-party services, create a declarative workflow file at `.github/workflows/deploy.yml`:
 
 ```yaml
-name: Deploy Multi-Subdomain Hugo-Carbon to Cloudflare Pages
+name: Deploy Hugo-Carbon to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   workflow_dispatch:
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - env: "cesar"
-            project: "caldeira-cesar"
-          - env: "blog"
-            project: "caldeira-blog"
-          - env: "apps"
-            project: "caldeira-apps"
-          - env: "carbon"
-            project: "caldeira-carbon"
-          - env: "assets"
-            project: "caldeira-assets"
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -147,82 +122,80 @@ jobs:
       - name: Setup Hugo Extended
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "0.149.0"
+          hugo-version: '0.149.0'
           extended: true
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.11'
 
-      - name: Build Hugo Target
-        run: |
-          hugo --environment ${{ matrix.env }} -d public/${{ matrix.env }} --minify --cleanDestinationDir
+      - name: Verify Zero-CDN Dependencies
+        run: python3 scripts/verify-dependencies.py
 
-      - name: Verify Link Integrity & Dependencies
-        run: |
-          python3 scripts/verify-dependencies.py
+      - name: Build Hugo Site
+        run: hugo --gc --minify
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+      - name: Encrypt Protected Documents (Optional)
+        run: python3 scripts/encrypt.py --dir public
+
+      - name: Audit Static Link Integrity
+        run: python3 scripts/test_public_html.py --dir public
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy public/${{ matrix.env }} --project-name=${{ matrix.project }} --commit-dirty=true
+          path: ./public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 ```
 
 ---
 
-## 4. Cloudflare DNS & Custom Domains
+## 3. Netlify Deployment
 
-In your Cloudflare Dashboard for your domain (`caldeira.cc`):
+Create a `netlify.toml` in your repository root:
 
-### 1. DNS Records Setup
-Add `CNAME` records with the **Proxy status: Proxied (Orange Cloud)**:
+```toml
+[build]
+  command = "hugo --gc --minify"
+  publish = "public"
 
-| Type | Name | Target | Proxy Status |
-| :--- | :--- | :--- | :--- |
-| `CNAME` | `cesar` | `caldeira-cesar.pages.dev` | 🟠 Proxied |
-| `CNAME` | `blog` | `caldeira-blog.pages.dev` | 🟠 Proxied |
-| `CNAME` | `apps` | `caldeira-apps.pages.dev` | 🟠 Proxied |
-| `CNAME` | `carbon` | `caldeira-carbon.pages.dev` | 🟠 Proxied |
-| `CNAME` | `assets` | `caldeira-assets.pages.dev` | 🟠 Proxied |
-| `CNAME` | `@` (apex) | `caldeira-cesar.pages.dev` | 🟠 Proxied |
+[build.environment]
+  HUGO_VERSION = "0.149.0"
+  HUGO_ENABLEGITINFO = "true"
 
-### 2. Apex Domain Redirection (Page Rules)
-To redirect `caldeira.cc` to `https://cesar.caldeira.cc/`:
-- **Rule URL**: `caldeira.cc/*`
-- **Setting**: *Forwarding URL* (301 Permanent Redirect)
-- **Destination**: `https://cesar.caldeira.cc/$1`
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+```
 
 ---
 
-## 5. Security Headers, CORS & Performance Optimization
+## 4. Local Verification Before Deployment
 
-### 1. CORS Headers for `assets.caldeira.cc`
-Because fonts (IBM Plex WOFF2) and scripts are shared from `assets.caldeira.cc`, Cloudflare must serve appropriate CORS headers.
+Before pushing changes to production, run the included verification scripts locally:
 
-In the Cloudflare Dashboard, go to **Rules > Transform Rules > Modify Response Header**:
-- **Rule Name**: `Allow Cross-Origin Asset CDN`
-- **If Incoming Request**: `Hostname eq "assets.caldeira.cc"`
-- **Response Headers**:
-  - `Access-Control-Allow-Origin`: `*`
-  - `Access-Control-Allow-Methods`: `GET, HEAD, OPTIONS`
-  - `Timing-Allow-Origin`: `*`
+```bash
+# 1. Verify 100% self-hosted fonts, vendor scripts, and licenses
+python3 scripts/verify-dependencies.py
 
-### 2. Security Headers (Transform Rules)
-Add a Response Header rule applied across all subdomains:
-- `X-Frame-Options`: `SAMEORIGIN`
-- `X-Content-Type-Options`: `nosniff`
-- `Referrer-Policy`: `strict-origin-when-cross-origin`
-- `Permissions-Policy`: `camera=(), microphone=(), geolocation=()`
+# 2. Compile site locally with garbage collection and minification
+hugo --gc --minify
 
-### 3. SSL/TLS and Edge Optimization
-In the Cloudflare Dashboard:
-1. **SSL/TLS**: Set encryption mode to **Full (Strict)**.
-2. **Speed > Optimization**:
-   - Enable **Brotli** compression.
-   - Enable **Early Hints** (103 Early Hints).
-   - Enable **HTTP/3 (with QUIC)** and **0-RTT Connection Resumption**.
-3. **Caching > Cache Rules**:
-   - Add a rule for `*.woff2`, `*.css`, and `*.js`: Edge TTL **1 Month**, Browser TTL **1 Year**.
+# 3. Test static HTML internal links and anchors
+python3 scripts/test_public_html.py --dir public
+```

@@ -2,7 +2,7 @@
 title: "Data Analytics & GNU PSPP Statistical Suite"
 description: "High-performance client-side data analytics platform, build-time static KPI engine, W3C CSVW table explorer, GNU PSPP Variable View, and full-width GeoJSON maps."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Data Platform Engineering"
 categories: ["Data", "Analytics", "PSPP"]
 tags: ["CSVW", "Web Workers", "PSPP", "Dashboards", "GeoJSON"]
 version: "v11.2.0"

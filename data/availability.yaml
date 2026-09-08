@@ -1,9 +1,9 @@
 # Availability, Working Schedule, and Holiday Configuration
 user:
-  name: "Cesar Caldeira"
-  title: "Principal Systems Architect"
-  location: "London / Lisbon"
-  timezone: "Europe/London" # IANA Timezone Identifier
+  name: "Design Systems Team"
+  title: "Theme Engineering & Design Operations"
+  location: "Global / Remote"
+  timezone: "UTC" # IANA Timezone Identifier
 
 # Weekly Working Hours (Monday through Sunday)
 # Schedule: Monday - Friday 10:00 to 18:00, Saturday & Sunday Unavailable

@@ -1,6 +1,7 @@
 ---
 title: "IBM Carbon Design System Component Library"
 description: "Comprehensive technical reference, parameter guide, and live shortcode specifications for all Carbon v11 components, skeletons, and UI patterns."
+author: "Design Systems Team"
 weight: 15
 cascade:
   params:
@@ -34,7 +35,7 @@ The Hugo-Carbon Modular Platform implements the **IBM Carbon Design System v11**
 
 All components adhere strictly to:
 - **16-Column 2x Grid Layout** (8px mini-units, 4px baseline rhythm, 1440px max width boundary)
-- **Token-based Theming** (`--cds-*` across White, Gray 10, Gray 90, Gray 100, and custom tripartite themes)
+- **Token-based Theming** (`--cds-*` across White, Gray 10, Gray 90, Gray 100, and custom theme tokens)
 - **WCAG 2.1 / 2.2 AA Accessibility** (full keyboard tab-stops, 2px focus rings, ARIA landmarks)
 - **Zero Runtime CDNs** (100% self-hosted dependencies)
 
@@ -73,8 +74,8 @@ Accordions disclose content sections on demand with smooth rotational chevrons a
   {{< accordion-item title="What is the Local-First Zero-CDN Architecture?" open="true" >}}
 All scripts, stylesheets, mathematical rendering engines (KaTeX), MapLibre vector tiles, and IBM Plex fonts are 100% self-hosted locally under static/.
   {{< /accordion-item >}}
-  {{< accordion-item title="How does Multi-Subdomain Monorepo compilation work?" >}}
-Hugo isolates builds into 5 distinct Cloudflare Pages targets (`cesar.caldeira.cc`, `blog.caldeira.cc`, `apps.caldeira.cc`, `carbon.caldeira.cc`, and `assets.caldeira.cc`).
+  {{< accordion-item title="How does static site compilation work?" >}}
+Hugo isolates builds into modular static targets with instant generation times and zero runtime dependencies.
   {{< /accordion-item >}}
 {{< /accordion >}}
 
@@ -133,17 +134,17 @@ Meters and step trackers for linear workflows and multi-step processes.
 
 Organize key-value specifications and grouped items within clean Carbon containers.
 
-{{< contained-list title="Subdomain Target Routing" >}}
-  {{< contained-list-item title="Main Hub (cesar.caldeira.cc)" description="Strategic advisory & manifest" href="https://cesar.caldeira.cc" >}}
-  {{< contained-list-item title="Blog & Insights (blog.caldeira.cc)" description="Date-based essays & analysis" href="https://blog.caldeira.cc" >}}
-  {{< contained-list-item title="Theme Engine (carbon.caldeira.cc)" description="Documentation & style guide" href="https://carbon.caldeira.cc" >}}
+{{< contained-list title="Modular Architecture Sections" >}}
+  {{< contained-list-item title="Documentation Hub" description="Architectural specifications & guides" href="/docs/" >}}
+  {{< contained-list-item title="W3C Data Explorer" description="Tabular dataset ingestion & analysis" href="/data/" >}}
+  {{< contained-list-item title="Component Studio" description="Live 75+ shortcodes specimen" href="/docs/carbon-components/" >}}
 {{< /contained-list >}}
 
 {{< structured-list headers="Token Name,CSS Variable,Standard Value" >}}
   <tr class="cds--structured-list-row">
     <td class="cds--structured-list-td">Interactive Primary</td>
     <td class="cds--structured-list-td"><code>--cds-interactive-01</code></td>
-    <td class="cds--structured-list-td">#69a280 (Sage) / #0f62fe (IBM)</td>
+    <td class="cds--structured-list-td">#0f62fe (IBM Blue 60)</td>
   </tr>
   <tr class="cds--structured-list-row">
     <td class="cds--structured-list-td">Layer Background</td>

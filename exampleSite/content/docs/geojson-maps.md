@@ -2,7 +2,7 @@
 title: "Geospatial Vector Map Explorer"
 description: "How to render interactive MapLibre GL vector maps adhering to the open Mapbox Vector Tile (MVT) standard with GeoJSON overlays and theme styling."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Graphics Simulation Lab"
 categories: ["Architecture", "Geospatial"]
 tags: ["Maps", "MapLibre", "MVT", "GeoJSON"]
 version: "v11.2.0"

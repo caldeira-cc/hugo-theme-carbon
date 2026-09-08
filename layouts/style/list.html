@@ -14,7 +14,7 @@
           Carbon Design System & <span style="font-weight: 600; color: var(--cds-interactive-01);">Visual Style Guide</span>
         </h1>
         <p class="cds--type-body-long-02" style="font-size: 1.25rem; color: var(--cds-text-secondary); max-width: 820px; margin-bottom: 2rem; line-height: 1.6;">
-          An enterprise-grade design framework uniting IBM Carbon v11’s mathematical precision with a tailored, organic tripartite palette: <strong>Sage Green</strong> as the primary identity anchor, complemented by <strong>Khaki Sand</strong> and <strong>Faded Light Blue Jeans Denim</strong>, built upon standard IBM Carbon light and dark neutral foundations.
+          An enterprise-grade design framework uniting IBM Carbon v11’s mathematical precision with canonical tokens: <strong>IBM Blue 60</strong> as the primary identity anchor, standard IBM Carbon light and dark neutral foundations, and support status indicators compliant with WCAG 2.1 AA contrast requirements.
         </p>
 
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
@@ -43,99 +43,99 @@
   <section id="color-system" style="padding: 3.5rem 0; border-bottom: 1px solid var(--cds-border-subtle-00);">
     <div class="cds--row" style="margin-bottom: 2rem;">
       <div class="cds--col-sm-4 cds--col-md-8 cds--col-lg-16">
-        <span class="cds--tag cds--tag--green" style="margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">/// Section 01</span>
-        <h2 class="cds--type-heading-05" style="margin: 0 0 0.5rem;">Tripartite Color Architecture</h2>
+        <span class="cds--tag cds--tag--blue" style="margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">/// Section 01</span>
+        <h2 class="cds--type-heading-05" style="margin: 0 0 0.5rem;">IBM Carbon v11 Color Architecture</h2>
         <p class="cds--type-body-long-01" style="color: var(--cds-text-secondary); max-width: 800px; margin: 0;">
-          The palette pairs an organic sage green identity anchor with warm earthy khaki and cool faded denim accents. Every token is calibrated to guarantee accessible contrast ratios compliant with WCAG 2.1 Level AA/AAA standards across both light and dark display modes.
+          The system delivers canonical IBM Carbon tokens built around IBM Blue 60 interactive controls, accessible neutral scale layers, and clear functional support colors. Sites can further customize their palette per domain in <code>hugo.yaml</code>.
         </p>
       </div>
     </div>
 
-    {{/* Palette Grid: 3 Pillars + Standard IBM Neutrals */}}
+    {{/* Palette Grid: Primary Interactive, Support Tokens & Categorical */}}
     <div class="cds--row" style="row-gap: 2rem; margin-bottom: 2.5rem;">
 
-      {{/* 1. Sage Green (Primary Anchor) */}}
+      {{/* 1. IBM Blue 60 (Primary Interactive) */}}
       <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-5">
-        <div class="cds--tile" style="height: 100%; padding: 1.5rem; background-color: var(--cds-layer-01); border-top: 4px solid #69a280;">
+        <div class="cds--tile" style="height: 100%; padding: 1.5rem; background-color: var(--cds-layer-01); border-top: 4px solid #0f62fe;">
           <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem;">
-            <h3 class="cds--type-heading-03" style="margin: 0; color: #69a280;">Sage Green</h3>
+            <h3 class="cds--type-heading-03" style="margin: 0; color: #0f62fe;">IBM Blue 60</h3>
             <span class="cds--tag cds--tag--outline" style="margin: 0; font-family: var(--cds-font-mono, monospace); font-size: 0.7rem;">PRIMARY</span>
           </div>
           <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin-bottom: 1.25rem;">
-            The primary brand anchor for key interactions, focus states, verified indicators, and core navigation affordances.
+            The canonical interactive primary anchor for buttons, links, active states, and focused navigation affordances.
           </p>
 
           {{/* Swatch List */}}
           <div style="display: flex; flex-direction: column; gap: 0.5rem; font-family: var(--cds-font-mono, monospace); font-size: 0.75rem;">
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #69a280; color: #ffffff; border-radius: 2px;">
-              <span>Base (#69a280)</span>
-              <span>rgb(105, 162, 128)</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #0f62fe; color: #ffffff; border-radius: 2px;">
+              <span>Base (#0f62fe)</span>
+              <span>Blue 60</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #e5f0ea; color: #2e5840; border: 1px solid #bddbc9; border-radius: 2px;">
-              <span>Light Tint (#e5f0ea)</span>
-              <span>Text: #2e5840 (5.2:1)</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #edf5ff; color: #0043ce; border: 1px solid #d0e2ff; border-radius: 2px;">
+              <span>Light Tint (#edf5ff)</span>
+              <span>Text: #0043ce (5.8:1)</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #182d21; color: #9fd0b3; border: 1px solid #2c503b; border-radius: 2px;">
-              <span>Dark Layer (#182d21)</span>
-              <span>Text: #9fd0b3 (9.4:1)</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #001d6c; color: #78a9ff; border: 1px solid #002d9c; border-radius: 2px;">
+              <span>Dark Layer (#001d6c)</span>
+              <span>Text: #78a9ff (8.6:1)</span>
             </div>
           </div>
         </div>
       </div>
 
-      {{/* 2. Khaki Sand (Warm Earth Accent) */}}
+      {{/* 2. Support Success & Warning */}}
       <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-5">
-        <div class="cds--tile" style="height: 100%; padding: 1.5rem; background-color: var(--cds-layer-01); border-top: 4px solid #b8a88a;">
+        <div class="cds--tile" style="height: 100%; padding: 1.5rem; background-color: var(--cds-layer-01); border-top: 4px solid #24a148;">
           <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem;">
-            <h3 class="cds--type-heading-03" style="margin: 0; color: #8c7d58;">Khaki Sand</h3>
-            <span class="cds--tag cds--tag--outline" style="margin: 0; font-family: var(--cds-font-mono, monospace); font-size: 0.7rem;">ACCENT 1</span>
+            <h3 class="cds--type-heading-03" style="margin: 0; color: #24a148;">Support Tokens</h3>
+            <span class="cds--tag cds--tag--outline" style="margin: 0; font-family: var(--cds-font-mono, monospace); font-size: 0.7rem;">FUNCTIONAL</span>
           </div>
           <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin-bottom: 1.25rem;">
-            A warm, architectural earth tone representing institutional stability, capability tags, version markers, and spec grids.
+            Status colors communicating positive confirmations, operational warnings, and analytical thresholds.
           </p>
 
           {{/* Swatch List */}}
           <div style="display: flex; flex-direction: column; gap: 0.5rem; font-family: var(--cds-font-mono, monospace); font-size: 0.75rem;">
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #b8a88a; color: #161616; border-radius: 2px;">
-              <span>Base (#b8a88a)</span>
-              <span>Sand Earth</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #24a148; color: #ffffff; border-radius: 2px;">
+              <span>Success (#24a148)</span>
+              <span>Green 60</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #f6f3eb; color: #665739; border: 1px solid #dcd3be; border-radius: 2px;">
-              <span>Light Tint (#f6f3eb)</span>
-              <span>Text: #665739 (4.9:1)</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #f1c21b; color: #161616; border-radius: 2px;">
+              <span>Warning (#f1c21b)</span>
+              <span>Yellow 30</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #2b251a; color: #ded4be; border: 1px solid #4a3f2c; border-radius: 2px;">
-              <span>Dark Layer (#2b251a)</span>
-              <span>Text: #ded4be (10.2:1)</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #da1e28; color: #ffffff; border-radius: 2px;">
+              <span>Danger (#da1e28)</span>
+              <span>Red 60</span>
             </div>
           </div>
         </div>
       </div>
 
-      {{/* 3. Faded Light Blue Jeans (Denim Accent) */}}
+      {{/* 3. Categorical & Accent Data Tokens */}}
       <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-6">
-        <div class="cds--tile" style="height: 100%; padding: 1.5rem; background-color: var(--cds-layer-01); border-top: 4px solid #7a9eb3;">
+        <div class="cds--tile" style="height: 100%; padding: 1.5rem; background-color: var(--cds-layer-01); border-top: 4px solid #8a3ffc;">
           <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem;">
-            <h3 class="cds--type-heading-03" style="margin: 0; color: #5c8296;">Faded Jeans Denim</h3>
-            <span class="cds--tag cds--tag--outline" style="margin: 0; font-family: var(--cds-font-mono, monospace); font-size: 0.7rem;">ACCENT 2</span>
+            <h3 class="cds--type-heading-03" style="margin: 0; color: #8a3ffc;">Data & Analytics</h3>
+            <span class="cds--tag cds--tag--outline" style="margin: 0; font-family: var(--cds-font-mono, monospace); font-size: 0.7rem;">CATEGORICAL</span>
           </div>
           <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin-bottom: 1.25rem;">
-            A washed indigo denim tone conveying clarity and technical rigor, applied to concept tags, scholarly archives, and directory badges.
+            Categorical data visualization tokens for chart series, GeoJSON vector layers, and status matrices.
           </p>
 
           {{/* Swatch List */}}
           <div style="display: flex; flex-direction: column; gap: 0.5rem; font-family: var(--cds-font-mono, monospace); font-size: 0.75rem;">
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #7a9eb3; color: #ffffff; border-radius: 2px;">
-              <span>Base (#7a9eb3)</span>
-              <span>Washed Denim</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #8a3ffc; color: #ffffff; border-radius: 2px;">
+              <span>Purple 60 (#8a3ffc)</span>
+              <span>Category 1</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #edf3f7; color: #35596e; border: 1px solid #cbe0eb; border-radius: 2px;">
-              <span>Light Tint (#edf3f7)</span>
-              <span>Text: #35596e (5.5:1)</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #009d9a; color: #ffffff; border-radius: 2px;">
+              <span>Teal 50 (#009d9a)</span>
+              <span>Category 2</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #1b2a33; color: #a5c8dc; border: 1px solid #2e4757; border-radius: 2px;">
-              <span>Dark Layer (#1b2a33)</span>
-              <span>Text: #a5c8dc (9.1:1)</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background-color: #ee538b; color: #ffffff; border-radius: 2px;">
+              <span>Magenta 50 (#ee538b)</span>
+              <span>Category 3</span>
             </div>
           </div>
         </div>
@@ -231,7 +231,7 @@
             Monospaced clarity for technical specs, personal data schemas, timestamps, and LaTeX expressions.
           </p>
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; line-height: 1.4; color: var(--cds-text-primary);">
-            FULL_NAME: César Manuel Caldeira; SPEC_V1.0
+            SYSTEM_ID: HUGO_CARBON_SPEC_V11; AUTH: VERIFIED
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
 title: "Client-Side Encrypted Secrets Container"
 description: "How to protect sensitive documentation and confidential notes using browser-native PBKDF2 key derivation and AES-256-GCM encryption."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Security Operations"
 categories: ["Security", "Encryption"]
 tags: ["Cryptography", "AES-GCM", "Security"]
 version: "v11.2.0"

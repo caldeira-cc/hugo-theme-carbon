@@ -2,7 +2,7 @@
 title: "Theme Customisation & Palette Tokens"
 description: "How to configure, override, and create custom color palettes using IBM Carbon v11 tokens and SCSS compilation."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Design Systems Team"
 categories: ["Design System", "Theming"]
 tags: ["Theming", "Tokens", "SCSS"]
 version: "v11.2.0"

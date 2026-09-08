@@ -2,7 +2,7 @@
 title: "Data Analytics, CSVW Web Worker & PSPP Statistical Suite"
 description: "Comprehensive guide to the multithreaded CSVW static data engine, build-time KPI calculations, GNU PSPP statistical analysis suite, full-width responsive maps, and IBM-styled cartography."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Data Platform Engineering"
 categories: ["Data", "Architecture", "Analytics"]
 tags: ["CSVW", "Web Workers", "PSPP", "Dashboards", "GeoJSON"]
 version: "v11.2.0"

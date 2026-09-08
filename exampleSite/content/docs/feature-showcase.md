@@ -2,15 +2,15 @@
 title: "Platform Feature Showcase"
 description: "Comprehensive interactive demonstration of every IBM Carbon Design System v11 React component, shortcode, data visualization, encryption module, and typographic capability."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Design Systems Team"
 categories: ["Architecture", "Design System"]
-tags: ["Carbon v11", "Hugo", "Cloudflare", "WebGPU", "Components"]
+tags: ["Carbon v11", "Hugo", "Components", "Showcase"]
 version: "v11.2.0"
 ---
 
-{{< breadcrumb items="Carbon Hub (https://carbon.caldeira.cc/), Documentation (/docs/), Feature Showcase (/docs/feature-showcase/)" >}}
+{{< breadcrumb items="Home (/), Documentation (/docs/), Feature Showcase (/docs/feature-showcase/)" >}}
 
-{{< notification kind="success" title="Interactive Showcase Active" subtitle="Experience all 34 IBM Carbon React components, data engines, and Hugo shortcodes directly within this live specimen environment." >}}
+{{< notification kind="success" title="Interactive Showcase Active" subtitle="Experience all IBM Carbon React components, data engines, and Hugo shortcodes directly within this live specimen environment." >}}
 {{< /notification >}}
 
 Welcome to the **Hugo-Carbon Feature Showcase**. This master specimen page exercises and exhibits every built-in capability, interactive component, shortcode, and data engine packaged within the Hugo-Carbon architecture.
@@ -19,7 +19,7 @@ Welcome to the **Hugo-Carbon Feature Showcase**. This master specimen page exerc
 
 ## 1. Cards, Tiles & Digital Business Cards
 
-{{< card title="IBM Carbon Design System Architecture" eyebrow="Component Spec" tag="v11.2" href="https://react.carbondesignsystem.com/" actionText="View Storybook ↗" >}}
+{{< card title="IBM Carbon Design System Architecture" eyebrow="Component Spec" tag="v11.2" href="https://carbondesignsystem.com/" actionText="View Specifications ↗" >}}
 Compliant with IBM Carbon v11 16-column grid, token-driven theming, and zero runtime external CDN invariants.
 {{< /card >}}
 
@@ -40,7 +40,7 @@ Below-the-fold expanded details revealed smoothly on chevron click.
 The `vcard` shortcode presents rich contact information as an IBM Carbon business card with instant **VCF file downloads**, **clipboard copying**, and **offline QR code generation**.
 
 #### Mode A: Parsed from `.vcf` File
-{{< vcard file="/data/cesar-caldeira.vcf" >}}{{< /vcard >}}
+{{< vcard file="/data/contact-sample.vcf" >}}{{< /vcard >}}
 
 #### Mode B: Direct Parameters & Dynamic VCF Generation
 {{< vcard
@@ -49,7 +49,7 @@ The `vcard` shortcode presents rich contact information as an IBM Carbon busines
     org="Cognitive Systems & Machine Learning Lab"
     email="elena.rostova@lab.example.org"
     phone="+44 20 7946 0912"
-    website="https://carbon.caldeira.cc"
+    website="https://example.org"
     location="London, United Kingdom"
     badge="Principal Investigator"
     badgeColor="purple"
@@ -73,7 +73,7 @@ Leading edge computing and private AI systems research with IBM Carbon v11 inter
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
   <div>
     {{< search placeholder="Search components..." size="md" label="Component Filter" >}}
-    {{< select label="Distribution Target" helper="Cloudflare Pages subdomain" options="cesar.caldeira.cc,blog.caldeira.cc,apps.caldeira.cc,carbon.caldeira.cc" >}}
+    {{< select label="Distribution Target" helper="Deployment node target" options="docs.example.org,data.example.org,components.example.org,showcase.example.org" >}}
   </div>
   <div>
     {{< slider label="Worker Batch Size" min="10" max="500" value="150" step="10" unit=" ops" >}}
@@ -139,10 +139,10 @@ Flyout popover containing interactive contextual notes and reference definitions
 All 49 IBM Plex and KaTeX font files, scripts, and stylesheets verified locally.
 {{< /toast >}}
 
-{{< notification kind="info" title="System Status: Operational" subtitle="The multi-subdomain engine is executing across 5 isolated targets." >}}
+{{< notification kind="info" title="System Status: Operational" subtitle="The static engine is executing with 100% self-hosted dependencies." >}}
 {{< /notification >}}
 
-{{< notification kind="warning" title="Subdomain Routing Advisory" subtitle="Cross-subdomain asset fetching requires Access-Control-Allow-Origin on assets.caldeira.cc." >}}
+{{< notification kind="warning" title="Cross-Origin Asset Advisory" subtitle="Cross-origin font loading requires standard Access-Control-Allow-Origin headers when hosting assets from a dedicated origin." >}}
 {{< /notification >}}
 
 {{< notification kind="error" title="Data Integrity Notice" subtitle="CSVW metadata files must strictly conform to W3C Tabular Data schemas." >}}
@@ -171,8 +171,8 @@ Zero plaintext leaks with build-time document encryption and client memory key d
   {{< accordion-item title="What is the Zero-CDN invariant?" open="true" >}}
 All vendor scripts, styles, typefaces, and icons are committed to source control and distributed from the local static origin.
   {{< /accordion-item >}}
-  {{< accordion-item title="How does multi-subdomain deployment work?" >}}
-Each subdomain (cesar, blog, apps, carbon, assets) compiles from isolated Hugo environment configs and deploys to Cloudflare Pages.
+  {{< accordion-item title="How does static deployment work?" >}}
+Each section and module compiles with zero external dependencies and deploys cleanly to any static hosting provider.
   {{< /accordion-item >}}
 {{< /accordion >}}
 
@@ -197,13 +197,13 @@ Each subdomain (cesar, blog, apps, carbon, assets) compiles from isolated Hugo e
 ## 7. Data Tables & Tabular Exploration
 
 {{< data-table title="Architecture Performance Metrics" description="Benchmark comparison across rendering layers" zebra="true" >}}
-| Subdomain / Target | Primary Function | Compiled Pages | Build Time | Status |
-|---|---|---|---|---|
-| **cesar.caldeira.cc** | Institutional & Career Hub | 38 pages | 255 ms | Operational |
-| **blog.caldeira.cc** | Publication & Magazine | 156 pages | 370 ms | Operational |
-| **apps.caldeira.cc** | Interactive Web Apps & AI | 105 pages | 306 ms | Operational |
-| **carbon.caldeira.cc** | Design System & Docs Hub | 174 pages | 433 ms | Operational |
-| **assets.caldeira.cc** | Shared Assets & Cryptography | 423 pages | 780 ms | Operational |
+| Target Module | Primary Architecture | Compiled Pages | Build Time | Status |
+|:---|:---|:---|:---|:---|
+| **Theme Documentation** | Dual Sidebars & Markdown | 45 pages | 185 ms | Operational |
+| **Component Studio** | 75+ Carbon Shortcodes | 110 pages | 215 ms | Operational |
+| **W3C Data Explorer** | Web Worker CSVW Parser | 65 pages | 170 ms | Operational |
+| **Telemetry Dashboard** | KPI Metrics & Matrices | 85 pages | 195 ms | Operational |
+| **Static Asset Engine** | Self-Hosted Fonts & JS | 220 pages | 95 ms | Operational |
 {{< /data-table >}}
 
 ---
@@ -226,19 +226,19 @@ $$\nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}, \quad \nab
 
 ## 10. Declarative Mermaid Flowcharts
 
-{{< mermaid title="Multi-Subdomain Static Request Routing" id="diagram-arch-routing" >}}
+{{< mermaid title="Modular Static Request Routing" id="diagram-arch-routing" >}}
 flowchart TD
-    Client["Client Web Browser\n(Desktop / Mobile)"] -->|HTTPS / WOFF2| Edge["Cloudflare Anycast Network\n(Edge CDN & DNS)"]
+    Client["Client Web Browser\n(Desktop / Mobile)"] -->|HTTPS / WOFF2| Edge["Static Host / Edge CDN\n(Global Distribution)"]
     
-    subgraph Subdomains ["Isolated Subdomain Deployments"]
-        Edge -->|cesar.caldeira.cc| S1["Hub & Manifest\n(Profile / Career)"]
-        Edge -->|blog.caldeira.cc| S2["Publication Node\n(Essays / Insights)"]
-        Edge -->|apps.caldeira.cc| S3["Interactive Sandbox\n(Chess / AI / Physics)"]
-        Edge -->|carbon.caldeira.cc| S4["Carbon Docs Hub\n(Specs / Engine)"]
+    subgraph Services ["Modular Site Architecture"]
+        Edge --> S1["Documentation Portal\n(Markdown Guides)"]
+        Edge --> S2["W3C Data Explorer\n(CSVW Tabular Engine)"]
+        Edge --> S3["Component Studio\n(75+ Shortcodes)"]
+        Edge --> S4["Telemetry Dashboard\n(KPIs & PSPP)"]
     end
 
-    subgraph StaticCDN ["Central Shared Asset Distribution"]
-        S1 -.->|Fonts & Icons| Assets["assets.caldeira.cc\n(WOFF2 / JS / SVGs)"]
+    subgraph StaticAssets ["Self-Hosted Assets (Zero CDN)"]
+        S1 -.->|Fonts & Icons| Assets["Static Asset Directory\n(WOFF2 / JS / SVGs)"]
         S2 -.->|Fonts & Icons| Assets
         S3 -.->|Fonts & Icons| Assets
         S4 -.->|Fonts & Icons| Assets
@@ -265,13 +265,13 @@ The platform includes a client-side text-to-speech player utilizing the Web Spee
 
 ## 12. Social Media Suite & Interactive Badges
 
-The engine includes responsive vector badges and flexible layouts for all 6 core social networks (Facebook, LinkedIn, Twitter/X, Instagram, Chess.com, Bluesky).
+The engine includes responsive vector badges and flexible layouts for all core social networks.
 
 ### Full Collection Inline Badges
 {{< social-links layout="inline" >}}
 
 ### Individual Inline Shortcode Badges
-Connect with César Caldeira on {{< social "linkedin" >}}, follow real-time updates on {{< social "bluesky" >}}, analyze chess matches on {{< social "chess" >}}, or view photographs on {{< social "instagram" >}}.
+Connect with the design systems team on {{< social "linkedin" >}}, follow updates on {{< social "twitter" >}}, or inspect source repositories on {{< social "github" >}}.
 
 ---
 

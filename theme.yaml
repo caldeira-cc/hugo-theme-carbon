@@ -1,8 +1,8 @@
 name: "Hugo Carbon"
 license: "Apache-2.0"
-licenselink: "https://github.com/cesarcaldeira/hugo-carbon/blob/main/LICENSE"
+licenselink: "https://github.com/caldeira-cc/hugo-theme-carbon/blob/main/LICENSE"
 description: "Modular, zero-CDN, token-driven static site theme implementing the IBM Carbon Design System v11 with W3C CSVW data analytics, GeoJSON cartography, KaTeX Plex math, and client-side encryption."
-homepage: "https://carbon.caldeira.cc"
+homepage: "https://github.com/caldeira-cc/hugo-theme-carbon"
 demosite: "https://carbon.caldeira.cc"
 tags:
   - "carbon-design-system"
@@ -16,8 +16,9 @@ tags:
   - "responsive"
 
 features:
-  - "IBM Carbon Design System v11 (16-column 2x Grid, 8px mini-units)"
-  - "18 Dynamic Color Themes with live browser switching and persistence"
+  - "IBM Carbon Design System v11 (16-column 2x Grid, 8px mini-units, 4px baseline)"
+  - "Dual-Style Theming (Light and Dark) with live browser switching and OS tracking"
+  - "Per-domain custom color palette overrides and token injection"
   - "100% Offline-First / Zero-CDN with self-hosted IBM Plex WOFF2 fonts"
   - "W3C CSV on the Web (CSVW) tabular data engine with Web Worker processing"
   - "GPU-Accelerated MapLibre GL v4 GeoJSON vector maps (2D flat & 3D globe)"
@@ -29,5 +30,5 @@ features:
 min_hugo_version: "0.120.0"
 
 author:
-  name: "César Caldeira"
-  homepage: "https://cesar.caldeira.cc"
+  name: "Hugo Carbon Contributors"
+  homepage: "https://github.com/caldeira-cc/hugo-theme-carbon"

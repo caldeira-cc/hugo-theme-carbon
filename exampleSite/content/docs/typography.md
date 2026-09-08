@@ -2,7 +2,7 @@
 title: "Typography & Content Elements Reference"
 description: "Comprehensive catalogue of IBM Plex typography scales, headings, inline styling, images, captions, callouts, tables, quotes, and footnotes."
 date: 2026-08-24T12:00:00Z
-author: "César Caldeira"
+author: "Design Systems Team"
 categories: ["Design System", "Typography"]
 tags: ["Typography", "IBM Plex", "Carbon v11"]
 version: "v11.2.0"
@@ -141,11 +141,11 @@ Never commit sensitive private keys or plaintext passwords to Markdown front-mat
     - Level 3: 16-Column Layout
     - Level 3: Fluid Breakpoints (`sm`, `md`, `lg`, `xlg`, `max`)
 - Level 1: Multi-Subdomain Routing
-  - Level 2: Subdomain Isolation (`cesar`, `blog`, `apps`, `carbon`)
+  - Level 2: Section Architecture (docs, style, data, showcase)
 
 ### Ordered Numeric Lists (3 Nested Levels)
 1. **Compilation Phase**
-   1. Clean destination directory (`public/<env>`)
+   1. Clean destination directory (`public/`)
    2. Parse YAML configurations and language dictionaries
    3. Render Markdown through Goldmark engine
 2. **Asset Pipeline Phase**
@@ -176,14 +176,14 @@ Never commit sensitive private keys or plaintext passwords to Markdown front-mat
 
 ### Responsive Carbon Data Table
 
-| Module Name | Subdomain Target | Security Level | Status | Load Time (LCP) |
+| Module Name | Deployment Target | Security Level | Status | Load Time (LCP) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Personal Hub** | `cesar.caldeira.cc` | Level 1 (Public) | <span class="cds--tag cds--tag--green">ONLINE</span> | `210 ms` |
-| **Journal & Insights** | `blog.caldeira.cc` | Level 1 (Public) | <span class="cds--tag cds--tag--green">ONLINE</span> | `245 ms` |
-| **Stockfish Chess Arena** | `apps.caldeira.cc` | Level 2 (Worker) | <span class="cds--tag cds--tag--blue">VERIFIED</span> | `320 ms` |
-| **On-Device WebLLM AI** | `apps.caldeira.cc` | Level 3 (WebGPU) | <span class="cds--tag cds--tag--purple">STANDBY</span> | `410 ms` |
-| **Theme & Documentation** | `carbon.caldeira.cc` | Level 1 (Public) | <span class="cds--tag cds--tag--green">ONLINE</span> | `180 ms` |
-| **Shared Static CDN** | `assets.caldeira.cc` | Level 1 (CORS) | <span class="cds--tag cds--tag--teal">OPTIMIZED</span> | `95 ms` |
+| **Documentation Portal** | `docs.example.org` | Level 1 (Public) | <span class="cds--tag cds--tag--green">ONLINE</span> | `180 ms` |
+| **Data Analytics Suite** | `data.example.org` | Level 1 (Public) | <span class="cds--tag cds--tag--green">ONLINE</span> | `210 ms` |
+| **Component Studio** | `components.example.org` | Level 1 (Public) | <span class="cds--tag cds--tag--blue">VERIFIED</span> | `195 ms` |
+| **Telemetry Dashboard** | `telemetry.example.org` | Level 2 (Worker) | <span class="cds--tag cds--tag--purple">STANDBY</span> | `240 ms` |
+| **Theme & Style Guide** | `style.example.org` | Level 1 (Public) | <span class="cds--tag cds--tag--green">ONLINE</span> | `170 ms` |
+| **Static Asset Origin** | `assets.example.org` | Level 1 (CORS) | <span class="cds--tag cds--tag--teal">OPTIMIZED</span> | `95 ms` |
 
 ---
 

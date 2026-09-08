@@ -2,7 +2,7 @@
 title: "XML Data Engine & Tabular Explorer"
 description: "How to parse, compute, and render structured XML datasets at build-time and interactively with Carbon Design System components."
 date: 2026-08-25T12:00:00Z
-author: "César Caldeira"
+author: "Data Platform Engineering"
 categories: ["Architecture", "Data", "XML"]
 tags: ["XML", "DataEngine", "BuildTime", "KPIs", "Carbon v11"]
 version: "v11.3.0"
