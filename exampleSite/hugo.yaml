@@ -190,7 +190,7 @@ params:
       - title: "Standards & Legal"
         links:
           - title: "Privacy Policy"
-            url: "/privacy/"
+            url: "/privacy-policy/"
           - title: "Terms of Service"
             url: "/terms/"
           - title: "Open Source Licenses"

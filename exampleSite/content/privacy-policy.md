@@ -4,6 +4,8 @@ description: "Demonstration privacy policy outlining client-side telemetry handl
 date: 2026-08-24T12:00:00Z
 author: "Security Operations"
 layout: "single"
+aliases:
+  - "/privacy/"
 cascade:
   params:
     sidebars:
