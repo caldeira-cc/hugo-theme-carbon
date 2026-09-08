@@ -12,76 +12,86 @@ The **Hugo-Carbon Theme Engine** delivers client-side theme switching and compil
 
 ---
 
-## 1. The Carbon v11 Token Palette
+## 1. Dual-Style Architecture: Light & Dark
 
-The design system implements a tripartite color architecture featuring light and dark modes:
+The design system implements a clean, accessible dual-style architecture:
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│               IBM Carbon Design Tokens                 │
+│               IBM Carbon Dual-Style Theming            │
 ├────────────────────────────┬───────────────────────────┤
-│ Light Modes (Backgrounds)  │ Dark Modes (Backgrounds)  │
+│ Light Style                │ Dark Style                │
 ├────────────────────────────┼───────────────────────────┤
-│ • White (white: #ffffff)   │ • Gray 90 (g90: #262626)  │
-│ • Gray 10 (g10: #f4f4f4)   │ • Gray 100 (g100: #161616)│
+│ • Canonical IBM White      │ • Canonical IBM Gray 100  │
+│ • Optional Gray 10 variant │ • Optional Gray 90 variant│
 └────────────────────────────┴───────────────────────────┘
 ```
 
 ### Core Token Mapping Reference
 
-| Token Name | White Theme | Gray 10 Theme | Gray 90 Theme | Gray 100 Theme | Description |
+| Token Name | Light Style (White) | Light Variant (Gray 10) | Dark Style (Gray 100) | Dark Variant (Gray 90) | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `--cds-background` | `#ffffff` | `#f4f4f4` | `#262626` | `#161616` | Default page canvas |
-| `--cds-layer-01` | `#f4f4f4` | `#ffffff` | `#393939` | `#262626` | First container elevation level |
-| `--cds-layer-02` | `#e0e0e0` | `#f4f4f4` | `#525252` | `#393939` | Secondary container layer |
+| `--cds-background` | `#ffffff` | `#f4f4f4` | `#161616` | `#262626` | Default page canvas |
+| `--cds-layer-01` | `#f4f4f4` | `#ffffff` | `#262626` | `#393939` | Container elevation level 1 |
+| `--cds-layer-02` | `#e0e0e0` | `#e0e0e0` | `#393939` | `#525252` | Container elevation level 2 |
 | `--cds-text-primary` | `#161616` | `#161616` | `#f4f4f4` | `#f4f4f4` | High-contrast body text |
-| `--cds-text-secondary`| `#525252` | `#525252` | `#c6c6c6` | `#c6c6c6` | Subtle and metadata text |
-| `--cds-interactive-01`| `rgb(105, 162, 128)` | `rgb(105, 162, 128)` | `#0f62fe` | `#0f62fe` | Primary action / link focus |
-| `--cds-focus` | `rgb(105, 162, 128)` | `rgb(105, 162, 128)` | `#ffffff` | `#ffffff` | Accessible 2px focus ring |
+| `--cds-text-secondary`| `#525252` | `#525252` | `#c6c6c6` | `#c6c6c6` | Metadata and helper text |
+| `--cds-interactive-01`| `#0f62fe` | `#0f62fe` | `#0f62fe` | `#0f62fe` | Primary action button / links |
+| `--cds-focus` | `#0f62fe` | `#0f62fe` | `#ffffff` | `#ffffff` | Accessible 2px focus ring |
 
 ---
 
 ## 2. Real-Time Theme Switching Mechanism
 
-Themes are applied to the `<html>` root via the `data-carbon-theme` attribute. The client-side switcher script reads and writes to `localStorage`:
+The theme switcher provides three user-facing options: **Browser Default (`system`)**, **Light (`light`)**, and **Dark (`dark`)**.
+
+Active visual styling is applied to `<html>` via `data-carbon-theme="light"` or `data-carbon-theme="dark"`. The inline `<head>` script reads `localStorage` synchronously before initial render to prevent flash-of-unstyled-content (FOUC).
 
 ```javascript
-// Switching theme dynamically in browser runtime
-function setCarbonTheme(themeName) {
-  document.documentElement.setAttribute('data-carbon-theme', themeName);
-  localStorage.setItem('carbon-theme-preference', themeName);
-}
+// Programmatic theme control in browser runtime
+window.CarbonTheme.set('dark');   // 'system' | 'light' | 'dark'
+window.CarbonTheme.getActive(); // returns 'light' or 'dark'
+window.CarbonTheme.isDark();    // returns boolean
 ```
 
-When set to `system`, the script monitors the operating system's prefers-color-scheme media query:
-
-```javascript
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-  if (localStorage.getItem('carbon-theme-preference') === 'system') {
-    document.documentElement.setAttribute('data-carbon-theme', e.matches ? 'g100' : 'white');
-  }
-});
-```
+When set to `system`, changes to the operating system's `prefers-color-scheme` automatically update the visual mode in real time.
 
 ---
 
-## 3. Creating Custom Theme Overrides
+## 3. Per-Domain Custom Colour Configuration
 
-Custom themes and palette tokens are configured in `data/themes.yaml`. The dynamic styles template (`layouts/partials/head/styles.html`) transpiles these entries directly into root CSS rules.
+Each website repository or subdomain customises its brand colors independently in `hugo.yaml` under `params.carbon.theme`.
 
-### Example: Defining a Custom Theme in `data/themes.yaml`
+### Example: Custom Brand Colors in `hugo.yaml`
 
 ```yaml
-themes:
-  emerald_dark:
-    name: "Emerald Dark"
-    scheme: dark
-    tokens:
-      --cds-background: "#0d1b14"
-      --cds-layer-01: "#14281f"
-      --cds-layer-02: "#1c382b"
-      --cds-text-primary: "#e8f5ee"
-      --cds-text-secondary: "#a3cbb5"
-      --cds-interactive-01: "#25a269"
-      --cds-focus: "#25a269"
+params:
+  carbon:
+    defaultThemeMode: "system" # Initial default: system | light | dark
+    theme:
+      # Optional base variant overrides:
+      # lightVariant: "g10"   # Uses soft neutral Gray 10
+      # darkVariant: "g90"    # Uses balanced dark Gray 90
+
+      # Custom Light Mode Tokens:
+      light:
+        primary: "#69a280"             # Custom brand primary (e.g. Sage Green)
+        secondary: "#393939"
+        link: "#38664b"                # High-contrast accessible link
+        linkHover: "#264934"
+        focus: "#69a280"
+        uiShellBackground: "#69a280"   # Top navigation shell
+        uiShellText: "#ffffff"
+
+      # Custom Dark Mode Tokens:
+      dark:
+        primary: "#69a280"
+        secondary: "#525252"
+        link: "#8ec3a4"                # Light sage link (>8:1 contrast on dark)
+        linkHover: "#b8dec7"
+        focus: "#8ec3a4"
+        uiShellBackground: "#69a280"
+        uiShellText: "#ffffff"
 ```
+
+The Hugo engine injects these overrides at build time directly into scoped CSS selectors (`html[data-carbon-theme="light"]` and `html[data-carbon-theme="dark"]`), ensuring full WCAG 2.1 AA contrast compliance across both styles.

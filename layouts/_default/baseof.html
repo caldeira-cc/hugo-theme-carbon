@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ .Language.Lang | default "en" }}" dir="{{ or .Language.LanguageDirection "ltr" }}" data-section="{{ with .Section }}{{ . }}{{ else }}{{ with .Type }}{{ . }}{{ else }}home{{ end }}{{ end }}" data-carbon-theme="{{ .Site.Params.carbon.defaultThemeMode | default "system" }}"{{ with .Site.Params.carbon.allowedThemes }} data-allowed-themes="{{ delimit . "," }}"{{ end }}>
+<html lang="{{ .Language.Lang | default "en" }}" dir="{{ or .Language.LanguageDirection "ltr" }}" data-section="{{ with .Section }}{{ . }}{{ else }}{{ with .Type }}{{ . }}{{ else }}home{{ end }}{{ end }}" data-carbon-theme="{{ .Site.Params.carbon.defaultThemeMode | default "system" }}">
 <head>
   {{ partial "head/meta.html" . }}
   {{ partial "head/fonts.html" . }}
@@ -7,35 +7,10 @@
   <script>
     (function() {
       try {
-        var allowedAttr = document.documentElement.getAttribute('data-allowed-themes');
-        var allowed = allowedAttr ? allowedAttr.split(',').filter(Boolean) : null;
         var defaultMode = {{ .Site.Params.carbon.defaultThemeMode | default "system" | jsonify }};
         var saved = localStorage.getItem('carbon-theme-preference') || defaultMode;
-        var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var activeTheme = 'white';
-        if (allowed && allowed.length > 0) {
-          if (!saved || saved === 'system') {
-            activeTheme = isDark ? (allowed.includes('g90') ? 'g90' : allowed[allowed.length - 1]) : (allowed.includes('g10') ? 'g10' : allowed[0]);
-          } else if (saved === 'light') {
-            activeTheme = allowed.includes('g10') ? 'g10' : allowed[0];
-          } else if (saved === 'dark') {
-            activeTheme = allowed.includes('g90') ? 'g90' : allowed[allowed.length - 1];
-          } else if (allowed.includes(saved)) {
-            activeTheme = saved;
-          } else {
-            activeTheme = isDark ? (allowed.includes('g90') ? 'g90' : allowed[allowed.length - 1]) : (allowed.includes('g10') ? 'g10' : allowed[0]);
-          }
-        } else {
-          if (!saved || saved === 'system') {
-            activeTheme = isDark ? 'g100' : 'white';
-          } else if (saved === 'light') {
-            activeTheme = 'white';
-          } else if (saved === 'dark') {
-            activeTheme = 'g100';
-          } else {
-            activeTheme = saved;
-          }
-        }
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var activeTheme = (saved === 'dark' || (saved === 'system' && prefersDark)) ? 'dark' : 'light';
         document.documentElement.setAttribute('data-carbon-theme', activeTheme);
         document.documentElement.setAttribute('data-theme-preference', saved);
       } catch(e) {}

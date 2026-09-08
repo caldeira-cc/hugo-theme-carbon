@@ -1104,7 +1104,7 @@
     if (!item || !window.Chart) return;
 
     // Determine theme colours
-    const isDark = ['g90', 'g100'].includes(document.documentElement.getAttribute('data-carbon-theme'));
+    const isDark = ['dark', 'g90', 'g100'].includes(document.documentElement.getAttribute('data-carbon-theme'));
     const textColor = isDark ? '#c6c6c6' : '#525252';
     const gridColor = isDark ? 'rgba(198,198,198,0.15)' : 'rgba(22,22,22,0.08)';
     const bgColors = CHART_COLORS.map(c => c + '99'); // 60% opacity

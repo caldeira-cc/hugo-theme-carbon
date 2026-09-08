@@ -611,6 +611,7 @@
   }
 }
 
+html[data-carbon-theme="light"] .maplibregl-ctrl-group button .maplibregl-ctrl-icon,
 html[data-carbon-theme="white"] .maplibregl-ctrl-group button .maplibregl-ctrl-icon,
 html[data-carbon-theme="g10"] .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
   filter: none !important;

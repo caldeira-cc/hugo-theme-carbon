@@ -74,11 +74,9 @@ params:
   carbon:
     useLocalFonts: true
     defaultThemeMode: "system"
-    allowedThemes:
-      - "white"
-      - "g10"
-      - "g90"
-      - "g100"
+    theme:
+      lightVariant: "white"
+      darkVariant: "g100"
 
   typography:
     content: "sans"

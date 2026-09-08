@@ -16,8 +16,8 @@
    * @returns {'light'|'dark'}
    */
   function getThemeScheme() {
-    const theme = document.documentElement.getAttribute('data-carbon-theme') || 'white';
-    return (theme === 'g90' || theme === 'g100') ? 'dark' : 'light';
+    const theme = document.documentElement.getAttribute('data-carbon-theme') || 'light';
+    return (theme === 'dark' || theme === 'g90' || theme === 'g100') ? 'dark' : 'light';
   }
 
   /**

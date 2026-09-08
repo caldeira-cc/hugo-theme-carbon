@@ -134,9 +134,10 @@
 }
 
 // Light theme overrides for Mermaid
+html[data-carbon-theme="light"],
 html[data-carbon-theme="white"],
 html[data-carbon-theme="g10"],
-:root:not([data-carbon-theme="g90"]):not([data-carbon-theme="g100"]) {
+:root:not([data-carbon-theme="dark"]):not([data-carbon-theme="g90"]):not([data-carbon-theme="g100"]) {
   .carbon-mermaid-wrapper {
     background-color: #fbfbfb;
     border-color: #e0e0e0;
@@ -153,6 +154,7 @@ html[data-carbon-theme="g10"],
 }
 
 // Dark theme overrides for Mermaid
+html[data-carbon-theme="dark"],
 html[data-carbon-theme="g90"],
 html[data-carbon-theme="g100"] {
   .carbon-mermaid-wrapper {

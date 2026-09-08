@@ -88,36 +88,31 @@ params:
   environment: "cesar"
   assetsURL: "https://assets.caldeira.cc"
 
-  # IBM Carbon Theme Settings
+  # IBM Carbon Theme Settings (Dual-Style: Light & Dark)
   carbon:
-    defaultThemeMode: "system" # Options: "system", "white", "g10", "g90", "g100"
+    defaultThemeMode: "system" # Options: "system", "light", "dark"
     themeTransitions: true
-
-  # On-Device WebLLM AI Assistant
-  aiAgent:
-    enable: false
-    model: "SmolLM2-360M-Instruct-q4f16_1-MLC"
-
-  # Typography Scales (Options: "sans", "serif", "mono")
-  typography:
-    content: "sans"
-    headings: "sans"
-    navbar: "sans"
-
-  # Visual Palette Token Overrides
-  styleOverrides:
-    enableCustomColors: false
-    colors:
-      brandPrimary: "rgb(105, 162, 128)"
-      brandSecondary: "#393939"
-      background: "#ffffff"
-      layer01: "#f4f4f4"
-      layer02: "#e0e0e0"
-      textPrimary: "#161616"
-      textSecondary: "#525252"
-      link: "rgb(105, 162, 128)"
-      focus: "rgb(105, 162, 128)"
-      field01: "#f4f4f4"
+    theme:
+      # Baseline variants (optional):
+      lightVariant: "white" # "white" (default crisp) or "g10" (soft neutral)
+      darkVariant: "g100"  # "g100" (default deep dark) or "g90" (balanced dark)
+      # Domain-specific custom colors for Light style:
+      light:
+        primary: "#0f62fe"             # Primary interactive accent & focus ring
+        secondary: "#393939"           # Secondary action
+        link: "#0f62fe"                # Link color
+        linkHover: "#0043ce"           # Link hover color
+        uiShellBackground: "#161616"   # Top navigation shell background
+        uiShellText: "#ffffff"         # Top navigation shell text
+      # Domain-specific custom colors for Dark style:
+      dark:
+        primary: "#0f62fe"
+        secondary: "#525252"
+        link: "#78a9ff"
+        linkHover: "#a6c8ff"
+        focus: "#ffffff"
+        uiShellBackground: "#000000"
+        uiShellText: "#ffffff"
 
   # Main Action Bar & Modular Widgets (Disabled by default)
   mainBar:

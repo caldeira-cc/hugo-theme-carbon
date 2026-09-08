@@ -120,25 +120,14 @@
         </div>
       {{ end }}
 
-      {{/* Theme Switcher Widget */}}
+      {{/* Theme Switcher Widget (Dual-Style: Light & Dark) */}}
       {{ if $widgets.themeSwitcher.enable }}
         <div class="carbon-main-bar__theme-toggle" title="{{ i18n "mainBar.theme" | default "Theme" }}">
           <label for="theme-switcher-select" class="cds--type-caption carbon-main-bar__toggle-label" style="margin-right: 2px;">{{ i18n "mainBar.theme" | default "Theme" }}:</label>
           <select id="theme-switcher-select" class="theme-select" aria-label="{{ i18n "mainBar.theme" | default "Theme" }}">
             <option value="system">{{ i18n "theme.system" | default "Browser Default" }}</option>
-            {{ $allowed := .Site.Params.carbon.allowedThemes }}
-            {{ if .Site.Data.themes.themes }}
-              {{ range $themeId, $themeData := .Site.Data.themes.themes }}
-                {{ if or (not $allowed) (in $allowed $themeId) }}
-                  <option value="{{ $themeId }}">{{ $themeData.name | default (title $themeId) }}</option>
-                {{ end }}
-              {{ end }}
-            {{ else }}
-              {{ if or (not $allowed) (in $allowed "white") }}<option value="white">White (Light)</option>{{ end }}
-              {{ if or (not $allowed) (in $allowed "g10") }}<option value="g10">Gray 10 (Soft Light)</option>{{ end }}
-              {{ if or (not $allowed) (in $allowed "g90") }}<option value="g90">Gray 90 (Dark)</option>{{ end }}
-              {{ if or (not $allowed) (in $allowed "g100") }}<option value="g100">Gray 100 (Deep Dark)</option>{{ end }}
-            {{ end }}
+            <option value="light">{{ i18n "theme.light" | default "Light" }}</option>
+            <option value="dark">{{ i18n "theme.dark" | default "Dark" }}</option>
           </select>
         </div>
       {{ end }}

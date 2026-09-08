@@ -25,8 +25,33 @@ palette:
   ibmRed60: "#da1e28"
   ibmRed70: "#ba1b23"
 
-# Standard IBM Carbon Themes
+# Standard IBM Carbon Themes (Dual Styles: Light & Dark)
 themes:
+  # ==========================================
+  # Standard IBM Carbon Light Style
+  # ==========================================
+  light:
+    name: "Light"
+    scheme: "light"
+    tokens:
+      --cds-background: "#ffffff"
+      --cds-interactive-01: "#0f62fe"
+      --cds-interactive-02: "#393939"
+      --cds-focus: "#0f62fe"
+      --cds-link-primary: "#0f62fe"
+
+  # ==========================================
+  # Standard IBM Carbon Dark Style
+  # ==========================================
+  dark:
+    name: "Dark"
+    scheme: "dark"
+    tokens:
+      --cds-background: "#161616"
+      --cds-interactive-01: "#0f62fe"
+      --cds-interactive-02: "#525252"
+      --cds-focus: "#ffffff"
+      --cds-link-primary: "#78a9ff"
   # ==========================================
   # 1. Standard IBM Carbon White (Light)
   # ==========================================

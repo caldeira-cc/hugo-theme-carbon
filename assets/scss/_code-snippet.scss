@@ -516,9 +516,10 @@ pre {
 // Light Themes: White / Gray 10
 // Clean light canvas (#fbfbfb / #ffffff), muted border, dark text, vibrant GitHub/Carbon Light syntax
 // ---------------------------------------------------------------------------
+html[data-carbon-theme="light"],
 html[data-carbon-theme="white"],
 html[data-carbon-theme="g10"],
-:root:not([data-carbon-theme="g90"]):not([data-carbon-theme="g100"]) {
+:root:not([data-carbon-theme="dark"]):not([data-carbon-theme="g90"]):not([data-carbon-theme="g100"]) {
   .carbon-code-snippet {
     background-color: #f4f4f4;
     border-color: #e0e0e0;
@@ -656,6 +657,7 @@ html[data-carbon-theme="g10"],
 // Dark Themes: Gray 90 / Gray 100
 // Deep dark canvas (#161616 / #121212), dark border, white text, Carbon One-Dark syntax
 // ---------------------------------------------------------------------------
+html[data-carbon-theme="dark"],
 html[data-carbon-theme="g90"],
 html[data-carbon-theme="g100"] {
   .carbon-code-snippet {

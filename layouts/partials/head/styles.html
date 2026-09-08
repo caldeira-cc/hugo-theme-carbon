@@ -33,6 +33,160 @@
     {{ end }}
   {{ end }}
 
+  {{/* Domain-Specific Theme Configuration (Dual-Style Light & Dark) */}}
+  {{ $siteCarbonTheme := .Site.Params.carbon.theme | default dict }}
+  {{ $pageCarbonTheme := .Params.carbon.theme | default dict }}
+  {{ $themeConfig := merge $siteCarbonTheme $pageCarbonTheme }}
+
+  {{/* 1. Base Variant Mapping (e.g. lightVariant: g10, darkVariant: g90) */}}
+  {{ with $themeConfig.lightVariant }}
+    {{ if eq . "g10" }}
+      html[data-carbon-theme="light"], body[data-carbon-theme="light"] {
+        --cds-background: #f4f4f4;
+        --cds-layer-01: #ffffff;
+        --cds-layer-02: #e0e0e0;
+        --cds-layer-03: #c6c6c6;
+        --cds-field-01: #ffffff;
+        --cds-field-02: #f4f4f4;
+      }
+    {{ end }}
+  {{ end }}
+
+  {{ with $themeConfig.darkVariant }}
+    {{ if eq . "g90" }}
+      html[data-carbon-theme="dark"], body[data-carbon-theme="dark"] {
+        --cds-background: #262626;
+        --cds-layer-01: #393939;
+        --cds-layer-02: #525252;
+        --cds-layer-03: #6f6f6f;
+        --cds-field-01: #393939;
+        --cds-field-02: #525252;
+        --cds-border-subtle-00: #393939;
+        --cds-border-subtle-01: #525252;
+      }
+    {{ end }}
+  {{ end }}
+
+  {{/* 2. Custom Domain Overrides for Light Style */}}
+  {{ with $themeConfig.light }}
+    html[data-carbon-theme="light"], body[data-carbon-theme="light"] {
+      {{ range $k, $v := . }}
+        {{ if eq $k "primary" }}
+          --cds-interactive-01: {{ $v | safeCSS }};
+          {{ if not $.Site.Params.carbon.theme.light.focus }}--cds-focus: {{ $v | safeCSS }};{{ end }}
+        {{ else if eq $k "secondary" }}
+          --cds-interactive-02: {{ $v | safeCSS }};
+        {{ else if eq $k "background" }}
+          --cds-background: {{ $v | safeCSS }};
+        {{ else if eq $k "layer01" }}
+          --cds-layer-01: {{ $v | safeCSS }};
+        {{ else if eq $k "layer02" }}
+          --cds-layer-02: {{ $v | safeCSS }};
+        {{ else if eq $k "layer03" }}
+          --cds-layer-03: {{ $v | safeCSS }};
+        {{ else if eq $k "textPrimary" }}
+          --cds-text-primary: {{ $v | safeCSS }};
+        {{ else if eq $k "textSecondary" }}
+          --cds-text-secondary: {{ $v | safeCSS }};
+        {{ else if eq $k "link" }}
+          --cds-link-primary: {{ $v | safeCSS }};
+        {{ else if eq $k "linkHover" }}
+          --cds-link-primary-hover: {{ $v | safeCSS }};
+        {{ else if eq $k "focus" }}
+          --cds-focus: {{ $v | safeCSS }};
+        {{ else if eq $k "uiShellBackground" }}
+          --cds-ui-shell-background: {{ $v | safeCSS }};
+          --cds-brand-block-background: {{ $v | safeCSS }};
+          --cds-search-action-background: {{ $v | safeCSS }};
+        {{ else if eq $k "uiShellText" }}
+          --cds-ui-shell-text: {{ $v | safeCSS }};
+          --cds-brand-block-text: {{ $v | safeCSS }};
+          --cds-search-action-text: {{ $v | safeCSS }};
+        {{ else if eq $k "uiShellBorder" }}
+          --cds-ui-shell-border: {{ $v | safeCSS }};
+          --cds-brand-block-border: {{ $v | safeCSS }};
+          --cds-search-action-border: {{ $v | safeCSS }};
+        {{ else if eq $k "uiShellHover" }}
+          --cds-ui-shell-hover: {{ $v | safeCSS }};
+          --cds-brand-block-hover: {{ $v | safeCSS }};
+          --cds-search-action-hover: {{ $v | safeCSS }};
+        {{ else if eq $k "mainBarBackground" }}
+          --cds-main-bar-background: {{ $v | safeCSS }};
+        {{ else if eq $k "mainBarText" }}
+          --cds-main-bar-text: {{ $v | safeCSS }};
+        {{ else if eq $k "mainBarBorder" }}
+          --cds-main-bar-border: {{ $v | safeCSS }};
+        {{ else if eq $k "tokens" }}
+          {{ range $tk, $tv := $v }}
+            {{ (printf "%s: %s;" $tk $tv) | safeCSS }}
+          {{ end }}
+        {{ else if strings.HasPrefix $k "--cds-" }}
+          {{ (printf "%s: %s;" $k $v) | safeCSS }}
+        {{ end }}
+      {{ end }}
+    }
+  {{ end }}
+
+  {{/* 3. Custom Domain Overrides for Dark Style */}}
+  {{ with $themeConfig.dark }}
+    html[data-carbon-theme="dark"], body[data-carbon-theme="dark"] {
+      {{ range $k, $v := . }}
+        {{ if eq $k "primary" }}
+          --cds-interactive-01: {{ $v | safeCSS }};
+          {{ if not $.Site.Params.carbon.theme.dark.focus }}--cds-focus: {{ $v | safeCSS }};{{ end }}
+        {{ else if eq $k "secondary" }}
+          --cds-interactive-02: {{ $v | safeCSS }};
+        {{ else if eq $k "background" }}
+          --cds-background: {{ $v | safeCSS }};
+        {{ else if eq $k "layer01" }}
+          --cds-layer-01: {{ $v | safeCSS }};
+        {{ else if eq $k "layer02" }}
+          --cds-layer-02: {{ $v | safeCSS }};
+        {{ else if eq $k "layer03" }}
+          --cds-layer-03: {{ $v | safeCSS }};
+        {{ else if eq $k "textPrimary" }}
+          --cds-text-primary: {{ $v | safeCSS }};
+        {{ else if eq $k "textSecondary" }}
+          --cds-text-secondary: {{ $v | safeCSS }};
+        {{ else if eq $k "link" }}
+          --cds-link-primary: {{ $v | safeCSS }};
+        {{ else if eq $k "linkHover" }}
+          --cds-link-primary-hover: {{ $v | safeCSS }};
+        {{ else if eq $k "focus" }}
+          --cds-focus: {{ $v | safeCSS }};
+        {{ else if eq $k "uiShellBackground" }}
+          --cds-ui-shell-background: {{ $v | safeCSS }};
+          --cds-brand-block-background: {{ $v | safeCSS }};
+          --cds-search-action-background: {{ $v | safeCSS }};
+        {{ else if eq $k "uiShellText" }}
+          --cds-ui-shell-text: {{ $v | safeCSS }};
+          --cds-brand-block-text: {{ $v | safeCSS }};
+          --cds-search-action-text: {{ $v | safeCSS }};
+        {{ else if eq $k "uiShellBorder" }}
+          --cds-ui-shell-border: {{ $v | safeCSS }};
+          --cds-brand-block-border: {{ $v | safeCSS }};
+          --cds-search-action-border: {{ $v | safeCSS }};
+        {{ else if eq $k "uiShellHover" }}
+          --cds-ui-shell-hover: {{ $v | safeCSS }};
+          --cds-brand-block-hover: {{ $v | safeCSS }};
+          --cds-search-action-hover: {{ $v | safeCSS }};
+        {{ else if eq $k "mainBarBackground" }}
+          --cds-main-bar-background: {{ $v | safeCSS }};
+        {{ else if eq $k "mainBarText" }}
+          --cds-main-bar-text: {{ $v | safeCSS }};
+        {{ else if eq $k "mainBarBorder" }}
+          --cds-main-bar-border: {{ $v | safeCSS }};
+        {{ else if eq $k "tokens" }}
+          {{ range $tk, $tv := $v }}
+            {{ (printf "%s: %s;" $tk $tv) | safeCSS }}
+          {{ end }}
+        {{ else if strings.HasPrefix $k "--cds-" }}
+          {{ (printf "%s: %s;" $k $v) | safeCSS }}
+        {{ end }}
+      {{ end }}
+    }
+  {{ end }}
+
   {{/* Fallback / Complementary Cascading Style Overrides from Page Cascade or hugo.yaml */}}
   {{ $styleOverrides := .Params.styleOverrides | default .Site.Params.styleOverrides }}
   {{ with $styleOverrides }}
