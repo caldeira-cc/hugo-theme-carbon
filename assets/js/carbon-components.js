@@ -104,4 +104,67 @@ export function initCarbonComponents() {
       }
     });
   });
+
+  // 6. Carbon AI Label (AILabel / Slug) Interactivity
+  const aiLabels = document.querySelectorAll('.cds--ai-label');
+  aiLabels.forEach(label => {
+    const btn = label.querySelector('.cds--ai-label__button');
+    const popover = label.querySelector('.cds--ai-label__popover');
+    const closeBtn = label.querySelector('.cds--ai-label__close-button');
+    if (!btn || !popover) return;
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = popover.classList.contains('is-open');
+      document.querySelectorAll('.cds--ai-label__popover.is-open').forEach(p => {
+        p.classList.remove('is-open');
+        p.setAttribute('hidden', '');
+        const parentBtn = p.closest('.cds--ai-label')?.querySelector('.cds--ai-label__button');
+        if (parentBtn) parentBtn.setAttribute('aria-expanded', 'false');
+      });
+
+      if (!isOpen) {
+        popover.classList.add('is-open');
+        popover.removeAttribute('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        popover.classList.remove('is-open');
+        popover.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.focus();
+      });
+    }
+
+    popover.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.cds--ai-label__popover.is-open').forEach(p => {
+      p.classList.remove('is-open');
+      p.setAttribute('hidden', '');
+      const parentBtn = p.closest('.cds--ai-label')?.querySelector('.cds--ai-label__button');
+      if (parentBtn) parentBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.cds--ai-label__popover.is-open').forEach(p => {
+        p.classList.remove('is-open');
+        p.setAttribute('hidden', '');
+        const parentBtn = p.closest('.cds--ai-label')?.querySelector('.cds--ai-label__button');
+        if (parentBtn) {
+          parentBtn.setAttribute('aria-expanded', 'false');
+          parentBtn.focus();
+        }
+      });
+    }
+  });
 }

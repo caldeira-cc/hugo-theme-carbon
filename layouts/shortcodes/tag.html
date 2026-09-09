@@ -1,6 +1,6 @@
 {{ $name := "" }}
 {{ if .IsNamedParams }}
-  {{ $name = .Get "name" }}
+  {{ $name = or (.Get "name") (.Get "text") }}
 {{ else if gt (len .Params) 0 }}
   {{ $name = .Get 0 }}
 {{ end }}
@@ -8,9 +8,17 @@
 
 {{ $type := .Get "type" | default "outline" }}
 {{ $href := .Get "href" }}
-{{ $clickable := true }}
-{{ if or (eq (.Get "clickable") false) (eq (.Get "clickable") "false") }}
-  {{ $clickable = false }}
+{{ $hasTerm := false }}
+{{ if site.Taxonomies.tags }}
+  {{ $hasTerm = or (site.Taxonomies.tags.Get ($name | lower)) (site.Taxonomies.tags.Get ($name | urlize)) }}
+{{ end }}
+{{ $clickable := false }}
+{{ if $href }}
+  {{ $clickable = true }}
+{{ else if or (eq (.Get "clickable") true) (eq (.Get "clickable") "true") }}
+  {{ $clickable = true }}
+{{ else if and $hasTerm (ne (.Get "clickable") false) (ne (.Get "clickable") "false") }}
+  {{ $clickable = true }}
 {{ end }}
 {{ $showHash := true }}
 {{ if or (eq (.Get "hash") false) (eq (.Get "hash") "false") }}

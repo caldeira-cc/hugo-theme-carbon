@@ -1,8 +1,18 @@
-<div class="cds--overflow-menu">
+<div class="cds--overflow-menu{{ with .Get "align" }} cds--overflow-menu--{{ . }}{{ end }}">
   <button type="button" class="cds--overflow-menu__trigger" aria-haspopup="true" aria-expanded="false" aria-label="Open menu">
     {{ partial "components/icon.html" (dict "name" "overflow-menu--vertical" "size" 16 "class" "cds--overflow-menu__icon") }}
   </button>
   <ul class="cds--overflow-menu__options" role="menu">
-    {{ .Inner }}
+    {{ if .Inner }}
+      {{ .Inner }}
+    {{ else if .Get "items" }}
+      {{ range (split (.Get "items") ",") }}
+        <li class="cds--overflow-menu-options__option" role="none">
+          <button class="cds--overflow-menu-options__btn" role="menuitem" type="button">
+            <span class="cds--overflow-menu-options__option-content">{{ strings.TrimSpace . }}</span>
+          </button>
+        </li>
+      {{ end }}
+    {{ end }}
   </ul>
 </div>

@@ -49,18 +49,17 @@ The `vcard` shortcode presents rich contact information as an IBM Carbon busines
 
 #### Mode B: Direct Parameters & Dynamic VCF Generation
 {{< vcard
-    name="Dr. Elena Rostova"
-    title="Senior Research Director"
-    org="Cognitive Systems & Machine Learning Lab"
-    email="elena.rostova@lab.example.org"
+    name="Open Source Maintainer"
+    title="Core Theme Engineer"
+    org="Hugo Carbon Community"
+    email="maintainer@example.org"
     phone="+44 20 7946 0912"
-    website="https://example.org"
+    website="https://carbon.caldeira.cc"
     location="London, United Kingdom"
-    badge="Principal Investigator"
+    badge="Theme Architect"
     badgeColor="purple"
-    linkedin="https://linkedin.com"
-    github="https://github.com" >}}
-Leading edge computing and private AI systems research with IBM Carbon v11 interface standards.
+    github="https://github.com/caldeira-cc/hugo-theme-carbon" >}}
+Modular Hugo theme development and documentation specimen implementing the IBM Carbon Design System v11.
 {{< /vcard >}}
 
 ---

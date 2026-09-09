@@ -2,24 +2,41 @@
 {{ $class := .Get "class" }}
 {{ $type := .Get "type" }}
 {{ $selected := .Get "selected" | default false }}
+{{ $ai := or (.Get "ai") (.Get "aiLabel") | default false }}
+{{ $aiText := .Get "aiText" }}
 {{ $id := .Get "id" | default (printf "tile-%d" (now.UnixNano)) }}
 
 {{ if eq $type "selectable" }}
-  <label class="cds--tile cds--tile--selectable{{ if $selected }} cds--tile--is-selected is-selected{{ end }}{{ with $class }} {{ . }}{{ end }}" for="{{ $id }}" onclick="this.classList.toggle('cds--tile--is-selected'); this.classList.toggle('is-selected');">
+  <label class="cds--tile cds--tile--selectable{{ if $selected }} cds--tile--is-selected is-selected{{ end }}{{ if $ai }} cds--tile--ai-label cds--ai-label-container{{ end }}{{ with $class }} {{ . }}{{ end }}" for="{{ $id }}" onclick="this.classList.toggle('cds--tile--is-selected'); this.classList.toggle('is-selected');">
     <input type="checkbox" id="{{ $id }}" class="cds--tile-input" style="position: absolute; opacity: 0; pointer-events: none;" {{ if $selected }}checked{{ end }}>
     <div class="cds--tile__checkmark">
       {{ partial "components/icon.html" (dict "name" "checkmark" "size" 16 "class" "cds--tile__checkmark-icon") }}
     </div>
+    {{ if $ai }}
+      <div class="cds--tile__ai-label-wrapper" style="position: absolute; top: 0.5rem; right: 0.5rem; z-index: 2;">
+        {{ partial "components/ai-label.html" (dict "text" $aiText "size" "xs") }}
+      </div>
+    {{ end }}
     <div class="cds--tile-content">
       {{ .Inner | markdownify }}
     </div>
   </label>
 {{ else if or $href (eq $type "clickable") }}
-  <a href="{{ $href | default "#" }}" class="cds--tile cds--tile--clickable{{ with $class }} {{ . }}{{ end }}">
+  <a href="{{ $href | default "#" }}" class="cds--tile cds--tile--clickable{{ if $ai }} cds--tile--ai-label cds--ai-label-container{{ end }}{{ with $class }} {{ . }}{{ end }}" style="position: relative;">
+    {{ if $ai }}
+      <div class="cds--tile__ai-label-wrapper" style="position: absolute; top: 0.5rem; right: 0.5rem; z-index: 2;">
+        {{ partial "components/ai-label.html" (dict "text" $aiText "size" "xs") }}
+      </div>
+    {{ end }}
     {{ .Inner | markdownify }}
   </a>
 {{ else }}
-  <div class="cds--tile{{ with $class }} {{ . }}{{ end }}">
+  <div class="cds--tile{{ if $ai }} cds--tile--ai-label cds--ai-label-container{{ end }}{{ with $class }} {{ . }}{{ end }}" style="position: relative;">
+    {{ if $ai }}
+      <div class="cds--tile__ai-label-wrapper" style="position: absolute; top: 0.5rem; right: 0.5rem; z-index: 2;">
+        {{ partial "components/ai-label.html" (dict "text" $aiText "size" "xs") }}
+      </div>
+    {{ end }}
     {{ .Inner | markdownify }}
   </div>
 {{ end }}

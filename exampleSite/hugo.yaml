@@ -142,9 +142,9 @@ params:
       - title: "Dashboard"
         url: "/analytics/"
         icon: "Dashboard20"
-      - title: "Case Studies"
-        url: "/portfolio/"
-        icon: "Notebook20"
+      - title: "Shortcodes"
+        url: "/docs/shortcodes/"
+        icon: "Code20"
 
   social:
     - name: "GitHub"

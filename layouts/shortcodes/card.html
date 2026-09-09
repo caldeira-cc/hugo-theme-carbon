@@ -17,9 +17,11 @@
 {{ $tagColor := .Get "tagColor" | default "blue" }}
 {{ $icon := .Get "icon" | default "arrow--right" }}
 {{ $clickable := .Get "clickable" | default (and $href (not .Inner)) }}
+{{ $ai := or (.Get "ai") (.Get "aiLabel") | default false }}
+{{ $aiText := .Get "aiText" }}
 {{ $class := .Get "class" | default "" }}
 
-<div class="cds--card {{ if $clickable }}cds--card--clickable{{ end }} {{ with $class }}{{ . }}{{ end }}">
+<div class="cds--card {{ if $clickable }}cds--card--clickable{{ end }} {{ if $ai }}cds--card--ai-label cds--ai-label-container{{ end }} {{ with $class }}{{ . }}{{ end }}">
   {{ with $image }}
     <div class="cds--card__media">
       {{ if $href }}<a href="{{ $href }}" tabindex="-1" aria-hidden="true">{{ end }}
@@ -44,9 +46,14 @@
           </h4>
         {{ end }}
       </div>
-      {{ with $tag }}
-        <span class="cds--tag cds--tag--{{ $tagColor }} cds--tag--sm" style="margin: 0;">{{ . }}</span>
-      {{ end }}
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        {{ with $tag }}
+          <span class="cds--tag cds--tag--{{ $tagColor }} cds--tag--sm" style="margin: 0;">{{ . }}</span>
+        {{ end }}
+        {{ if $ai }}
+          {{ partial "components/ai-label.html" (dict "text" $aiText "size" "xs") }}
+        {{ end }}
+      </div>
     </div>
   </div>
 

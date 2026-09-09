@@ -6,6 +6,8 @@
   {{ $type = "warning" }}
 {{ else if or (eq $rawType "error") (eq $rawType "critical") (eq $rawType "danger") }}
   {{ $type = "error" }}
+{{ else if eq $rawType "ai" }}
+  {{ $type = "ai" }}
 {{ else }}
   {{ $type = "info" }}
 {{ end }}
@@ -13,13 +15,14 @@
 {{ $title := .Get "title" }}
 {{ $hideIcon := .Get "hide_icon" | default false }}
 
-<div class="cds--inline-notification cds--inline-notification--{{ $type }}" role="region" aria-label="Notification">
+<div class="cds--inline-notification cds--inline-notification--{{ $type }}{{ if eq $type "ai" }} cds--callout--ai{{ end }}" role="region" aria-label="Notification">
   {{ if not $hideIcon }}
     <div class="cds--inline-notification__icon-wrapper">
       {{ $iconName := "information--filled" }}
       {{ if eq $type "success" }}{{ $iconName = "checkmark--filled" }}
       {{ else if eq $type "warning" }}{{ $iconName = "warning--alt--filled" }}
       {{ else if eq $type "error" }}{{ $iconName = "error--filled" }}
+      {{ else if eq $type "ai" }}{{ $iconName = "ai-label" }}
       {{ end }}
       {{ partial "components/icon.html" (dict "name" $iconName "size" 20 "class" "cds--inline-notification__icon") }}
     </div>

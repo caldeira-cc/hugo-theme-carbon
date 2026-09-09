@@ -1,6 +1,6 @@
 ---
-title: "Theme Documentation Hub"
-description: "Comprehensive technical specifications, configuration references, deployment guides, and architectural showcases for the Hugo Carbon Theme."
+title: "Documentation"
+description: "Architecture, configuration, deployment guides, and component references for the Hugo Carbon theme."
 cascade:
   params:
     collectionType: "docs"
@@ -14,138 +14,132 @@ cascade:
       enable: false
 ---
 
-<div style="padding: 1.25rem 1.5rem; margin-bottom: 2.5rem; background-color: var(--cds-layer-01); border-left: 4px solid var(--cds-interactive-01); display: flex; align-items: flex-start; gap: 1rem; border-top: 1px solid var(--cds-border-subtle-00); border-right: 1px solid var(--cds-border-subtle-00); border-bottom: 1px solid var(--cds-border-subtle-00);">
-  <svg width="24" height="24" viewBox="0 0 32 32" fill="var(--cds-interactive-01)" style="flex-shrink: 0; margin-top: 0.15rem;"><path d="M26 4H6C4.9 4 4 4.9 4 6V26C4 27.1 4.9 28 6 28H26C27.1 28 28 27.1 28 26V6C28 4.9 27.1 4 26 4ZM26 26H6V10H26V26ZM26 8H6V6H26V8Z"/></svg>
-  <div>
-    <div style="font-weight: 600; font-size: 1rem; color: var(--cds-text-primary); margin-bottom: 0.25rem;">Enterprise Static Architecture Documentation</div>
-    <div style="font-size: 0.875rem; color: var(--cds-text-secondary); line-height: 1.5;">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. This technical documentation hub provides exhaustive specifications for installing, configuring, styling, and deploying static websites powered by Hugo and the IBM Carbon Design System v11.
-    </div>
-  </div>
-</div>
+The **Hugo Carbon Theme** is an open-source, modular static website theme implementing the **IBM Carbon Design System v11**. It combines Carbon's 16-column 2x Grid, token-based theming, and accessible interface patterns with the speed and simplicity of Hugo.
 
-Explore the architectural guides, deployment blueprints, and component references below:
+Everything runs from origin: IBM Plex fonts, KaTeX mathematics, MapLibre GL vector cartography, and Web Worker data engines are self-hosted with zero external CDNs and zero tracking.
+
+---
+
+## Quick Start
+
+### 1. Requirements
+
+Install [Hugo Extended](https://gohugo.io/installation/) (version `0.149.0` or higher) to enable Dart Sass and ESBuild:
+
+```bash
+# macOS (Homebrew)
+brew install hugo
+
+# Linux (Snap or package manager)
+snap install hugo --channel=extended
+```
+
+### 2. Clone & Launch
+
+Clone the repository and start the development server:
+
+```bash
+git clone https://github.com/caldeira-cc/hugo-theme-carbon.git
+cd hugo-theme-carbon/exampleSite
+hugo server -p 1316
+```
+
+Open `http://localhost:1316/` in your browser. Live reload is active by default.
+
+---
+
+## Documentation Sections
 
 <div class="cds--row" style="margin: 1.5rem -0.5rem; row-gap: 1.25rem;">
 
   <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/architecture/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid var(--cds-interactive-01);">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">FOUNDATIONS</span>
+    <a href="/docs/architecture/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #0f62fe;">
+      <span class="cds--tag cds--tag--blue cds--tag--sm" style="align-self: flex-start; margin-bottom: 0.5rem;">FOUNDATIONS</span>
       <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Architecture &amp; 2x Grid</h3>
       <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Fluid 16-column grid system, 8px mini-unit spatial cadence, 4px baseline rhythm, and 1440px container geometry.
+        Fluid 16-column grid system, 8px mini-unit spatial cadence, 4px baseline rhythm, and layout mechanics.
       </p>
     </a>
   </div>
 
   <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
     <a href="/docs/configuration/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #7a9eb3;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">CONFIGURATION</span>
+      <span class="cds--tag cds--tag--teal cds--tag--sm" style="align-self: flex-start; margin-bottom: 0.5rem;">SETUP</span>
       <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Configuration &amp; Cascade</h3>
       <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Complete <code>hugo.yaml</code> parameter dictionary, widget toggles, navigation trees, and front-matter cascade rules.
+        Parameter dictionaries for <code>hugo.yaml</code>, navigation trees, sidebar data, and front-matter cascade rules.
       </p>
     </a>
   </div>
 
   <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/customisation/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #24a148;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">THEMING</span>
-      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Theme Customisation &amp; Tokens</h3>
+    <a href="/docs/deployment/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #24a148;">
+      <span class="cds--tag cds--tag--green cds--tag--sm" style="align-self: flex-start; margin-bottom: 0.5rem;">HOSTING</span>
+      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Deployment &amp; Hosting</h3>
       <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Strict dual-style theming (Light and Dark), browser switching, OS sync, and per-domain custom color palettes.
+        Step-by-step blueprints for deploying to Cloudflare Pages, GitHub Pages with Actions, Netlify, and static servers.
       </p>
     </a>
   </div>
 
   <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/carbon-components/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #8a3ffc;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">COMPONENTS</span>
-      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">75+ Carbon Shortcodes</h3>
+    <a href="/docs/customisation/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #8a3ffc;">
+      <span class="cds--tag cds--tag--purple cds--tag--sm" style="align-self: flex-start; margin-bottom: 0.5rem;">THEMING</span>
+      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Theme Customisation</h3>
       <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Complete reference catalog for accordions, tabs, tiles, notifications, modals, and interactive form controls.
+        Dual-style Light and Dark themes, 18 colour palettes, CSS custom properties, and subdomain token overrides.
       </p>
     </a>
   </div>
 
   <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/feature-showcase/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #009d9a;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">SHOWCASE</span>
-      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Interactive Feature Showcase</h3>
+    <a href="/docs/shortcodes/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #da1e28;">
+      <span class="cds--tag cds--tag--red cds--tag--sm" style="align-self: flex-start; margin-bottom: 0.5rem;">SHORTCODES</span>
+      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">75+ Shortcodes Catalog</h3>
       <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Live interactive specimens of shortcodes, math formulas, vCards, input controls, and TTS audio narration.
-      </p>
-    </a>
-  </div>
-
-  <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/dashboard-layout/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #da1e28;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">DASHBOARD</span>
-      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Dashboard Framework &amp; KPIs</h3>
-      <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Executive telemetry dashboard template with KPI metric cards, status matrices, and real-time modal inspectors.
+        Modular shortcode library grouped into dedicated pages for cards, navigation, typography, forms, and alerts.
       </p>
     </a>
   </div>
 
   <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
     <a href="/docs/data-analytics-suite/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #1192e8;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">DATA SUITE</span>
-      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">W3C CSVW &amp; PSPP Analytics</h3>
+      <span class="cds--tag cds--tag--cyan cds--tag--sm" style="align-self: flex-start; margin-bottom: 0.5rem;">DATA SUITE</span>
+      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">W3C CSVW Data Engine</h3>
       <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Multithreaded Web Worker CSVW tables, GNU PSPP Variable View, summary rows, and dataset exploration.
+        Client-side Web Worker table engine with schema metadata, custom status tags, search, and sorting.
       </p>
     </a>
   </div>
 
   <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/geojson-maps/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #6929c4;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">GEOSPATIAL</span>
+    <a href="/docs/geojson-maps/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #009d9a;">
+      <span class="cds--tag cds--tag--teal cds--tag--sm" style="align-self: flex-start; margin-bottom: 0.5rem;">CARTOGRAPHY</span>
       <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">MapLibre GL Vector Maps</h3>
       <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        GPU-accelerated vector cartography rendering standard RFC 7946 GeoJSON layers in 2D flat or 3D globe projections.
+        GPU-accelerated vector cartography rendering standard RFC 7946 GeoJSON layers in flat and globe projections.
       </p>
     </a>
   </div>
 
   <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/mathematical-typesetting/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #005d5d;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">MATHEMATICS</span>
-      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">KaTeX &amp; IBM Plex Math</h3>
+    <a href="/docs/encrypted-secrets-demo/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #6929c4;">
+      <span class="cds--tag cds--tag--purple cds--tag--sm" style="align-self: flex-start; margin-bottom: 0.5rem;">SECURITY</span>
+      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Client-Side Encryption</h3>
       <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Client-side KaTeX rendering mapped directly to self-hosted IBM Plex Math OpenType fonts and LaTeX delimiters.
-      </p>
-    </a>
-  </div>
-
-  <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/typography/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #ba4e00;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">TYPOGRAPHY</span>
-      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Typography &amp; Prose Scale</h3>
-      <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Specimens of display headings, body styles, blockquotes, definition lists, task lists, and footnotes.
-      </p>
-    </a>
-  </div>
-
-  <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/encrypted-secrets-demo/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #fa4d56;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">SECURITY</span>
-      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Encrypted Secrets Container</h3>
-      <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Build-time document encryption using PBKDF2 key derivation and AES-256-GCM static decryption.
-      </p>
-    </a>
-  </div>
-
-  <div class="cds--col-sm-4 cds--col-md-4 cds--col-lg-8" style="padding: 0 0.5rem;">
-    <a href="/docs/cloudflare-deployment/" class="cds--tile cds--tile--clickable" style="display: flex; flex-direction: column; height: 100%; text-decoration: none; padding: 1.25rem; background-color: var(--cds-layer-01); border-left: 3px solid #f1c21b;">
-      <span class="cds--tag cds--tag--outline" style="align-self: flex-start; margin-bottom: 0.5rem; font-family: var(--cds-font-mono, monospace);">DEPLOYMENT</span>
-      <h3 class="cds--type-heading-03" style="margin: 0 0 0.5rem; color: var(--cds-text-primary);">Cloudflare &amp; Static Hosting</h3>
-      <p class="cds--type-body-short-01" style="color: var(--cds-text-secondary); margin: 0; flex: 1 0 auto;">
-        Production setup for deploying sites built on Hugo-Carbon to Cloudflare Pages, GitHub Pages, and Netlify.
+        Build-time document encryption using PBKDF2 key derivation and Web Crypto AES-256-GCM static decryption.
       </p>
     </a>
   </div>
 
 </div>
+
+---
+
+## AI Disclosure & Editorial Transparency
+
+In accordance with official **IBM Carbon Design System v11 AI component patterns**, all synthetic placeholder text generated with artificial intelligence is marked with the **Carbon AI modifier** (`cds--ai-label`):
+
+{{< ai-label text="This theme documentation strictly distinguishes human-written technical prose from synthetic placeholder text. Wherever machine-assisted content appears, this badge provides direct explainability." />}}
+
+Users can click the AI badge at any time to open an explainability popover detailing how the content was produced.

@@ -1,0 +1,222 @@
+// IBM Carbon Design System v11 — AILabel / AI Modifier Stylesheet
+// Compliant with official @carbon/react AILabel and Slug specifications.
+
+:root {
+  --cds-ai-gradient: linear-gradient(135deg, #a56eff 0%, #0f62fe 50%, #0072c3 100%);
+  --cds-ai-border: rgba(165, 110, 255, 0.45);
+  --cds-ai-bg: rgba(165, 110, 255, 0.1);
+  --cds-ai-bg-hover: rgba(165, 110, 255, 0.2);
+}
+
+// 1. AI Label Root & Button
+.cds--ai-label {
+  display: inline-flex;
+  position: relative;
+  vertical-align: middle;
+  box-sizing: border-box;
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0 0.5rem;
+    font-family: var(--cds-font-sans, "IBM Plex Sans", sans-serif);
+    font-weight: 600;
+    color: var(--cds-text-primary);
+    background: var(--cds-ai-bg);
+    border: 1px solid var(--cds-ai-border);
+    cursor: pointer;
+    transition: background 150ms cubic-bezier(0.2, 0, 0.38, 0.9),
+                border-color 150ms cubic-bezier(0.2, 0, 0.38, 0.9),
+                box-shadow 150ms cubic-bezier(0.2, 0, 0.38, 0.9);
+
+    &:hover {
+      background: var(--cds-ai-bg-hover);
+      border-color: #a56eff;
+      box-shadow: 0 0 8px rgba(165, 110, 255, 0.35);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cds-focus, #0f62fe);
+      outline-offset: 2px;
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+
+    svg {
+      fill: currentColor;
+    }
+  }
+
+  &__text {
+    font-family: var(--cds-font-mono, "IBM Plex Mono", monospace);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+
+  // Size Variants
+  &--xs &__button {
+    height: 1.5rem;
+    min-width: 1.5rem;
+    padding: 0 0.375rem;
+    font-size: 0.6875rem;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &--sm &__button {
+    height: 2rem;
+    min-width: 2rem;
+    padding: 0 0.5rem;
+    font-size: 0.75rem;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &--md &__button {
+    height: 2.5rem;
+    min-width: 2.5rem;
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &--lg &__button {
+    height: 3rem;
+    min-width: 3rem;
+    padding: 0 1rem;
+    font-size: 1rem;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &--inline {
+    margin: 0 0.25rem;
+  }
+}
+
+// 2. Explainability Popover
+.cds--ai-label__popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 9500;
+  min-width: 18rem;
+  max-width: 24rem;
+  background-color: var(--cds-layer-01, #ffffff);
+  border: 1px solid var(--cds-border-subtle-00, #e0e0e0);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 150ms cubic-bezier(0, 0, 0.2, 1),
+              transform 150ms cubic-bezier(0, 0, 0.2, 1);
+
+  &.is-open,
+  &:not([hidden]) {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    display: block;
+  }
+
+  &[hidden] {
+    display: none !important;
+  }
+
+  .cds--popover-content {
+    padding: 1.25rem;
+  }
+
+  .cds--ai-label__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--cds-border-subtle-00, #e0e0e0);
+  }
+
+  .cds--ai-label__heading-icon svg {
+    fill: #a56eff;
+  }
+
+  .cds--ai-label__heading {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--cds-text-primary);
+    flex: 1;
+  }
+
+  .cds--ai-label__close-button {
+    background: transparent;
+    border: none;
+    color: var(--cds-icon-secondary, #525252);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      color: var(--cds-icon-primary, #161616);
+    }
+  }
+
+  .cds--ai-label__body {
+    margin-bottom: 0.75rem;
+  }
+
+  .cds--ai-label__description {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--cds-text-secondary);
+  }
+
+  .cds--ai-label__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--cds-border-subtle-00, #e0e0e0);
+  }
+}
+
+// 3. Container Modifiers (Cards, Tiles, Containers with AI Gradient Border)
+.cds--card--ai-label,
+.cds--tile--ai-label,
+.cds--ai-label-container {
+  position: relative !important;
+  border: 1px solid transparent !important;
+  background: linear-gradient(var(--cds-layer-01, #ffffff), var(--cds-layer-01, #ffffff)) padding-box,
+              linear-gradient(135deg, #a56eff 0%, #0f62fe 50%, #0072c3 100%) border-box !important;
+}
+
+// 4. Inline Callout AI modifier
+.cds--callout--ai {
+  border-left: 4px solid #a56eff !important;
+  background: linear-gradient(90deg, rgba(165, 110, 255, 0.08) 0%, var(--cds-layer-01, #ffffff) 100%) !important;
+}
