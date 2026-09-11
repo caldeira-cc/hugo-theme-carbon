@@ -1,4 +1,11 @@
-{{ $rawType := .Get "type" | default "info" | lower }}
+{{/*
+  IBM Carbon Design System v11 — Callout Shortcode
+  Compliant with Carbon React InlineNotification & ActionableNotification Specifications.
+  When closeable="true" or an action is provided, renders ActionableNotification (with inline modifier).
+  Otherwise renders standard InlineNotification.
+*/}}
+
+{{ $rawType := .Get "type" | default (.Get "kind" | default "info") | lower }}
 {{ $type := "info" }}
 {{ if or (eq $rawType "success") (eq $rawType "tip") }}
   {{ $type = "success" }}
@@ -13,25 +20,68 @@
 {{ end }}
 
 {{ $title := .Get "title" }}
-{{ $hideIcon := .Get "hide_icon" | default false }}
+{{ $hideIcon := .Get "hide_icon" | default (.Get "hideIcon" | default false) }}
+{{ $lowContrast := .Get "lowContrast" | default (.Get "low_contrast" | default false) }}
+{{ $class := .Get "class" | default "" }}
 
-<div class="cds--inline-notification cds--inline-notification--{{ $type }}{{ if eq $type "ai" }} cds--callout--ai{{ end }}" role="region" aria-label="Notification">
-  {{ if not $hideIcon }}
-    <div class="cds--inline-notification__icon-wrapper">
-      {{ $iconName := "information--filled" }}
-      {{ if eq $type "success" }}{{ $iconName = "checkmark--filled" }}
-      {{ else if eq $type "warning" }}{{ $iconName = "warning--alt--filled" }}
-      {{ else if eq $type "error" }}{{ $iconName = "error--filled" }}
-      {{ else if eq $type "ai" }}{{ $iconName = "ai-label" }}
+{{ $actionText := .Get "actionText" | default (.Get "action_text" | default "") }}
+{{ $actionHref := .Get "actionHref" | default (.Get "action_href" | default "") }}
+{{ $actionLabel := .Get "actionLabel" | default (.Get "action_label" | default $actionText) }}
+
+{{ $closeableRaw := .Get "closeable" | default (.Get "dismissible" | default (.Get "close" | default false)) }}
+{{ $isCloseable := or (eq $closeableRaw true) (eq $closeableRaw "true") }}
+{{ $hasAction := and $actionText $actionHref }}
+{{ $isActionable := or $isCloseable $hasAction (eq (.Get "actionable") "true") (eq (.Get "actionable") true) }}
+
+{{ $iconName := "information--filled" }}
+{{ if eq $type "success" }}{{ $iconName = "checkmark--filled" }}
+{{ else if eq $type "warning" }}{{ $iconName = "warning--alt--filled" }}
+{{ else if eq $type "error" }}{{ $iconName = "error--filled" }}
+{{ else if eq $type "ai" }}{{ $iconName = "ai-label" }}
+{{ end }}
+
+{{ if $isActionable }}
+  <div class="cds--actionable-notification cds--actionable-notification--inline cds--actionable-notification--{{ $type }}{{ if $lowContrast }} cds--actionable-notification--low-contrast{{ end }}{{ if eq $type "ai" }} cds--callout--ai{{ end }}{{ with $class }} {{ . }}{{ end }}" role="alertdialog" aria-label="{{ with $title }}{{ . }}{{ else }}Notification{{ end }}">
+    <div class="cds--actionable-notification__details">
+      {{ if not $hideIcon }}
+        <div class="cds--actionable-notification__icon-wrapper">
+          {{ partial "components/icon.html" (dict "name" $iconName "size" 20 "class" "cds--actionable-notification__icon") }}
+        </div>
       {{ end }}
-      {{ partial "components/icon.html" (dict "name" $iconName "size" 20 "class" "cds--inline-notification__icon") }}
+      <div class="cds--actionable-notification__text-wrapper">
+        {{ with $title }}
+          <div class="cds--actionable-notification__title">{{ . }}</div>
+        {{ end }}
+        <div class="cds--actionable-notification__subtitle">{{ .Inner | markdownify }}</div>
+      </div>
     </div>
-  {{ end }}
 
-  <div class="cds--inline-notification__content">
-    {{ with $title }}
-      <div class="cds--inline-notification__title">{{ . }}</div>
+    {{ if $hasAction }}
+      <a href="{{ $actionHref }}" class="cds--btn cds--btn--tertiary cds--btn--sm cds--actionable-notification__action-button" aria-label="{{ $actionLabel }}">
+        {{ $actionText }}
+      </a>
     {{ end }}
-    <div class="cds--inline-notification__subtitle">{{ .Inner | markdownify }}</div>
+
+    {{ if $isCloseable }}
+      <button class="cds--actionable-notification__close-button" type="button" aria-label="Close notification" onclick="this.closest('.cds--actionable-notification').remove();">
+        {{ partial "components/icon.html" (dict "name" "close" "size" 16 "class" "cds--actionable-notification__close-icon") }}
+      </button>
+    {{ end }}
   </div>
-</div>
+{{ else }}
+  <div class="cds--inline-notification cds--inline-notification--{{ $type }}{{ if $lowContrast }} cds--inline-notification--low-contrast{{ end }}{{ if eq $type "ai" }} cds--callout--ai{{ end }}{{ with $class }} {{ . }}{{ end }}" role="region" aria-label="{{ with $title }}{{ . }}{{ else }}Notification{{ end }}">
+    <div class="cds--inline-notification__details">
+      {{ if not $hideIcon }}
+        <div class="cds--inline-notification__icon-wrapper">
+          {{ partial "components/icon.html" (dict "name" $iconName "size" 20 "class" "cds--inline-notification__icon") }}
+        </div>
+      {{ end }}
+      <div class="cds--inline-notification__text-wrapper">
+        {{ with $title }}
+          <div class="cds--inline-notification__title">{{ . }}</div>
+        {{ end }}
+        <div class="cds--inline-notification__subtitle">{{ .Inner | markdownify }}</div>
+      </div>
+    </div>
+  </div>
+{{ end }}

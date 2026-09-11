@@ -2,17 +2,64 @@
 {{ $name := .Get "name" | default (.Get 0) | default .Inner | strings.TrimSpace }}
 
 {{ if or (eq $type "author") (eq $type "user") }}
-  <a href="{{ partial "components/author-url.html" $name }}" class="carbon-author-mention" title="View profile of {{ $name }}">
-    <span class="carbon-author-mention__avatar">{{ substr $name 0 1 }}</span>
-    <strong>{{ $name }}</strong>
-  </a>
+  {{ $hasAuthor := false }}
+  {{ if site.Taxonomies.authors }}
+    {{ $hasAuthor = or (site.Taxonomies.authors.Get ($name | lower)) (site.Taxonomies.authors.Get ($name | urlize)) }}
+  {{ end }}
+  {{ if not $hasAuthor }}
+    {{ $slug := $name | lower | replaceRE "[éèêë]" "e" | replaceRE "[áàâäã]" "a" | replaceRE "[óòôöõ]" "o" | replaceRE "[úùûü]" "u" | replaceRE "[íìîï]" "i" | replaceRE "[ç]" "c" | replaceRE "[^a-z0-9]+" "-" | strings.TrimPrefix "-" | strings.TrimSuffix "-" }}
+    {{ $authorPage := site.GetPage (printf "authors/%s" $slug) }}
+    {{ if not $authorPage }}
+      {{ $authorPage = site.GetPage (printf "authors/%s" ($name | urlize)) }}
+    {{ end }}
+    {{ if $authorPage }}
+      {{ $hasAuthor = true }}
+    {{ end }}
+  {{ end }}
+  {{ if $hasAuthor }}
+    <a href="{{ partial "components/author-url.html" $name }}" class="carbon-author-mention" title="View profile of {{ $name }}">
+      <span class="carbon-author-mention__avatar">{{ substr $name 0 1 }}</span>
+      <strong>{{ $name }}</strong>
+    </a>
+  {{ else }}
+    <span class="carbon-author-mention" title="{{ $name }}">
+      <span class="carbon-author-mention__avatar">{{ substr $name 0 1 }}</span>
+      <strong>{{ $name }}</strong>
+    </span>
+  {{ end }}
 {{ else if or (eq $type "category") (eq $type "cat") }}
-  <a href="{{ partial "components/category-url.html" $name }}" class="cds--tag cds--tag--blue cds--tag--clickable" title="View category: {{ $name }}">
-    {{ $name }}
-  </a>
+  {{ $hasCat := false }}
+  {{ if site.Taxonomies.categories }}
+    {{ $hasCat = or (site.Taxonomies.categories.Get ($name | lower)) (site.Taxonomies.categories.Get ($name | urlize)) }}
+  {{ end }}
+  {{ if not $hasCat }}
+    {{ $catPage := site.GetPage (printf "categories/%s" ($name | urlize)) }}
+    {{ if $catPage }}
+      {{ $hasCat = true }}
+    {{ end }}
+  {{ end }}
+  {{ if $hasCat }}
+    <a href="{{ partial "components/category-url.html" $name }}" class="cds--tag cds--tag--blue cds--tag--clickable" title="View category: {{ $name }}">
+      {{ $name }}
+    </a>
+  {{ else }}
+    <span class="cds--tag cds--tag--blue">
+      {{ $name }}
+    </span>
+  {{ end }}
 {{ else }}
   {{ $tagClean := $name | strings.TrimPrefix "#" }}
-  <a href="{{ partial "components/tag-url.html" $tagClean }}" class="cds--tag cds--tag--outline cds--tag--clickable" title="Tag: {{ $tagClean }}">
-    #{{ $tagClean }}
-  </a>
+  {{ $hasTag := false }}
+  {{ if site.Taxonomies.tags }}
+    {{ $hasTag = or (site.Taxonomies.tags.Get ($tagClean | lower)) (site.Taxonomies.tags.Get ($tagClean | urlize)) }}
+  {{ end }}
+  {{ if $hasTag }}
+    <a href="{{ partial "components/tag-url.html" $tagClean }}" class="cds--tag cds--tag--outline cds--tag--clickable" title="Tag: {{ $tagClean }}">
+      #{{ $tagClean }}
+    </a>
+  {{ else }}
+    <span class="cds--tag cds--tag--outline">
+      #{{ $tagClean }}
+    </span>
+  {{ end }}
 {{ end }}

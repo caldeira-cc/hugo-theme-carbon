@@ -63,6 +63,10 @@ The `callout` shortcode highlights crucial context, warnings, tips, and AI discl
 | :--- | :--- | :--- | :--- |
 | `type` | String | `"info"` | Callout type (`info`, `success`, `warning`, `error`, `ai`) |
 | `title` | String | *Optional* | Header title for the callout |
+| `closeable` | Boolean | `false` | When `true`, implements the official Carbon React `ActionableNotification` with an accessible close button |
+| `actionText` | String | *Optional* | Label for action button (converts to `ActionableNotification`) |
+| `actionHref` | String | *Optional* | Target link URL for the action button |
+| `lowContrast` | Boolean | `false` | When `true`, displays lower contrast container styling |
 | `hide_icon` | Boolean | `false` | When `true`, hides the leading status icon |
 
 ### Examples
@@ -75,8 +79,12 @@ Hugo Extended edition v0.149.0 or higher is required to compile Dart Sass and pr
 All fonts, scripts, and vector assets are bundled directly from origin, ensuring privacy and compliance with strict data regulations.
 {{< /callout >}}
 
-{{< callout type="warning" title="Submodule Update Notice" >}}
-Remember to initialize submodules with `git submodule update --init --recursive` when cloning for the first time.
+{{< callout type="warning" title="Submodule Update Notice" closeable="true" >}}
+Remember to initialize submodules with `git submodule update --init --recursive` when cloning for the first time. This notification is dismissible via the close button.
+{{< /callout >}}
+
+{{< callout type="info" title="Interactive Quickstart" actionText="Getting Started" actionHref="/docs/" >}}
+Explore comprehensive instructions for configuring sites, layouts, and data engines.
 {{< /callout >}}
 
 {{< callout type="ai" title="AI-Assisted Section" >}}
@@ -86,6 +94,14 @@ This callout uses the `type="ai"` modifier, rendering Carbon's purple accent bor
 ```markdown
 {{</* callout type="info" title="System Requirement" */>}}
 Hugo Extended edition v0.149.0 or higher is required to compile Dart Sass and process ESBuild modules.
+{{</* /callout */>}}
+
+{{</* callout type="warning" title="Submodule Update Notice" closeable="true" */>}}
+Dismissible callout rendered using Carbon React ActionableNotification pattern.
+{{</* /callout */>}}
+
+{{</* callout type="info" title="Interactive Quickstart" actionText="Getting Started" actionHref="/docs/" */>}}
+Explore comprehensive instructions for configuring sites, layouts, and data engines.
 {{</* /callout */>}}
 
 {{</* callout type="ai" title="AI-Assisted Section" */>}}

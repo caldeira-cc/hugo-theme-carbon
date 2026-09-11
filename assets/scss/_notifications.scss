@@ -1,0 +1,272 @@
+// IBM Carbon Design System v11 — Notifications & Actionable Notifications Stylesheet
+// Compliant with @carbon/react InlineNotification and ActionableNotification specifications.
+
+// 1. INLINE NOTIFICATIONS (Static Alerts)
+.cds--inline-notification {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.875rem 1rem;
+  margin: 1.5rem 0;
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  border-left: 4px solid var(--cds-support-info);
+  box-sizing: border-box;
+  width: 100%;
+
+  &--info {
+    border-left-color: var(--cds-support-info);
+    .cds--inline-notification__icon {
+      color: var(--cds-support-info);
+    }
+  }
+  &--success {
+    border-left-color: var(--cds-support-success);
+    .cds--inline-notification__icon {
+      color: var(--cds-support-success);
+    }
+  }
+  &--warning {
+    border-left-color: var(--cds-support-warning);
+    .cds--inline-notification__icon {
+      color: var(--cds-support-warning);
+    }
+  }
+  &--error {
+    border-left-color: var(--cds-support-error);
+    .cds--inline-notification__icon {
+      color: var(--cds-support-error);
+    }
+  }
+  &--ai {
+    border-left-color: #a56eff !important;
+    background: linear-gradient(90deg, rgba(165, 110, 255, 0.08) 0%, var(--cds-layer-01) 100%) !important;
+    .cds--inline-notification__icon {
+      color: #a56eff;
+    }
+  }
+
+  // Low Contrast Variant
+  &--low-contrast {
+    &.cds--inline-notification--info {
+      background-color: var(--cds-notification-background-info, rgba(15, 98, 254, 0.08));
+    }
+    &.cds--inline-notification--success {
+      background-color: var(--cds-notification-background-success, rgba(36, 161, 72, 0.08));
+    }
+    &.cds--inline-notification--warning {
+      background-color: var(--cds-notification-background-warning, rgba(241, 194, 27, 0.12));
+    }
+    &.cds--inline-notification--error {
+      background-color: var(--cds-notification-background-error, rgba(218, 30, 40, 0.08));
+    }
+  }
+
+  &__details {
+    display: flex;
+    align-items: flex-start;
+    flex: 1 1 auto;
+  }
+
+  &__icon-wrapper {
+    margin-right: 0.875rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    display: block;
+  }
+
+  &__text-wrapper,
+  &__content {
+    flex: 1 1 auto;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    color: var(--cds-text-primary);
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    margin-top: 0;
+    color: var(--cds-text-primary);
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: var(--cds-text-secondary);
+    line-height: 1.45;
+    margin: 0;
+
+    p {
+      margin: 0;
+    }
+    p + p {
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+// 2. ACTIONABLE NOTIFICATIONS (Interactive / Closeable Alerts)
+.cds--actionable-notification {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  margin: 1.5rem 0;
+  background-color: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  border-left: 4px solid var(--cds-support-info);
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  transition: opacity 150ms cubic-bezier(0.2, 0, 0.38, 0.9),
+              transform 150ms cubic-bezier(0.2, 0, 0.38, 0.9);
+
+  &--info {
+    border-left-color: var(--cds-support-info);
+    .cds--actionable-notification__icon {
+      color: var(--cds-support-info);
+    }
+  }
+  &--success {
+    border-left-color: var(--cds-support-success);
+    .cds--actionable-notification__icon {
+      color: var(--cds-support-success);
+    }
+  }
+  &--warning {
+    border-left-color: var(--cds-support-warning);
+    .cds--actionable-notification__icon {
+      color: var(--cds-support-warning);
+    }
+  }
+  &--error {
+    border-left-color: var(--cds-support-error);
+    .cds--actionable-notification__icon {
+      color: var(--cds-support-error);
+    }
+  }
+  &--ai {
+    border-left-color: #a56eff !important;
+    background: linear-gradient(90deg, rgba(165, 110, 255, 0.08) 0%, var(--cds-layer-01) 100%) !important;
+    .cds--actionable-notification__icon {
+      color: #a56eff;
+    }
+  }
+
+  // Low Contrast Variant
+  &--low-contrast {
+    &.cds--actionable-notification--info {
+      background-color: var(--cds-notification-background-info, rgba(15, 98, 254, 0.08));
+    }
+    &.cds--actionable-notification--success {
+      background-color: var(--cds-notification-background-success, rgba(36, 161, 72, 0.08));
+    }
+    &.cds--actionable-notification--warning {
+      background-color: var(--cds-notification-background-warning, rgba(241, 194, 27, 0.12));
+    }
+    &.cds--actionable-notification--error {
+      background-color: var(--cds-notification-background-error, rgba(218, 30, 40, 0.08));
+    }
+  }
+
+  &__details {
+    display: flex;
+    align-items: flex-start;
+    flex: 1 1 auto;
+  }
+
+  &__icon-wrapper {
+    margin-right: 0.875rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    display: block;
+  }
+
+  &__text-wrapper {
+    flex: 1 1 auto;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    color: var(--cds-text-primary);
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    margin-top: 0;
+    color: var(--cds-text-primary);
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: var(--cds-text-secondary);
+    line-height: 1.45;
+    margin: 0;
+
+    p {
+      margin: 0;
+    }
+    p + p {
+      margin-top: 0.5rem;
+    }
+  }
+
+  &__action-button {
+    margin-left: 1rem;
+    flex-shrink: 0;
+    align-self: center;
+    white-space: nowrap;
+  }
+
+  &__close-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--cds-icon-secondary, #525252);
+    padding: 0.25rem;
+    margin-left: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 2rem;
+    min-height: 2rem;
+    align-self: flex-start;
+    transition: color 150ms ease, background-color 150ms ease;
+
+    &:hover {
+      color: var(--cds-icon-primary, #161616);
+      background-color: var(--cds-layer-hover-01, rgba(0, 0, 0, 0.06));
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cds-focus);
+      outline-offset: -2px;
+    }
+  }
+
+  &__close-icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    display: block;
+  }
+}

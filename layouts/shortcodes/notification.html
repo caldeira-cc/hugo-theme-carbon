@@ -4,7 +4,7 @@
 
   Usage:
   {{< notification kind="info" title="Build Verification" subtitle="All 5 environments compiled in 350ms." actionText="View Logs" actionHref="/docs/" />}}
-  {{< notification kind="success" title="Local Verification Passed" subtitle="Zero third-party script CDNs detected." />}}
+  {{< notification kind="success" title="Local Verification Passed" subtitle="Zero third-party script CDNs detected." hideClose="true" />}}
 */}}
 
 {{ $kind := .Get "kind" | default "info" }}
@@ -12,7 +12,9 @@
 {{ $subtitle := .Get "subtitle" | default "" }}
 {{ $actionText := .Get "actionText" | default "" }}
 {{ $actionHref := .Get "actionHref" | default "" }}
+{{ $actionLabel := .Get "actionLabel" | default $actionText }}
 {{ $hideClose := .Get "hideClose" | default "false" }}
+{{ $lowContrast := .Get "lowContrast" | default false }}
 {{ $class := .Get "class" | default "" }}
 {{ $icon := .Get "icon" }}
 {{ $iconName := $icon }}
@@ -20,33 +22,59 @@
   {{ if eq $kind "success" }}{{ $iconName = "checkmark--filled" }}
   {{ else if eq $kind "warning" }}{{ $iconName = "warning--alt--filled" }}
   {{ else if eq $kind "error" }}{{ $iconName = "error--filled" }}
+  {{ else if eq $kind "ai" }}{{ $iconName = "ai-label" }}
   {{ else }}{{ $iconName = "information--filled" }}
   {{ end }}
 {{ end }}
 
-<div class="cds--inline-notification cds--inline-notification--{{ $kind }} {{ with $class }}{{ . }}{{ end }}" role="status" aria-live="polite">
-  <div class="cds--inline-notification__details">
-    {{ partial "components/icon.html" (dict "name" $iconName "size" 20 "class" "cds--inline-notification__icon") }}
-    <div class="cds--inline-notification__text-wrapper">
-      <p class="cds--inline-notification__title">{{ $title }}</p>
-      {{ with $subtitle }}
-        <p class="cds--inline-notification__subtitle">{{ . }}</p>
-      {{ end }}
-      {{ if .Inner }}
-        <div class="cds--inline-notification__subtitle">{{ .Inner | markdownify }}</div>
-      {{ end }}
+{{ $hasAction := and $actionText $actionHref }}
+{{ $isCloseable := ne $hideClose "true" }}
+{{ $isActionable := or $hasAction $isCloseable }}
+
+{{ if $isActionable }}
+  <div class="cds--actionable-notification cds--actionable-notification--inline cds--actionable-notification--{{ $kind }}{{ if $lowContrast }} cds--actionable-notification--low-contrast{{ end }}{{ if eq $kind "ai" }} cds--callout--ai{{ end }}{{ with $class }} {{ . }}{{ end }}" role="status" aria-live="polite">
+    <div class="cds--actionable-notification__details">
+      <div class="cds--actionable-notification__icon-wrapper">
+        {{ partial "components/icon.html" (dict "name" $iconName "size" 20 "class" "cds--actionable-notification__icon") }}
+      </div>
+      <div class="cds--actionable-notification__text-wrapper">
+        <p class="cds--actionable-notification__title">{{ $title }}</p>
+        {{ with $subtitle }}
+          <p class="cds--actionable-notification__subtitle">{{ . }}</p>
+        {{ end }}
+        {{ if .Inner }}
+          <div class="cds--actionable-notification__subtitle">{{ .Inner | markdownify }}</div>
+        {{ end }}
+      </div>
+    </div>
+
+    {{ if $hasAction }}
+      <a href="{{ $actionHref }}" class="cds--btn cds--btn--tertiary cds--btn--sm cds--actionable-notification__action-button" aria-label="{{ $actionLabel }}">
+        {{ $actionText }}
+      </a>
+    {{ end }}
+
+    {{ if $isCloseable }}
+      <button class="cds--actionable-notification__close-button" type="button" aria-label="Close notification" onclick="this.closest('.cds--actionable-notification').remove();">
+        {{ partial "components/icon.html" (dict "name" "close" "size" 16 "class" "cds--actionable-notification__close-icon") }}
+      </button>
+    {{ end }}
+  </div>
+{{ else }}
+  <div class="cds--inline-notification cds--inline-notification--{{ $kind }}{{ if $lowContrast }} cds--inline-notification--low-contrast{{ end }}{{ if eq $kind "ai" }} cds--callout--ai{{ end }}{{ with $class }} {{ . }}{{ end }}" role="status" aria-live="polite">
+    <div class="cds--inline-notification__details">
+      <div class="cds--inline-notification__icon-wrapper">
+        {{ partial "components/icon.html" (dict "name" $iconName "size" 20 "class" "cds--inline-notification__icon") }}
+      </div>
+      <div class="cds--inline-notification__text-wrapper">
+        <p class="cds--inline-notification__title">{{ $title }}</p>
+        {{ with $subtitle }}
+          <p class="cds--inline-notification__subtitle">{{ . }}</p>
+        {{ end }}
+        {{ if .Inner }}
+          <div class="cds--inline-notification__subtitle">{{ .Inner | markdownify }}</div>
+        {{ end }}
+      </div>
     </div>
   </div>
-
-  {{ if and $actionText $actionHref }}
-    <a href="{{ $actionHref }}" class="cds--btn cds--btn--ghost cds--btn--sm" style="margin-left: auto;">
-      {{ $actionText }}
-    </a>
-  {{ end }}
-
-  {{ if ne $hideClose "true" }}
-    <button class="cds--inline-notification__close-button" type="button" aria-label="Close notification" onclick="this.closest('.cds--inline-notification').remove();">
-      {{ partial "components/icon.html" (dict "name" "close" "size" 16 "class" "cds--inline-notification__close-icon") }}
-    </button>
-  {{ end }}
-</div>
+{{ end }}

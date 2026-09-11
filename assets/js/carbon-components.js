@@ -92,10 +92,12 @@ export function initCarbonComponents() {
   });
 
   // 5. Toast / Notification Dismissal
-  const closeNotificationBtns = document.querySelectorAll('.cds--toast-notification__close-button, .cds--inline-notification__close-button');
+  const closeNotificationBtns = document.querySelectorAll(
+    '.cds--toast-notification__close-button, .cds--inline-notification__close-button, .cds--actionable-notification__close-button'
+  );
   closeNotificationBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const notification = btn.closest('.cds--toast-notification, .cds--inline-notification');
+      const notification = btn.closest('.cds--toast-notification, .cds--inline-notification, .cds--actionable-notification');
       if (notification) {
         notification.style.transition = 'opacity 150ms ease, transform 150ms ease';
         notification.style.opacity = '0';

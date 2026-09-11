@@ -7,9 +7,7 @@
 <div class="carbon-read-aloud cds--tile" data-target="{{ $target }}" role="region" aria-label="Audio Reader">
   <div class="carbon-read-aloud__header">
     <div class="carbon-read-aloud__title-group">
-      <svg class="carbon-read-aloud__icon" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-        <path d="M7 11v10h4l7 7V4l-7 7H7zM24 16c0-3.3-1.8-6.2-4.5-7.7v15.4C22.2 22.2 24 19.3 24 16zm-4.5-12.8v3.1c4.9 1.7 8.5 6.4 8.5 11.7s-3.6 10-8.5 11.7v3.1c6.6-1.8 11.5-7.9 11.5-14.8s-4.9-13-11.5-14.8z"/>
-      </svg>
+      {{ partial "components/icon.html" (dict "name" "volume--up" "size" 20 "class" "carbon-read-aloud__icon") }}
       <span class="carbon-read-aloud__title">{{ $title }}</span>
     </div>
     <span class="cds--tag cds--tag--blue carbon-read-aloud__status" aria-live="polite">Ready</span>
@@ -17,18 +15,12 @@
 
   <div class="carbon-read-aloud__controls">
     <button type="button" class="cds--btn cds--btn--primary cds--btn--sm carbon-read-aloud__play-btn" aria-label="Read article aloud">
-      <span class="carbon-read-aloud__btn-icon" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M7 4v16l13-8z"/>
-        </svg>
-      </span>
+      {{ partial "components/icon.html" (dict "name" "play--filled" "size" 16 "class" "cds--btn__icon") }}
       <span class="carbon-read-aloud__btn-text">Read Aloud</span>
     </button>
 
     <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm carbon-read-aloud__stop-btn" aria-label="Stop reading aloud">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <rect x="5" y="5" width="14" height="14"/>
-      </svg>
+      {{ partial "components/icon.html" (dict "name" "stop--filled" "size" 16 "class" "cds--btn__icon") }}
       <span>Stop</span>
     </button>
 

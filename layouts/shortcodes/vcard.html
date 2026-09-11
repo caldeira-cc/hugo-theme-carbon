@@ -206,9 +206,7 @@
     <div class="cds--vcard__grid">
       {{ with $email }}
         <div class="cds--vcard__field">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M14 3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm-.5 1.5L8 8.8 2.5 4.5h11zM2 11.5v-6l6 4.7 6-4.7v6H2z"/>
-          </svg>
+          {{ partial "components/icon.html" (dict "name" "email" "size" 16) }}
           <div class="cds--vcard__field-content">
             <span class="cds--vcard__field-label">Email</span>
             <span class="cds--vcard__field-value">
@@ -220,9 +218,7 @@
 
       {{ with $phone }}
         <div class="cds--vcard__field">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M13.5 10.8l-2.4-.7a1 1 0 0 0-1 .3l-1 1.2a9.7 9.7 0 0 1-4.4-4.4l1.2-1a1 1 0 0 0 .3-1l-.7-2.4A1 1 0 0 0 4.5 2H2.8A1 1 0 0 0 1.8 3 13.2 13.2 0 0 0 13 14.2a1 1 0 0 0 1-1v-1.7a1 1 0 0 0-.5-.7z"/>
-          </svg>
+          {{ partial "components/icon.html" (dict "name" "phone" "size" 16) }}
           <div class="cds--vcard__field-content">
             <span class="cds--vcard__field-label">Phone</span>
             <span class="cds--vcard__field-value">
@@ -234,9 +230,7 @@
 
       {{ with $website }}
         <div class="cds--vcard__field">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 1a7 7 0 1 0 7 7 7 7 0 0 0-7-7zm5.9 6.5h-2.5a10.9 10.9 0 0 0-1-4.2A6 6 0 0 1 13.9 7.5zM8 2.1c.7 1.1 1.3 3.1 1.5 5.4H6.5c.2-2.3.8-4.3 1.5-5.4zM2.1 7.5a6 6 0 0 1 3.5-4.2 10.9 10.9 0 0 0-1 4.2H2.1zm0 1h2.5a10.9 10.9 0 0 0 1 4.2 6 6 0 0 1-3.5-4.2zm5.9 5.4c-.7-1.1-1.3-3.1-1.5-5.4h3c-.2 2.3-.8 4.3-1.5 5.4zm2.4-1.2a10.9 10.9 0 0 0 1-4.2h2.5a6 6 0 0 1-3.5 4.2z"/>
-          </svg>
+          {{ partial "components/icon.html" (dict "name" "globe" "size" 16) }}
           <div class="cds--vcard__field-content">
             <span class="cds--vcard__field-label">Website</span>
             <span class="cds--vcard__field-value">
@@ -248,9 +242,7 @@
 
       {{ with $location }}
         <div class="cds--vcard__field">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 1a5 5 0 0 0-5 5c0 3.8 5 9 5 9s5-5.2 5-9a5 5 0 0 0-5-5zm0 6.8A1.8 1.8 0 1 1 9.8 6 1.8 1.8 0 0 1 8 7.8z"/>
-          </svg>
+          {{ partial "components/icon.html" (dict "name" "location" "size" 16) }}
           <div class="cds--vcard__field-content">
             <span class="cds--vcard__field-label">Location</span>
             <span class="cds--vcard__field-value">{{ . }}</span>
@@ -282,32 +274,23 @@
     <div class="cds--vcard__actions">
       {{ if $fileDownloadUrl }}
         <a href="{{ $fileDownloadUrl }}" download="{{ $downloadName }}" class="cds--btn cds--btn--primary cds--btn--sm cds--vcard__btn--download">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M13 7l-1.4-1.4L9 8.2V1H7v7.2L4.4 5.6 3 7l5 5 5-5zM1 13v2h14v-2H1z"/>
-          </svg>
+          {{ partial "components/icon.html" (dict "name" "download" "size" 14 "class" "cds--btn__icon") }}
           <span>Download VCard (.vcf)</span>
         </a>
       {{ else }}
         <button type="button" class="cds--btn cds--btn--primary cds--btn--sm cds--vcard__btn--download">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M13 7l-1.4-1.4L9 8.2V1H7v7.2L4.4 5.6 3 7l5 5 5-5zM1 13v2h14v-2H1z"/>
-          </svg>
+          {{ partial "components/icon.html" (dict "name" "download" "size" 14 "class" "cds--btn__icon") }}
           <span>Download VCard (.vcf)</span>
         </button>
       {{ end }}
 
       <button type="button" class="cds--btn cds--btn--secondary cds--btn--sm cds--vcard__btn--copy" aria-label="Copy contact details">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M14 5v9H5V5h9m0-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
-          <path d="M2 9H1V2a1 1 0 0 1 1-1h7v1H2v7z"/>
-        </svg>
+        {{ partial "components/icon.html" (dict "name" "copy" "size" 14 "class" "cds--btn__icon") }}
         <span>Copy Info</span>
       </button>
 
       <button type="button" class="cds--btn cds--btn--ghost cds--btn--sm cds--vcard__btn--qr" aria-expanded="false" aria-label="Toggle QR Code">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M1 1h6v6H1V1zm1 1v4h4V2H2zm6-1h7v6H8V1zm1 1v4h5V2H9zM1 8h6v7H1V8zm1 1v5h4V9H2zm10 0h3v2h-3V9zm-3 0h2v3H9V9zm2 3h1v3h-1v-3zm2 0h1v3h-1v-3zm-4 2h2v1H9v-1z"/>
-        </svg>
+        {{ partial "components/icon.html" (dict "name" "qr-code" "size" 14 "class" "cds--btn__icon") }}
         <span>QR Code</span>
       </button>
     </div>

@@ -18,15 +18,18 @@ Feedback components provide real-time status notices, confirmations, and focus-t
 
 ## 1. Inline Notification (`notification`)
 
-The `notification` shortcode renders Carbon inline banners communicating essential system status, warnings, errors, or successes.
+The `notification` shortcode renders Carbon inline banners communicating essential system status, warnings, errors, or successes. Following `@carbon/react` specifications, notifications equipped with action buttons or close handlers render as `ActionableNotification`.
 
 ### Parameters
 
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `kind` | String | `"info"` | Status variant (`info`, `success`, `warning`, `error`) |
+| `kind` | String | `"info"` | Status variant (`info`, `success`, `warning`, `error`, `ai`) |
 | `title` | String | Required | Notification headline |
 | `subtitle` | String | *Optional* | Explanatory description |
+| `actionText` | String | *Optional* | Label for interactive action button |
+| `actionHref` | String | *Optional* | Target URL for action button |
+| `hideClose` | Boolean | `"false"` | When set to `"true"`, suppresses the dismiss close button |
 | `lowContrast` | Boolean | `false` | When `true`, displays lower contrast container style |
 
 ### Examples
@@ -34,20 +37,23 @@ The `notification` shortcode renders Carbon inline banners communicating essenti
 {{< notification kind="info" title="Scheduled Maintenance" subtitle="Origin servers will undergo non-disruptive kernel upgrades on Sunday at 02:00 UTC." >}}
 {{< /notification >}}
 
-{{< notification kind="success" title="Build Completed" subtitle="All static assets were compiled and verified against WCAG 2.1 AA benchmarks." >}}
+{{< notification kind="success" title="Build Completed" subtitle="All static assets were compiled and verified against WCAG 2.1 AA benchmarks." actionText="View Docs" actionHref="/docs/" >}}
 {{< /notification >}}
 
 {{< notification kind="warning" title="Version Deprecation" subtitle="Legacy shortcode signatures will be removed in the next major theme revision." >}}
 {{< /notification >}}
 
-{{< notification kind="error" title="Validation Failed" subtitle="One or more internal links could not be resolved during the static analysis audit." >}}
+{{< notification kind="error" title="Validation Notice" subtitle="Static analysis detected missing metadata fields." hideClose="true" >}}
 {{< /notification >}}
 
 ```markdown
 {{</* notification kind="info" title="Scheduled Maintenance" subtitle="Origin servers will undergo non-disruptive kernel upgrades on Sunday at 02:00 UTC." */>}}
 {{</* /notification */>}}
 
-{{</* notification kind="success" title="Build Completed" subtitle="All static assets were compiled and verified against WCAG 2.1 AA benchmarks." */>}}
+{{</* notification kind="success" title="Build Completed" subtitle="All static assets were compiled and verified against WCAG 2.1 AA benchmarks." actionText="View Docs" actionHref="/docs/" */>}}
+{{</* /notification */>}}
+
+{{</* notification kind="error" title="Validation Notice" subtitle="Static analysis detected missing metadata fields." hideClose="true" */>}}
 {{</* /notification */>}}
 ```
 

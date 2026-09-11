@@ -7,12 +7,42 @@
 {{ $name = $name | default "Author" | strings.TrimSpace }}
 
 {{ $role := .Get "role" }}
-{{ $href := .Get "href" | default (partial "components/author-url.html" $name) }}
+{{ $href := .Get "href" }}
 
-<a href="{{ $href }}" class="carbon-author-mention" title="View profile of {{ $name }}">
-  <span class="carbon-author-mention__avatar">{{ substr $name 0 1 }}</span>
-  <strong>{{ $name }}</strong>
-  {{ with $role }}
-    <span style="font-size: 0.6875rem; opacity: 0.75; font-weight: 400;">({{ . }})</span>
+{{ $hasAuthor := false }}
+{{ if $href }}
+  {{ $hasAuthor = true }}
+{{ else }}
+  {{ if site.Taxonomies.authors }}
+    {{ $hasAuthor = or (site.Taxonomies.authors.Get ($name | lower)) (site.Taxonomies.authors.Get ($name | urlize)) }}
   {{ end }}
-</a>
+  {{ if not $hasAuthor }}
+    {{ $slug := $name | lower | replaceRE "[éèêë]" "e" | replaceRE "[áàâäã]" "a" | replaceRE "[óòôöõ]" "o" | replaceRE "[úùûü]" "u" | replaceRE "[íìîï]" "i" | replaceRE "[ç]" "c" | replaceRE "[^a-z0-9]+" "-" | strings.TrimPrefix "-" | strings.TrimSuffix "-" }}
+    {{ $authorPage := site.GetPage (printf "authors/%s" $slug) }}
+    {{ if not $authorPage }}
+      {{ $authorPage = site.GetPage (printf "authors/%s" ($name | urlize)) }}
+    {{ end }}
+    {{ if $authorPage }}
+      {{ $hasAuthor = true }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if or $href $hasAuthor }}
+  {{ $link := $href | default (partial "components/author-url.html" $name) }}
+  <a href="{{ $link }}" class="carbon-author-mention" title="View profile of {{ $name }}">
+    <span class="carbon-author-mention__avatar">{{ substr $name 0 1 }}</span>
+    <strong>{{ $name }}</strong>
+    {{ with $role }}
+      <span style="font-size: 0.6875rem; opacity: 0.75; font-weight: 400;">({{ . }})</span>
+    {{ end }}
+  </a>
+{{ else }}
+  <span class="carbon-author-mention" title="{{ $name }}">
+    <span class="carbon-author-mention__avatar">{{ substr $name 0 1 }}</span>
+    <strong>{{ $name }}</strong>
+    {{ with $role }}
+      <span style="font-size: 0.6875rem; opacity: 0.75; font-weight: 400;">({{ . }})</span>
+    {{ end }}
+  </span>
+{{ end }}

@@ -8,7 +8,25 @@
 
 {{ $type := .Get "type" | default "blue" }}
 {{ $href := .Get "href" }}
-{{ $clickable := .Get "clickable" | default true }}
+{{ $hasTerm := false }}
+{{ if site.Taxonomies.categories }}
+  {{ $hasTerm = or (site.Taxonomies.categories.Get ($name | lower)) (site.Taxonomies.categories.Get ($name | urlize)) }}
+{{ end }}
+{{ if not $hasTerm }}
+  {{ $catPage := site.GetPage (printf "categories/%s" ($name | urlize)) }}
+  {{ if $catPage }}
+    {{ $hasTerm = true }}
+  {{ end }}
+{{ end }}
+
+{{ $clickable := false }}
+{{ if $href }}
+  {{ $clickable = true }}
+{{ else if or (eq (.Get "clickable") true) (eq (.Get "clickable") "true") }}
+  {{ $clickable = true }}
+{{ else if and $hasTerm (ne (.Get "clickable") false) (ne (.Get "clickable") "false") }}
+  {{ $clickable = true }}
+{{ end }}
 
 {{ if $href }}
   <a href="{{ $href }}" class="cds--tag cds--tag--{{ $type }} cds--tag--clickable" title="Category: {{ $name }}">
