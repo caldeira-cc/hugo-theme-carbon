@@ -156,16 +156,16 @@ All 49 IBM Plex and KaTeX font files, scripts, and stylesheets verified locally.
 
 ## 6. Disclosure, Tabs & Structured Content
 
-{{< tabs tabs="Overview,Architecture,Security" >}}
-  {{< tab-panel >}}
+{{< tabs type="default" >}}
+  {{< tab-panel title="Overview" icon="information" selected="true" >}}
 #### IBM Carbon Modular Architecture
 Decoupled multi-subdomain architecture built for enterprise performance, zero-CDN compliance, and accessible design.
   {{< /tab-panel >}}
-  {{< tab-panel >}}
+  {{< tab-panel title="Architecture" icon="diagram" >}}
 #### Static Island Hydration
 Non-blocking Web Workers execute numerical simulations and vector queries without UI lag.
   {{< /tab-panel >}}
-  {{< tab-panel >}}
+  {{< tab-panel title="Security" icon="locked" >}}
 #### AES-256-GCM Cryptography
 Zero plaintext leaks with build-time document encryption and client memory key derivation.
   {{< /tab-panel >}}

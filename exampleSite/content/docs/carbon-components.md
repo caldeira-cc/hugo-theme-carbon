@@ -376,14 +376,14 @@ Hugo isolates builds into modular static targets with instant generation times a
 
 ## 9. Tabs & Contained Tab Panels
 
-{{< tabs type="contained" tabs="Architecture,Theming,Security" >}}
-  {{< tab-panel active="true" >}}
+{{< tabs type="contained" >}}
+  {{< tab-panel title="Architecture" icon="diagram" selected="true" >}}
     The architecture relies on static compilation with zero runtime React or Node server dependencies.
   {{< /tab-panel >}}
-  {{< tab-panel >}}
+  {{< tab-panel title="Theming" icon="color-palette" >}}
     All colors are mapped to CSS custom properties (`--cds-*`) with build-time theme injection.
   {{< /tab-panel >}}
-  {{< tab-panel >}}
+  {{< tab-panel title="Security" icon="locked" >}}
     Static AES-256-GCM encryption protects sensitive content without plaintext leakage.
   {{< /tab-panel >}}
 {{< /tabs >}}

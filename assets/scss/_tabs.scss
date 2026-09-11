@@ -1,0 +1,363 @@
+// IBM Carbon Design System v11 — Tabs Stylesheet
+// Compliant with @carbon/react Tabs, TabList, Tab, TabPanels, and TabPanel specifications.
+
+.cds--tabs {
+  margin: 1.5rem 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: relative;
+
+  // 1. TAB LIST CONTAINER & OVERFLOW CONTROLS
+  &__nav,
+  .cds--tab--list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid var(--cds-border-subtle-01);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // Overflow Navigation Buttons
+  &__overflow-wrapper {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .cds--tab--overflow-nav-button {
+    appearance: none;
+    background: var(--cds-layer-01);
+    border: none;
+    color: var(--cds-icon-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 110ms ease, color 110ms ease;
+    z-index: 2;
+
+    &:hover {
+      background-color: var(--cds-layer-hover, var(--cds-layer-02));
+      color: var(--cds-icon-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cds-focus);
+      outline-offset: -2px;
+    }
+
+    &--hidden {
+      display: none !important;
+    }
+  }
+
+  // 2. INDIVIDUAL TAB ITEMS (BUTTONS)
+  &__tab,
+  &__nav-item,
+  &__nav-link {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2.5rem;
+    padding: 0 1rem;
+    font-family: var(--cds-font-sans, inherit);
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--cds-text-secondary);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    position: relative;
+    transition: background-color 110ms ease, color 110ms ease, border-color 110ms ease;
+
+    &:hover {
+      background-color: var(--cds-layer-hover, var(--cds-layer-01));
+      color: var(--cds-text-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cds-focus);
+      outline-offset: -2px;
+    }
+
+    // Selected state
+    &--selected,
+    &.is-active {
+      color: var(--cds-text-primary);
+      font-weight: 600;
+      border-bottom-color: var(--cds-interactive-01);
+    }
+
+    // Disabled state
+    &--disabled,
+    &[disabled],
+    &[aria-disabled="true"] {
+      color: var(--cds-text-disabled);
+      cursor: not-allowed;
+      pointer-events: none;
+      background-color: transparent !important;
+      border-bottom-color: transparent !important;
+
+      svg {
+        fill: var(--cds-icon-disabled);
+      }
+    }
+
+    // Label Wrapper
+    .cds--tabs__nav-item-label-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cds--tabs__nav-item--icon-left,
+    .cds--tabs__nav-item--icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+      }
+    }
+
+    // Dismissable tab close button
+    .cds--tabs__nav-item--close {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 0.5rem;
+    }
+
+    .cds--tabs__nav-item--close-icon {
+      appearance: none;
+      background: transparent;
+      border: none;
+      padding: 0.125rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cds-icon-secondary);
+      cursor: pointer;
+      border-radius: 0;
+      transition: color 110ms ease, background-color 110ms ease;
+
+      &:hover {
+        color: var(--cds-icon-primary);
+        background-color: var(--cds-layer-hover-01, rgba(0, 0, 0, 0.08));
+      }
+
+      svg {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+      }
+    }
+  }
+
+  // 3. SIZES
+  &--sm,
+  &.cds--layout--size-sm {
+    .cds--tabs__tab,
+    .cds--tabs__nav-item {
+      height: 2rem;
+      font-size: 0.75rem;
+      padding: 0 0.75rem;
+    }
+  }
+
+  &--lg,
+  &.cds--layout--size-lg {
+    .cds--tabs__tab,
+    .cds--tabs__nav-item {
+      height: 3rem;
+      font-size: 1rem;
+      padding: 0 1.25rem;
+    }
+  }
+
+  // 4. CONTAINED VARIANT (.cds--tabs--contained)
+  &--contained {
+    .cds--tabs__nav,
+    .cds--tab--list {
+      background-color: var(--cds-layer-01);
+      border-bottom: 1px solid var(--cds-border-subtle-00);
+    }
+
+    .cds--tabs__tab,
+    .cds--tabs__nav-item {
+      background-color: var(--cds-layer-01);
+      border-right: 1px solid var(--cds-border-subtle-00);
+      border-bottom: 2px solid transparent;
+
+      &:hover {
+        background-color: var(--cds-layer-hover-01, var(--cds-layer-02));
+      }
+
+      &--selected,
+      &.is-active {
+        background-color: var(--cds-layer-02);
+        border-bottom-color: var(--cds-interactive-01);
+      }
+    }
+  }
+
+  // Tall Tabs (Contained with secondary label)
+  &--tall {
+    .cds--tabs__tab,
+    .cds--tabs__nav-item {
+      height: 4rem;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 0.5rem 1rem;
+
+      .cds--tabs__nav-item-secondary-label {
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: var(--cds-text-secondary);
+        line-height: 1.2;
+      }
+    }
+  }
+
+  // 5. FULL WIDTH VARIANT (.cds--tabs--full-width)
+  &--full-width {
+    .cds--tabs__nav,
+    .cds--tab--list {
+      width: 100%;
+    }
+
+    .cds--tabs__tab,
+    .cds--tabs__nav-item {
+      flex: 1 1 0;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  // 6. ICON ONLY VARIANT (.cds--tabs--icon-only)
+  &--icon-only {
+    .cds--tabs__tab,
+    .cds--tabs__nav-item {
+      padding: 0 0.875rem;
+      justify-content: center;
+
+      .cds--tabs__nav-item-label {
+        display: none;
+      }
+    }
+  }
+
+  // 7. LIGHT VARIANT (.cds--tabs--light)
+  &--light {
+    .cds--tabs__nav,
+    .cds--tab--list {
+      background-color: var(--cds-layer-01);
+    }
+  }
+
+  // 8. VERTICAL VARIANT (.cds--tabs--vertical)
+  &--vertical {
+    @media (min-width: 42rem) {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 0;
+
+      .cds--tabs__overflow-wrapper {
+        width: auto;
+        min-width: 14rem;
+        max-width: 18rem;
+        flex-shrink: 0;
+      }
+
+      .cds--tabs__nav,
+      .cds--tab--list {
+        flex-direction: column;
+        width: 100%;
+        border-bottom: none;
+        border-right: 1px solid var(--cds-border-subtle-00);
+        background-color: var(--cds-layer-01);
+      }
+
+      .cds--tabs__tab,
+      .cds--tabs__nav-item {
+        width: 100%;
+        height: 3rem;
+        justify-content: flex-start;
+        border-bottom: 1px solid var(--cds-border-subtle-00);
+        border-right: 3px solid transparent;
+
+        &--selected,
+        &.is-active {
+          border-bottom-color: var(--cds-border-subtle-00);
+          border-right-color: var(--cds-interactive-01);
+          background-color: var(--cds-layer-02);
+        }
+      }
+
+      .cds--tab-panels,
+      .cds--tabs__panels {
+        flex: 1 1 auto;
+        padding: 0 0 0 1.5rem;
+      }
+    }
+  }
+
+  // 9. PANELS & CONTENT
+  &__panels,
+  .cds--tab-panels {
+    padding: 1.25rem 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__panel,
+  .cds--tab-content {
+    display: none;
+    color: var(--cds-text-primary);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    outline: none;
+
+    &[hidden] {
+      display: none !important;
+    }
+
+    &.is-active,
+    &:not([hidden]) {
+      display: block;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cds-focus);
+      outline-offset: 2px;
+    }
+  }
+}

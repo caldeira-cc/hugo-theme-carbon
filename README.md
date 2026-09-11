@@ -241,8 +241,8 @@ Hugo-Carbon includes an exhaustive library of shortcodes adhering strictly to Ca
 |:---|:---|:---|
 | `{{< accordion >}}` | Collapsible section container | `align="start\|end"` |
 | `{{< accordion-item >}}` | Individual collapsible item | `title="string"`, `open="true\|false"` |
-| `{{< tabs >}}` | Tabbed navigation container | `type="default\|container\|contained"`, `tabs="Tab 1,Tab 2"` |
-| `{{< tab-panel >}}` | Individual tab content panel | `active="true\|false"` |
+| `{{< tabs >}}` | Tabbed navigation container | `type="default\|contained\|vertical"`, `size="sm\|md\|lg"`, `fullWidth="true"`, `dismissable="true"` |
+| `{{< tab-panel >}}` | Individual tab content panel | `title="string"`, `icon="string"`, `secondaryLabel="string"`, `badge="string"`, `selected="true"` |
 | `{{< tile >}}` | Standard content tile | — |
 | `{{< clickable-tile >}}` | Interactive link tile | `href="url"`, `title="string"`, `external="true\|false"` |
 | `{{< expandable-tile >}}` | Tile with summary and reveal | `title="string"`, fold with `<!-- more -->` |
@@ -262,10 +262,10 @@ Hugo-Carbon includes an exhaustive library of shortcodes adhering strictly to Ca
   {{< /accordion-item >}}
 {{< /accordion >}}
 
-{{< tabs type="contained" tabs="Overview,Installation,Verification" >}}
-  {{< tab-panel active="true" >}}Overview content goes here...{{< /tab-panel >}}
-  {{< tab-panel >}}Installation steps...{{< /tab-panel >}}
-  {{< tab-panel >}}Verification commands...{{< /tab-panel >}}
+{{< tabs type="contained" >}}
+  {{< tab-panel title="Overview" icon="information" selected="true" >}}Overview content goes here...{{< /tab-panel >}}
+  {{< tab-panel title="Installation" icon="download" >}}Installation steps...{{< /tab-panel >}}
+  {{< tab-panel title="Verification" icon="checkmark--filled" badge="Passed" badgeColor="green" >}}Verification commands...{{< /tab-panel >}}
 {{< /tabs >}}
 ```
 

@@ -1,9 +1,53 @@
-{{ $active := .Get "active" | default false }}
-{{ $class := "cds--tabs__panel" }}
-{{ if or (eq $active "true") (eq $active true) }}
-  {{ $class = "cds--tabs__panel is-active" }}
+{{/*
+  IBM Carbon Design System v11 — Tab Panel Shortcode
+  Compliant with @carbon/react Tab & TabPanel Specifications.
+*/}}
+
+{{ $title := .Get "title" | default (.Get "label" | default "Tab") }}
+{{ $icon := .Get "icon" }}
+{{ $secondaryLabel := .Get "secondaryLabel" | default (.Get "secondary_label") }}
+{{ $badge := .Get "badge" | default (.Get "tag") }}
+{{ $badgeColor := .Get "badgeColor" | default (.Get "badge_color" | default "blue") }}
+{{ $disabled := or (eq (.Get "disabled") true) (eq (.Get "disabled") "true") }}
+{{ $selected := or (eq (.Get "selected") true) (eq (.Get "selected") "true") (eq (.Get "active") true) (eq (.Get "active") "true") }}
+{{ $dismissable := or (eq (.Get "dismissable") true) (eq (.Get "dismissable") "true") (eq (.Get "closeable") true) (eq (.Get "closeable") "true") }}
+{{ $class := .Get "class" | default "" }}
+
+{{ $baseId := "" }}
+{{ $index := 0 }}
+{{ if .Parent }}
+  {{ $baseId = .Parent.Scratch.Get "baseId" }}
+  {{ $currentTabs := .Parent.Scratch.Get "tabs" | default slice }}
+  {{ $index = len $currentTabs }}
+{{ end }}
+{{ if not $baseId }}
+  {{ $baseId = printf "cds-tabs-%d" .Ordinal }}
 {{ end }}
 
-<div class="{{ $class }}" role="tabpanel">
-  {{ .Inner | markdownify }}
-</div>
+{{ $tabId := printf "%s-tab-%d" $baseId $index }}
+{{ $panelId := .Get "id" | default (printf "%s-panel-%d" $baseId $index) }}
+
+{{ if .Parent }}
+  {{ $panelData := dict
+    "index" $index
+    "tabId" $tabId
+    "panelId" $panelId
+    "title" $title
+    "icon" $icon
+    "secondaryLabel" $secondaryLabel
+    "badge" $badge
+    "badgeColor" $badgeColor
+    "disabled" $disabled
+    "selected" $selected
+    "dismissable" $dismissable
+    "class" $class
+    "body" (.Inner | markdownify)
+  }}
+  {{ .Parent.Scratch.Add "tabs" (slice $panelData) }}
+{{ else }}
+  {{/* Fallback if tab-panel is used outside of tabs shortcode */}}
+  <div class="cds--tab-content cds--tabs__panel is-active{{ with $class }} {{ . }}{{ end }}" role="tabpanel">
+    {{ .Inner | markdownify }}
+  </div>
+{{ end }}
+

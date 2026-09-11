@@ -19,31 +19,132 @@ export function initCarbonComponents() {
     });
   });
 
-  // 2. Tabs & Tab Panels Interactivity
+  // 2. Tabs & Tab Panels Interactivity (Carbon React v11 Specification)
   const tabContainers = document.querySelectorAll('.cds--tabs');
   tabContainers.forEach(container => {
-    const tabs = container.querySelectorAll('.cds--tabs__tab');
-    const panels = container.querySelectorAll('.cds--tabs__panel');
+    const isVertical = container.classList.contains('cds--tabs--vertical');
+    const tabList = container.querySelector('.cds--tab--list, .cds--tabs__nav');
+    const tabs = Array.from(container.querySelectorAll('.cds--tabs__nav-item, .cds--tabs__nav-link, .cds--tabs__tab'));
+    const panels = Array.from(container.querySelectorAll('.cds--tab-content, .cds--tabs__panel'));
+    const prevBtn = container.querySelector('.cds--tab--overflow-nav-button--previous');
+    const nextBtn = container.querySelector('.cds--tab--overflow-nav-button--next');
+
+    function activateTab(index, setFocus = false) {
+      if (index < 0 || index >= tabs.length) return;
+      const targetTab = tabs[index];
+      if (targetTab.hasAttribute('disabled') || targetTab.getAttribute('aria-disabled') === 'true') return;
+
+      tabs.forEach((t, i) => {
+        const isSelected = i === index;
+        t.classList.toggle('cds--tabs__nav-item--selected', isSelected);
+        t.classList.toggle('cds--tabs__tab--selected', isSelected);
+        t.classList.toggle('is-active', isSelected);
+        t.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        t.setAttribute('tabindex', isSelected ? '0' : '-1');
+      });
+
+      panels.forEach((p, i) => {
+        const isSelected = i === index;
+        p.classList.toggle('is-active', isSelected);
+        if (isSelected) {
+          p.removeAttribute('hidden');
+        } else {
+          p.setAttribute('hidden', '');
+        }
+      });
+
+      if (setFocus) {
+        targetTab.focus();
+      }
+
+      if (tabList && targetTab) {
+        targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      }
+    }
 
     tabs.forEach((tab, index) => {
       tab.addEventListener('click', (e) => {
+        // If clicked on dismiss close icon, handle dismiss
+        if (e.target.closest('.cds--tabs__nav-item--close-icon')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const panel = panels[index];
+          tab.remove();
+          if (panel) panel.remove();
+          const remainingTabs = Array.from(container.querySelectorAll('.cds--tabs__nav-item, .cds--tabs__nav-link, .cds--tabs__tab'));
+          if (remainingTabs.length > 0) {
+            const nextIdx = Math.min(index, remainingTabs.length - 1);
+            remainingTabs[nextIdx].click();
+          }
+          return;
+        }
+
         e.preventDefault();
-        tabs.forEach(t => {
-          t.classList.remove('cds--tabs__tab--selected', 'is-active');
-          t.setAttribute('aria-selected', 'false');
-        });
-        panels.forEach(p => {
-          p.classList.remove('is-active');
-        });
+        activateTab(index);
+      });
 
-        tab.classList.add('cds--tabs__tab--selected', 'is-active');
-        tab.setAttribute('aria-selected', 'true');
+      // Keyboard navigation per W3C APG / Carbon React
+      tab.addEventListener('keydown', (e) => {
+        const enabledTabs = tabs.filter(t => !t.hasAttribute('disabled') && t.getAttribute('aria-disabled') !== 'true');
+        const currentEnabledIdx = enabledTabs.indexOf(tab);
+        if (currentEnabledIdx === -1) return;
 
-        if (panels[index]) {
-          panels[index].classList.add('is-active');
+        let targetIdx = -1;
+        if ((!isVertical && e.key === 'ArrowRight') || (isVertical && e.key === 'ArrowDown')) {
+          e.preventDefault();
+          targetIdx = (currentEnabledIdx + 1) % enabledTabs.length;
+        } else if ((!isVertical && e.key === 'ArrowLeft') || (isVertical && e.key === 'ArrowUp')) {
+          e.preventDefault();
+          targetIdx = (currentEnabledIdx - 1 + enabledTabs.length) % enabledTabs.length;
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          targetIdx = 0;
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          targetIdx = enabledTabs.length - 1;
+        } else if (e.key === 'Delete' && tab.querySelector('.cds--tabs__nav-item--close-icon')) {
+          e.preventDefault();
+          tab.querySelector('.cds--tabs__nav-item--close-icon')?.click();
+          return;
+        }
+
+        if (targetIdx !== -1) {
+          const newTab = enabledTabs[targetIdx];
+          const newIndex = tabs.indexOf(newTab);
+          activateTab(newIndex, true);
         }
       });
     });
+
+    // Overflow scroll buttons
+    if (tabList) {
+      function updateOverflowButtons() {
+        if (!prevBtn || !nextBtn) return;
+        const hasOverflow = tabList.scrollWidth > tabList.clientWidth + 2;
+        if (!hasOverflow) {
+          prevBtn.classList.add('cds--tab--overflow-nav-button--hidden');
+          nextBtn.classList.add('cds--tab--overflow-nav-button--hidden');
+          return;
+        }
+        prevBtn.classList.toggle('cds--tab--overflow-nav-button--hidden', tabList.scrollLeft <= 2);
+        nextBtn.classList.toggle('cds--tab--overflow-nav-button--hidden', tabList.scrollLeft + tabList.clientWidth >= tabList.scrollWidth - 2);
+      }
+
+      tabList.addEventListener('scroll', updateOverflowButtons);
+      window.addEventListener('resize', updateOverflowButtons);
+      setTimeout(updateOverflowButtons, 50);
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          tabList.scrollBy({ left: -200, behavior: 'smooth' });
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          tabList.scrollBy({ left: 200, behavior: 'smooth' });
+        });
+      }
+    }
   });
 
   // 3. Content Switcher Interactivity

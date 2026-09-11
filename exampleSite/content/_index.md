@@ -97,8 +97,8 @@ Tabular datasets are parsed using companion `.csv-metadata.json` descriptors ins
 
 Tabs organise related perspectives into a compact, switchable interface:
 
-{{< tabs type="contained" tabs="Architecture & Grid,Design Tokens,Cryptographic Security" >}}
-  {{< tab-panel active="true" >}}
+{{< tabs type="contained" >}}
+  {{< tab-panel title="Architecture & Grid" icon="grid" selected="true" >}}
     <h4 class="cds--type-heading-03" style="margin-top: 0;">16-Column Fluid Mathematical Geometry</h4>
     <p class="cds--type-body-long-01">
       The responsive grid adapts seamlessly from single-column mobile viewports (320px) up to 16 columns on desktop displays, maintaining a consistent 4px baseline rhythm across all headings and paragraph text.
@@ -110,7 +110,7 @@ Tabs organise related perspectives into a compact, switchable interface:
       <span class="cds--tag cds--tag--green">1440PX BOUNDARY</span>
     </div>
   {{< /tab-panel >}}
-  {{< tab-panel >}}
+  {{< tab-panel title="Design Tokens" icon="color-palette" >}}
     <h4 class="cds--type-heading-03" style="margin-top: 0;">IBM Carbon v11 CSS Custom Properties</h4>
     <p class="cds--type-body-long-01">
       Components use standard Carbon design tokens (`--cds-*`) for layer backgrounds, borders, focus rings, and text colours, ensuring cohesive styling across light and dark colorways.
@@ -122,7 +122,7 @@ Tabs organise related perspectives into a compact, switchable interface:
       <span class="cds--tag cds--tag--warm-gray">--cds-text-primary</span>
     </div>
   {{< /tab-panel >}}
-  {{< tab-panel >}}
+  {{< tab-panel title="Cryptographic Security" icon="locked" >}}
     <h4 class="cds--type-heading-03" style="margin-top: 0;">Static Document Encryption (AES-256-GCM)</h4>
     <p class="cds--type-body-long-01">
       Sensitive pages are encrypted at build time via Python using PBKDF2 with 100,000 iterations and AES-256-GCM. Browsers decrypt content entirely in-origin via the native Web Cryptography API.
