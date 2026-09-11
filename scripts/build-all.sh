@@ -13,18 +13,21 @@ echo "=================================================="
 echo "Hugo-Carbon Multi-Site Unified Build & Audit"
 echo "=================================================="
 
-echo "--> [1/4] Building exampleSite (carbon.caldeira.cc)..."
+echo "--> [1/5] Building exampleSite (carbon.caldeira.cc)..."
 (cd hugo-theme-carbon/exampleSite && hugo --gc --minify)
 python3 "$SCRIPT_DIR/encrypt.py" --dir hugo-theme-carbon/exampleSite/public
 
-echo "--> [2/4] Building cesar-caldeira-cc..."
+echo "--> [2/5] Building cesar-caldeira-cc..."
 (cd cesar-caldeira-cc && hugo --gc --minify)
 
-echo "--> [3/4] Building blog-caldeira-cc..."
+echo "--> [3/5] Building blog-caldeira-cc..."
 (cd blog-caldeira-cc && hugo --gc --minify)
 
-echo "--> [4/4] Building apps-caldeira-cc..."
+echo "--> [4/5] Building apps-caldeira-cc..."
 (cd apps-caldeira-cc && hugo --gc --minify)
+
+echo "--> [5/5] Building games-caldeira-cc..."
+(cd games-caldeira-cc && hugo --gc --minify)
 
 echo "=================================================="
 echo "Running Dependency & Link Audits"
@@ -34,6 +37,7 @@ python3 "$SCRIPT_DIR/test_public_html.py" --dir hugo-theme-carbon/exampleSite/pu
 python3 "$SCRIPT_DIR/test_public_html.py" --dir cesar-caldeira-cc/public
 python3 "$SCRIPT_DIR/test_public_html.py" --dir blog-caldeira-cc/public
 python3 "$SCRIPT_DIR/test_public_html.py" --dir apps-caldeira-cc/public
+python3 "$SCRIPT_DIR/test_public_html.py" --dir games-caldeira-cc/public
 
 echo ""
 echo "🎉 ALL SITES BUILT AND VERIFIED WITH ZERO ERRORS!"

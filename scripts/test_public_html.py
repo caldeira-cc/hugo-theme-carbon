@@ -9,6 +9,7 @@ KNOWN_SUBDOMAINS = {
     'cesar.caldeira.cc',
     'blog.caldeira.cc',
     'apps.caldeira.cc',
+    'games.caldeira.cc',
     'carbon.caldeira.cc',
     'assets.caldeira.cc',
     'docs.caldeira.cc',
