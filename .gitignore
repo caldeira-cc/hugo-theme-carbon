@@ -11,3 +11,7 @@ exampleSite/node_modules
 # Node Dependencies
 node_modules
 
+# Environment & Secrets
+.env
+.env.*
+.env.cloudflare
