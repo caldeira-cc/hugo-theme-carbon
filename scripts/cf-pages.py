@@ -27,7 +27,7 @@ CONFIG_MATRIX = {
     "cesar": {
         "repo": "cesar-caldeira-cc",
         "root_dir": "",
-        "build_command": "hugo --gc --minify",
+        "build_command": "([ -d ../hugo-theme-carbon ] || git clone --depth 1 https://github.com/caldeira-cc/hugo-theme-carbon.git ../hugo-theme-carbon) && hugo --gc --minify",
         "destination_dir": "public",
         "public_dir": "cesar-caldeira-cc/public",
         "custom_domain": "cesar.caldeira.cc",
@@ -36,7 +36,7 @@ CONFIG_MATRIX = {
     "blog": {
         "repo": "blog-caldeira-cc",
         "root_dir": "",
-        "build_command": "hugo --gc --minify",
+        "build_command": "([ -d ../hugo-theme-carbon ] || git clone --depth 1 https://github.com/caldeira-cc/hugo-theme-carbon.git ../hugo-theme-carbon) && hugo --gc --minify",
         "destination_dir": "public",
         "public_dir": "blog-caldeira-cc/public",
         "custom_domain": "blog.caldeira.cc",
@@ -45,7 +45,7 @@ CONFIG_MATRIX = {
     "apps": {
         "repo": "apps-caldeira-cc",
         "root_dir": "",
-        "build_command": "hugo --gc --minify",
+        "build_command": "([ -d ../hugo-theme-carbon ] || git clone --depth 1 https://github.com/caldeira-cc/hugo-theme-carbon.git ../hugo-theme-carbon) && hugo --gc --minify",
         "destination_dir": "public",
         "public_dir": "apps-caldeira-cc/public",
         "custom_domain": "apps.caldeira.cc",
@@ -54,7 +54,7 @@ CONFIG_MATRIX = {
     "games": {
         "repo": "games-caldeira-cc",
         "root_dir": "",
-        "build_command": "hugo --gc --minify",
+        "build_command": "([ -d ../hugo-theme-carbon ] || git clone --depth 1 https://github.com/caldeira-cc/hugo-theme-carbon.git ../hugo-theme-carbon) && hugo --gc --minify",
         "destination_dir": "public",
         "public_dir": "games-caldeira-cc/public",
         "custom_domain": "games.caldeira.cc",
