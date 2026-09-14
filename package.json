@@ -23,5 +23,15 @@
     "csvw"
   ],
   "author": "Hugo-Carbon Engineering",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@carbon/icons": "^11.88.0",
+    "@carbon/styles": "^1.115.0",
+    "@carbon/web-components": "^2.63.0",
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "sass": "^1.104.1",
+    "sass-embedded": "^1.104.1"
+  }
 }

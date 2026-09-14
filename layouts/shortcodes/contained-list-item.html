@@ -1,22 +1,13 @@
-{{ $title := .Get "title" }}
+{{ $title := or (.Get "title") (.Get "label") }}
 {{ $description := .Get "description" }}
 {{ $href := .Get "href" }}
+{{ $class := .Get "class" }}
 
-{{ if $href }}
-  <li class="cds--contained-list__row cds--contained-list__row--clickable">
-    <a href="{{ $href }}" style="display: flex; justify-content: space-between; align-items: center; width: 100%; text-decoration: none; color: inherit;">
-      <div class="cds--contained-list__row-content">
-        <span class="cds--contained-list__row-title">{{ $title }}</span>
-        {{ with $description }}<span class="cds--contained-list__row-description">{{ . }}</span>{{ end }}
-      </div>
-      {{ partial "components/icon.html" (dict "name" "chevron--right" "size" 16 "class" "cds--contained-list__chevron") }}
-    </a>
-  </li>
-{{ else }}
-  <li class="cds--contained-list__row">
-    <div class="cds--contained-list__row-content">
-      <span class="cds--contained-list__row-title">{{ $title }}</span>
-      {{ with $description }}<span class="cds--contained-list__row-description">{{ . }}</span>{{ end }}
-    </div>
-  </li>
-{{ end }}
+<cds-contained-list-item
+  {{ with $href }}href="{{ . }}"{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  <div class="cds--contained-list__row-content">
+    {{ with $title }}<span class="cds--contained-list__row-title">{{ . }}</span>{{ end }}
+    {{ with $description }}<span class="cds--contained-list__row-description" style="display: block; font-size: 0.75rem; color: var(--cds-text-secondary);">{{ . }}</span>{{ end }}
+  </div>
+</cds-contained-list-item>

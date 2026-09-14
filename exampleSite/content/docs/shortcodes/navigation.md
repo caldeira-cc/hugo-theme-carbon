@@ -38,7 +38,7 @@ The `breadcrumb` shortcode informs users of their current location within the si
 
 ## 2. Tabs & Tab Panels (`tabs`, `tab-panel`)
 
-Tabs organise content into separate views within the same context, allowing users to alternate between related perspectives without navigating away from the page. Following `@carbon/react` specifications, the tabs component supports line tabs, contained tabs, vertical tabs, secondary subtitles, status badges, dismissable tabs, and accessible keyboard navigation.
+Tabs organise content into separate views within the same context, allowing users to alternate between related perspectives without navigating away from the page. Following official `@carbon/web-components` specifications (`<cds-tabs>`, `<cds-tab>`, `<cds-tab-panel>`), the tabs component supports line tabs, contained tabs, secondary subtitles, status badges, and accessible keyboard navigation.
 
 ### Parameters
 

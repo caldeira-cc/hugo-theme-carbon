@@ -74,9 +74,19 @@ params:
   carbon:
     useLocalFonts: true
     defaultThemeMode: "system"
+    glassmorphism:
+      enable: true
+      blur: "12px"
+      saturate: "140%"
     theme:
       lightVariant: "white"
       darkVariant: "g100"
+      light:
+        uiShellBackground: "rgba(22, 22, 22, 0.92)"
+        mainBarBackground: "rgba(244, 244, 244, 0.88)"
+      dark:
+        uiShellBackground: "rgba(22, 22, 22, 0.92)"
+        mainBarBackground: "rgba(38, 38, 38, 0.88)"
 
   typography:
     content: "sans"

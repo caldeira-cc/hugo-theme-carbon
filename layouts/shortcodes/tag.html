@@ -25,40 +25,42 @@
   {{ $showHash = false }}
 {{ end }}
 {{ $size := .Get "size" | default "md" }}
-{{ $filter := false }}
-{{ if or (eq (.Get "filter") true) (eq (.Get "filter") "true") }}
-  {{ $filter = true }}
-{{ end }}
+{{ $filter := or (eq (.Get "filter") true) (eq (.Get "filter") "true") }}
+{{ $disabled := or (eq (.Get "disabled") true) (eq (.Get "disabled") "true") }}
 {{ $icon := .Get "icon" }}
+{{ $class := .Get "class" }}
 
-{{ $tagClasses := printf "cds--tag cds--tag--%s cds--tag--%s" $type $size }}
-{{ if $filter }}
-  {{ $tagClasses = printf "%s cds--tag--filter" $tagClasses }}
+{{ $targetUrl := "" }}
+{{ if $href }}
+  {{ $targetUrl = $href }}
+{{ else if and $clickable (not $filter) }}
+  {{ $targetUrl = partial "components/tag-url.html" $name }}
 {{ end }}
 
-{{ if $href }}
-  <a href="{{ $href }}" class="{{ $tagClasses }} cds--tag--clickable" title="Tag: {{ $name }}">
-    {{ with $icon }}{{ partial "components/icon.html" (dict "name" . "size" 12 "class" "cds--tag__custom-icon") }}{{ end }}
-    {{ if $showHash }}#{{ end }}{{ $name }}
-    {{ if $filter }}
-      <span class="cds--tag__close-icon" aria-label="Clear tag" onclick="event.preventDefault(); this.closest('.cds--tag').remove();">
-        {{ partial "components/icon.html" (dict "name" "close" "size" 12 "class" "cds--tag__close-icon-svg") }}
-      </span>
-    {{ end }}
-  </a>
-{{ else if and $clickable (not $filter) }}
-  <a href="{{ partial "components/tag-url.html" $name }}" class="{{ $tagClasses }} cds--tag--clickable" title="View all pages tagged with #{{ $name }}">
-    {{ with $icon }}{{ partial "components/icon.html" (dict "name" . "size" 12 "class" "cds--tag__custom-icon") }}{{ end }}
-    {{ if $showHash }}#{{ end }}{{ $name }}
+{{ if $targetUrl }}
+  <a href="{{ $targetUrl }}" class="carbon-tag-link" title="Tag: {{ $name }}">
+    <cds-tag
+      type="{{ $type }}"
+      size="{{ $size }}"
+      {{ if $filter }}filter{{ end }}
+      {{ if $disabled }}disabled{{ end }}
+      {{ with $class }}class="{{ . }}"{{ end }}>
+      {{ with $icon }}
+        {{ partial "components/icon.html" (dict "name" . "size" 12 "slot" "icon") }}
+      {{ end }}
+      {{ if $showHash }}#{{ end }}{{ $name }}
+    </cds-tag>
   </a>
 {{ else }}
-  <span class="{{ $tagClasses }}">
-    {{ with $icon }}{{ partial "components/icon.html" (dict "name" . "size" 12 "class" "cds--tag__custom-icon") }}{{ end }}
-    {{ if $showHash }}#{{ end }}{{ $name }}
-    {{ if $filter }}
-      <span class="cds--tag__close-icon" aria-label="Clear tag" onclick="this.closest('.cds--tag').remove();">
-        {{ partial "components/icon.html" (dict "name" "close" "size" 12 "class" "cds--tag__close-icon-svg") }}
-      </span>
+  <cds-tag
+    type="{{ $type }}"
+    size="{{ $size }}"
+    {{ if $filter }}filter{{ end }}
+    {{ if $disabled }}disabled{{ end }}
+    {{ with $class }}class="{{ . }}"{{ end }}>
+    {{ with $icon }}
+      {{ partial "components/icon.html" (dict "name" . "size" 12 "slot" "icon") }}
     {{ end }}
-  </span>
+    {{ if $showHash }}#{{ end }}{{ $name }}
+  </cds-tag>
 {{ end }}

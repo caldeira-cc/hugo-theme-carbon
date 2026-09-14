@@ -2,31 +2,29 @@
 {{ $size := .Get "size" | default "md" }}
 {{ $href := .Get "href" }}
 {{ $icon := .Get "icon" }}
-{{ $iconOnly := .Get "icon_only" | default false }}
-{{ $disabled := .Get "disabled" | default false }}
-{{ $ariaLabel := .Get "aria_label" | default (.Get "title") }}
+{{ $iconOnly := or (.Get "has-icon-only") (.Get "has_icon_only") (.Get "icon_only") false }}
+{{ $disabled := or (.Get "disabled") false }}
+{{ $target := .Get "target" }}
+{{ $download := .Get "download" }}
+{{ $type := .Get "type" | default "button" }}
+{{ $ariaLabel := or (.Get "aria-label") (.Get "aria_label") (.Get "title") }}
+{{ $class := .Get "class" }}
 
-{{ $btnClass := printf "cds--btn cds--btn--%s cds--btn--%s" $kind $size }}
-{{ if $iconOnly }}
-  {{ $btnClass = printf "%s cds--btn--icon-only" $btnClass }}
-{{ end }}
-{{ if $disabled }}
-  {{ $btnClass = printf "%s cds--btn--disabled" $btnClass }}
-{{ end }}
-
-{{ if and $href (not $disabled) }}
-  <a href="{{ $href }}" class="{{ $btnClass }}" {{ with $ariaLabel }}aria-label="{{ . }}" title="{{ . }}"{{ end }}>
-    {{ if not $iconOnly }}{{ .Inner | default (.Get "text") }}{{ end }}
-    {{ with $icon }}
-      {{ partial "components/icon.html" (dict "name" . "size" 16 "class" "cds--btn__icon") }}
-    {{ end }}
-  </a>
-{{ else }}
-  <button type="button" class="{{ $btnClass }}" {{ if $disabled }}disabled aria-disabled="true"{{ end }} {{ with $ariaLabel }}aria-label="{{ . }}" title="{{ . }}"{{ end }}>
-    {{ if not $iconOnly }}{{ .Inner | default (.Get "text") }}{{ end }}
-    {{ with $icon }}
-      {{ partial "components/icon.html" (dict "name" . "size" 16 "class" "cds--btn__icon") }}
-    {{ end }}
-  </button>
-{{ end }}
-
+<cds-button
+  kind="{{ $kind }}"
+  size="{{ $size }}"
+  {{ with $href }}href="{{ . }}"{{ end }}
+  {{ with $target }}target="{{ . }}"{{ end }}
+  {{ with $download }}download="{{ . }}"{{ end }}
+  {{ if not $href }}type="{{ $type }}"{{ end }}
+  {{ if or (eq $disabled "true") (eq $disabled true) }}disabled{{ end }}
+  {{ if or (eq $iconOnly "true") (eq $iconOnly true) }}has-icon-only{{ end }}
+  {{ with $ariaLabel }}aria-label="{{ . }}"{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  {{ if not (or (eq $iconOnly "true") (eq $iconOnly true)) }}
+    {{ .Inner | default (.Get "text") }}
+  {{ end }}
+  {{ with $icon }}
+    {{ partial "components/icon.html" (dict "name" . "size" 16 "slot" "icon") }}
+  {{ end }}
+</cds-button>

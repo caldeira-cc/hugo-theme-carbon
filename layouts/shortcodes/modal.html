@@ -1,58 +1,56 @@
 {{/*
-  IBM Carbon Design System v11 — Modal / ComposedModal Shortcode
-  Compliant with Carbon React Modal Component Specifications.
-
-  Usage:
-  {{< modal id="demo-modal" title="Confirm Deployment" label="Deployment Manager" primaryButton="Deploy Now" secondaryButton="Cancel" >}}
-    Are you sure you want to trigger the multi-subdomain static compilation workflow?
-  {{< /modal >}}
+  IBM Carbon Design System v11 — Modal Shortcode
+  Compliant with @carbon/web-components <cds-modal> suite.
 */}}
 
 {{ $id := .Get "id" | default (printf "cds-modal-%d" .Ordinal) }}
-{{ $title := or (.Get "title") (.Get "heading") }}
+{{ $title := or (.Get "title") (.Get "heading") "Modal Heading" }}
 {{ $label := .Get "label" }}
-{{ $primaryButton := .Get "primaryButton" }}
-{{ $secondaryButton := .Get "secondaryButton" }}
-{{ $danger := .Get "danger" | default "false" }}
-{{ $class := .Get "class" | default "" }}
+{{ $primaryButton := or (.Get "primary-button-text") (.Get "primaryButton") }}
+{{ $secondaryButton := or (.Get "secondary-button-text") (.Get "secondaryButton") }}
+{{ $danger := or (eq (.Get "danger") true) (eq (.Get "danger") "true") false }}
+{{ $size := .Get "size" | default "md" }}
+{{ $open := or (eq (.Get "open") true) (eq (.Get "open") "true") false }}
+{{ $triggerText := .Get "trigger-text" | default (printf "Open Modal: %s" $title) }}
+{{ $class := .Get "class" }}
 
-<div class="cds--modal-wrapper">
-  <button type="button" class="cds--btn cds--btn--secondary cds--btn--sm" data-modal-target="#{{ $id }}">
-    Open Modal{{ with $title }}: {{ . }}{{ end }}
-  </button>
+<div class="carbon-modal-launcher">
+  <cds-button
+    kind="secondary"
+    size="sm"
+    onclick="const m = document.getElementById('{{ $id }}'); if (m) m.open = true;">
+    {{ $triggerText }}
+  </cds-button>
 
-  <div class="cds--modal {{ with $class }}{{ . }}{{ end }}" id="{{ $id }}" role="dialog" aria-modal="true" aria-labelledby="{{ $id }}-heading" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 9500; align-items: center; justify-content: center;">
-    <div class="cds--modal-container" style="background: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); width: 100%; max-width: 560px; box-shadow: 0 12px 24px rgba(0,0,0,0.3); display: flex; flex-direction: column;">
-      <div class="cds--modal-header" style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--cds-border-subtle-01); position: relative;">
-        {{ with $label }}
-          <span class="cds--type-label" style="display: block; margin-bottom: 0.25rem;">{{ . }}</span>
-        {{ end }}
-        {{ with $title }}
-          <h3 class="cds--modal-header__heading" id="{{ $id }}-heading" style="margin: 0; font-size: 1.25rem;">{{ . }}</h3>
-        {{ end }}
-        <button type="button" class="cds--modal-close" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; cursor: pointer; color: var(--cds-text-secondary);" data-modal-close aria-label="Close modal">
-          {{ partial "components/icon.html" (dict "name" "close" "size" 16 "class" "cds--modal-close__icon") }}
-        </button>
-      </div>
-
-      <div class="cds--modal-content" style="padding: 1.5rem; font-size: 0.875rem; line-height: 1.5; color: var(--cds-text-secondary);">
-        {{ .Inner | markdownify }}
-      </div>
-
-      {{ if or $primaryButton $secondaryButton }}
-        <div class="cds--modal-footer" style="display: flex; justify-content: flex-end; background: var(--cds-layer-02); border-top: 1px solid var(--cds-border-subtle-01);">
-          {{ with $secondaryButton }}
-            <button type="button" class="cds--btn cds--btn--secondary" data-modal-close style="flex: 1 1 50%; justify-content: center;">
-              {{ . }}
-            </button>
-          {{ end }}
-          {{ with $primaryButton }}
-            <button type="button" class="cds--btn {{ if eq $danger "true" }}cds--btn--danger{{ else }}cds--btn--primary{{ end }}" data-modal-confirm style="flex: 1 1 50%; justify-content: center;">
-              {{ . }}
-            </button>
-          {{ end }}
-        </div>
+  <cds-modal
+    id="{{ $id }}"
+    size="{{ $size }}"
+    {{ if $open }}open{{ end }}
+    {{ if $danger }}danger{{ end }}
+    {{ with $class }}class="{{ . }}"{{ end }}>
+    <cds-modal-header>
+      <cds-modal-close-button></cds-modal-close-button>
+      {{ with $label }}
+        <cds-modal-label>{{ . }}</cds-modal-label>
       {{ end }}
-    </div>
-  </div>
+      <cds-modal-heading>{{ $title }}</cds-modal-heading>
+    </cds-modal-header>
+    <cds-modal-body>
+      {{ .Inner | markdownify }}
+    </cds-modal-body>
+    {{ if or $primaryButton $secondaryButton }}
+      <cds-modal-footer>
+        {{ with $secondaryButton }}
+          <cds-modal-footer-button kind="secondary" data-modal-close onclick="this.closest('cds-modal').open = false;">
+            {{ . }}
+          </cds-modal-footer-button>
+        {{ end }}
+        {{ with $primaryButton }}
+          <cds-modal-footer-button kind="{{ if $danger }}danger{{ else }}primary{{ end }}" onclick="this.closest('cds-modal').open = false;">
+            {{ . }}
+          </cds-modal-footer-button>
+        {{ end }}
+      </cds-modal-footer>
+    {{ end }}
+  </cds-modal>
 </div>

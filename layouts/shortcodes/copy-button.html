@@ -4,12 +4,13 @@
 {{ else if gt (len .Params) 0 }}
   {{ $text = .Get 0 }}
 {{ end }}
-{{ $feedback := .Get "feedback" | default "Copied!" }}
-{{ $label := .Get "aria_label" | default "Copy to clipboard" }}
+{{ $feedback := or (.Get "feedback-text") (.Get "feedback") "Copied!" }}
+{{ $label := or (.Get "aria-label") (.Get "aria_label") "Copy to clipboard" }}
+{{ $class := .Get "class" }}
 
-<span class="cds--copy-button-wrapper">
-  <button type="button" class="cds--copy-btn" aria-label="{{ $label }}" title="{{ $label }}" onclick="navigator.clipboard.writeText('{{ $text }}'); const el = this.querySelector('.cds--copy-btn__feedback'); if (el) { el.classList.add('is-visible'); setTimeout(() => el.classList.remove('is-visible'), 2000); }">
-    {{ partial "components/icon.html" (dict "name" "copy" "size" 16 "class" "cds--copy-btn__icon") }}
-    <span class="cds--copy-btn__feedback" role="status">{{ $feedback }}</span>
-  </button>
-</span>
+<cds-copy-button
+  feedback-text="{{ $feedback }}"
+  aria-label="{{ $label }}"
+  {{ with $class }}class="{{ . }}"{{ end }}
+  onclick="navigator.clipboard.writeText('{{ $text }}');">
+</cds-copy-button>

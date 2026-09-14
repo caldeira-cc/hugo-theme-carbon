@@ -1,10 +1,12 @@
-{{ $title := .Get "title" | default "Contained List" }}
+{{ $label := or (.Get "label") (.Get "title") "Contained List" }}
+{{ $kind := .Get "kind" | default "on-page" }}
+{{ $size := .Get "size" | default "lg" }}
+{{ $class := .Get "class" }}
 
-<div class="cds--contained-list">
-  <div class="cds--contained-list__header">
-    <span>{{ $title }}</span>
-  </div>
-  <ul class="cds--contained-list__list">
-    {{ .Inner }}
-  </ul>
-</div>
+<cds-contained-list
+  label="{{ $label }}"
+  kind="{{ $kind }}"
+  size="{{ $size }}"
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  {{ .Inner }}
+</cds-contained-list>

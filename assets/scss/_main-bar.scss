@@ -1,13 +1,21 @@
 // Main Action Bar & Modular Widget System
 
 .carbon-main-bar {
-  background-color: var(--cds-main-bar-background, var(--cds-layer-01));
+  background-color: var(--cds-main-bar-background, var(--cds-layer-01, #f4f4f4));
+  backdrop-filter: var(--cds-main-bar-backdrop-filter, blur(12px) saturate(140%));
+  -webkit-backdrop-filter: var(--cds-main-bar-backdrop-filter, blur(12px) saturate(140%));
   border-bottom: 1px solid var(--cds-main-bar-border, var(--cds-border-subtle-00));
   color: var(--cds-main-bar-text, var(--cds-text-secondary));
-  height: 40px;
-  position: sticky;
-  top: 48px;
-  z-index: 7000;
+  height: var(--carbon-main-bar-height, 36px);
+  position: relative;
+  top: auto;
+  z-index: 1;
+
+  @media (min-width: 48rem) {
+    position: sticky;
+    top: var(--carbon-navbar-height, 48px);
+    z-index: var(--cds-z-subnav, 7000);
+  }
   box-sizing: border-box;
   transition: background-color 0.15s, border-color 0.15s, color 0.15s;
   overflow-x: auto;
@@ -240,35 +248,6 @@
       @media (max-width: 41.99rem) {
         max-width: 70px;
       }
-    }
-  }
-
-  // Mobile Drawer Toggle Buttons in Main Bar
-  &__drawer-toggles {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    @media (min-width: 66rem) {
-      display: none;
-    }
-  }
-
-  &__drawer-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    height: 28px;
-    padding: 0 0.5rem;
-    font-size: 0.75rem;
-    background-color: var(--cds-main-bar-widget-bg, var(--cds-layer-02));
-    border: 1px solid var(--cds-main-bar-widget-border, var(--cds-border-subtle-01));
-    color: var(--cds-main-bar-text-primary, var(--cds-text-primary));
-    cursor: pointer;
-    border-radius: 2px;
-
-    &:hover {
-      background-color: var(--cds-main-bar-widget-hover, var(--cds-layer-03));
     }
   }
 

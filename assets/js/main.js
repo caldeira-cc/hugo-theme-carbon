@@ -16,8 +16,6 @@ import './spss-engine.js';
 import './xml-engine.js';
 import { initReadAloud } from './read-aloud.js';
 import { initDecryption } from './decrypt.js';
-import { initPhysicsSimulation } from './physics.js';
-import { initChessArena } from './chess.js';
 import { initPersonaAI } from './persona-ai.js';
 import { initLatexParser } from './latex-parser.js';
 import { initCarbonComponents } from './carbon-components.js';
@@ -26,8 +24,6 @@ import { initVCard } from './vcard.js';
 document.addEventListener('DOMContentLoaded', () => {
   initReadAloud();
   initDecryption();
-  initPhysicsSimulation();
-  initChessArena();
   initPersonaAI();
   initLatexParser();
   initCarbonComponents();

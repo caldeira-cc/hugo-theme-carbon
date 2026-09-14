@@ -31,7 +31,7 @@ cascade:
 
 # Carbon Design System v11 Component Suite
 
-The Hugo-Carbon Modular Platform implements the **IBM Carbon Design System v11** component specifications using pure semantic HTML5, token-driven SCSS, and lightweight vanilla JS modules compiled via Hugo's native asset pipeline (`js.Build`).
+The Hugo-Carbon Modular Platform implements official **IBM Carbon Design System v11** components using `@carbon/styles` compiled via Dart Sass and official `@carbon/web-components` (`<cds-*>`) custom elements bundled via Hugo's native asset pipeline (`js.Build`).
 
 All components adhere strictly to:
 - **16-Column 2x Grid Layout** (8px mini-units, 4px baseline rhythm, 1440px max width boundary)
@@ -281,8 +281,11 @@ The TreeView displays folder/file structures and nested taxonomies with keyboard
   {{< tree-node label="hugo-theme-carbon" icon="folder" expanded="true" >}}
     {{< tree-node label="assets" icon="folder" expanded="true" >}}
       {{< tree-node label="scss" icon="folder" >}}
-        {{< tree-node label="_tokens.scss" icon="file" leaf="true" />}}
-        {{< tree-node label="_carbon-components.scss" icon="file" leaf="true" />}}
+        {{< tree-node label="main.scss" icon="file" leaf="true" />}}
+        {{< tree-node label="_grid.scss" icon="file" leaf="true" />}}
+      {{< /tree-node >}}
+      {{< tree-node label="js" icon="folder" >}}
+        {{< tree-node label="carbon-bundle.js" icon="file" leaf="true" />}}
       {{< /tree-node >}}
     {{< /tree-node >}}
     {{< tree-node label="layouts" icon="folder" >}}
@@ -339,6 +342,24 @@ Carbon tiles package content onto elevated surfaces:
 {{</* tile type="selectable" selected="true" */>}}Selectable Card{{</* /tile */>}}
 {{</* expandable-tile title="Details" */>}}Summary<!-- more -->Full content{{</* /expandable-tile */>}}
 ```
+
+### Expressive Cards & Contextual Layering
+
+For comprehensive specifications on nested layers and card variants, see the [Carbon Layering System Guide](/docs/carbon-layering/):
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+  {{< card title="Standard Contained Card" eyebrow="Variant: Standard" actionText="Learn More" href="/docs/carbon-layering/" >}}
+    Built with contextual <code>var(--cds-layer)</code>, adapting automatically to its parent container.
+  {{< /card >}}
+
+  {{< card title="Blue Accent Card" eyebrow="Variant: Accent" accent="blue" tag="Layer 1" tagColor="blue" actionText="View Guide" href="/docs/carbon-layering/" >}}
+    Decorated with an authoritative Carbon top accent stripe and status badge.
+  {{< /card >}}
+
+  {{< card title="Elevated Card" eyebrow="Variant: Elevated" kind="elevated" elevation="md" actionText="Details" href="/docs/carbon-layering/" >}}
+    Features subtle elevation shadows (<code>--cds-shadow-01</code>) that lift on hover.
+  {{< /card >}}
+</div>
 
 ---
 
@@ -424,7 +445,7 @@ Hugo isolates builds into modular static targets with instant generation times a
 ## 12. Notifications & Feedback Alerts
 
 {{< toast type="success" title="Local Verification Passed" caption="Validated via verify-dependencies.py" >}}
-All Carbon React component references, SCSS packages, and local font sets verified with zero external CDN dependencies.
+All Carbon Web Component custom elements, SCSS packages, and local font sets verified with zero external CDN dependencies.
 {{< /toast >}}
 
 {{< callout type="info" title="Zero-CDN Invariant" >}}

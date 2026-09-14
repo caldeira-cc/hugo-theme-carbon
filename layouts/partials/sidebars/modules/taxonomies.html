@@ -1,0 +1,26 @@
+{{/*
+  IBM Carbon SideNav Module: Taxonomies (Categories & Tags)
+*/}}
+{{ if or .Params.tags .Params.categories }}
+<div class="cds--side-nav__group cds--side-nav__group--taxonomies">
+  <div class="cds--side-nav__header">
+    <span class="cds--type-label-01 cds--side-nav__title">Taxonomies</span>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 0.5rem;">
+    {{ with .Params.categories }}
+      {{ range . }}
+        <a href="{{ partial "components/category-url.html" . }}" class="cds--tag cds--tag--blue cds--tag--clickable" title="Category: {{ . }}">
+          {{ . }}
+        </a>
+      {{ end }}
+    {{ end }}
+    {{ with .Params.tags }}
+      {{ range . }}
+        <a href="{{ partial "components/tag-url.html" . }}" class="cds--tag cds--tag--cool-gray cds--tag--clickable" title="Tag: {{ . }}">
+          {{ . }}
+        </a>
+      {{ end }}
+    {{ end }}
+  </div>
+</div>
+{{ end }}

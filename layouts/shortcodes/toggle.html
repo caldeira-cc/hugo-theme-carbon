@@ -1,10 +1,19 @@
-{{ $id := .Get "id" | default (printf "toggle-%d" now.UnixNano) }}
-{{ $label := .Get "label" | default "Toggle" }}
-{{ $checked := .Get "checked" | default false }}
+{{ $id := .Get "id" }}
+{{ $label := or (.Get "label-text") (.Get "label") "Toggle" }}
+{{ $labelA := or (.Get "label-a") (.Get "label_off") }}
+{{ $labelB := or (.Get "label-b") (.Get "label_on") }}
+{{ $checked := or (.Get "checked") false }}
+{{ $disabled := or (.Get "disabled") false }}
 {{ $size := .Get "size" | default "md" }}
+{{ $class := .Get "class" }}
 
-<label class="cds--toggle {{ if eq $size "sm" }}cds--toggle--sm{{ end }}" for="{{ $id }}">
-  <input type="checkbox" id="{{ $id }}" {{ if or (eq $checked "true") (eq $checked true) }}checked{{ end }}>
-  <span class="cds--toggle__switch"></span>
-  <span class="cds--toggle__label-text">{{ $label }}</span>
-</label>
+<cds-toggle
+  {{ with $id }}id="{{ . }}"{{ end }}
+  label-text="{{ $label }}"
+  {{ with $labelA }}label-a="{{ . }}"{{ end }}
+  {{ with $labelB }}label-b="{{ . }}"{{ end }}
+  size="{{ $size }}"
+  {{ if or (eq $checked "true") (eq $checked true) }}checked{{ end }}
+  {{ if or (eq $disabled "true") (eq $disabled true) }}disabled{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+</cds-toggle>

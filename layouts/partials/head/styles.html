@@ -2,7 +2,7 @@
 {{ if hugo.IsServer }}
   {{ $assetBase = "" }}
 {{ end }}
-{{ $sassOptions := dict "targetPath" "css/carbon.css" }}
+{{ $sassOptions := dict "transpiler" "dartsass" "targetPath" "css/carbon.css" "includePaths" (slice "node_modules" "../node_modules" "../hugo-theme-carbon/node_modules") }}
 {{ $styles := resources.Get "scss/main.scss" | toCSS $sassOptions | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $assetBase }}{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
 
@@ -226,6 +226,24 @@
       }
     {{ end }}
   {{ end }}
+
+  {{/* Dynamic Glassmorphism Backdrop Filter Configuration */}}
+  {{ $glass := .Site.Params.carbon.glassmorphism | default dict }}
+  {{ $glassEnable := true }}
+  {{ if isset $glass "enable" }}{{ $glassEnable = $glass.enable }}{{ end }}
+  {{ $glassBlur := $glass.blur | default "12px" }}
+  {{ $glassSaturate := $glass.saturate | default "140%" }}
+  :root {
+    {{ if $glassEnable }}
+      --cds-glass-blur: {{ $glassBlur | safeCSS }};
+      --cds-glass-saturate: {{ $glassSaturate | safeCSS }};
+      --cds-ui-shell-backdrop-filter: blur({{ $glassBlur | safeCSS }}) saturate({{ $glassSaturate | safeCSS }});
+      --cds-main-bar-backdrop-filter: blur({{ $glassBlur | safeCSS }}) saturate({{ $glassSaturate | safeCSS }});
+    {{ else }}
+      --cds-ui-shell-backdrop-filter: none;
+      --cds-main-bar-backdrop-filter: none;
+    {{ end }}
+  }
 
   {{/* Dynamic Typography Font Resolver (Content, Headings, Navbar) */}}
   {{ $siteTypo := .Site.Params.typography | default (dict "content" "sans" "headings" "sans" "navbar" "sans") }}

@@ -10,8 +10,6 @@ cascade:
         data: "docs"
       right:
         enable: true
-    mainBar:
-      enable: false
 ---
 
 The **Hugo Carbon Theme** is an open-source, modular static website theme implementing the **IBM Carbon Design System v11**. It combines Carbon's 16-column 2x Grid, token-based theming, and accessible interface patterns with the speed and simplicity of Hugo.

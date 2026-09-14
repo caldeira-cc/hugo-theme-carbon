@@ -1,42 +1,19 @@
-{{/*
-  IBM Carbon Design System v11 — Pagination Shortcode
-  Compliant with Carbon React Pagination Component Specifications.
-
-  Usage:
-  {{< pagination total="100" page="1" pageSize="10" pageSizes="5,10,25,50" />}}
-*/}}
-
-{{ $total := .Get "total" | default "50" | int }}
-{{ $page := .Get "page" | default "1" | int }}
-{{ $pageSize := .Get "pageSize" | default "10" | int }}
+{{ $total := or (.Get "total-items") (.Get "total") "50" }}
+{{ $page := or (.Get "page") (.Get "start") "1" }}
+{{ $pageSize := or (.Get "page-size") (.Get "pageSize") "10" }}
 {{ $pageSizes := split (.Get "pageSizes" | default "5,10,25,50") "," }}
-{{ $id := .Get "id" | default (printf "cds-pagination-%d" .Ordinal) }}
-{{ $totalPages := math.Ceil (div (float $total) (float $pageSize)) | int }}
-{{ $start := mul (sub $page 1) $pageSize | add 1 }}
-{{ $end := math.Min (mul $page $pageSize) $total }}
+{{ $class := .Get "class" }}
 
-<div class="cds--pagination" id="{{ $id }}" role="navigation" aria-label="Pagination">
-  <div class="cds--pagination__left">
-    <label class="cds--pagination__text" for="page-size-{{ $id }}">Items per page:</label>
-    <div class="cds--select cds--select--inline">
-      <select id="page-size-{{ $id }}" class="cds--select-input" aria-label="Items per page">
-        {{ range $pageSizes }}
-          <option value="{{ . }}" {{ if eq (int .) $pageSize }}selected{{ end }}>{{ . }}</option>
-        {{ end }}
-      </select>
-    </div>
-    <span class="cds--pagination__text">{{ $start }}–{{ $end }} of {{ $total }} items</span>
-  </div>
-
-  <div class="cds--pagination__right">
-    <span class="cds--pagination__text">Page {{ $page }} of {{ $totalPages }}</span>
-    <div class="cds--pagination__control-buttons">
-      <button class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only cds--pagination__button cds--pagination__button--backward" {{ if le $page 1 }}disabled{{ end }} aria-label="Previous page">
-        {{ partial "components/icon.html" (dict "name" "chevron--left" "size" 16 "class" "cds--btn__icon") }}
-      </button>
-      <button class="cds--btn cds--btn--ghost cds--btn--sm cds--btn--icon-only cds--pagination__button cds--pagination__button--forward" {{ if ge $page $totalPages }}disabled{{ end }} aria-label="Next page">
-        {{ partial "components/icon.html" (dict "name" "chevron--right" "size" 16 "class" "cds--btn__icon") }}
-      </button>
-    </div>
-  </div>
-</div>
+<cds-pagination
+  total-items="{{ $total }}"
+  page="{{ $page }}"
+  page-size="{{ $pageSize }}"
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  <cds-page-sizes-select slot="page-sizes-select">
+    {{ range $pageSizes }}
+      {{ $s := trim . " " }}
+      <option value="{{ $s }}" {{ if eq $s $pageSize }}selected{{ end }}>{{ $s }}</option>
+    {{ end }}
+  </cds-page-sizes-select>
+  <cds-pages-select slot="pages-select"></cds-pages-select>
+</cds-pagination>

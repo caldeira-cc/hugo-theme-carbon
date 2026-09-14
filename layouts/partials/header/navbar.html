@@ -1,10 +1,26 @@
 <header class="cds--header" role="banner">
-{{ if or .Site.Params.sidebars.left.enable (and .Site.Params.navigation.navbar (gt (len .Site.Params.navigation.navbar) 0)) }}
-  <button class="cds--header__menu-toggle js-open-left-drawer" id="open-left-drawer" aria-label="Open navigation drawer">
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-      <path d="M2 4h16v2H2V4zm0 5h16v2H2V9zm0 5h16v2H2v-2z"/>
-    </svg>
-  </button>
+  {{ $leftSidebar := .Scratch.Get "leftSidebar" }}
+  {{ if not (isset .Scratch.Values "leftSidebar") }}
+    {{ $leftSidebar = .Site.Params.sidebars.left.enable }}
+  {{ end }}
+  {{ $rightSidebar := .Scratch.Get "rightSidebar" }}
+  {{ if not (isset .Scratch.Values "rightSidebar") }}
+    {{ $rightSidebar = .Site.Params.sidebars.right.enable }}
+  {{ end }}
+  {{ $hasNavLinks := and .Site.Params.navigation.navbar (gt (len .Site.Params.navigation.navbar) 0) }}
+
+  {{ if or $leftSidebar $hasNavLinks }}
+    <button class="cds--header__menu-toggle js-toggle-left-sidebar {{ if $leftSidebar }}has-left-sidebar cds--header__menu-toggle--active{{ end }}"
+            id="header-toggle-left"
+            type="button"
+            title="Toggle navigation menu (Alt+[)"
+            aria-label="Toggle navigation menu"
+            aria-expanded="true"
+            aria-controls="carbon-sidebar-left">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M2 4h16v2H2V4zm0 5h16v2H2V9zm0 5h16v2H2v-2z"/>
+      </svg>
+    </button>
   {{ end }}
 
   <a class="cds--header__name" href="{{ "/" | relURL }}" aria-label="{{ .Site.Title }}">
@@ -17,7 +33,10 @@
       {{ if and $assetBase (hasPrefix $logoUrl "/") }}
         {{ $logoUrl = printf "%s%s" $assetBase $logoUrl }}
       {{ end }}
-      <img src="{{ $logoUrl }}" alt="Logo" width="20" height="20">
+      <img class="brand-logo" src="{{ $logoUrl }}" alt="Logo" width="20" height="20" loading="eager">
+    {{ end }}
+    {{ with .Site.Params.navigation.brand.prefix }}
+      <span class="brand-prefix">{{ . }}</span>
     {{ end }}
     <span class="brand-title">{{ .Site.Params.navigation.brand.title | default .Site.Title }}</span>
     {{ $brandDesc := or .Site.Params.navigation.brand.description .Site.Params.navigation.brand.subtitle }}
@@ -81,10 +100,56 @@
   {{ end }}
 
   <div class="cds--header__global">
-    <button class="cds--header__action js-open-search" title="Search (Press / or Cmd+K)" aria-label="Search">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M14.5 13h-.8l-.3-.3c1-1.1 1.6-2.6 1.6-4.2 0-3.6-2.9-6.5-6.5-6.5S2 4.9 2 8.5 4.9 15 8.5 15c1.6 0 3.1-.6 4.2-1.6l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0C6 13 4 11 4 8.5S6 4 8.5 4 13 6 13 8.5 11 13 8.5 13z"/>
-      </svg>
-    </button>
+    {{/* Carbon Header Search Bar (Replaces Modal) */}}
+    <div class="cds--header__search js-header-search" role="search">
+      <label class="cds--visually-hidden" for="cds-header-search-input">Search site</label>
+      <div class="cds--header__search-wrapper">
+        <button class="cds--header__search-toggle js-header-search-toggle" type="button" aria-label="Open search bar" title="Search (Press / or Cmd+K)">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M14.5 13h-.8l-.3-.3c1-1.1 1.6-2.6 1.6-4.2 0-3.6-2.9-6.5-6.5S2 4.9 2 8.5 4.9 15 8.5 15c1.6 0 3.1-.6 4.2-1.6l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0C6 13 4 11 4 8.5S6 4 8.5 4 13 6 13 8.5 11 13 8.5 13z"/>
+          </svg>
+        </button>
+        <input type="search"
+               id="cds-header-search-input"
+               class="cds--header__search-input js-header-search-input"
+               placeholder="Search... (Press /)"
+               autocomplete="off"
+               spellcheck="false"
+               aria-autocomplete="list"
+               aria-controls="cds-header-search-menu"
+               aria-expanded="false"
+               data-search-index="{{ "index.json" | relLangURL }}">
+        <kbd class="cds--header__search-shortcut" aria-hidden="true">/</kbd>
+        <button class="cds--header__search-clear js-header-search-clear" type="button" aria-label="Close or clear search" title="Clear search">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M12 4.7L11.3 4 8 7.3 4.7 4 4 4.7 7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"/>
+          </svg>
+        </button>
+      </div>
+
+      {{/* Floating Dropdown Results Menu */}}
+      <div class="cds--header__search-menu js-header-search-menu" id="cds-header-search-menu" role="listbox" aria-label="Search results" hidden>
+        <div class="cds--header__search-status js-header-search-status" aria-live="polite">
+          Type at least 2 characters to search...
+        </div>
+        <ul class="cds--header__search-results js-header-search-results"></ul>
+        <div class="cds--header__search-footer">
+          <span class="cds--header__search-hint"><span>↑↓</span> Navigate</span>
+          <span class="cds--header__search-hint"><span>↵</span> Select</span>
+          <span class="cds--header__search-hint"><span>Esc</span> Close</span>
+        </div>
+      </div>
+    </div>
+    {{ if $rightSidebar }}
+      <button class="cds--header__action js-toggle-right-sidebar cds--header__action--active"
+              id="header-toggle-right"
+              type="button"
+              title="Toggle side panel (Alt+])"
+              aria-label="Toggle side panel"
+              aria-expanded="true"
+              aria-controls="carbon-sidebar-right">
+        {{ partial "components/icon.html" (dict "name" "table-of-contents" "size" 20 "class" "cds--header__icon-toc") }}
+      </button>
+    {{ end }}
   </div>
 </header>

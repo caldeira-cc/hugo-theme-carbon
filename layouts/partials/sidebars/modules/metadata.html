@@ -1,0 +1,41 @@
+{{/*
+  IBM Carbon SideNav Module: Document Metadata Box
+*/}}
+{{ $authors := partial "components/get-authors.html" . }}
+{{ if and (not .IsHome) (or (gt (len $authors) 0) .Date .ReadingTime .Params.categories .Params.tags .Params.version) }}
+<div class="cds--side-nav__group cds--side-nav__group--metadata">
+  <div class="cds--tile cds--tile--metadata" style="background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); padding: 1rem;">
+    <div class="cds--type-label-01 cds--tile__heading" style="margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.32px; color: var(--cds-text-secondary); font-weight: 600;">
+      Document Details
+    </div>
+    <div class="cds--type-caption" style="display: flex; flex-direction: column; gap: 0.5rem;">
+      {{ if gt (len $authors) 0 }}
+        <div>
+          <strong>{{ if eq (len $authors) 1 }}Author:{{ else }}Authors:{{ end }}</strong>
+          {{ range $idx, $auth := $authors }}
+            {{ if gt $idx 0 }}, {{ end }}
+            <a href="{{ partial "components/author-url.html" $auth }}" class="cds--link">{{ $auth }}</a>
+          {{ end }}
+        </div>
+      {{ end }}
+      {{ with .Params.categories }}
+        <div>
+          <strong>Category:</strong>
+          {{ range . }}
+            <a href="{{ partial "components/category-url.html" . }}" class="cds--link">{{ . }}</a>
+          {{ end }}
+        </div>
+      {{ end }}
+      {{ if not .Date.IsZero }}
+        <div><strong>Published:</strong> {{ .Date.Format "Jan 02, 2006" }}</div>
+      {{ end }}
+      {{ with .ReadingTime }}
+        <div><strong>Reading Time:</strong> {{ . }} min</div>
+      {{ end }}
+      {{ with .Params.version }}
+        <div><strong>Version:</strong> {{ . }}</div>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

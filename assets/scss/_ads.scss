@@ -265,7 +265,7 @@
 .carbon-ad-modal {
   position: fixed;
   inset: 0;
-  z-index: 9500;
+  z-index: var(--cds-z-modal, 9000);
   display: flex;
   align-items: center;
   justify-content: center;

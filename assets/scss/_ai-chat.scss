@@ -387,8 +387,8 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  z-index: 9000;
-  transition: transform 0.15s cubic-bezier(0.2, 0, 0.38, 0.9), background-color 0.11s;
+  z-index: var(--cds-z-header, 8000);
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0.38, 0.9), background-color 0.11s, bottom 0.3s ease;
 
   &:hover {
     transform: scale(1.05);
@@ -416,20 +416,26 @@
   }
 }
 
+// When Cookie Consent Banner is visible, elevate floating trigger above it
+body:has(.carbon-cookie-banner.is-visible) .carbon-ai-trigger {
+  bottom: calc(1.5rem + 110px);
+}
+
 // ---------------------------------------------------------------------------
 // 10. Slide-Over AI Drawer (Docked Mode)
 // ---------------------------------------------------------------------------
 .carbon-ai-drawer {
   position: fixed;
-  top: 48px;
+  top: var(--carbon-navbar-height, 48px);
   right: 0;
   bottom: 0;
+  height: calc(100vh - var(--carbon-navbar-height, 48px));
   width: 380px;
   max-width: 100vw;
   background-color: var(--cds-layer-01);
   border-left: 1px solid var(--cds-border-subtle-00);
   box-shadow: -4px 0 16px rgba(0, 0, 0, 0.2);
-  z-index: 8500;
+  z-index: var(--cds-z-drawer, 7500);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);

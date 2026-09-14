@@ -10,7 +10,7 @@
 .spss-engine-modal {
   position: fixed;
   inset: 0;
-  z-index: 10000;
+  z-index: var(--cds-z-modal, 9000);
   display: none;
   flex-direction: column;
 

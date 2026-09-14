@@ -120,7 +120,7 @@
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  z-index: 9500;
+  z-index: var(--cds-z-dropdown, 8600);
   min-width: 18rem;
   max-width: 24rem;
   background-color: var(--cds-layer-01, #ffffff);

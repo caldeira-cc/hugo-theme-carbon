@@ -47,6 +47,23 @@
   {{ else }}
     {{ $highlighted = first 5 $highlighted }}
   {{ end }}
+  {{ if eq (len $allPosts) 0 }}
+    <div class="cds--tile" style="padding: 3rem 2rem; margin-bottom: 3.5rem; background-color: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle-00); text-align: left;">
+      <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
+        <span class="cds--tag cds--tag--outline" style="font-family: var(--cds-font-mono, monospace);">EDITORIAL MAGAZINE</span>
+        <span class="cds--tag cds--tag--blue">Ready for Publication</span>
+      </div>
+      <h2 class="cds--type-heading-04" style="margin-top: 0; margin-bottom: 0.75rem;">Essays & Strategic Inquiries</h2>
+      <p class="cds--type-body-long-01" style="color: var(--cds-text-secondary); max-width: 680px; margin-bottom: 1.5rem; line-height: 1.6;">
+        No articles have been published yet. Content published in <code>content/post/</code> following <em>The Economist Style Guide</em> will automatically populate the Lead Cover Story, Featured Quartet, and topical inquiry indices.
+      </p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="https://cesar.caldeira.cc/" class="cds--btn cds--btn--secondary cds--btn--sm">
+          Return to Hub
+        </a>
+      </div>
+    </div>
+  {{ end }}
 
   {{ if gt (len $highlighted) 0 }}
     <section class="carbon-magazine-highlights" style="margin-bottom: 3.5rem;">

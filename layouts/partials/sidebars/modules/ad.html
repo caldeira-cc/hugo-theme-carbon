@@ -1,0 +1,8 @@
+{{/*
+  IBM Carbon SideNav Module: Sidebar Ad Slot
+*/}}
+{{ if and .Site.Params.googleAds.enable (default true .Site.Params.googleAds.slots.sidebar.enable) }}
+  <div class="cds--side-nav__group cds--side-nav__group--ad">
+    {{ partial "components/ad-slot.html" (dict "position" "sidebar" "context" .) }}
+  </div>
+{{ end }}

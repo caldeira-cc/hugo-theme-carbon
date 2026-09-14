@@ -1,26 +1,21 @@
 {{ $steps := split (.Get "steps" | default "Step 1,Step 2,Step 3") "," }}
 {{ $current := .Get "current" | default 1 | int }}
-{{ $vertical := .Get "vertical" | default false }}
+{{ $vertical := or (eq (.Get "vertical") true) (eq (.Get "vertical") "true") false }}
+{{ $class := .Get "class" }}
 
-{{ $class := "cds--progress" }}
-{{ if or (eq $vertical "true") (eq $vertical true) }}
-  {{ $class = "cds--progress cds--progress--vertical" }}
-{{ end }}
-
-<ul class="{{ $class }}">
+<cds-progress-indicator {{ if $vertical }}vertical{{ end }}{{ with $class }} class="{{ . }}"{{ end }}>
   {{ range $index, $step := $steps }}
     {{ $stepNum := add $index 1 }}
-    {{ $stepClass := "cds--progress-step" }}
+    {{ $state := "incomplete" }}
     {{ if lt $stepNum $current }}
-      {{ $stepClass = "cds--progress-step cds--progress-step--complete" }}
+      {{ $state = "complete" }}
     {{ else if eq $stepNum $current }}
-      {{ $stepClass = "cds--progress-step cds--progress-step--current" }}
-    {{ else }}
-      {{ $stepClass = "cds--progress-step cds--progress-step--incomplete" }}
+      {{ $state = "current" }}
     {{ end }}
-    <li class="{{ $stepClass }}">
-      <div class="cds--progress-step__title">{{ trim $step " " }}</div>
-      <div class="cds--progress-step__description">Step {{ $stepNum }}</div>
-    </li>
+    <cds-progress-step
+      state="{{ $state }}"
+      label="{{ trim $step " " }}"
+      secondary-label-text="Step {{ $stepNum }}">
+    </cds-progress-step>
   {{ end }}
-</ul>
+</cds-progress-indicator>

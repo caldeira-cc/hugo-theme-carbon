@@ -1,16 +1,12 @@
 {{ $title := .Get "title" }}
-{{ $open := .Get "open" | default false }}
-{{ $itemClass := "cds--accordion__item" }}
-{{ if or (eq $open "true") (eq $open true) }}
-  {{ $itemClass = "cds--accordion__item cds--accordion__item--active" }}
-{{ end }}
+{{ $open := or (.Get "open") false }}
+{{ $disabled := or (.Get "disabled") false }}
+{{ $class := .Get "class" }}
 
-<li class="{{ $itemClass }}">
-  <button type="button" class="cds--accordion__heading" aria-expanded="{{ if or (eq $open "true") (eq $open true) }}true{{ else }}false{{ end }}">
-    {{ partial "components/icon.html" (dict "name" "chevron--right" "size" 16 "class" "cds--accordion__arrow") }}
-    {{ with $title }}<div class="cds--accordion__title">{{ . }}</div>{{ end }}
-  </button>
-  <div class="cds--accordion__content">
-    {{ .Inner | markdownify }}
-  </div>
-</li>
+<cds-accordion-item
+  {{ with $title }}title="{{ . }}"{{ end }}
+  {{ if or (eq $open "true") (eq $open true) }}open{{ end }}
+  {{ if or (eq $disabled "true") (eq $disabled true) }}disabled{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  {{ .Inner | markdownify }}
+</cds-accordion-item>

@@ -1,16 +1,5 @@
-{{/*
-  IBM Carbon Design System v11 — Expandable Tile Shortcode
-  Compliant with Carbon React ExpandableTile Component Specifications.
-
-  Usage:
-  {{< expandable-tile title="Detailed Specifications" >}}
-    Above-the-fold summary content.
-    <!-- more -->
-    Below-the-fold expanded content disclosed on click.
-  {{< /expandable-tile >}}
-*/}}
-
 {{ $title := .Get "title" }}
+{{ $expanded := or (.Get "expanded") false }}
 {{ $id := .Get "id" | default (printf "expandable-tile-%d" .Ordinal) }}
 {{ $class := .Get "class" | default "" }}
 
@@ -21,23 +10,23 @@
   {{ $belowFold = index $contentParts 1 }}
 {{ end }}
 
-<div class="cds--tile cds--tile--expandable {{ with $class }}{{ . }}{{ end }}" id="{{ $id }}" tabindex="0" role="button" aria-expanded="false">
+<cds-expandable-tile
+  id="{{ $id }}"
+  {{ if or (eq $expanded "true") (eq $expanded true) }}expanded{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
   <div class="cds--tile-content">
-    <div class="cds--tile-content__above-the-fold">
-      {{ with $title }}
-        <h5 style="margin: 0 0 0.5rem 0; font-size: 1rem; color: var(--cds-text-primary);">{{ . }}</h5>
-      {{ end }}
-      <div style="font-size: 0.875rem; color: var(--cds-text-secondary); line-height: 1.45;">
-        {{ $aboveFold | markdownify }}
-      </div>
+    {{ with $title }}
+      <h5 style="margin: 0 0 0.5rem 0; font-size: 1rem; color: var(--cds-text-primary);">{{ . }}</h5>
+    {{ end }}
+    <div style="font-size: 0.875rem; color: var(--cds-text-secondary); line-height: 1.45;">
+      {{ $aboveFold | markdownify }}
     </div>
     {{ with $belowFold }}
-      <div class="cds--tile-content__below-the-fold" style="font-size: 0.875rem; color: var(--cds-text-primary); line-height: 1.45;">
-        {{ . | markdownify }}
-      </div>
+      <cds-tile-below-the-fold-content>
+        <div style="font-size: 0.875rem; color: var(--cds-text-primary); line-height: 1.45; padding-top: 0.5rem;">
+          {{ . | markdownify }}
+        </div>
+      </cds-tile-below-the-fold-content>
     {{ end }}
   </div>
-  <button type="button" class="cds--tile__chevron" aria-label="Expand tile" style="background: transparent; border: none; cursor: pointer; color: var(--cds-text-secondary); padding: 0;">
-    {{ partial "components/icon.html" (dict "name" "chevron--down" "size" 16 "class" "cds--tile__chevron-icon") }}
-  </button>
-</div>
+</cds-expandable-tile>

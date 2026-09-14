@@ -204,23 +204,23 @@
   &--contained {
     .cds--tabs__nav,
     .cds--tab--list {
-      background-color: var(--cds-layer-01);
-      border-bottom: 1px solid var(--cds-border-subtle-00);
+      background-color: var(--cds-layer);
+      border-bottom: 1px solid var(--cds-border-subtle);
     }
 
     .cds--tabs__tab,
     .cds--tabs__nav-item {
-      background-color: var(--cds-layer-01);
-      border-right: 1px solid var(--cds-border-subtle-00);
+      background-color: var(--cds-layer);
+      border-right: 1px solid var(--cds-border-subtle);
       border-bottom: 2px solid transparent;
 
       &:hover {
-        background-color: var(--cds-layer-hover-01, var(--cds-layer-02));
+        background-color: var(--cds-layer-hover);
       }
 
       &--selected,
       &.is-active {
-        background-color: var(--cds-layer-02);
+        background-color: var(--cds-layer-accent, var(--cds-background));
         border-bottom-color: var(--cds-interactive-01);
       }
     }

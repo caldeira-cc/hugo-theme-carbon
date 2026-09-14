@@ -1,27 +1,16 @@
-{{ $id := .Get "id" | default (printf "node-%d" (now.UnixNano)) }}
-{{ $label := .Get "label" | default (.Get 0) }}
-{{ $isLeaf := .Get "leaf" | default false }}
-{{ $expanded := .Get "expanded" | default false }}
-{{ $selected := .Get "selected" | default false }}
-{{ $icon := .Get "icon" }}
+{{ $label := or (.Get "label-text") (.Get "label") (.Get 0) "Node" }}
+{{ $value := .Get "value" | default ($label | urlize) }}
+{{ $expanded := or (eq (.Get "expanded") true) (eq (.Get "expanded") "true") false }}
+{{ $selected := or (eq (.Get "selected") true) (eq (.Get "selected") "true") false }}
+{{ $id := .Get "id" }}
+{{ $class := .Get "class" }}
 
-<li class="cds--tree__node{{ if $isLeaf }} cds--tree__node--leaf{{ end }}{{ if $expanded }} cds--tree__node--expanded{{ end }}{{ if $selected }} cds--tree__node--selected{{ end }}" role="treeitem" id="{{ $id }}" {{ if not $isLeaf }}aria-expanded="{{ if $expanded }}true{{ else }}false{{ end }}"{{ end }}>
-  <div class="cds--tree__node__label" onclick="{{ if not $isLeaf }}const p = this.parentElement; const exp = p.classList.toggle('cds--tree__node--expanded'); p.setAttribute('aria-expanded', exp);{{ end }}">
-    {{ if not $isLeaf }}
-      <span class="cds--tree__node__chevron">
-        {{ partial "components/icon.html" (dict "name" "caret--right" "size" 16 "class" "cds--tree__node__chevron-icon") }}
-      </span>
-    {{ end }}
-    {{ with $icon }}
-      {{ $nodeIcon := . }}
-      {{ if eq $nodeIcon "file" }}{{ $nodeIcon = "document" }}{{ end }}
-      {{ partial "components/icon.html" (dict "name" $nodeIcon "size" 16 "class" "cds--tree__node__icon") }}
-    {{ end }}
-    <span>{{ $label }}</span>
-  </div>
-  {{ with .Inner }}
-    <ul class="cds--tree__node__children" role="group">
-      {{ . }}
-    </ul>
-  {{ end }}
-</li>
+<cds-tree-node
+  label-text="{{ $label }}"
+  value="{{ $value }}"
+  {{ with $id }}id="{{ . }}"{{ end }}
+  {{ if $expanded }}expanded{{ end }}
+  {{ if $selected }}selected{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  {{ .Inner }}
+</cds-tree-node>

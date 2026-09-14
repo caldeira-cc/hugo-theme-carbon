@@ -1,27 +1,15 @@
-{{/*
-  IBM Carbon Design System v11 — FileUploader Shortcode
-  Compliant with Carbon React FileUploader Component Specifications.
-
-  Usage:
-  {{< file-uploader label="Upload CSV Dataset" description="Max file size is 50MB. Supported formats: .csv, .json, .xml" buttonLabel="Add file" accept=".csv,.json,.xml" />}}
-*/}}
-
-{{ $label := .Get "label" | default "Upload files" }}
-{{ $description := .Get "description" | default "Max file size is 50MB." }}
-{{ $buttonLabel := .Get "buttonLabel" | default "Add file" }}
+{{ $label := or (.Get "label-title") (.Get "label") "Upload files" }}
+{{ $description := or (.Get "label-description") (.Get "description") "Max file size is 50MB." }}
+{{ $buttonLabel := or (.Get "button-label-text") (.Get "buttonLabel") "Add file" }}
 {{ $accept := .Get "accept" | default "*" }}
-{{ $id := .Get "id" | default (printf "cds-file-uploader-%d" .Ordinal) }}
-{{ $class := .Get "class" | default "" }}
+{{ $class := .Get "class" }}
 
-<div class="cds--file {{ with $class }}{{ . }}{{ end }}" style="margin: 1.5rem 0;">
-  <strong class="cds--file--label" style="display: block; font-size: 0.875rem; color: var(--cds-text-primary); margin-bottom: 0.25rem;">{{ $label }}</strong>
-  <p class="cds--label-description" style="font-size: 0.75rem; color: var(--cds-text-secondary); margin: 0 0 1rem 0;">{{ $description }}</p>
-  <div class="cds--file-btn-wrapper">
-    <label for="{{ $id }}" class="cds--btn cds--btn--primary cds--btn--sm" style="display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-      {{ partial "components/icon.html" (dict "name" "upload" "size" 16 "class" "cds--file__btn-icon") }}
-      <span>{{ $buttonLabel }}</span>
-    </label>
-    <input type="file" id="{{ $id }}" class="cds--file-input" accept="{{ $accept }}" style="display: none;" onchange="const c = this.parentElement.nextElementSibling; if(c && this.files[0]) c.textContent = 'Selected: ' + this.files[0].name;">
-  </div>
-  <div class="cds--file-container" style="margin-top: 0.5rem; font-size: 0.75rem; font-family: var(--cds-font-mono, monospace); color: var(--cds-text-primary);"></div>
-</div>
+<cds-file-uploader
+  label-title="{{ $label }}"
+  label-description="{{ $description }}"
+  button-label-text="{{ $buttonLabel }}"
+  accept="{{ $accept }}"
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  <cds-file-uploader-button></cds-file-uploader-button>
+  <cds-file-uploader-container></cds-file-uploader-container>
+</cds-file-uploader>

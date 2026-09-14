@@ -1,9 +1,12 @@
 {{ $align := .Get "align" | default "start" }}
-{{ $class := "cds--accordion" }}
-{{ if eq $align "end" }}
-  {{ $class = "cds--accordion cds--accordion--end" }}
-{{ end }}
+{{ $size := .Get "size" | default "md" }}
+{{ $disabled := or (.Get "disabled") false }}
+{{ $class := .Get "class" }}
 
-<ul class="{{ $class }}">
+<cds-accordion
+  align="{{ $align }}"
+  size="{{ $size }}"
+  {{ if or (eq $disabled "true") (eq $disabled true) }}disabled{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
   {{ .Inner }}
-</ul>
+</cds-accordion>

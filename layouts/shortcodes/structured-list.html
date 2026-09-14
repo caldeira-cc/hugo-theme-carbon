@@ -1,14 +1,15 @@
 {{ $headers := split (.Get "headers" | default "Header 1,Header 2") "," }}
+{{ $class := .Get "class" }}
 
-<table class="cds--structured-list">
-  <thead class="cds--structured-list-thead">
-    <tr class="cds--structured-list-row">
+<cds-structured-list {{ with $class }}class="{{ . }}"{{ end }}>
+  <cds-structured-list-head>
+    <cds-structured-list-header-row>
       {{ range $header := $headers }}
-        <th class="cds--structured-list-th">{{ trim $header " " }}</th>
+        <cds-structured-list-header-cell>{{ trim $header " " }}</cds-structured-list-header-cell>
       {{ end }}
-    </tr>
-  </thead>
-  <tbody class="cds--structured-list-tbody">
+    </cds-structured-list-header-row>
+  </cds-structured-list-head>
+  <cds-structured-list-body>
     {{ .Inner }}
-  </tbody>
-</table>
+  </cds-structured-list-body>
+</cds-structured-list>

@@ -1,42 +1,11 @@
 {{ $type := .Get "type" | default "single" }}
 {{ $content := .Inner | default (.Get "text") | default "" }}
-{{ $copyText := .Get "copyText" | default $content | strings.TrimSpace }}
-{{ $expandable := .Get "expandable" | default false }}
-{{ $hideCopy := .Get "hideCopyButton" | default false }}
-{{ $id := printf "snippet-%d" (now.UnixNano) }}
+{{ $hideCopy := or (eq (.Get "hide-copy-button") true) (eq (.Get "hide-copy-button") "true") (eq (.Get "hideCopyButton") true) (eq (.Get "hideCopyButton") "true") false }}
+{{ $class := .Get "class" }}
 
-{{ if eq $type "inline" }}
-  <button type="button" class="cds--snippet cds--snippet--inline" onclick="navigator.clipboard.writeText('{{ $copyText }}'); const el = this.querySelector('.cds--copy-btn__feedback'); if (el) { el.classList.add('is-visible'); setTimeout(() => el.classList.remove('is-visible'), 2000); }" aria-label="Copy code">
-    <code>{{ $content | htmlUnescape }}</code>
-    <span class="cds--copy-btn__feedback" role="status">Copied!</span>
-  </button>
-{{ else if eq $type "multi" }}
-  <div class="cds--snippet cds--snippet--multi{{ if $expandable }} cds--snippet--expandable{{ end }}" id="{{ $id }}">
-    <div class="cds--snippet__container">
-      <pre><code>{{ $content | htmlUnescape }}</code></pre>
-      {{ if not $hideCopy }}
-        <button type="button" class="cds--snippet-button cds--copy-btn" aria-label="Copy snippet" onclick="navigator.clipboard.writeText('{{ $copyText }}'); const el = this.querySelector('.cds--copy-btn__feedback'); if (el) { el.classList.add('is-visible'); setTimeout(() => el.classList.remove('is-visible'), 2000); }">
-          {{ partial "components/icon.html" (dict "name" "copy" "size" 16 "class" "cds--snippet__icon") }}
-          <span class="cds--copy-btn__feedback" role="status">Copied!</span>
-        </button>
-      {{ end }}
-    </div>
-    {{ if $expandable }}
-      <button type="button" class="cds--snippet__btn--expand" onclick="const pre = document.querySelector('#{{ $id }} pre'); if (pre.style.maxHeight === 'none') { pre.style.maxHeight = '280px'; this.textContent = 'Show more'; } else { pre.style.maxHeight = 'none'; this.textContent = 'Show less'; }">
-        Show more
-      </button>
-    {{ end }}
-  </div>
-{{ else }}
-  <div class="cds--snippet cds--snippet--single">
-    <div class="cds--snippet__container">
-      <code>{{ $content | htmlUnescape }}</code>
-      {{ if not $hideCopy }}
-        <button type="button" class="cds--snippet-button cds--copy-btn" aria-label="Copy snippet" onclick="navigator.clipboard.writeText('{{ $copyText }}'); const el = this.querySelector('.cds--copy-btn__feedback'); if (el) { el.classList.add('is-visible'); setTimeout(() => el.classList.remove('is-visible'), 2000); }">
-          {{ partial "components/icon.html" (dict "name" "copy" "size" 16 "class" "cds--snippet__icon") }}
-          <span class="cds--copy-btn__feedback" role="status">Copied!</span>
-        </button>
-      {{ end }}
-    </div>
-  </div>
-{{ end }}
+<cds-code-snippet
+  type="{{ $type }}"
+  {{ if $hideCopy }}hide-copy-button{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  {{- $content | htmlUnescape -}}
+</cds-code-snippet>

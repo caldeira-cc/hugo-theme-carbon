@@ -23,22 +23,6 @@
 <section class="{{ $barClass }}" aria-label="Main Action Bar">
   <div class="carbon-main-bar__container">
     <div class="carbon-main-bar__group">
-      {{/* Mobile Drawer Triggers */}}
-      <div class="carbon-main-bar__drawer-toggles">
-        {{ if or .Site.Params.sidebars.left.enable (and .Site.Params.navigation.navbar (gt (len .Site.Params.navigation.navbar) 0)) }}
-        <button class="carbon-main-bar__drawer-btn js-open-left-drawer" id="bar-open-left-drawer" aria-label="Toggle section navigation">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 3h12v2H2zm0 4h12v2H2zm0 4h12v2H2z"/></svg>
-          <span>Nav</span>
-        </button>
-        {{ end }}
-        {{ if or .TableOfContents .IsHome (eq .Section "theme") (eq .Section "style") }}
-          <button class="carbon-main-bar__drawer-btn js-open-right-drawer" id="bar-open-right-drawer" aria-label="Toggle Table of Contents">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3 3h10v2H3zm0 4h10v2H3zm0 4h6v2H3z"/></svg>
-            <span>Contents</span>
-          </button>
-        {{ end }}
-      </div>
-
       {{/* Upgraded Timezone Clock Widget (Click to toggle Local vs Configured Timezone) */}}
       {{ if $widgets.clock.enable }}
         <div class="carbon-main-bar__widget carbon-main-bar__clock" data-timezone="{{ $widgets.clock.timezone | default "Europe/London" }}" data-mode="{{ $widgets.clock.mode | default "timezone" }}" title="Click to toggle between Local and Configured Timezone">

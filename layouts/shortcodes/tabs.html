@@ -1,6 +1,6 @@
 {{/*
   IBM Carbon Design System v11 — Tabs Shortcode
-  Compliant with @carbon/react Tabs, TabList, Tab, TabPanels, and TabPanel specifications.
+  Compliant with @carbon/web-components <cds-tabs>, <cds-tab>, and <cds-tab-panel>.
 */}}
 
 {{ $baseId := .Get "id" | default (printf "cds-tabs-%d" .Ordinal) }}
@@ -11,122 +11,60 @@
 {{ $ignored := .Inner }}
 {{ $tabList := .Scratch.Get "tabs" | default slice }}
 
-{{/* Options on Tabs container */}}
 {{ $rawType := .Get "type" | default (.Get "variant" | default "default") | lower }}
 {{ $isContained := or (eq $rawType "contained") (eq (.Get "contained") true) (eq (.Get "contained") "true") }}
 {{ $isVertical := or (eq $rawType "vertical") (eq (.Get "vertical") true) (eq (.Get "vertical") "true") }}
-{{ if $isVertical }}
-  {{ $isContained = true }}
-{{ end }}
-
 {{ $size := .Get "size" | default "md" | lower }}
-{{ $fullWidth := or (eq (.Get "fullWidth") true) (eq (.Get "fullWidth") "true") (eq (.Get "full_width") true) (eq (.Get "full_width") "true") }}
-{{ $containerDismissable := or (eq (.Get "dismissable") true) (eq (.Get "dismissable") "true") (eq (.Get "closeable") true) (eq (.Get "closeable") "true") }}
-{{ $iconOnly := or (eq (.Get "iconOnly") true) (eq (.Get "iconOnly") "true") (eq (.Get "icon_only") true) (eq (.Get "icon_only") "true") }}
-{{ $light := or (eq (.Get "light") true) (eq (.Get "light") "true") }}
-{{ $label := .Get "label" | default (.Get "aria-label" | default "Navigation Tabs") }}
+{{ $fullWidth := or (eq (.Get "full-width") true) (eq (.Get "full-width") "true") (eq (.Get "fullWidth") true) (eq (.Get "fullWidth") "true") }}
+{{ $label := or (.Get "aria-label") (.Get "label") "Navigation Tabs" }}
 {{ $class := .Get "class" | default "" }}
 
-{{/* Determine which tab should be selected: check for selected tab, or default to first non-disabled tab */}}
-{{ $selectedIndex := -1 }}
+{{/* Determine initial selected panel */}}
+{{ $selectedValue := "" }}
 {{ range $i, $tab := $tabList }}
-  {{ if and (eq $selectedIndex -1) $tab.selected }}
-    {{ $selectedIndex = $i }}
+  {{ if and (eq $selectedValue "") $tab.selected }}
+    {{ $selectedValue = $tab.panelId }}
   {{ end }}
 {{ end }}
-{{ if eq $selectedIndex -1 }}
-  {{ range $i, $tab := $tabList }}
-    {{ if and (eq $selectedIndex -1) (not $tab.disabled) }}
-      {{ $selectedIndex = $i }}
+{{ if and (eq $selectedValue "") (gt (len $tabList) 0) }}
+  {{ range $tabList }}
+    {{ if and (eq $selectedValue "") (not .disabled) }}
+      {{ $selectedValue = .panelId }}
     {{ end }}
   {{ end }}
-{{ end }}
-{{ if eq $selectedIndex -1 }}
-  {{ $selectedIndex = 0 }}
-{{ end }}
-
-{{/* Check if any contained tab has secondaryLabel */}}
-{{ $hasSecondaryLabel := false }}
-{{ range $tabList }}
-  {{ if .secondaryLabel }}{{ $hasSecondaryLabel = true }}{{ end }}
+  {{ if eq $selectedValue "" }}
+    {{ $selectedValue = (index $tabList 0).panelId }}
+  {{ end }}
 {{ end }}
 
-{{/* Build container classes */}}
-{{ $containerClasses := slice "cds--tabs" }}
-{{ if $isContained }}{{ $containerClasses = $containerClasses | append "cds--tabs--contained" }}{{ end }}
-{{ if $isVertical }}{{ $containerClasses = $containerClasses | append "cds--tabs--vertical" }}{{ end }}
-{{ if $fullWidth }}{{ $containerClasses = $containerClasses | append "cds--tabs--full-width" }}{{ end }}
-{{ if $containerDismissable }}{{ $containerClasses = $containerClasses | append "cds--tabs--dismissable" }}{{ end }}
-{{ if $iconOnly }}{{ $containerClasses = $containerClasses | append "cds--tabs--icon-only" }}{{ end }}
-{{ if $light }}{{ $containerClasses = $containerClasses | append "cds--tabs--light" }}{{ end }}
-{{ if and $hasSecondaryLabel $isContained }}{{ $containerClasses = $containerClasses | append "cds--tabs--tall" }}{{ end }}
-{{ if eq $size "sm" }}{{ $containerClasses = $containerClasses | append "cds--layout--size-sm cds--tabs--sm" }}{{ end }}
-{{ if eq $size "lg" }}{{ $containerClasses = $containerClasses | append "cds--layout--size-lg cds--tabs--lg" }}{{ end }}
-{{ with $class }}{{ $containerClasses = $containerClasses | append . }}{{ end }}
+<div class="carbon-tabs-wrapper{{ with $class }} {{ . }}{{ end }}" id="{{ $baseId }}">
+  <cds-tabs
+    value="{{ $selectedValue }}"
+    {{ if $isContained }}type="contained"{{ end }}
+    {{ if $isVertical }}vertical{{ end }}
+    {{ if $fullWidth }}full-width{{ end }}
+    size="{{ $size }}"
+    aria-label="{{ $label }}">
+    {{ range $tabList }}
+      <cds-tab
+        id="{{ .tabId }}"
+        target="{{ .panelId }}"
+        value="{{ .panelId }}"
+        {{ if .disabled }}disabled{{ end }}
+        {{ with .secondaryLabel }}secondary-label="{{ . }}"{{ end }}>
+        {{ with .icon }}
+          {{ partial "components/icon.html" (dict "name" . "size" 16 "slot" "icon") }}
+        {{ end }}
+        {{ .title }}
+      </cds-tab>
+    {{ end }}
+  </cds-tabs>
 
-<div class="{{ delimit $containerClasses " " }}" id="{{ $baseId }}">
-  <div class="cds--tabs__overflow-wrapper">
-    <button type="button" class="cds--tab--overflow-nav-button cds--tab--overflow-nav-button--previous cds--tab--overflow-nav-button--hidden" aria-hidden="true" tabindex="-1" aria-label="Scroll left">
-      {{ partial "components/icon.html" (dict "name" "chevron--left" "size" 16) }}
-    </button>
-
-    <div class="cds--tab--list cds--tabs__nav" role="tablist" aria-label="{{ $label }}">
-      {{ range $i, $tab := $tabList }}
-        {{ $isActive := eq $i $selectedIndex }}
-        {{ $isTabDismissable := or $containerDismissable $tab.dismissable }}
-
-        <button type="button"
-                role="tab"
-                class="cds--tabs__nav-item cds--tabs__nav-link cds--tabs__tab{{ if $isActive }} cds--tabs__nav-item--selected cds--tabs__tab--selected is-active{{ end }}{{ if $tab.disabled }} cds--tabs__nav-item--disabled cds--tabs__tab--disabled{{ end }}"
-                id="{{ $tab.tabId }}"
-                aria-controls="{{ $tab.panelId }}"
-                aria-selected="{{ if $isActive }}true{{ else }}false{{ end }}"
-                tabindex="{{ if $isActive }}0{{ else }}-1{{ end }}"
-                {{ if $tab.disabled }}disabled aria-disabled="true"{{ end }}>
-          <div class="cds--tabs__nav-item-label-wrapper">
-            {{ with $tab.icon }}
-              <span class="cds--tabs__nav-item--icon-left">
-                {{ partial "components/icon.html" (dict "name" . "size" 16) }}
-              </span>
-            {{ end }}
-            <span class="cds--tabs__nav-item-label">{{ $tab.title }}</span>
-          </div>
-
-          {{ with $tab.secondaryLabel }}
-            <div class="cds--tabs__nav-item-secondary-label" title="{{ . }}">{{ . }}</div>
-          {{ end }}
-
-          {{ with $tab.badge }}
-            <span class="cds--tag cds--tag--{{ $tab.badgeColor }} cds--tag--sm" style="margin: 0 0 0 0.5rem;">{{ . }}</span>
-          {{ end }}
-
-          {{ if $isTabDismissable }}
-            <div class="cds--tabs__nav-item--close">
-              <span class="cds--tabs__nav-item--close-icon" role="button" tabindex="-1" aria-label="Close {{ $tab.title }} tab" title="Close {{ $tab.title }} tab">
-                {{ partial "components/icon.html" (dict "name" "close" "size" 14) }}
-              </span>
-            </div>
-          {{ end }}
-        </button>
-      {{ end }}
-    </div>
-
-    <button type="button" class="cds--tab--overflow-nav-button cds--tab--overflow-nav-button--next cds--tab--overflow-nav-button--hidden" aria-hidden="true" tabindex="-1" aria-label="Scroll right">
-      {{ partial "components/icon.html" (dict "name" "chevron--right" "size" 16) }}
-    </button>
-  </div>
-
-  <div class="cds--tab-panels cds--tabs__panels">
-    {{ range $i, $tab := $tabList }}
-      {{ $isActive := eq $i $selectedIndex }}
-      <div class="cds--tab-content cds--tabs__panel{{ if $isActive }} is-active{{ end }}{{ with $tab.class }} {{ . }}{{ end }}"
-           role="tabpanel"
-           id="{{ $tab.panelId }}"
-           aria-labelledby="{{ $tab.tabId }}"
-           tabindex="0"
-           {{ if not $isActive }}hidden{{ end }}>
-        {{ $tab.body | safeHTML }}
-      </div>
+  <div class="cds--tab-content">
+    {{ range $tabList }}
+      <cds-tab-panel id="{{ .panelId }}" {{ with .class }}class="{{ . }}"{{ end }}>
+        {{ .body | safeHTML }}
+      </cds-tab-panel>
     {{ end }}
   </div>
 </div>

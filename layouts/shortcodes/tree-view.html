@@ -1,6 +1,6 @@
-{{ $label := .Get "label" | default "Hierarchical Tree" }}
+{{ $label := or (.Get "label-text") (.Get "label") "Hierarchical Tree" }}
 {{ $class := .Get "class" }}
 
-<ul class="cds--tree{{ with $class }} {{ . }}{{ end }}" role="tree" aria-label="{{ $label }}">
+<cds-tree-view label-text="{{ $label }}" {{ with $class }}class="{{ . }}"{{ end }}>
   {{ .Inner }}
-</ul>
+</cds-tree-view>

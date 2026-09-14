@@ -1,0 +1,40 @@
+{{/*
+  IBM Carbon Design System v11 — Layer Shortcode (<cds-layer>)
+  Establishes a contextual design token layer for nested components (Cards, Tiles, Forms, Tables).
+
+  Parameters:
+    - level: Explicit layer depth (1, 2, 3 or one, two, three). Defaults to auto-calculated depth.
+    - with_background / withBackground: If true, renders with background fill (var(--cds-layer-background)).
+    - class: Additional CSS classes.
+    - id: Optional element ID.
+*/}}
+
+{{ $levelInput := or (.Get "level") "" }}
+{{ $withBg := or (.Get "with_background") (.Get "withBackground") false }}
+{{ $class := .Get "class" }}
+{{ $id := .Get "id" }}
+
+{{ $cdsLevel := "" }}
+{{ $layerClass := "" }}
+
+{{ if or (eq $levelInput "1") (eq $levelInput "one") }}
+  {{ $cdsLevel = "0" }}
+  {{ $layerClass = "cds--layer-one" }}
+{{ else if or (eq $levelInput "2") (eq $levelInput "two") }}
+  {{ $cdsLevel = "1" }}
+  {{ $layerClass = "cds--layer-two" }}
+{{ else if or (eq $levelInput "3") (eq $levelInput "three") }}
+  {{ $cdsLevel = "2" }}
+  {{ $layerClass = "cds--layer-three" }}
+{{ end }}
+
+<div class="cds--layer-wrapper {{ with $layerClass }}{{ . }} {{ end }}{{ if or (eq $withBg true) (eq $withBg "true") }}cds--layer__with-background {{ end }}{{ with $class }}{{ . }}{{ end }}"
+  style="{{ if or (eq $withBg true) (eq $withBg "true") }}background-color: var(--cds-layer-background); padding: 1.5rem; margin: 1.5rem 0; border: 1px solid var(--cds-border-subtle);{{ end }}">
+  <cds-layer
+    {{ with $cdsLevel }}level="{{ . }}"{{ end }}
+    {{ if or (eq $withBg true) (eq $withBg "true") }}with-background{{ end }}
+    {{ with $id }}id="{{ . }}"{{ end }}
+    style="display: block; width: 100%;">
+    {{- .Inner | safeHTML -}}
+  </cds-layer>
+</div>

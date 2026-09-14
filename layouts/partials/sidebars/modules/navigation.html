@@ -1,0 +1,134 @@
+{{/*
+  IBM Carbon SideNav Module: Hierarchical Section / YAML Navigation
+*/}}
+{{ $sidebarKey := or .Params.sidebar .Params.sidebar_file .Params.sidebars.left.data .Params.sidebars.right.data "" }}
+{{ $sidebarData := dict }}
+
+{{ if $sidebarKey }}
+  {{ if isset site.Data.sidebars $sidebarKey }}
+    {{ $sidebarData = index site.Data.sidebars $sidebarKey }}
+  {{ else if isset site.Data $sidebarKey }}
+    {{ $sidebarData = index site.Data $sidebarKey }}
+  {{ end }}
+{{ else if and .Section (isset site.Data.sidebars .Section) }}
+  {{ $sidebarData = index site.Data.sidebars .Section }}
+{{ end }}
+
+{{ $headerTitle := $sidebarData.title }}
+{{ if not $headerTitle }}
+  {{ with .CurrentSection }}
+    {{ $headerTitle = .Title }}
+  {{ end }}
+{{ end }}
+{{ if not $headerTitle }}
+  {{ $headerTitle = (i18n "sidebar.navigation" | default "Navigation") }}
+{{ end }}
+
+<div class="cds--side-nav__group cds--side-nav__group--navigation">
+  <div class="cds--side-nav__header">
+    <span class="cds--type-label-01 cds--side-nav__title">{{ $headerTitle }}</span>
+  </div>
+
+  {{/* 1. Custom YAML Data Navigation */}}
+  {{ if and $sidebarData $sidebarData.items }}
+    <nav class="cds--side-nav__navigation" aria-label="{{ $headerTitle }}">
+      <div class="cds--side-nav__tree">
+        {{ range $lvl1 := $sidebarData.items }}
+          <div class="cds--side-nav__section" style="margin-bottom: 1.25rem;">
+            {{/* Level 1: Category / Group Header */}}
+            {{ if $lvl1.children }}
+              <div class="cds--side-nav__group-title">
+                {{ if $lvl1.url }}
+                  <a href="{{ $lvl1.url }}" class="cds--side-nav__group-link {{ if or (eq $.RelPermalink $lvl1.url) (eq $.Permalink $lvl1.url) }}is-active{{ end }}">
+                    {{ $lvl1.title }}
+                  </a>
+                {{ else }}
+                  <span>{{ $lvl1.title }}</span>
+                {{ end }}
+              </div>
+
+              {{/* Level 2 Sub-list */}}
+              <ul class="cds--side-nav__items cds--side-nav__menu">
+                {{ range $lvl2 := $lvl1.children }}
+                  {{ $lvl2Active := or (eq $.RelPermalink $lvl2.url) (eq $.Permalink $lvl2.url) }}
+                  
+                  {{ if $lvl2.children }}
+                    {{/* Level 2 item with Level 3 children */}}
+                    <li class="cds--side-nav__item cds--side-nav__item--parent">
+                      <a href="{{ $lvl2.url | default "#" }}" class="cds--side-nav__link {{ if $lvl2Active }}cds--side-nav__link--current is-active{{ end }}">
+                        <span class="cds--side-nav__link-text">{{ $lvl2.title }}</span>
+                      </a>
+                      
+                      {{/* Level 3 Sub-list */}}
+                      <ul class="cds--side-nav__menu cds--side-nav__menu--lvl3">
+                        {{ range $lvl3 := $lvl2.children }}
+                          {{ $lvl3Active := or (eq $.RelPermalink $lvl3.url) (eq $.Permalink $lvl3.url) }}
+                          <li class="cds--side-nav__menu-item">
+                            <a href="{{ $lvl3.url }}" class="cds--side-nav__link {{ if $lvl3Active }}cds--side-nav__link--current is-active{{ end }}">
+                              <span class="cds--side-nav__link-text">{{ $lvl3.title }}</span>
+                            </a>
+                          </li>
+                        {{ end }}
+                      </ul>
+                    </li>
+                  {{ else }}
+                    {{/* Level 2 leaf item */}}
+                    <li class="cds--side-nav__item">
+                      <a href="{{ $lvl2.url }}" class="cds--side-nav__link {{ if $lvl2Active }}cds--side-nav__link--current is-active{{ end }}">
+                        <span class="cds--side-nav__link-text">{{ $lvl2.title }}</span>
+                      </a>
+                    </li>
+                  {{ end }}
+                {{ end }}
+              </ul>
+
+            {{ else }}
+              {{/* Level 1 direct link */}}
+              <ul class="cds--side-nav__items">
+                <li class="cds--side-nav__item">
+                  <a href="{{ $lvl1.url }}" class="cds--side-nav__link {{ if or (eq $.RelPermalink $lvl1.url) (eq $.Permalink $lvl1.url) }}cds--side-nav__link--current is-active{{ end }}">
+                    <span class="cds--side-nav__link-text">{{ $lvl1.title }}</span>
+                  </a>
+                </li>
+              </ul>
+            {{ end }}
+          </div>
+        {{ end }}
+      </div>
+    </nav>
+
+  {{/* 2. Fallback: Auto-Generated Section Page Hierarchy */}}
+  {{ else }}
+    {{ $currentSection := .CurrentSection }}
+    {{ if $currentSection }}
+      <nav class="cds--side-nav__navigation" aria-label="{{ $currentSection.Title }}">
+        <ul class="cds--side-nav__items">
+          {{ range $currentSection.Pages }}
+            <li class="cds--side-nav__item">
+              <a href="{{ .RelPermalink }}" class="cds--side-nav__link {{ if eq $.RelPermalink .RelPermalink }}cds--side-nav__link--current is-active{{ end }}">
+                <span class="cds--side-nav__link-text">{{ .Title }}</span>
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      </nav>
+    {{ end }}
+
+    {{ if and $currentSection (ne $currentSection.Section "docs") }}
+      <div class="cds--side-nav__section" style="margin-top: 1.5rem;">
+        <div class="cds--side-nav__header">
+          <span class="cds--type-label-01 cds--side-nav__title">Explore Sections</span>
+        </div>
+        <ul class="cds--side-nav__items">
+          {{ range .Site.Sections }}
+            <li class="cds--side-nav__item">
+              <a href="{{ .RelPermalink }}" class="cds--side-nav__link {{ if eq $.Section .Section }}cds--side-nav__link--current is-active{{ end }}">
+                <span class="cds--side-nav__link-text">{{ .Title }}</span>
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      </div>
+    {{ end }}
+  {{ end }}
+</div>

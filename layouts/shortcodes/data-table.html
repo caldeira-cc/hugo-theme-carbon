@@ -1,37 +1,27 @@
 {{/*
   IBM Carbon Design System v11 — DataTable Shortcode
-  Compliant with Carbon React DataTable Component Specifications.
-
-  Usage:
-  {{< data-table title="Architecture Metrics" description="Benchmark results" zebra="true" compact="false" >}}
-    | Module | Execution Target | Latency | Status |
-    |---|---|---|---|
-    | Physics Engine | Web Worker (60Hz) | 0.8ms | Optimal |
-    | Vector RAG | WebLLM WebGPU | 12ms | Optimal |
-  {{< /data-table >}}
+  Compliant with @carbon/web-components <cds-table> specifications.
 */}}
 
 {{ $title := .Get "title" }}
 {{ $description := .Get "description" }}
-{{ $zebra := .Get "zebra" | default "true" }}
-{{ $compact := .Get "compact" | default "false" }}
-{{ $class := .Get "class" | default "" }}
+{{ $zebra := or (eq (.Get "is-zebra-style") true) (eq (.Get "is-zebra-style") "true") (eq (.Get "zebra") true) (eq (.Get "zebra") "true") true }}
+{{ $compact := or (eq (.Get "compact") true) (eq (.Get "compact") "true") false }}
+{{ $size := .Get "size" | default (cond $compact "sm" "md") }}
+{{ $class := .Get "class" }}
 
 <div class="cds--data-table-container {{ with $class }}{{ . }}{{ end }}">
-  {{ if or $title $description }}
-    <div class="cds--data-table-header">
-      {{ with $title }}
-        <h4 class="cds--data-table-header__title">{{ . }}</h4>
-      {{ end }}
-      {{ with $description }}
-        <p class="cds--data-table-header__description">{{ . }}</p>
-      {{ end }}
-    </div>
-  {{ end }}
-
-  <div class="cds--table-wrapper">
-    <div class="cds--data-table-inner {{ if eq $zebra "true" }}cds--data-table--zebra{{ end }} {{ if eq $compact "true" }}cds--data-table--compact{{ end }}">
+  <cds-table
+    size="{{ $size }}"
+    {{ if $zebra }}is-zebra-style{{ end }}>
+    {{ with $title }}
+      <cds-table-header-title slot="title">{{ . }}</cds-table-header-title>
+    {{ end }}
+    {{ with $description }}
+      <cds-table-header-description slot="description">{{ . }}</cds-table-header-description>
+    {{ end }}
+    <div class="cds--table-content-slot">
       {{ .Inner | markdownify }}
     </div>
-  </div>
+  </cds-table>
 </div>

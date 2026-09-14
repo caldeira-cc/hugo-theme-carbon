@@ -1,6 +1,43 @@
-// IBM Carbon 2x Grid System (16 Columns, 8px Mini-Unit, 4px Baseline)
+// Official IBM Carbon Design System v11 Z-Index Stacking Tokens & Dimensions
+:root {
+  --cds-z-a11y: 10000;
+  --cds-z-modal: 9000;
+  --cds-z-banner: 8900;
+  --cds-z-dropdown: 8600;
+  --cds-z-search-mobile: 8500;
+  --cds-z-header: 8000;
+  --cds-z-drawer: 7500;
+  --cds-z-drawer-scrim: 7400;
+  --cds-z-subnav: 7000;
+  --cds-z-scrim: 6000;
+  --cds-z-sidebars: 100;
+  --cds-z-content: 1;
 
-// Breakpoints
+  --carbon-navbar-height: 48px;
+  --carbon-main-bar-height: 36px;
+  --carbon-sticky-header-height: 84px; // Desktop dual-sticky default
+}
+
+@media (max-width: 47.99rem) {
+  :root {
+    --carbon-sticky-header-height: 48px; // Mobile single-sticky navbar
+  }
+}
+
+// Global Body Flexbox Sticky Footer Scaffold
+body,
+.carbon-theme-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+// Anchor scroll margin to prevent headings hiding behind sticky headers
+h1, h2, h3, h4, h5, h6, [id] {
+  scroll-margin-top: calc(var(--carbon-sticky-header-height, 84px) + 16px);
+}
+
 $breakpoint-sm: 20rem;   // 320px
 $breakpoint-md: 42rem;   // 672px
 $breakpoint-lg: 66rem;   // 1056px
@@ -23,96 +60,12 @@ $breakpoint-max: 90rem;  // 1440px
   }
 }
 
-.cds--grid {
-  width: 100%;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin-right: auto;
-  margin-left: auto;
-  box-sizing: border-box;
-
-  @media (min-width: $breakpoint-md) {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  &--full-width {
-    max-width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
-.cds--row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -0.5rem;
-  margin-left: -0.5rem;
-  box-sizing: border-box;
-
-  @media (min-width: $breakpoint-md) {
-    margin-right: -1rem;
-    margin-left: -1rem;
-  }
-}
-
-[class*="cds--col"] {
-  position: relative;
-  width: 100%;
-  padding-right: 0.5rem;
-  padding-left: 0.5rem;
-  box-sizing: border-box;
-
-  @media (min-width: $breakpoint-md) {
-    padding-right: 1rem;
-    padding-left: 1rem;
-  }
-}
-
-// Small Viewport (sm: 4 columns)
-@for $i from 1 through 4 {
-  .cds--col-sm-#{$i} {
-    flex: 0 0 percentage($i / 4);
-    max-width: percentage($i / 4);
-  }
-}
-
-// Medium Viewport (md: 8 columns)
-@media (min-width: $breakpoint-md) {
-  @for $i from 1 through 8 {
-    .cds--col-md-#{$i} {
-      flex: 0 0 percentage($i / 8);
-      max-width: percentage($i / 8);
-    }
-  }
-}
-
-// Large Viewport (lg: 16 columns)
-@media (min-width: $breakpoint-lg) {
-  @for $i from 1 through 16 {
-    .cds--col-lg-#{$i} {
-      flex: 0 0 percentage($i / 16);
-      max-width: percentage($i / 16);
-    }
-  }
-}
-
-// Extra Large Viewport (xlg: 16 columns)
-@media (min-width: $breakpoint-xlg) {
-  @for $i from 1 through 16 {
-    .cds--col-xlg-#{$i} {
-      flex: 0 0 percentage($i / 16);
-      max-width: percentage($i / 16);
-    }
-  }
-}
-
 // Layout Allocation Scaffolds based on Active Sidebars
 .carbon-layout {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  min-height: calc(100vh - 48px - 40px);
+  min-height: calc(100vh - var(--cds-top-offset, 88px));
   background-color: var(--cds-background);
   color: var(--cds-text-primary);
 
@@ -134,6 +87,12 @@ $breakpoint-max: 90rem;  // 1440px
     border-right: 1px solid var(--cds-border-subtle-00);
   }
 
+  &__main {
+    isolation: isolate;
+    position: relative;
+    z-index: var(--cds-z-content, 1);
+  }
+
   // Dual Sidebars: Left (3 cols), Main (10 cols), Right (3 cols)
   &--dual {
     .carbon-layout__sidebar-left {
@@ -141,9 +100,16 @@ $breakpoint-max: 90rem;  // 1440px
       @media (min-width: $breakpoint-lg) {
         display: flex;
         flex-direction: column;
-        flex: 0 0 percentage(3 / 16);
-        max-width: percentage(3 / 16);
+        flex: 0 0 calc(3 / 16 * 100%);
+        max-width: calc(3 / 16 * 100%);
+        width: calc(3 / 16 * 100%);
         border-right: 1px solid var(--cds-border-subtle-00);
+        overflow: hidden;
+        transition: flex-basis 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    max-width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    opacity 0.2s ease,
+                    border-color 0.2s ease;
       }
     }
     .carbon-layout__main {
@@ -154,14 +120,16 @@ $breakpoint-max: 90rem;  // 1440px
       flex-direction: column;
       padding: 0 1rem;
       box-sizing: border-box;
+      transition: flex-basis 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                  max-width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9);
 
       @media (min-width: $breakpoint-md) {
         padding: 0 2rem;
       }
 
       @media (min-width: $breakpoint-lg) {
-        flex: 0 0 percentage(10 / 16);
-        max-width: percentage(10 / 16);
+        flex: 0 0 calc(10 / 16 * 100%);
+        max-width: calc(10 / 16 * 100%);
         padding: 0 2rem;
       }
     }
@@ -170,9 +138,16 @@ $breakpoint-max: 90rem;  // 1440px
       @media (min-width: $breakpoint-lg) {
         display: flex;
         flex-direction: column;
-        flex: 0 0 percentage(3 / 16);
-        max-width: percentage(3 / 16);
+        flex: 0 0 calc(3 / 16 * 100%);
+        max-width: calc(3 / 16 * 100%);
+        width: calc(3 / 16 * 100%);
         border-left: 1px solid var(--cds-border-subtle-00);
+        overflow: hidden;
+        transition: flex-basis 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    max-width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    opacity 0.2s ease,
+                    border-color 0.2s ease;
       }
     }
   }
@@ -184,9 +159,16 @@ $breakpoint-max: 90rem;  // 1440px
       @media (min-width: $breakpoint-lg) {
         display: flex;
         flex-direction: column;
-        flex: 0 0 percentage(3 / 16);
-        max-width: percentage(3 / 16);
+        flex: 0 0 calc(3 / 16 * 100%);
+        max-width: calc(3 / 16 * 100%);
+        width: calc(3 / 16 * 100%);
         border-right: 1px solid var(--cds-border-subtle-00);
+        overflow: hidden;
+        transition: flex-basis 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    max-width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    opacity 0.2s ease,
+                    border-color 0.2s ease;
       }
     }
     .carbon-layout__main {
@@ -197,14 +179,16 @@ $breakpoint-max: 90rem;  // 1440px
       flex-direction: column;
       padding: 0 1rem;
       box-sizing: border-box;
+      transition: flex-basis 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                  max-width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9);
 
       @media (min-width: $breakpoint-md) {
         padding: 0 2rem;
       }
 
       @media (min-width: $breakpoint-lg) {
-        flex: 0 0 percentage(13 / 16);
-        max-width: percentage(13 / 16);
+        flex: 0 0 calc(13 / 16 * 100%);
+        max-width: calc(13 / 16 * 100%);
         padding-left: 2rem;
         padding-right: 2rem;
       }
@@ -221,14 +205,16 @@ $breakpoint-max: 90rem;  // 1440px
       flex-direction: column;
       padding: 0 1rem;
       box-sizing: border-box;
+      transition: flex-basis 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                  max-width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9);
 
       @media (min-width: $breakpoint-md) {
         padding: 0 2rem;
       }
 
       @media (min-width: $breakpoint-lg) {
-        flex: 0 0 percentage(13 / 16);
-        max-width: percentage(13 / 16);
+        flex: 0 0 calc(13 / 16 * 100%);
+        max-width: calc(13 / 16 * 100%);
         padding-left: 2rem;
         padding-right: 2rem;
       }
@@ -238,9 +224,16 @@ $breakpoint-max: 90rem;  // 1440px
       @media (min-width: $breakpoint-lg) {
         display: flex;
         flex-direction: column;
-        flex: 0 0 percentage(3 / 16);
-        max-width: percentage(3 / 16);
+        flex: 0 0 calc(3 / 16 * 100%);
+        max-width: calc(3 / 16 * 100%);
+        width: calc(3 / 16 * 100%);
         border-left: 1px solid var(--cds-border-subtle-00);
+        overflow: hidden;
+        transition: flex-basis 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    max-width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    width 0.24s cubic-bezier(0.2, 0, 0.38, 0.9),
+                    opacity 0.2s ease,
+                    border-color 0.2s ease;
       }
     }
   }
@@ -258,6 +251,84 @@ $breakpoint-max: 90rem;  // 1440px
       @media (min-width: $breakpoint-md) {
         padding: 0 2rem;
       }
+    }
+  }
+}
+
+// -------------------------------------------------------------
+// Dynamic Sidebar Collapse Modifiers (Desktop Responsive Shifting)
+// -------------------------------------------------------------
+body.sidebar-left-collapsed {
+  .carbon-layout__sidebar-left {
+    @media (min-width: $breakpoint-lg) {
+      flex: 0 0 0% !important;
+      max-width: 0% !important;
+      width: 0 !important;
+      border-right-color: transparent !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .carbon-sidebar-left,
+    .cds--side-nav {
+      transform: translateX(-16px);
+      opacity: 0;
+    }
+  }
+
+  .carbon-layout--dual .carbon-layout__main {
+    @media (min-width: $breakpoint-lg) {
+      flex: 0 0 calc(13 / 16 * 100%);
+      max-width: calc(13 / 16 * 100%);
+    }
+  }
+
+  .carbon-layout--single-left .carbon-layout__main {
+    @media (min-width: $breakpoint-lg) {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+body.sidebar-right-collapsed {
+  .carbon-layout__sidebar-right {
+    @media (min-width: $breakpoint-lg) {
+      flex: 0 0 0% !important;
+      max-width: 0% !important;
+      width: 0 !important;
+      border-left-color: transparent !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .carbon-sidebar-right,
+    .cds--side-nav {
+      transform: translateX(16px);
+      opacity: 0;
+    }
+  }
+
+  .carbon-layout--dual .carbon-layout__main {
+    @media (min-width: $breakpoint-lg) {
+      flex: 0 0 calc(13 / 16 * 100%);
+      max-width: calc(13 / 16 * 100%);
+    }
+  }
+
+  .carbon-layout--single-right .carbon-layout__main {
+    @media (min-width: $breakpoint-lg) {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+body.sidebar-left-collapsed.sidebar-right-collapsed {
+  .carbon-layout--dual .carbon-layout__main {
+    @media (min-width: $breakpoint-lg) {
+      flex: 0 0 100%;
+      max-width: 100%;
     }
   }
 }

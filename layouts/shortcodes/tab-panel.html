@@ -1,16 +1,13 @@
 {{/*
   IBM Carbon Design System v11 — Tab Panel Shortcode
-  Compliant with @carbon/react Tab & TabPanel Specifications.
+  Registers panel data with parent <cds-tabs> or renders standalone <cds-tab-panel>.
 */}}
 
-{{ $title := .Get "title" | default (.Get "label" | default "Tab") }}
+{{ $title := or (.Get "title") (.Get "label") "Tab" }}
 {{ $icon := .Get "icon" }}
-{{ $secondaryLabel := .Get "secondaryLabel" | default (.Get "secondary_label") }}
-{{ $badge := .Get "badge" | default (.Get "tag") }}
-{{ $badgeColor := .Get "badgeColor" | default (.Get "badge_color" | default "blue") }}
+{{ $secondaryLabel := or (.Get "secondary-label") (.Get "secondaryLabel") (.Get "secondary_label") }}
 {{ $disabled := or (eq (.Get "disabled") true) (eq (.Get "disabled") "true") }}
 {{ $selected := or (eq (.Get "selected") true) (eq (.Get "selected") "true") (eq (.Get "active") true) (eq (.Get "active") "true") }}
-{{ $dismissable := or (eq (.Get "dismissable") true) (eq (.Get "dismissable") "true") (eq (.Get "closeable") true) (eq (.Get "closeable") "true") }}
 {{ $class := .Get "class" | default "" }}
 
 {{ $baseId := "" }}
@@ -35,19 +32,15 @@
     "title" $title
     "icon" $icon
     "secondaryLabel" $secondaryLabel
-    "badge" $badge
-    "badgeColor" $badgeColor
     "disabled" $disabled
     "selected" $selected
-    "dismissable" $dismissable
     "class" $class
     "body" (.Inner | markdownify)
   }}
   {{ .Parent.Scratch.Add "tabs" (slice $panelData) }}
 {{ else }}
   {{/* Fallback if tab-panel is used outside of tabs shortcode */}}
-  <div class="cds--tab-content cds--tabs__panel is-active{{ with $class }} {{ . }}{{ end }}" role="tabpanel">
+  <cds-tab-panel id="{{ $panelId }}" {{ with $class }}class="{{ . }}"{{ end }}>
     {{ .Inner | markdownify }}
-  </div>
+  </cds-tab-panel>
 {{ end }}
-

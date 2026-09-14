@@ -18,7 +18,7 @@ Feedback components provide real-time status notices, confirmations, and focus-t
 
 ## 1. Inline Notification (`notification`)
 
-The `notification` shortcode renders Carbon inline banners communicating essential system status, warnings, errors, or successes. Following `@carbon/react` specifications, notifications equipped with action buttons or close handlers render as `ActionableNotification`.
+The `notification` shortcode renders Carbon inline banners communicating essential system status, warnings, errors, or successes. Following official `@carbon/web-components` specifications, notifications render as `<cds-inline-notification>` or `<cds-actionable-notification>` when equipped with action buttons.
 
 ### Parameters
 
@@ -102,20 +102,12 @@ The `modal` shortcode renders an accessible dialog box with keyboard focus trapp
 
 ### Example
 
-<button class="cds--btn cds--btn--secondary" type="button" onclick="const m = document.getElementById('demo-modal'); if (m) m.classList.add('is-visible');">
-  Open Modal Dialog Specimen
-</button>
-
-{{< modal id="demo-modal" title="Confirm Asset Deployment" label="Build Process" primaryButton="Deploy Now" secondaryButton="Cancel" >}}
+{{< modal id="demo-modal" title="Confirm Asset Deployment" label="Build Process" primaryButton="Deploy Now" secondaryButton="Cancel" triggerText="Open Modal Dialog Specimen" >}}
 You are about to synchronize static artifacts with the Anycast distribution edge. This process purges the global CDN cache immediately.
 {{< /modal >}}
 
 ```markdown
-<button class="cds--btn cds--btn--secondary" type="button" onclick="document.getElementById('demo-modal').classList.add('is-visible');">
-  Open Modal Dialog Specimen
-</button>
-
-{{</* modal id="demo-modal" title="Confirm Asset Deployment" label="Build Process" primaryButton="Deploy Now" secondaryButton="Cancel" */>}}
+{{</* modal id="demo-modal" title="Confirm Asset Deployment" label="Build Process" primaryButton="Deploy Now" secondaryButton="Cancel" triggerText="Open Modal Dialog Specimen" */>}}
 You are about to synchronize static artifacts with the Anycast distribution edge. This process purges the global CDN cache immediately.
 {{</* /modal */>}}
 ```

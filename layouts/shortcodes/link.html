@@ -1,27 +1,20 @@
-{{/*
-  IBM Carbon Design System v11 — Link Shortcode
-  Compliant with Carbon React Link Component Specifications.
-
-  Usage:
-  {{< link href="https://react.carbondesignsystem.com/" icon="true" >}}IBM Carbon Storybook{{< /link >}}
-*/}}
-
 {{ $href := .Get "href" | default "#" }}
 {{ $icon := .Get "icon" | default "false" }}
-{{ $inline := .Get "inline" | default "false" }}
-{{ $disabled := .Get "disabled" | default "false" }}
-{{ $target := .Get "target" | default "" }}
-{{ $class := .Get "class" | default "" }}
+{{ $inline := or (eq (.Get "inline") true) (eq (.Get "inline") "true") false }}
+{{ $disabled := or (eq (.Get "disabled") true) (eq (.Get "disabled") "true") false }}
+{{ $target := .Get "target" }}
+{{ $class := .Get "class" }}
 
-<a href="{{ if eq $disabled "true" }}javascript:void(0){{ else }}{{ $href }}{{ end }}" 
-   class="cds--link {{ if eq $inline "true" }}cds--link--inline{{ end }} {{ if eq $disabled "true" }}cds--link--disabled{{ end }} {{ with $class }}{{ . }}{{ end }}"
-   {{ with $target }}target="{{ . }}" rel="noopener noreferrer"{{ end }}
-   {{ if eq $disabled "true" }}aria-disabled="true" tabindex="-1"{{ end }}
-   style="display: inline-flex; align-items: center; gap: 0.25rem;">
-  <span>{{ .Inner | markdownify }}</span>
+<cds-link
+  href="{{ $href }}"
+  {{ with $target }}target="{{ . }}" rel="noopener noreferrer"{{ end }}
+  {{ if $inline }}inline{{ end }}
+  {{ if $disabled }}disabled{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  {{ .Inner | markdownify }}
   {{ if or (eq $icon "true") (eq $icon "launch") }}
-    {{ partial "components/icon.html" (dict "name" "launch" "size" 16 "class" "cds--link__icon") }}
+    {{ partial "components/icon.html" (dict "name" "launch" "size" 16 "slot" "icon") }}
   {{ else if and $icon (ne $icon "false") }}
-    {{ partial "components/icon.html" (dict "name" $icon "size" 16 "class" "cds--link__icon") }}
+    {{ partial "components/icon.html" (dict "name" $icon "size" 16 "slot" "icon") }}
   {{ end }}
-</a>
+</cds-link>

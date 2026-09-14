@@ -15,8 +15,6 @@ cascade:
         data: "docs"
       right:
         enable: true
-    mainBar:
-      enable: false
 ---
 
 The **Hugo-Carbon Data Analytics Suite** integrates **W3C CSVW static tabular exploration**, **instant build-time KPI metrics**, and the **GNU PSPP Statistical Studio** into a high-performance, client-side operational environment.

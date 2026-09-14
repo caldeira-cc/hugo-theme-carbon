@@ -1,78 +1,102 @@
 {{/*
   IBM Carbon Design System v11 — Expressive / Product Card Shortcode
-  Compliant with Carbon React Card Component Specifications.
-
-  Usage:
-  {{< card title="Carbon Design Tokens" eyebrow="Architecture" href="/docs/tokens/" actionText="Explore Tokens" >}}
-    Learn how token scales map dynamically to CSS variables.
-  {{< /card >}}
+  Composing Carbon Web Components (<cds-tag>, <cds-button>, <cds-ai-label>).
 */}}
 
 {{ $title := .Get "title" }}
 {{ $eyebrow := .Get "eyebrow" }}
 {{ $href := .Get "href" }}
-{{ $actionText := .Get "actionText" | default "Learn more" }}
+{{ $actionText := or (.Get "actionText") (.Get "action_text") "Learn more" }}
 {{ $image := .Get "image" }}
 {{ $tag := .Get "tag" }}
-{{ $tagColor := .Get "tagColor" | default "blue" }}
+{{ $tagColor := or (.Get "tagColor") (.Get "tag_color") "blue" }}
 {{ $icon := .Get "icon" | default "arrow--right" }}
-{{ $clickable := .Get "clickable" | default (and $href (not .Inner)) }}
-{{ $ai := or (.Get "ai") (.Get "aiLabel") | default false }}
-{{ $aiText := .Get "aiText" }}
-{{ $class := .Get "class" | default "" }}
+{{ $clickable := or (.Get "clickable") (and $href (not .Inner)) }}
+{{ $ai := or (.Get "ai") (.Get "aiLabel") (.Get "ai_label") false }}
+{{ $aiText := or (.Get "aiText") (.Get "ai_text") }}
+{{ $class := .Get "class" }}
+{{ $layer := .Get "layer" }}
+{{ $kind := or (.Get "kind") (.Get "type") }}
+{{ $accent := .Get "accent" }}
+{{ $elevation := .Get "elevation" }}
+{{ $value := .Get "value" }}
+{{ $sub := .Get "sub" }}
 
-<div class="cds--card {{ if $clickable }}cds--card--clickable{{ end }} {{ if $ai }}cds--card--ai-label cds--ai-label-container{{ end }} {{ with $class }}{{ . }}{{ end }}">
-  {{ with $image }}
-    <div class="cds--card__media">
-      {{ if $href }}<a href="{{ $href }}" tabindex="-1" aria-hidden="true">{{ end }}
-        <img src="{{ . }}" alt="{{ $title | default "Card media" }}" loading="lazy">
-      {{ if $href }}</a>{{ end }}
-    </div>
-  {{ end }}
+{{ $layerClass := "" }}
+{{ if or (eq $layer "1") (eq $layer "one") }}
+  {{ $layerClass = "cds--layer-one" }}
+{{ else if or (eq $layer "2") (eq $layer "two") }}
+  {{ $layerClass = "cds--layer-two" }}
+{{ else if or (eq $layer "3") (eq $layer "three") }}
+  {{ $layerClass = "cds--layer-three" }}
+{{ end }}
 
-  <div class="cds--card__header">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
-      <div>
-        {{ with $eyebrow }}
-          <div class="cds--card__eyebrow">{{ . }}</div>
-        {{ end }}
-        {{ with $title }}
-          <h4 class="cds--card__title">
-            {{ if $href }}
-              <a href="{{ $href }}">{{ . }}</a>
-            {{ else }}
-              {{ . }}
-            {{ end }}
-          </h4>
-        {{ end }}
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem;">
-        {{ with $tag }}
-          <span class="cds--tag cds--tag--{{ $tagColor }} cds--tag--sm" style="margin: 0;">{{ . }}</span>
-        {{ end }}
-        {{ if $ai }}
-          {{ partial "components/ai-label.html" (dict "text" $aiText "size" "xs") }}
-        {{ end }}
-      </div>
-    </div>
-  </div>
+{{ $variantClasses := slice }}
+{{ if $clickable }}{{ $variantClasses = $variantClasses | append "cds--card--clickable" }}{{ end }}
+{{ if eq $kind "outlined" }}{{ $variantClasses = $variantClasses | append "cds--card--outlined" }}{{ end }}
+{{ if eq $kind "ghost" }}{{ $variantClasses = $variantClasses | append "cds--card--ghost" }}{{ end }}
+{{ if or (eq $kind "elevated") $elevation }}{{ $variantClasses = $variantClasses | append "cds--card--elevated" }}{{ end }}
+{{ if or (eq $kind "stat") $value }}{{ $variantClasses = $variantClasses | append "cds--card--stat" }}{{ end }}
+{{ with $accent }}{{ $variantClasses = $variantClasses | append "cds--card--accent" (printf "cds--card--accent--%s" .) }}{{ end }}
+{{ with $layerClass }}{{ $variantClasses = $variantClasses | append . }}{{ end }}
 
-  {{ if .Inner }}
-    <div class="cds--card__body">
-      {{ .Inner | markdownify }}
-    </div>
-  {{ end }}
-
-  {{ if or $href $actionText }}
-    <div class="cds--card__footer">
-      {{ if $href }}
-        <a href="{{ $href }}" class="cds--card__action">
-          <span>{{ $actionText }}</span>
-          {{ partial "components/icon.html" (dict "name" $icon "size" 16 "class" "cds--card__action-icon") }}
-        </a>
-      {{ else }}
-        <span class="cds--type-caption" style="color: var(--cds-text-secondary);">{{ $actionText }}</span>
-      {{ end }}
-    </div>
-  {{ end }}
+<div class="cds--card {{ delimit $variantClasses " " }} {{ with $class }}{{ . }}{{ end }}">
+{{- with $image }}
+<div class="cds--card__media">
+{{- if $href }}<a href="{{ $href }}" tabindex="-1" aria-hidden="true">{{ end -}}
+<img src="{{ . }}" alt="{{ $title | default "Card media" }}" loading="lazy">
+{{- if $href }}</a>{{ end -}}
+</div>
+{{- end }}
+<div class="cds--card__header">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
+<div>
+{{- with $eyebrow }}
+<div class="cds--card__eyebrow">{{ . }}</div>
+{{- end }}
+{{- with $title }}
+<h4 class="cds--card__title">
+{{- if $href }}
+<a href="{{ $href }}">{{ . }}</a>
+{{- else }}
+{{ . }}
+{{- end }}
+</h4>
+{{- end }}
+</div>
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+{{- with $tag }}
+<cds-tag type="{{ $tagColor }}" size="sm">{{ . }}</cds-tag>
+{{- end }}
+{{- if $ai }}
+{{ partial "components/ai-label.html" (dict "text" $aiText "size" "xs") }}
+{{- end }}
+</div>
+</div>
+</div>
+{{- with $value }}
+<div style="padding: 0.25rem 1.25rem 0.75rem 1.25rem;">
+<div class="cds--card__stat-value">{{ . }}</div>
+{{- with $sub }}
+<div class="cds--card__stat-sub">{{ . }}</div>
+{{- end }}
+</div>
+{{- end }}
+{{- if .Inner }}
+<div class="cds--card__body">
+{{ .Inner | markdownify }}
+</div>
+{{- end }}
+{{- if or $href $actionText }}
+<div class="cds--card__footer" style="padding-top: 0.5rem;">
+{{- if $href }}
+<cds-button kind="ghost" size="sm" href="{{ $href }}">
+{{ $actionText }}
+{{ partial "components/icon.html" (dict "name" $icon "size" 16 "slot" "icon") }}
+</cds-button>
+{{- else }}
+<span class="cds--type-caption" style="color: var(--cds-text-secondary);">{{ $actionText }}</span>
+{{- end }}
+</div>
+{{- end }}
 </div>

@@ -1,0 +1,19 @@
+{{/*
+  IBM Carbon SideNav Module: Site Sections Explorer
+*/}}
+{{ if .Site.Sections }}
+<div class="cds--side-nav__group cds--side-nav__group--sections">
+  <div class="cds--side-nav__header">
+    <span class="cds--type-label-01 cds--side-nav__title">Explore Sections</span>
+  </div>
+  <ul class="cds--side-nav__items">
+    {{ range .Site.Sections }}
+      <li class="cds--side-nav__item">
+        <a href="{{ .RelPermalink }}" class="cds--side-nav__link {{ if eq $.Section .Section }}cds--side-nav__link--current is-active{{ end }}">
+          <span class="cds--side-nav__link-text">{{ .Title }}</span>
+        </a>
+      </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

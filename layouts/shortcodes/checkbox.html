@@ -1,24 +1,15 @@
-{{/*
-  IBM Carbon Design System v11 — Checkbox Shortcode
-  Compliant with Carbon React Checkbox Component Specifications.
-
-  Usage:
-  {{< checkbox id="opt-in" label="Enable WebAssembly Acceleration" checked="true" helper="Uses local multithreaded SIMD instructions" />}}
-*/}}
-
-{{ $label := .Get "label" | default "Checkbox Label" }}
-{{ $helper := .Get "helper" }}
-{{ $checked := .Get "checked" | default "false" }}
-{{ $disabled := .Get "disabled" | default "false" }}
+{{ $label := or (.Get "label-text") (.Get "label") "Checkbox Label" }}
+{{ $helper := or (.Get "helper-text") (.Get "helper") }}
+{{ $checked := or (.Get "checked") false }}
+{{ $disabled := or (.Get "disabled") false }}
 {{ $id := .Get "id" | default (printf "cds-checkbox-%d" .Ordinal) }}
-{{ $class := .Get "class" | default "" }}
+{{ $class := .Get "class" }}
 
-<div class="cds--form-item cds--checkbox-wrapper {{ with $class }}{{ . }}{{ end }}" style="margin: 0.5rem 0;">
-  <input type="checkbox" class="cds--checkbox" id="{{ $id }}" {{ if eq $checked "true" }}checked{{ end }} {{ if eq $disabled "true" }}disabled{{ end }} style="margin-right: 0.5rem;">
-  <label for="{{ $id }}" class="cds--checkbox-label" style="font-size: 0.875rem; color: var(--cds-text-primary); cursor: pointer;">
-    <span class="cds--checkbox-label-text">{{ $label }}</span>
-  </label>
-  {{ with $helper }}
-    <div class="cds--form__helper-text" style="font-size: 0.75rem; color: var(--cds-text-secondary); margin-left: 1.5rem; margin-top: 0.125rem;">{{ . }}</div>
-  {{ end }}
-</div>
+<cds-checkbox
+  id="{{ $id }}"
+  label-text="{{ $label }}"
+  {{ with $helper }}helper-text="{{ . }}"{{ end }}
+  {{ if or (eq $checked "true") (eq $checked true) }}checked{{ end }}
+  {{ if or (eq $disabled "true") (eq $disabled true) }}disabled{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+</cds-checkbox>

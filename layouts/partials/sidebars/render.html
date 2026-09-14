@@ -1,0 +1,27 @@
+{{/*
+  IBM Carbon Modular Sidebar Engine
+  Renders any ordered slice of feature modules (navigation, toc, metadata, recommended, sections, taxonomies, author, ad)
+*/}}
+{{ $ctx := .context }}
+{{ $side := .side }}
+{{ $features := .features }}
+
+{{ range $feat := $features }}
+  {{ if or (eq $feat "navigation") (eq $feat "nav") }}
+    {{ partial "sidebars/modules/navigation.html" $ctx }}
+  {{ else if eq $feat "toc" }}
+    {{ partial "sidebars/modules/toc.html" $ctx }}
+  {{ else if or (eq $feat "metadata") (eq $feat "doc-details") }}
+    {{ partial "sidebars/modules/metadata.html" $ctx }}
+  {{ else if or (eq $feat "recommended-posts") (eq $feat "recommended") (eq $feat "related") }}
+    {{ partial "sidebars/modules/recommended.html" $ctx }}
+  {{ else if or (eq $feat "sections") (eq $feat "explore") }}
+    {{ partial "sidebars/modules/sections.html" $ctx }}
+  {{ else if or (eq $feat "tags") (eq $feat "taxonomies") (eq $feat "categories") }}
+    {{ partial "sidebars/modules/taxonomies.html" $ctx }}
+  {{ else if or (eq $feat "author") (eq $feat "vcard") }}
+    {{ partial "sidebars/modules/author.html" $ctx }}
+  {{ else if eq $feat "ad" }}
+    {{ partial "sidebars/modules/ad.html" $ctx }}
+  {{ end }}
+{{ end }}

@@ -1,31 +1,16 @@
-{{/*
-  IBM Carbon Design System v11 — Clickable Tile Shortcode
-  Compliant with Carbon React ClickableTile Component Specifications.
-
-  Usage:
-  {{< clickable-tile href="https://react.carbondesignsystem.com/" title="Carbon Storybook" target="_blank" >}}
-    Interactive React components documentation.
-  {{< /clickable-tile >}}
-*/}}
-
 {{ $href := .Get "href" | default "#" }}
-{{ $title := .Get "title" }}
 {{ $target := .Get "target" }}
-{{ $defaultIcon := "arrow--right" }}
-{{ if or (strings.HasPrefix $href "http://") (strings.HasPrefix $href "https://") }}
-  {{ $defaultIcon = "launch" }}
-{{ end }}
-{{ $icon := .Get "icon" | default $defaultIcon }}
-{{ $class := .Get "class" | default "" }}
+{{ $title := .Get "title" }}
+{{ $class := .Get "class" }}
 
-<a href="{{ $href }}" class="cds--tile cds--tile--clickable {{ with $class }}{{ . }}{{ end }}" {{ with $target }}target="{{ . }}" rel="noopener noreferrer"{{ end }}>
+<cds-clickable-tile
+  href="{{ $href }}"
+  {{ with $target }}target="{{ . }}" rel="noopener noreferrer"{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
   {{ with $title }}
-    <h5 style="margin: 0 0 0.5rem 0; font-size: 1rem; color: var(--cds-text-primary); display: flex; justify-content: space-between; align-items: center;">
-      <span>{{ . }}</span>
-      {{ partial "components/icon.html" (dict "name" $icon "size" 16 "class" "cds--tile__icon") }}
-    </h5>
+    <h5 style="margin: 0 0 0.5rem 0; font-size: 1rem; color: var(--cds-text-primary);">{{ . }}</h5>
   {{ end }}
   <div style="font-size: 0.875rem; color: var(--cds-text-secondary); line-height: 1.45;">
     {{ .Inner | markdownify }}
   </div>
-</a>
+</cds-clickable-tile>

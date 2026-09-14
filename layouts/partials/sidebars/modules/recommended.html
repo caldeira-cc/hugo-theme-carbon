@@ -1,0 +1,34 @@
+{{/*
+  IBM Carbon SideNav Module: Recommended / Related Reading
+*/}}
+{{ $relatedPages := where .Site.RegularPages "Section" .Section }}
+{{ if eq (len $relatedPages) 0 }}
+  {{ $relatedPages = .Site.RegularPages }}
+{{ end }}
+{{ $filtered := slice }}
+{{ range $relatedPages }}
+  {{ if ne .RelPermalink $.RelPermalink }}
+    {{ $filtered = $filtered | append . }}
+  {{ end }}
+{{ end }}
+
+{{ if gt (len $filtered) 0 }}
+<div class="cds--side-nav__group cds--side-nav__group--recommended">
+  <div class="cds--contained-list cds--contained-list--inset-padded" style="border: 1px solid var(--cds-border-subtle-00); background-color: var(--cds-layer-01); padding: 1rem;">
+    <div class="cds--contained-list__header" style="margin-bottom: 0.75rem;">
+      <span class="cds--type-label-01" style="text-transform: uppercase; letter-spacing: 0.32px; color: var(--cds-text-secondary); font-weight: 600;">
+        Related Reading
+      </span>
+    </div>
+    <ul class="cds--contained-list__items" style="list-style: none; padding-left: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+      {{ range first 4 $filtered }}
+        <li class="cds--contained-list-item">
+          <a href="{{ .RelPermalink }}" class="cds--link" style="font-size: 0.8125rem; line-height: 1.35; display: block;">
+            {{ .Title }}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+</div>
+{{ end }}

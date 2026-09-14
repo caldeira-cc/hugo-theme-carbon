@@ -35,7 +35,8 @@ You may obtain a copy of the License at
 
 ## 2. IBM Carbon Design System & IBM Plex Fonts
 
-- **IBM Carbon Design System**: Copyright IBM Corporation. Licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+- **IBM Carbon Design System** (`@carbon/styles`, `@carbon/web-components`, `@carbon/icons`): Copyright IBM Corporation. Licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+- **Lit Web Components Runtime** (`lit`, `@lit/reactive-element`): Copyright Google LLC. Licensed under the [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause).
 - **IBM Plex Typeface Family** (Sans, Serif, Mono, Math): Copyright IBM Corporation. Licensed under the [SIL Open Font License 1.1](http://scripts.sil.org/OFL).
 
 ---

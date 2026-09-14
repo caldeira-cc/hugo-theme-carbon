@@ -129,19 +129,20 @@
 }
 
 .carbon-kpi-card {
-  background-color: var(--cds-layer-01);
-  border: 1px solid var(--cds-border-subtle-00);
+  background-color: var(--cds-layer);
+  border: 1px solid var(--cds-border-subtle);
   padding: 1.25rem 1.25rem 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.11s;
   min-height: 125px;
 
   &:hover {
-    border-color: var(--cds-border-strong-01, var(--cds-interactive-01));
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: var(--cds-layer-hover);
+    border-color: var(--cds-border-subtle-selected, var(--cds-interactive-01));
+    box-shadow: var(--cds-shadow-02);
   }
 
   &__header {
@@ -235,8 +236,8 @@
 }
 
 .carbon-dashboard-card {
-  background-color: var(--cds-layer-01);
-  border: 1px solid var(--cds-border-subtle-00);
+  background-color: var(--cds-layer);
+  border: 1px solid var(--cds-border-subtle);
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
@@ -245,13 +246,13 @@
 
   &__header {
     padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--cds-border-subtle-00);
+    border-bottom: 1px solid var(--cds-border-subtle);
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
-    background-color: var(--cds-layer-01);
+    background-color: var(--cds-layer);
   }
 
   &__title-group {
@@ -436,7 +437,7 @@
 .carbon-dashboard-modal {
   position: fixed;
   inset: 0;
-  z-index: 10000;
+  z-index: var(--cds-z-modal, 9000);
   display: none;
   flex-direction: column;
 
@@ -542,13 +543,14 @@
 }
 
 .carbon-dashboard-modal-tile {
-  background-color: var(--cds-layer-01);
-  border: 1px solid var(--cds-border-subtle-00);
+  background-color: var(--cds-layer);
+  border: 1px solid var(--cds-border-subtle);
   border-left: 4px solid var(--cds-interactive-01);
   padding: 1.5rem;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.11s;
 
   &:hover {
+    background-color: var(--cds-layer-hover);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
@@ -564,8 +566,8 @@
 // CSVW Statistical Suite Component Styling
 .carbon-csvw-suite {
   margin: 1.5rem 0;
-  background-color: var(--cds-layer-01);
-  border: 1px solid var(--cds-border-subtle-00);
+  background-color: var(--cds-layer);
+  border: 1px solid var(--cds-border-subtle);
 
   .cds--data-table-header {
     display: flex;

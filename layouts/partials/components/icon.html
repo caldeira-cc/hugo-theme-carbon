@@ -10,6 +10,7 @@
 {{ $name := "" }}
 {{ $size := 16 }}
 {{ $class := "" }}
+{{ $slot := "" }}
 {{ $ariaLabel := "" }}
 {{ $ariaHidden := true }}
 
@@ -17,6 +18,7 @@
   {{ $name = .name | default (.Name | default "") }}
   {{ $size = .size | default (.Size | default 16) }}
   {{ $class = .class | default (.Class | default "") }}
+  {{ $slot = .slot | default (.Slot | default "") }}
   {{ $ariaLabel = .ariaLabel | default (.AriaLabel | default "") }}
   {{ if isset . "ariaHidden" }}{{ $ariaHidden = .ariaHidden }}{{ end }}
 {{ else }}
@@ -68,6 +70,9 @@
     {{ $svgAttrs := printf `width="%v" height="%v"` $size $size }}
     {{ if $class }}
       {{ $svgAttrs = printf `%s class="%s"` $svgAttrs $class }}
+    {{ end }}
+    {{ if $slot }}
+      {{ $svgAttrs = printf `%s slot="%s"` $svgAttrs $slot }}
     {{ end }}
     {{ if $ariaLabel }}
       {{ $svgAttrs = printf `%s role="img" aria-label="%s"` $svgAttrs ($ariaLabel | htmlEscape) }}

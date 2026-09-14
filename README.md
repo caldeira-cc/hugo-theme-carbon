@@ -6,7 +6,7 @@
 [![Zero CDN](https://img.shields.io/badge/Dependencies-100%25_Self--Hosted-8a3ffc?style=flat-square)](https://github.com/caldeira-cc/hugo-theme-carbon)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.flat-square)](LICENSE)
 
-A high-performance, modular, enterprise-grade static site theme for [Hugo](https://gohugo.io/), implementing the **IBM Design Language** and **IBM Carbon Design System v11** with zero runtime React or Node dependencies.
+A high-performance, modular, enterprise-grade static site theme for [Hugo](https://gohugo.io/), powered by the official **IBM Carbon Design System v11** architecture (`@carbon/styles` and `@carbon/web-components` custom elements `<cds-*>`) bundled via Hugo Pipes with zero runtime React dependencies.
 
 Designed for documentation hubs, engineering portals, academic research platforms, data dashboards, and corporate knowledge bases.
 
@@ -47,6 +47,8 @@ Designed for documentation hubs, engineering portals, academic research platform
 ### Prerequisites
 
 - [Hugo Extended](https://gohugo.io/installation/) **v0.120.0 or later** (requires Dart Sass / Hugo Pipes bundling).
+- [Node.js](https://nodejs.org/) (v18+) & `npm` (for installing official `@carbon/*` packages).
+- [Dart Sass](https://sass-lang.com/dart-sass/) (via `sass-embedded`).
 - [Git](https://git-scm.com/).
 
 ---
@@ -73,7 +75,12 @@ Designed for documentation hubs, engineering portals, academic research platform
    hugo mod get github.com/caldeira-cc/hugo-theme-carbon
    ```
 
-4. Start the development server:
+4. Install theme npm packages:
+   ```bash
+   cd themes/hugo-theme-carbon && npm install && cd ../..
+   ```
+
+5. Start the development server:
    ```bash
    hugo server -D
    ```
@@ -85,6 +92,7 @@ Designed for documentation hubs, engineering portals, academic research platform
 1. In your Hugo project root, add the theme as a submodule:
    ```bash
    git submodule add https://github.com/caldeira-cc/hugo-theme-carbon.git themes/hugo-theme-carbon
+   cd themes/hugo-theme-carbon && npm install && cd ../..
    ```
 
 2. Set the theme in `hugo.yaml`:
@@ -105,7 +113,9 @@ The repository includes a complete demonstration website showcasing every layout
 
 ```bash
 git clone https://github.com/caldeira-cc/hugo-theme-carbon.git
-cd hugo-theme-carbon/exampleSite
+cd hugo-theme-carbon
+npm install
+cd exampleSite
 hugo server -p 1316 --bind 127.0.0.1
 ```
 
@@ -119,23 +129,22 @@ Open `http://localhost:1316/` in your browser to explore the live showcase.
 hugo-theme-carbon/
 ├── assets/
 │   ├── scss/
-│   │   ├── main.scss               # Main stylesheet importing all SCSS modules
-│   │   ├── _tokens.scss            # Base IBM Carbon v11 tokens (White, G10, G90, G100)
+│   │   ├── main.scss               # Main stylesheet (@use '@carbon/styles' foundation)
 │   │   ├── _grid.scss              # 16-column 2x Grid & layout scaffolds
 │   │   ├── _fonts.scss             # Self-hosted IBM Plex @font-face rules
 │   │   ├── _math.scss              # KaTeX IBM Plex Math typography rules
 │   │   ├── _typography.scss        # Carbon type scale & heading hierarchies
-│   │   ├── _components.scss        # Core Carbon UI shell & component styles
 │   │   ├── _main-bar.scss          # Sticky action bar & widget styles
 │   │   └── _sidebars.scss          # Hierarchical navigation & ToC styles
 │   └── js/
+│       ├── carbon-bundle.js        # Bundled @carbon/web-components custom elements (<cds-*>)
 │       ├── main.js                 # Vanilla JS entry point
 │       ├── theme.js                # Dual-style theme manager (system/light/dark)
 │       ├── csvw-table.js           # W3C CSVW tabular engine & Web Worker pipeline
 │       ├── geojson-map.js          # MapLibre GL vector cartography controller
 │       ├── spss-engine.js          # GNU PSPP / SPSS statistics engine
 │       ├── search.js               # FlexSearch client-side indexing & search modal
-│       └── ui-shell.js             # Mobile drawers, accordions, tabs, and modals
+│       └── ui-shell.js             # Mobile drawers, navigation, and modals
 ├── layouts/
 │   ├── _default/
 │   │   ├── baseof.html             # Master HTML scaffold with zero-FOUC theme bootstrap
@@ -148,7 +157,7 @@ hugo-theme-carbon/
 │   │   ├── main-bar/bar.html       # Sticky action bar with modular widgets
 │   │   ├── sidebars/               # Left navigation tree & right scroll-spy ToC
 │   │   └── footer/footer.html      # Carbon 4-column structured footer
-│   ├── shortcodes/                 # 75+ modular Hugo shortcodes
+│   ├── shortcodes/                 # 75+ modular Hugo shortcodes emitting <cds-*> elements
 │   └── style/list.html             # Interactive visual style guide specimen
 ├── static/
 │   ├── fonts/                      # 29 IBM Plex WOFF2 fonts (Sans, Serif, Mono, Math)
@@ -158,9 +167,11 @@ hugo-theme-carbon/
 │   ├── themes.yaml                 # Baseline color theme definitions
 │   └── availability.yaml           # Working schedule & availability calendar
 ├── scripts/
+│   ├── build-all.sh                # Multi-site compilation & link verification runner
 │   ├── verify-dependencies.py      # Dependency & font zero-CDN integrity auditor
 │   ├── test_public_html.py         # Static link integrity auditor
 │   └── encrypt.py                  # AES-256-GCM static document encryption tool
+├── package.json                    # @carbon/styles, @carbon/web-components, lit
 └── theme.yaml                      # Theme manifest & metadata
 ```
 
@@ -233,7 +244,7 @@ params:
 
 ## 75+ Shortcodes Reference
 
-Hugo-Carbon includes an exhaustive library of shortcodes adhering strictly to Carbon Design System patterns:
+Hugo-Carbon includes an exhaustive library of shortcodes adhering strictly to official **IBM Carbon Design System v11** specifications. Interactive UI components emit official `@carbon/web-components` custom elements (`<cds-button>`, `<cds-accordion>`, `<cds-tabs>`, `<cds-tile>`, `<cds-modal>`, `<cds-tag>`, `<cds-progress-bar>`, etc.) with 1:1 attribute parity, providing native keyboard navigation, ARIA states, and encapsulated styling:
 
 ### 1. Structural & Container Components
 

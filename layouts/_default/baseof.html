@@ -35,15 +35,20 @@
       {{ end }}
     {{ end }}
   {{ end }}
+  {{/* Main Action Bar Resolution */}}
+  {{ $mainBar := .Site.Params.mainBar }}
+  {{ $mainBarEnable := $mainBar.enable }}
+  {{ with .Params.mainBar }}
+    {{ if isset . "enable" }}
+      {{ $mainBarEnable = .enable }}
+    {{ end }}
+  {{ end }}
+  {{ if or (eq .Kind "404") (eq .RelPermalink "/404.html") (eq .Title "404 Page not found") }}
+    {{ $mainBarEnable = false }}
+  {{ end }}
 </head>
-<body class="carbon-theme-body">
+<body class="carbon-theme-body{{ if not $mainBarEnable }} has-no-main-bar{{ end }}">
   <a href="#main-content" class="skip-to-content">Skip to main content</a>
-
-  {{/* UI Shell Top Header */}}
-  {{ partial "header/navbar.html" . }}
-
-  {{/* Main Action Bar & Modular Widgets */}}
-  {{ partial "main-bar/bar.html" . }}
 
   {{/* Sidebar Configuration Resolution */}}
   {{ $leftSidebar := .Site.Params.sidebars.left.enable }}
@@ -65,6 +70,15 @@
     {{ $rightSidebar = false }}
   {{ end }}
 
+  {{ .Scratch.Set "leftSidebar" $leftSidebar }}
+  {{ .Scratch.Set "rightSidebar" $rightSidebar }}
+
+  {{/* UI Shell Top Header */}}
+  {{ partial "header/navbar.html" . }}
+
+  {{/* Main Action Bar & Modular Widgets */}}
+  {{ partial "main-bar/bar.html" . }}
+
   {{/* Layout Scaffold Class */}}
   {{ $layoutClass := "carbon-layout--full" }}
   {{ if and $leftSidebar $rightSidebar }}
@@ -80,7 +94,7 @@
       <div class="carbon-layout__container">
         {{/* Left Sidebar Slot */}}
         {{ if $leftSidebar }}
-          <div class="carbon-layout__sidebar-left">
+          <div class="carbon-layout__sidebar-left" id="carbon-sidebar-left">
             {{ partial "sidebars/left.html" . }}
           </div>
         {{ end }}
@@ -92,7 +106,7 @@
 
         {{/* Right Sidebar Slot */}}
         {{ if $rightSidebar }}
-          <div class="carbon-layout__sidebar-right">
+          <div class="carbon-layout__sidebar-right" id="carbon-sidebar-right">
             {{ partial "sidebars/right.html" . }}
           </div>
         {{ end }}
@@ -103,8 +117,6 @@
   {{/* Off-Canvas Mobile Navigation Drawers */}}
   {{ partial "sidebars/mobile-drawers.html" . }}
 
-  {{/* Search Modal */}}
-  {{ partial "components/search-modal.html" . }}
 
   {{/* Cookie Consent Banner & Preferences Modal */}}
   {{ partial "components/cookie-banner.html" . }}
@@ -132,6 +144,8 @@
   {{/* Main JavaScript Bundle */}}
   {{ $js := resources.Get "js/main.js" | js.Build (dict "target" "es2020" "minify" hugo.IsProduction) }}
   <script src="{{ $assetBase }}{{ $js.RelPermalink }}" defer></script>
+  {{ $carbonJs := resources.Get "js/carbon-bundle.js" | js.Build (dict "target" "es2020" "minify" hugo.IsProduction) }}
+  <script src="{{ $assetBase }}{{ $carbonJs.RelPermalink }}" type="module" defer></script>
 
   {{/* Custom Page-Specific JavaScript */}}
   {{ with .Params.custom_js }}

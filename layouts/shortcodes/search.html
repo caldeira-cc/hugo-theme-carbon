@@ -1,22 +1,15 @@
-{{/*
-  IBM Carbon Design System v11 — Search Component Shortcode
-  Compliant with Carbon React Search Component Specifications.
-
-  Usage:
-  {{< search placeholder="Filter documentation topics..." size="md" label="Documentation Search" />}}
-*/}}
-
 {{ $placeholder := .Get "placeholder" | default "Search..." }}
-{{ $label := .Get "label" | default "Search" }}
+{{ $label := or (.Get "label-text") (.Get "label") "Search" }}
 {{ $size := .Get "size" | default "md" }}
-{{ $id := .Get "id" | default (printf "cds-search-%d" .Ordinal) }}
-{{ $class := .Get "class" | default "" }}
+{{ $disabled := or (eq (.Get "disabled") true) (eq (.Get "disabled") "true") false }}
+{{ $id := .Get "id" }}
+{{ $class := .Get "class" }}
 
-<div class="cds--search cds--search--{{ $size }} {{ with $class }}{{ . }}{{ end }}" role="search">
-  <label id="{{ $id }}-label" class="cds--label" for="{{ $id }}-input">{{ $label }}</label>
-  <input class="cds--search-input" type="text" id="{{ $id }}-input" role="searchbox" placeholder="{{ $placeholder }}" aria-labelledby="{{ $id }}-label">
-  {{ partial "components/icon.html" (dict "name" "search" "size" 16 "class" "cds--search-magnifier") }}
-  <button class="cds--search-close cds--search-close--hidden" type="button" aria-label="Clear search" onclick="const inp = this.parentElement.querySelector('.cds--search-input'); inp.value=''; inp.focus();">
-    {{ partial "components/icon.html" (dict "name" "close" "size" 16 "class" "cds--search-close__icon") }}
-  </button>
-</div>
+<cds-search
+  label-text="{{ $label }}"
+  placeholder="{{ $placeholder }}"
+  size="{{ $size }}"
+  {{ with $id }}id="{{ . }}"{{ end }}
+  {{ if $disabled }}disabled{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+</cds-search>

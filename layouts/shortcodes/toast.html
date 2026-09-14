@@ -1,17 +1,16 @@
-{{ $type := .Get "type" | default "info" }}
+{{ $kind := or (.Get "kind") (.Get "type") "info" }}
+{{ $title := .Get "title" }}
 {{ $caption := .Get "caption" }}
+{{ $hideClose := or (eq (.Get "hide-close-button") true) (eq (.Get "hide-close-button") "true") false }}
+{{ $timeout := .Get "timeout" }}
+{{ $class := .Get "class" }}
 
-<div class="cds--toast-notification cds--toast-notification--{{ $type }}" role="status" aria-live="polite">
-  <div class="cds--toast-notification__content">
-    {{ with .Get "title" }}
-      <div class="cds--toast-notification__title">{{ . }}</div>
-    {{ end }}
-    <div class="cds--toast-notification__subtitle">{{ .Inner | markdownify }}</div>
-    {{ with $caption }}
-      <div class="cds--toast-notification__caption">{{ . }}</div>
-    {{ end }}
-  </div>
-  <button type="button" class="cds--toast-notification__close-button" aria-label="Close notification" onclick="this.closest('.cds--toast-notification').remove();">
-    {{ partial "components/icon.html" (dict "name" "close" "size" 16 "class" "cds--toast-notification__close-icon") }}
-  </button>
-</div>
+<cds-toast-notification
+  kind="{{ $kind }}"
+  {{ with $title }}title="{{ . }}"{{ end }}
+  {{ with $caption }}caption="{{ . }}"{{ end }}
+  {{ with $timeout }}timeout="{{ . }}"{{ end }}
+  {{ if $hideClose }}hide-close-button{{ end }}
+  {{ with $class }}class="{{ . }}"{{ end }}>
+  <div slot="subtitle">{{ .Inner | markdownify }}</div>
+</cds-toast-notification>

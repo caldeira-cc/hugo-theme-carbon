@@ -5,4 +5,9 @@ Thumbs.db
 # Hugo Build Outputs
 exampleSite/public/
 exampleSite/resources/
+exampleSite/node_modules
 .hugo_build.lock
+
+# Node Dependencies
+node_modules
+

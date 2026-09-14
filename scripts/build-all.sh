@@ -1,17 +1,25 @@
 #!/usr/bin/env bash
 set -e
 
-export PATH=$PATH:/opt/homebrew/bin:/usr/local/bin
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 THEME_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 ROOT_DIR="$(cd "$THEME_DIR/.." && pwd)"
+
+export PATH="$THEME_DIR/node_modules/.bin:$PATH:/opt/homebrew/bin:/usr/local/bin"
 
 cd "$ROOT_DIR"
 
 echo "=================================================="
 echo "Hugo-Carbon Multi-Site Unified Build & Audit"
 echo "=================================================="
+
+# Ensure symlinks for node_modules in sub-sites
+[ -e "$ROOT_DIR/node_modules" ] || ln -sf hugo-theme-carbon/node_modules "$ROOT_DIR/node_modules"
+[ -e "$THEME_DIR/exampleSite/node_modules" ] || ln -sf ../node_modules "$THEME_DIR/exampleSite/node_modules"
+[ -e "$ROOT_DIR/cesar-caldeira-cc/node_modules" ] || ln -sf ../hugo-theme-carbon/node_modules "$ROOT_DIR/cesar-caldeira-cc/node_modules"
+[ -e "$ROOT_DIR/blog-caldeira-cc/node_modules" ] || ln -sf ../hugo-theme-carbon/node_modules "$ROOT_DIR/blog-caldeira-cc/node_modules"
+[ -e "$ROOT_DIR/apps-caldeira-cc/node_modules" ] || ln -sf ../hugo-theme-carbon/node_modules "$ROOT_DIR/apps-caldeira-cc/node_modules"
+[ -e "$ROOT_DIR/games-caldeira-cc/node_modules" ] || ln -sf ../hugo-theme-carbon/node_modules "$ROOT_DIR/games-caldeira-cc/node_modules"
 
 echo "--> [1/5] Building exampleSite (carbon.caldeira.cc)..."
 (cd hugo-theme-carbon/exampleSite && hugo --gc --minify)

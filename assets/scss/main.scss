@@ -1,11 +1,11 @@
-// IBM Carbon Modular Hugo Engine - Core Stylesheet
+// IBM Carbon Modular Hugo Engine - Core Stylesheet powered by official @carbon/styles v11
 
-@import "tokens";
-@import "grid";
+@use '@carbon/styles';
+
 @import "fonts";
 @import "typography";
+@import "grid";
 @import "components";
-@import "carbon-components";
 @import "hero";
 @import "main-bar";
 @import "sidebars";
@@ -29,6 +29,136 @@
 @import "notifications";
 @import "tabs";
 
+// Layout Offset Variables & Invariants
+:root {
+  --cds-header-height: 48px;
+  --cds-main-bar-height: 40px;
+  --cds-top-offset: calc(var(--cds-header-height) + var(--cds-main-bar-height));
+
+  // Glassmorphic Shell & Main Bar Tokens (Light/Default)
+  --cds-glass-blur: 12px;
+  --cds-glass-saturate: 140%;
+  --cds-ui-shell-background: rgba(22, 22, 22, 0.95);
+  --cds-ui-shell-border: rgba(255, 255, 255, 0.12);
+  --cds-ui-shell-text: #ffffff;
+  --cds-ui-shell-text-secondary: #c6c6c6;
+  --cds-ui-shell-hover: #262626;
+  --cds-ui-shell-active: #262626;
+  --cds-ui-shell-indicator: var(--cds-interactive-01, #0f62fe);
+  --cds-ui-shell-backdrop-filter: blur(var(--cds-glass-blur)) saturate(var(--cds-glass-saturate));
+
+  --cds-main-bar-background: rgba(244, 244, 244, 0.88);
+  --cds-main-bar-border: var(--cds-border-subtle-00, #e0e0e0);
+  --cds-main-bar-text: var(--cds-text-secondary, #525252);
+  --cds-main-bar-backdrop-filter: blur(var(--cds-glass-blur)) saturate(var(--cds-glass-saturate));
+
+  // Base Layer Fallbacks (Light / Default)
+  --cds-layer-01: #ffffff;
+  --cds-layer-02: #f4f4f4;
+  --cds-layer-03: #e0e0e0;
+
+  // Contextual Layer Tokens (Light / Default)
+  --cds-layer: var(--cds-layer-01, #ffffff);
+  --cds-layer-hover: var(--cds-layer-hover-01, #e8e8e8);
+  --cds-layer-active: var(--cds-layer-active-01, #c6c6c6);
+  --cds-layer-selected: var(--cds-layer-selected-01, #e0e0e0);
+  --cds-layer-selected-hover: var(--cds-layer-selected-hover-01, #d1d1d1);
+  --cds-layer-accent: var(--cds-layer-accent-01, #e0e0e0);
+  --cds-layer-accent-hover: var(--cds-layer-accent-hover-01, #d1d1d1);
+  --cds-layer-accent-active: var(--cds-layer-accent-active-01, #a8a8a8);
+  --cds-layer-background: var(--cds-layer-background-01, #ffffff);
+  --cds-field: var(--cds-field-01, #f4f4f4);
+  --cds-field-hover: var(--cds-field-hover-01, #e8e8e8);
+  --cds-border-subtle: var(--cds-border-subtle-00, #e0e0e0);
+  --cds-border-subtle-selected: var(--cds-border-subtle-selected-01, #c6c6c6);
+  --cds-border-strong: var(--cds-border-strong-01, #8d8d8d);
+  --cds-border-tile: var(--cds-border-tile-01, #c6c6c6);
+}
+
+// Dark Mode Glassmorphic Overrides & Contextual Layer Tokens
+[data-carbon-theme="dark"],
+[data-carbon-theme="g100"],
+[data-carbon-theme="g90"],
+body[data-carbon-theme="dark"] {
+  --cds-ui-shell-background: rgba(22, 22, 22, 0.96);
+  --cds-ui-shell-border: rgba(255, 255, 255, 0.12);
+  --cds-main-bar-background: rgba(38, 38, 38, 0.88);
+  --cds-main-bar-border: var(--cds-border-subtle-00, #393939);
+  --cds-main-bar-text: var(--cds-text-secondary, #c6c6c6);
+
+  // Base Layer Fallbacks (Dark / G100)
+  --cds-layer-01: #262626;
+  --cds-layer-02: #393939;
+  --cds-layer-03: #525252;
+
+  // Contextual Layer Tokens (Dark / G100)
+  --cds-layer: var(--cds-layer-01, #262626);
+  --cds-layer-hover: var(--cds-layer-hover-01, #333333);
+  --cds-layer-active: var(--cds-layer-active-01, #525252);
+  --cds-layer-selected: var(--cds-layer-selected-01, #393939);
+  --cds-layer-selected-hover: var(--cds-layer-selected-hover-01, #474747);
+  --cds-layer-accent: var(--cds-layer-accent-01, #393939);
+  --cds-layer-accent-hover: var(--cds-layer-accent-hover-01, #474747);
+  --cds-layer-accent-active: var(--cds-layer-accent-active-01, #6f6f6f);
+  --cds-layer-background: var(--cds-layer-background-01, #161616);
+  --cds-field: var(--cds-field-01, #262626);
+  --cds-field-hover: var(--cds-field-hover-01, #333333);
+  --cds-border-subtle: var(--cds-border-subtle-00, #393939);
+  --cds-border-subtle-selected: var(--cds-border-subtle-selected-01, #6f6f6f);
+  --cds-border-strong: var(--cds-border-strong-01, #6f6f6f);
+  --cds-border-tile: var(--cds-border-tile-01, #525252);
+}
+
+// Dark Mode Contextual Layer Cascades for Nested Elements
+[data-carbon-theme="dark"] .cds--layer-one,
+[data-carbon-theme="g100"] .cds--layer-one,
+body[data-carbon-theme="dark"] .cds--layer-one {
+  --cds-layer: var(--cds-layer-01, #262626);
+  --cds-layer-hover: var(--cds-layer-hover-01, #333333);
+  --cds-layer-active: var(--cds-layer-active-01, #525252);
+  --cds-layer-selected: var(--cds-layer-selected-01, #393939);
+  --cds-layer-accent: var(--cds-layer-accent-01, #393939);
+  --cds-field: var(--cds-field-01, #262626);
+  --cds-field-hover: var(--cds-field-hover-01, #333333);
+  --cds-border-subtle: var(--cds-border-subtle-00, #393939);
+  --cds-border-strong: var(--cds-border-strong-01, #6f6f6f);
+  --cds-border-tile: var(--cds-border-tile-01, #525252);
+}
+
+[data-carbon-theme="dark"] .cds--layer-two,
+[data-carbon-theme="g100"] .cds--layer-two,
+body[data-carbon-theme="dark"] .cds--layer-two {
+  --cds-layer: var(--cds-layer-02, #393939);
+  --cds-layer-hover: var(--cds-layer-hover-02, #474747);
+  --cds-layer-active: var(--cds-layer-active-02, #6f6f6f);
+  --cds-layer-selected: var(--cds-layer-selected-02, #525252);
+  --cds-layer-accent: var(--cds-layer-accent-02, #525252);
+  --cds-field: var(--cds-field-02, #393939);
+  --cds-field-hover: var(--cds-field-hover-02, #474747);
+  --cds-border-subtle: var(--cds-border-subtle-01, #525252);
+  --cds-border-strong: var(--cds-border-strong-02, #8d8d8d);
+  --cds-border-tile: var(--cds-border-tile-02, #6f6f6f);
+}
+
+[data-carbon-theme="dark"] .cds--layer-three,
+[data-carbon-theme="g100"] .cds--layer-three,
+body[data-carbon-theme="dark"] .cds--layer-three {
+  --cds-layer: var(--cds-layer-03, #525252);
+  --cds-layer-hover: var(--cds-layer-hover-03, #636363);
+  --cds-layer-active: var(--cds-layer-active-03, #8d8d8d);
+  --cds-layer-selected: var(--cds-layer-selected-03, #6f6f6f);
+  --cds-layer-accent: var(--cds-layer-accent-03, #6f6f6f);
+  --cds-field: var(--cds-field-03, #525252);
+  --cds-field-hover: var(--cds-field-hover-03, #636363);
+  --cds-border-subtle: var(--cds-border-subtle-02, #6f6f6f);
+  --cds-border-strong: var(--cds-border-strong-03, #a8a8a8);
+  --cds-border-tile: var(--cds-border-tile-03, #8d8d8d);
+}
+
+body.has-no-main-bar {
+  --cds-main-bar-height: 0px;
+}
+
 // Global Box Sizing & Accessibility Helpers
 *, *::before, *::after {
   box-sizing: border-box;
@@ -41,7 +171,7 @@
   background-color: var(--cds-focus);
   color: #ffffff;
   padding: 0.5rem 1rem;
-  z-index: 10000;
+  z-index: var(--cds-z-a11y, 10000);
   text-decoration: none;
   font-weight: 600;
   transition: top 0.2s;
@@ -54,7 +184,10 @@
 
 // Prose styling for documentation & blog posts
 .carbon-prose {
+  min-width: 0;
   max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
   
   img {
     max-width: 100%;
@@ -62,7 +195,7 @@
   }
 
   blockquote {
-    border-left: 4px solid var(--cds-interactive-01);
+    border-left: 4px solid var(--cds-interactive-01, #0f62fe);
     margin: 1.5rem 0;
     padding: 0.5rem 1.25rem;
     background-color: var(--cds-layer-01);
@@ -86,7 +219,7 @@
 
   hr {
     border: none;
-    border-top: 1px solid var(--cds-border-subtle-00);
+    border-top: 1px solid var(--cds-border-subtle-00, var(--cds-border-subtle));
     margin: 2.5rem 0;
   }
 }

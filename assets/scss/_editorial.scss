@@ -45,70 +45,13 @@
     --cds-focus: #ffffff;
   }
 
-  // Black Editorial UI Shell Navbar
-  .cds--header {
-    background-color: #161616 !important;
-    border-bottom: 1px solid #393939 !important;
-    color: #f4f4f4 !important;
-
-    &__name {
-      background-color: #161616 !important;
-      color: #ffffff !important;
-      border-right: 1px solid #393939 !important;
-
-      &:hover {
-        background-color: #262626 !important;
-      }
-
-      .brand-title, .brand-description {
-        color: #ffffff !important;
-      }
-    }
-
-    &__nav {
-      a, button {
-        color: #c6c6c6 !important;
-
-        &:hover, &.is-active {
-          color: #ffffff !important;
-          background-color: #262626 !important;
-        }
-      }
-    }
-
-    &__submenu {
-      background-color: #161616 !important;
-      border: 1px solid #393939 !important;
-
-      a {
-        color: #f4f4f4 !important;
-
-        &:hover {
-          background-color: #262626 !important;
-          color: #ffffff !important;
-        }
-      }
-    }
-
-    &__action {
-      background-color: #161616 !important;
-      border-left: 1px solid #393939 !important;
-      color: #f4f4f4 !important;
-
-      &:hover {
-        background-color: #262626 !important;
-        color: #ffffff !important;
-      }
-    }
-
-    &__menu-toggle {
-      color: #f4f4f4 !important;
-
-      &:hover {
-        background-color: #262626 !important;
-      }
-    }
-  }
+  // Black Editorial UI Shell Scoping
+  --cds-ui-shell-background: rgba(22, 22, 22, 0.95);
+  --cds-ui-shell-border: rgba(255, 255, 255, 0.12);
+  --cds-ui-shell-text: #ffffff;
+  --cds-ui-shell-text-secondary: #c6c6c6;
+  --cds-ui-shell-hover: #262626;
+  --cds-ui-shell-active: #262626;
 
   // Pure Monochrome Tags & Badges (Neutral Grayscale Palette)
   .cds--tag {

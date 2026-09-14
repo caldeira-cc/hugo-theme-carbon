@@ -1,0 +1,34 @@
+{{/*
+  IBM Carbon SideNav Module: Dynamic Table of Contents (TOC)
+*/}}
+{{ $hasToc := false }}
+{{ if and .TableOfContents (strings.Contains .TableOfContents "<li") }}
+  {{ $hasToc = true }}
+{{ else if eq .RelPermalink "/style/" }}
+  {{ $hasToc = true }}
+{{ end }}
+
+{{ if $hasToc }}
+<div class="cds--side-nav__group cds--side-nav__group--toc" aria-label="Table of Contents">
+  <div class="cds--side-nav__header">
+    <span class="cds--type-label-01 cds--side-nav__title">On This Page</span>
+  </div>
+
+  <div class="carbon-sidebar-right__toc cds--side-nav__toc">
+    {{ if and .TableOfContents (strings.Contains .TableOfContents "<li") }}
+      {{ .TableOfContents }}
+    {{ else if eq .RelPermalink "/style/" }}
+      <nav id="TableOfContents">
+        <ul>
+          <li><a href="#overview">Visual Overview</a></li>
+          <li><a href="#color-system">Tripartite Palette</a></li>
+          <li><a href="#typography">IBM Plex Scale</a></li>
+          <li><a href="#ibm-principles">Design Principles</a></li>
+          <li><a href="#components">Component Catalog</a></li>
+          <li><a href="#code-guidelines">Token Implementation</a></li>
+        </ul>
+      </nav>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

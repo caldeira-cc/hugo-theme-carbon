@@ -1,0 +1,17 @@
+{{/*
+  IBM Carbon SideNav Module: Compact Author Profile
+*/}}
+{{ $authors := partial "components/get-authors.html" . }}
+{{ if gt (len $authors) 0 }}
+  {{ $authName := index $authors 0 }}
+  <div class="cds--side-nav__group cds--side-nav__group--author">
+    <div class="cds--tile cds--tile--author" style="border: 1px solid var(--cds-border-subtle-00); background-color: var(--cds-layer-01); padding: 1rem;">
+      <div class="cds--type-label-01" style="margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.32px; color: var(--cds-text-secondary); font-weight: 600;">
+        Author
+      </div>
+      <a href="{{ partial "components/author-url.html" $authName }}" class="cds--link" style="font-weight: 600; font-size: 0.875rem;">
+        {{ $authName }}
+      </a>
+    </div>
+  </div>
+{{ end }}
