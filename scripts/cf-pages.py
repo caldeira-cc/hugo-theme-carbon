@@ -18,7 +18,7 @@ CONFIG_MATRIX = {
     "hugo-theme-carbon": {
         "repo": "hugo-theme-carbon",
         "root_dir": "exampleSite",
-        "build_command": "[ -d node_modules ] || ln -sf ../node_modules node_modules; hugo --gc --minify && python3 ../scripts/encrypt.py --dir public",
+        "build_command": "npm run build",
         "destination_dir": "public",
         "public_dir": "exampleSite/public",
         "custom_domain": "carbon.caldeira.cc",
@@ -30,7 +30,7 @@ CONFIG_MATRIX = {
     "cesar": {
         "repo": "cesar-caldeira-cc",
         "root_dir": "",
-        "build_command": "([ -d ../hugo-theme-carbon ] || git clone --depth 1 https://github.com/caldeira-cc/hugo-theme-carbon.git ../hugo-theme-carbon) && hugo --gc --minify",
+        "build_command": "npm run build",
         "destination_dir": "public",
         "public_dir": "cesar-caldeira-cc/public",
         "custom_domain": "cesar.caldeira.cc",
@@ -39,7 +39,7 @@ CONFIG_MATRIX = {
     "blog": {
         "repo": "blog-caldeira-cc",
         "root_dir": "",
-        "build_command": "([ -d ../hugo-theme-carbon ] || git clone --depth 1 https://github.com/caldeira-cc/hugo-theme-carbon.git ../hugo-theme-carbon) && hugo --gc --minify",
+        "build_command": "npm run build",
         "destination_dir": "public",
         "public_dir": "blog-caldeira-cc/public",
         "custom_domain": "blog.caldeira.cc",
@@ -48,7 +48,7 @@ CONFIG_MATRIX = {
     "apps": {
         "repo": "apps-caldeira-cc",
         "root_dir": "",
-        "build_command": "([ -d ../hugo-theme-carbon ] || git clone --depth 1 https://github.com/caldeira-cc/hugo-theme-carbon.git ../hugo-theme-carbon) && hugo --gc --minify",
+        "build_command": "npm run build",
         "destination_dir": "public",
         "public_dir": "apps-caldeira-cc/public",
         "custom_domain": "apps.caldeira.cc",
@@ -57,7 +57,7 @@ CONFIG_MATRIX = {
     "games": {
         "repo": "games-caldeira-cc",
         "root_dir": "",
-        "build_command": "([ -d ../hugo-theme-carbon ] || git clone --depth 1 https://github.com/caldeira-cc/hugo-theme-carbon.git ../hugo-theme-carbon) && hugo --gc --minify",
+        "build_command": "npm run build",
         "destination_dir": "public",
         "public_dir": "games-caldeira-cc/public",
         "custom_domain": "games.caldeira.cc",
@@ -329,7 +329,7 @@ def cmd_deployments(args):
 
 def cmd_deploy(args):
     root = find_workspace_root()
-    cfg = CONFIG_MATRIX.get(args.project)
+    proj_name, cfg = resolve_project(args.project)
     if not cfg:
         print(f"Unknown project '{args.project}'. Available: {list(CONFIG_MATRIX.keys())}")
         sys.exit(1)
@@ -340,16 +340,61 @@ def cmd_deploy(args):
         print(f"Building project first with build-all.sh...")
         subprocess.run([str(root / "hugo-theme-carbon" / "scripts" / "build-all.sh")], check=True)
     
-    print(f"\nDeploying '{deploy_path}' to Cloudflare Pages project '{args.project}'...")
+    print(f"\nDeploying '{deploy_path}' to Cloudflare Pages project '{proj_name}'...")
     cmd = [
         "npx", "wrangler", "pages", "deploy",
         str(deploy_path),
-        "--project-name", args.project,
+        "--project-name", proj_name,
         "--commit-dirty=true"
     ]
     if args.branch:
         cmd.extend(["--branch", args.branch])
     subprocess.run(cmd, check=False)
+
+def cmd_retry(args):
+    token, account_id = get_credentials()
+    if not token:
+        print("CLOUDFLARE_API_TOKEN is required to trigger remote deployments.")
+        sys.exit(1)
+    acc_id = resolve_account_id(account_id)
+    proj_name, _ = resolve_project(args.project)
+    branch = getattr(args, "branch", None) or "main"
+    print(f"\nTriggering new Cloudflare deployment for '{proj_name}' (branch: {branch})...")
+    try:
+        res = cf_api_request(
+            f"/accounts/{acc_id}/pages/projects/{proj_name}/deployments",
+            method="POST",
+            data={"branch": branch}
+        )
+        dep = res.get("result", {})
+        print(f"  ✅ Deployment queued successfully!")
+        print(f"  ID:     {dep.get('id')}")
+        print(f"  Status: {dep.get('latest_stage', {}).get('status', 'queued')}")
+        print(f"  URL:    {dep.get('url')}")
+    except Exception as e:
+        print(f"  ❌ Error: {e}")
+
+def cmd_redeploy_all(args):
+    token, account_id = get_credentials()
+    if not token:
+        print("CLOUDFLARE_API_TOKEN is required to trigger remote deployments.")
+        sys.exit(1)
+    acc_id = resolve_account_id(account_id)
+    active_projects = [k for k, v in CONFIG_MATRIX.items() if "alias_of" not in v and k != "games"]
+    branch = getattr(args, "branch", None) or "main"
+    print(f"\nTriggering production deployments across all {len(active_projects)} active sites...")
+    for p in active_projects:
+        print(f"\n• Deploying '{p}'...")
+        try:
+            res = cf_api_request(
+                f"/accounts/{acc_id}/pages/projects/{p}/deployments",
+                method="POST",
+                data={"branch": branch}
+            )
+            dep = res.get("result", {})
+            print(f"  ✅ Queued: {dep.get('id')} ({dep.get('url')})")
+        except Exception as e:
+            print(f"  ❌ Error: {e}")
 
 def main():
     parser = argparse.ArgumentParser(description="Hugo-Carbon Cloudflare Pages Management CLI")
@@ -377,6 +422,14 @@ def main():
     # deployments
     dep_p = subparsers.add_parser("deployments", help="List recent deployments for a project")
     dep_p.add_argument("project", choices=list(CONFIG_MATRIX.keys()), help="Project name")
+    
+    # retry
+    retry_p = subparsers.add_parser("retry", help="Trigger a new remote Cloudflare deployment for a project")
+    retry_p.add_argument("project", choices=list(CONFIG_MATRIX.keys()), help="Project name")
+    retry_p.add_argument("--branch", default="main", help="Git branch to build (default: main)")
+    
+    # redeploy-all
+    subparsers.add_parser("redeploy-all", help="Trigger remote Cloudflare deployments across all active projects")
     
     # deploy
     deploy_p = subparsers.add_parser("deploy", help="Directly deploy local public build via Wrangler")

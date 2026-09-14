@@ -5,7 +5,7 @@
   "description": "Example Site and Style Showcase for hugo-theme-carbon",
   "scripts": {
     "dev": "hugo server --disableFastRender -p 1316 --bind 127.0.0.1",
-    "build": "hugo --gc --minify && python3 ../scripts/encrypt.py --dir public"
+    "build": "([ -d node_modules ] || ln -sf ../node_modules node_modules) && hugo --gc --minify && python3 ../scripts/encrypt.py --dir public"
   },
   "dependencies": {
     "@carbon/icons": "^11.88.0",
