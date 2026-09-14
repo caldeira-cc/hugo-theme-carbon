@@ -1,0 +1,20 @@
+{
+  "name": "hugo-carbon-example-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Example Site and Style Showcase for hugo-theme-carbon",
+  "scripts": {
+    "dev": "hugo server --disableFastRender -p 1316 --bind 127.0.0.1",
+    "build": "hugo --gc --minify && python3 ../scripts/encrypt.py --dir public"
+  },
+  "dependencies": {
+    "@carbon/icons": "^11.88.0",
+    "@carbon/styles": "^1.115.0",
+    "@carbon/web-components": "^2.63.0",
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "sass": "^1.104.1",
+    "sass-embedded": "^1.104.1"
+  }
+}
