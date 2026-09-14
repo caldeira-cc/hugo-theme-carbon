@@ -15,7 +15,7 @@ import urllib.error
 from pathlib import Path
 
 CONFIG_MATRIX = {
-    "carbon": {
+    "hugo-theme-carbon": {
         "repo": "hugo-theme-carbon",
         "root_dir": "exampleSite",
         "build_command": "[ -d node_modules ] || ln -sf ../node_modules node_modules; hugo --gc --minify && python3 ../scripts/encrypt.py --dir public",
@@ -23,6 +23,9 @@ CONFIG_MATRIX = {
         "public_dir": "exampleSite/public",
         "custom_domain": "carbon.caldeira.cc",
         "env_vars": {"HUGO_VERSION": "0.149.0"},
+    },
+    "carbon": {
+        "alias_of": "hugo-theme-carbon",
     },
     "cesar": {
         "repo": "cesar-caldeira-cc",
@@ -61,6 +64,15 @@ CONFIG_MATRIX = {
         "env_vars": {"HUGO_VERSION": "0.149.0"},
     },
 }
+
+def resolve_project(name):
+    if not name:
+        return None, None
+    cfg = CONFIG_MATRIX.get(name)
+    if cfg and "alias_of" in cfg:
+        target = cfg["alias_of"]
+        return target, CONFIG_MATRIX.get(target)
+    return name, cfg
 
 def find_workspace_root():
     current = Path(__file__).resolve().parent
@@ -184,7 +196,8 @@ def cmd_get(args):
         print("CLOUDFLARE_API_TOKEN is required for detailed project inspection.")
         sys.exit(1)
     acc_id = resolve_account_id(account_id)
-    res = cf_api_request(f"/accounts/{acc_id}/pages/projects/{args.project}")
+    proj_name, _ = resolve_project(args.project)
+    res = cf_api_request(f"/accounts/{acc_id}/pages/projects/{proj_name}")
     p = res.get("result", {})
     if args.json:
         print(json.dumps(p, indent=2))
@@ -229,7 +242,11 @@ def cmd_sync(args):
         sys.exit(1)
     
     acc_id = resolve_account_id(account_id)
-    target_projects = [args.project] if args.project else list(CONFIG_MATRIX.keys())
+    if args.project:
+        canon, _ = resolve_project(args.project)
+        target_projects = [canon]
+    else:
+        target_projects = [k for k, v in CONFIG_MATRIX.items() if "alias_of" not in v]
     
     print(f"\nSynchronizing Cloudflare Pages project settings ({len(target_projects)} targets)...")
     for proj_name in target_projects:
